@@ -4,6 +4,7 @@
 #include "GLCore.h"
 #include "WindowsPlatform.h"
 #include "DirectXAPI.h"
+#include "OpenGLAPI.h"
 #include "PortableGame.h"
 // --------------------------------------------------------
 // Entry point for a graphical (non-console) Windows application
@@ -79,10 +80,11 @@ int main()
 	// whatever we get back once the game loop is over
 	//return dxGame.Run();
 	//return glGame.Run();
-	GameWindow* window = new GameWindow(0, 0, 800, 600, (int)GetModuleHandle(NULL));
+	GameWindow* window = new GameWindow(0, 0, 800, 600);
 	WindowsPlatform win = WindowsPlatform(window);
-	DirectXAPI dx = DirectXAPI(window);
-	PortableGame game = PortableGame(&win, &dx, window);
+	//DirectXAPI dx = DirectXAPI(window);
+	OpenGLAPI gl = OpenGLAPI(window);
+	PortableGame game = PortableGame(&win, &gl, window);
 	game.Start();
 	return game.Run();
 }

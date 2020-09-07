@@ -5,7 +5,7 @@ WindowsPlatform* WindowsPlatform::staticThis = 0;
 int WindowsPlatform::InitWindow()
 {
 	WNDCLASS wndClass = {}; // Zero out the memory
-	wndClass.style = CS_HREDRAW | CS_VREDRAW;	// Redraw on horizontal or vertical movement/adjustment
+	wndClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;	// Redraw on horizontal or vertical movement/adjustment
 	wndClass.lpfnWndProc = WindowsProc;
 	wndClass.cbClsExtra = 0;
 	wndClass.cbWndExtra = 0;
@@ -66,6 +66,8 @@ int WindowsPlatform::InitWindow()
 	// The window exists but is not visible yet
 	// We need to tell Windows to show it, and how to show it
 	ShowWindow((HWND)window->windowHandle, SW_SHOW);
+
+	window->deviceContext = (int)GetDC((HWND)window->windowHandle);
 
 	// Return an "everything is ok" HRESULT value
 	return S_OK;
