@@ -82,9 +82,11 @@ int main()
 	//return glGame.Run();
 	GameWindow* window = new GameWindow(0, 0, 800, 600);
 	WindowsPlatform win = WindowsPlatform(window);
-	//DirectXAPI dx = DirectXAPI(window);
-	OpenGLAPI gl = OpenGLAPI(window);
-	PortableGame game = PortableGame(&win, &gl, window);
+	DirectXAPI dx = DirectXAPI(window);
+	//OpenGLAPI gl = OpenGLAPI(window);
+	PortableGame game = PortableGame(&win, &dx, window);
 	game.Start();
-	return game.Run();
+	game.Run();
+	delete window;
+	return 0;
 }
