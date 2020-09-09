@@ -1,3 +1,4 @@
+#if 0
 #include "Game.h"
 #include "Vertex.h"
 // Needed for a helper function to read compiled shader files from the hard drive
@@ -251,8 +252,11 @@ void Game::CreateBasicGeometry()
 
 	//cube = new Mesh(cubeVerts, 8, cubeIndices, 12, device);
 
-	sphere = new Mesh(GetFullPathTo("../../Assets/Models/sphere.obj").c_str(), device);
-	helix = new Mesh(GetFullPathTo("../../Assets/Models/helix.obj").c_str(), device);
+	/*sphere = new Mesh(GetFullPathTo("../../Assets/Models/sphere.obj").c_str(), device);
+	helix = new Mesh(GetFullPathTo("../../Assets/Models/helix.obj").c_str(), device);*/
+
+	sphere = new Mesh(GetFullPathTo("../../Assets/Models/sphere.obj").c_str());
+	helix = new Mesh(GetFullPathTo("../../Assets/Models/helix.obj").c_str());
 
 	Entity* testEntity = new Entity(helix, this->red);
 	//testEntity->GetTransform()->MoveAbsolute(XMFLOAT3(0, 0, 1));
@@ -455,3 +459,4 @@ void Game::Draw(float deltaTime, float totalTime)
 	// the render target must be re-bound after every call to Present()
 	context->OMSetRenderTargets(1, backBufferRTV.GetAddressOf(), depthStencilView.Get());
 }
+#endif

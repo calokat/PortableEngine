@@ -70,11 +70,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\caleb\Documents\common\glfw\lib\Debug;C:\Users\caleb\Documents\common\glew\lib\Release\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\caleb\Documents\common\glfw\lib\Debug;C:\Users\caleb\Documents\common\glew\lib\Release\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -90,6 +90,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\caleb\Documents\common\glm</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -103,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\caleb\Documents\common\glm</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

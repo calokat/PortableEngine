@@ -2,6 +2,7 @@
 #include "IPlatform.h";
 #include "GameWindow.h"
 #include "IGraphicsAPI.h"
+#include <entt.hpp>
 class PortableGame
 {
 public:

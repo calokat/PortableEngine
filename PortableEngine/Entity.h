@@ -1,3 +1,4 @@
+#if 0
 #pragma once
 #include "Transform.h"
 #include "Mesh.h"
@@ -20,3 +21,4 @@ public:
 	void Draw(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, Camera* camera);
 };
 
+#endif // 0

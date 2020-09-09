@@ -1,3 +1,4 @@
+#if 0
 #include "Entity.h"
 #include "Vertex.h"
 #include "BufferStructs.h"
@@ -77,3 +78,4 @@ void Entity::Draw(Microsoft::WRL::ComPtr<ID3D11DeviceContext> context, Camera* c
 		0,     // Offset to the first index we want to use
 		0);    // Offset to add to each index when looking up vertices
 }
+#endif

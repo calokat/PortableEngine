@@ -1,3 +1,4 @@
+#if 0
 #pragma once
 
 #include "DXCore.h"
@@ -76,3 +77,4 @@ private:
 	ID3D11SamplerState* sampler;
 };
 
+#endif
