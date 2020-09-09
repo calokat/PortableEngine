@@ -1,8 +1,8 @@
 #pragma once
 #include "Mesh.h"
 #include <fstream>
-#include <DirectXMath.h>
-using namespace DirectX;
+//#include <DirectXMath.h>
+//using namespace DirectX;
 using namespace std;
 //void Mesh::CreateBuffers(Vertex* vertices, int numVertices, unsigned int* indices, int numIndicesParam, Microsoft::WRL::ComPtr<ID3D11Device> device)
 //{
@@ -259,9 +259,9 @@ Mesh::Mesh(const char* objFile)
 		return;
 
 	// Variables used while reading the file
-	std::vector<XMFLOAT3> positions;     // Positions from the file
-	std::vector<XMFLOAT3> normals;       // Normals from the file
-	std::vector<XMFLOAT2> uvs;           // UVs from the file
+	std::vector<glm::vec3> positions;     // Positions from the file
+	std::vector<glm::vec3> normals;       // Normals from the file
+	std::vector<glm::vec2> uvs;           // UVs from the file
 	std::vector<Vertex> verts;           // Verts we're assembling
 	std::vector<UINT> indices;           // Indices of these verts
 	unsigned int vertCounter = 0;        // Count of vertices/indices
@@ -277,7 +277,7 @@ Mesh::Mesh(const char* objFile)
 		if (chars[0] == 'v' && chars[1] == 'n')
 		{
 			// Read the 3 numbers directly into an XMFLOAT3
-			XMFLOAT3 norm;
+			glm::vec3 norm;
 			sscanf_s(
 				chars,
 				"vn %f %f %f",
@@ -289,7 +289,7 @@ Mesh::Mesh(const char* objFile)
 		else if (chars[0] == 'v' && chars[1] == 't')
 		{
 			// Read the 2 numbers directly into an XMFLOAT2
-			XMFLOAT2 uv;
+			glm::vec2 uv;
 			sscanf_s(
 				chars,
 				"vt %f %f",
@@ -301,7 +301,7 @@ Mesh::Mesh(const char* objFile)
 		else if (chars[0] == 'v')
 		{
 			// Read the 3 numbers directly into an XMFLOAT3
-			XMFLOAT3 pos;
+			glm::vec3 pos;
 			sscanf_s(
 				chars,
 				"v %f %f %f",
@@ -456,7 +456,7 @@ void Mesh::CalculateTangents(Vertex* verts, int numVerts, unsigned int* indices,
 	// Reset tangents
 	for (int i = 0; i < numVerts; i++)
 	{
-		verts[i].Tangent = XMFLOAT3(0, 0, 0);
+		verts[i].Tangent = glm::vec3(0, 0, 0);
 	}
 
 	// Calculate tangents one whole triangle at a time
@@ -511,15 +511,15 @@ void Mesh::CalculateTangents(Vertex* verts, int numVerts, unsigned int* indices,
 	for (int i = 0; i < numVerts; i++)
 	{
 		// Grab the two vectors
-		XMVECTOR normal = XMLoadFloat3(&verts[i].Normal);
-		XMVECTOR tangent = XMLoadFloat3(&verts[i].Tangent);
+		glm::vec3 normal = verts[i].Normal;
+		glm::vec3 tangent = verts[i].Tangent;
 
 		// Use Gram-Schmidt orthogonalize
-		tangent = XMVector3Normalize(
-			tangent - normal * XMVector3Dot(normal, tangent));
+		tangent = glm::normalize(
+			tangent - normal * glm::dot(normal, tangent));
 
 		// Store the tangent
-		XMStoreFloat3(&verts[i].Tangent, tangent);
+		verts[i].Tangent = tangent;
 	}
 }
 

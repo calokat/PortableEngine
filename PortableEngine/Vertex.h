@@ -1,6 +1,6 @@
 #pragma once
-
-#include <DirectXMath.h>
+#include <glm/glm.hpp>
+//#include <DirectXMath.h>
 
 // --------------------------------------------------------
 // A custom vertex definition
@@ -9,8 +9,8 @@
 // --------------------------------------------------------
 struct Vertex
 {
-	DirectX::XMFLOAT3 Position;	    // The position of the vertex
-	DirectX::XMFLOAT3 Normal;
-	DirectX::XMFLOAT2 UV;
-	DirectX::XMFLOAT3 Tangent;
+	glm::vec3 Position;	    // The position of the vertex
+	glm::vec3 Normal;
+	glm::vec2 UV;
+	glm::vec3 Tangent;
 };
