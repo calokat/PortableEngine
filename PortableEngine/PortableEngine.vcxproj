@@ -154,6 +154,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="GLCore.cpp" />
+    <ClCompile Include="IOpenGLContext.cpp" />
     <ClCompile Include="IPlatform.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="WindowsPlatform.cpp" />
+    <ClCompile Include="WinOpenGLContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BufferStructs.h" />
@@ -177,6 +179,7 @@
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="GLCore.h" />
     <ClInclude Include="IGraphicsAPI.h" />
+    <ClInclude Include="IOpenGLContext.h" />
     <ClInclude Include="IPlatform.h" />
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Material.h" />
@@ -189,6 +192,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="WindowsPlatform.h" />
+    <ClInclude Include="WinOpenGLContext.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
