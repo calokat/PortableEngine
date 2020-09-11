@@ -151,6 +151,7 @@
     <ClCompile Include="DirectXAPI.cpp" />
     <ClCompile Include="DXCore.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="esUtil.c" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="GLCore.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="DirectXAPI.h" />
     <ClInclude Include="DXCore.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="esUtil.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="GLCore.h" />
