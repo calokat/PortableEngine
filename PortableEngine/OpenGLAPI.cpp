@@ -85,14 +85,15 @@ int OpenGLAPI::Init()
 	//	printf("GLEW initialization failed");
 	//	return -1;
 	//}
-	return winGLContext->GetContext(window);
+	return glContext->GetContext(window);
 }
 
 void OpenGLAPI::ClearScreen()
 {
 	glClearColor(1.0f, 1.0f, 0.0f, 1.0f); // rgb(33,150,243)
 	glClear(GL_COLOR_BUFFER_BIT);
-	SwapBuffers((HDC)window->deviceContext);
+	glContext->SwapBuffers(window->windowHandle);
+	// SwapBuffers((HDC)window->deviceContext);
 }
 
 void OpenGLAPI::Draw()
