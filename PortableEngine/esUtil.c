@@ -18,6 +18,7 @@
 ///
 //  Includes
 //
+#ifdef __EMSCRIPTEN__
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -418,3 +419,4 @@ char* ESUTIL_API esLoadTGA ( char *fileName, int *width, int *height )
     fclose(f);
     return buffer;
 }
+#endif

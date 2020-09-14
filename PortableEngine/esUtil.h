@@ -14,6 +14,7 @@
 ///        basic common framework for the example applications in the
 ///        OpenGL ES 2.0 Programming Guide.
 //
+#ifndef _WIN64
 #ifndef ESUTIL_H
 #define ESUTIL_H
 
@@ -279,3 +280,4 @@ void ESUTIL_API esMatrixLoadIdentity(ESMatrix *result);
 #endif
 
 #endif // ESUTIL_H
+#endif
