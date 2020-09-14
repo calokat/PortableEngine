@@ -84,3 +84,8 @@ int WinOpenGLContext::GetContext(GameWindow* window)
 	}
 
 }
+
+void WinOpenGLContext::SwapBuffers(int winHandle)
+{
+	SwapBuffers((HDC)winHandle);
+}
