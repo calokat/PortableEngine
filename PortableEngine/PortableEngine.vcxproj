@@ -150,6 +150,7 @@
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="DirectXAPI.cpp" />
     <ClCompile Include="DXCore.cpp" />
+    <ClCompile Include="EmscriptenPlatform.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="esUtil.c" />
     <ClCompile Include="Game.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="OpenGLAPI.cpp" />
+    <ClCompile Include="OpenGLESContext.cpp" />
     <ClCompile Include="PortableGame.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleShader.cpp" />
@@ -175,6 +177,7 @@
     <ClInclude Include="Core.h" />
     <ClInclude Include="DirectXAPI.h" />
     <ClInclude Include="DXCore.h" />
+    <ClInclude Include="EmscriptenPlatform.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="esUtil.h" />
     <ClInclude Include="Game.h" />
@@ -187,6 +190,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="OpenGLAPI.h" />
+    <ClInclude Include="OpenGLESContext.h" />
     <ClInclude Include="PortableGame.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleShader.h" />
