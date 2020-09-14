@@ -3,6 +3,8 @@
 #include "GameWindow.h"
 #ifdef _WIN64
 #include "WinOpenGLContext.h"
+#elif defined(__EMSCRIPTEN__)
+#include "OpenGLESContext.h"
 #endif
 class OpenGLAPI : public IGraphicsAPI
 {
@@ -14,7 +16,9 @@ public:
 private:
 	GameWindow* window;
 #ifdef _WIN64
-	WinOpenGLContext* winGLContext;
+	WinOpenGLContext* glContext;
+#elif defined(__EMSCRIPTEN__)
+	OpenGLESContext* glContext;
 #endif
 };
 
