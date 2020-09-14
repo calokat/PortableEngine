@@ -1,3 +1,4 @@
+#ifdef __EMSCRIPTEN__
 #include "OpenGLESContext.h"
 #include <iostream>
 
@@ -22,7 +23,8 @@ int OpenGLESContext::GetContext(GameWindow* window)
 	return 0;
 }
 
-void OpenGLESContext::SwapBuffers(int winHandle)
+void OpenGLESContext::_SwapBuffers(int winHandle)
 {
 	eglSwapBuffers(esContext.eglDisplay, esContext.eglSurface);
 }
+#endif

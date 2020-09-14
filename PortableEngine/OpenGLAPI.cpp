@@ -92,7 +92,7 @@ void OpenGLAPI::ClearScreen()
 {
 	glClearColor(1.0f, 1.0f, 0.0f, 1.0f); // rgb(33,150,243)
 	glClear(GL_COLOR_BUFFER_BIT);
-	glContext->SwapBuffers(window->windowHandle);
+	glContext->_SwapBuffers(window->windowHandle);
 	// SwapBuffers((HDC)window->deviceContext);
 }
 

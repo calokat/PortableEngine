@@ -8,5 +8,6 @@ class WinOpenGLContext :
 {
 public:
 	int GetContext(GameWindow*);
+	void _SwapBuffers(int windowHandle);
 };
 
