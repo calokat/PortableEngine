@@ -1,3 +1,4 @@
+# if 0
 #pragma once
 #include <wrl/client.h>
 #include <vector>
@@ -24,4 +25,4 @@ public:
 	std::vector<Vertex> GetRawVertices();
 	std::vector<UINT> GetRawIndices();
 };
-
+#endif

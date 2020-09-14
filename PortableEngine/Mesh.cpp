@@ -1,3 +1,4 @@
+#if 0
 #pragma once
 #include "Mesh.h"
 #include <fstream>
@@ -532,3 +533,4 @@ std::vector<UINT> Mesh::GetRawIndices()
 {
 	return rawIndices;
 }
+#endif

@@ -1,3 +1,4 @@
+#if 0
 #include "Shader.h"
 
 Shader::Shader(std::string pathArg, GLint typeArg)
@@ -65,3 +66,4 @@ GLint Shader::GetId()
 {
 	return id;
 }
+#endif

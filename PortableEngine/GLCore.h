@@ -1,3 +1,4 @@
+#if 0
 #pragma once
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -26,3 +27,4 @@ private:
 	glm::mat4 cameraRot;
 	glm::vec3 cameraFwd;
 };
+#endif

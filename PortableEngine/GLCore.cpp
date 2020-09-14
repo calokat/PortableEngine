@@ -1,3 +1,4 @@
+#if 0
 #pragma once
 #include "GLCore.h"
 #include <iostream>
@@ -214,3 +215,4 @@ GLCore::~GLCore()
 {
 	delete camera;
 }
+#endif
