@@ -12,11 +12,11 @@ void PortableGame::Start()
 
 int PortableGame::Run()
 {
-	// while (platform->Run() == 0)
-	// {
-		graphics->ClearScreen();
+	 while (platform->Run() == 0)
+	 {
+		//graphics->ClearScreen();
 		graphics->Draw();
-	// }
+	 }
 
 	return 0;
 }

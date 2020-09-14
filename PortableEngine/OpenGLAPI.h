@@ -13,6 +13,7 @@ public:
 	void ClearScreen();
 	void Draw();
 	OpenGLAPI(GameWindow*);
+	~OpenGLAPI();
 private:
 	GameWindow* window;
 #ifdef _WIN64

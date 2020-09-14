@@ -24,10 +24,10 @@ int WinOpenGLContext::GetContext(GameWindow* window)
 	};
 
 	int formatID = ChoosePixelFormat((HDC)window->deviceContext, &pfd);
-	SetPixelFormat((HDC)window->deviceContext, formatID, &pfd);
+	BOOL res = SetPixelFormat((HDC)window->deviceContext, formatID, &pfd);
 
 	HGLRC rc = wglCreateContext((HDC)window->deviceContext);
-	wglMakeCurrent((HDC)window->deviceContext, rc);
+	res = wglMakeCurrent((HDC)window->deviceContext, rc);
 
 	// Thanks to https://mariuszbartosik.com/opengl-4-x-initialization-in-windows-without-a-framework/
 	//const int pixelAttribs[] = {
