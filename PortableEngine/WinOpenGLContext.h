@@ -1,3 +1,4 @@
+#ifdef _WIN64
 #pragma once
 #include "IOpenGLContext.h"
 #include "GameWindow.h"
@@ -10,4 +11,4 @@ public:
 	int GetContext(GameWindow*);
 	void _SwapBuffers(int windowHandle);
 };
-
+#endif
