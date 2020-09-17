@@ -16,10 +16,11 @@ public:
 	~OpenGLAPI();
 private:
 	GameWindow* window;
-#ifdef _WIN64
-	WinOpenGLContext* glContext;
-#elif defined(__EMSCRIPTEN__)
-	OpenGLESContext* glContext;
-#endif
+//#ifdef _WIN64
+	//WinOpenGLContext* glContext;
+//#elif defined(__EMSCRIPTEN__)
+	//OpenGLESContext* glContext;
+//#endif
+	IOpenGLContext* glContext;
 };
 

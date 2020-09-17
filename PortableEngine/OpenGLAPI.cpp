@@ -93,6 +93,7 @@ void OpenGLAPI::ClearScreen()
 	glClearColor(1.0f, 1.0f, 0.0f, 1.0f); // rgb(33,150,243)
 	glClear(GL_COLOR_BUFFER_BIT);
 	//BOOL res = SwapBuffers((HDC)window->deviceContext);
+	// TODO: Make swapping buffers the Platform API's responsibility
 	glContext->_SwapBuffers(window->deviceContext);
 	// SwapBuffers((HDC)window->deviceContext);
 }
@@ -104,7 +105,11 @@ void OpenGLAPI::Draw()
 
 OpenGLAPI::OpenGLAPI(GameWindow* win) : window(win)
 {
+#ifdef _WIN64
 	glContext = new WinOpenGLContext();
+#elif defined(__EMSCRIPTEN__)
+	glContext = new OpenGLESContext();
+#endif
 }
 
 OpenGLAPI::~OpenGLAPI()
