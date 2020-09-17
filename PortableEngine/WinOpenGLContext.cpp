@@ -82,7 +82,7 @@ int WinOpenGLContext::GetContext(GameWindow* window)
 		printf("GLEW initialization failed");
 		return -1;
 	}
-
+	return 0;
 }
 
 void WinOpenGLContext::_SwapBuffers(int winHandle)
