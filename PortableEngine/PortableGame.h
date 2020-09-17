@@ -1,5 +1,5 @@
 #pragma once
-#include "IPlatform.h";
+#include "IPlatform.h"
 #include "GameWindow.h"
 #include "IGraphicsAPI.h"
 #include <entt.hpp>
