@@ -14,7 +14,6 @@ public:
 	HWND GetHwnd();
 	GameWindow* window;
 	long Run();
-	~WindowsPlatform();
 private:
 	static WindowsPlatform* staticThis;
 	HINSTANCE hInstance;
