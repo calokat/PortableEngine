@@ -10,8 +10,8 @@
 struct Vertex
 {
 	glm::vec3 Position;	    // The position of the vertex
-	//glm::vec3 Normal;
-	//glm::vec2 UV;
-	//glm::vec3 Tangent;
+	glm::vec3 Normal;
+	glm::vec2 UV;
+	glm::vec3 Tangent;
 	glm::vec4 Color;
 };
