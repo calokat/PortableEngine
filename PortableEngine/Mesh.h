@@ -1,6 +1,4 @@
-# if 0
 #pragma once
-#include <wrl/client.h>
 #include <vector>
 #include "Vertex.h"
 class Mesh
@@ -10,7 +8,7 @@ private:
 	//Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
 	int numIndices;
 	std::vector<Vertex> rawVertices;
-	std::vector<UINT> rawIndices;
+	std::vector<unsigned int> rawIndices;
 	//void CreateBuffers(Vertex* vertices, int numVertices, unsigned int* indices, int numIndicesParam, Microsoft::WRL::ComPtr<ID3D11Device> device);
 
 public:
@@ -23,6 +21,9 @@ public:
 	int GetIndexCount();
 	void CalculateTangents(Vertex* verts, int numVerts, unsigned int* indices, int numIndices);
 	std::vector<Vertex> GetRawVertices();
-	std::vector<UINT> GetRawIndices();
+	std::vector<unsigned int> GetRawIndices();
+	// Move assignment operator
+	Mesh& operator=(Mesh&& other);
+	// Move constructor
+	Mesh(Mesh&& other) noexcept;
 };
-#endif

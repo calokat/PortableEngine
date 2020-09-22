@@ -1,4 +1,3 @@
-#if 0
 #pragma once
 #include "Mesh.h"
 #include <fstream>
@@ -264,7 +263,7 @@ Mesh::Mesh(const char* objFile)
 	std::vector<glm::vec3> normals;       // Normals from the file
 	std::vector<glm::vec2> uvs;           // UVs from the file
 	std::vector<Vertex> verts;           // Verts we're assembling
-	std::vector<UINT> indices;           // Indices of these verts
+	std::vector<unsigned int> indices;           // Indices of these verts
 	unsigned int vertCounter = 0;        // Count of vertices/indices
 	char chars[100];                     // String for line reading
 
@@ -529,8 +528,23 @@ std::vector<Vertex> Mesh::GetRawVertices()
 	return rawVertices;
 }
 
-std::vector<UINT> Mesh::GetRawIndices()
+std::vector<unsigned int> Mesh::GetRawIndices()
 {
 	return rawIndices;
 }
-#endif
+
+Mesh& Mesh::operator=(Mesh&& other)
+{
+	if (this != &other)
+	{
+		this->numIndices = other.numIndices;
+		this->rawVertices = other.rawVertices;
+		this->rawIndices = other.rawIndices;
+	}
+	return *this;
+}
+
+Mesh::Mesh(Mesh&& other) noexcept
+{
+	*this = std::move(other);
+}
