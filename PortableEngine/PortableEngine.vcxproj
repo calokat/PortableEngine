@@ -164,6 +164,7 @@
     <ClCompile Include="OpenGLAPI.cpp" />
     <ClCompile Include="OpenGLESContext.cpp" />
     <ClCompile Include="PortableGame.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleShader.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="OpenGLAPI.h" />
     <ClInclude Include="OpenGLESContext.h" />
     <ClInclude Include="PortableGame.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleShader.h" />
     <ClInclude Include="Timer.h" />
