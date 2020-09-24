@@ -256,7 +256,10 @@ Mesh::Mesh(const char* objFile)
 
 	// Check for successful open
 	if (!obj.is_open())
+	{
+		printf("Mesh not found");
 		return;
+	}
 
 	// Variables used while reading the file
 	std::vector<glm::vec3> positions;     // Positions from the file
