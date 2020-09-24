@@ -1,4 +1,3 @@
-#if 0
 #include "Shader.h"
 
 Shader::Shader(std::string pathArg, GLint typeArg)
@@ -6,6 +5,7 @@ Shader::Shader(std::string pathArg, GLint typeArg)
 	shaderType = typeArg;
 	id = glCreateShader(shaderType);
 	path = pathArg;
+	std::ifstream stream;
 	stream.open(path, std::ios::binary);
 	if (!stream.is_open())
 	{
@@ -40,6 +40,11 @@ Shader::Shader(std::string pathArg, GLint typeArg)
 	delete[] shaderSource;
 }
 
+Shader::~Shader()
+{
+	printf("Destroying shader");
+}
+
 void Shader::Compile()
 {
 	glCompileShader(id);
@@ -66,4 +71,3 @@ GLint Shader::GetId()
 {
 	return id;
 }
-#endif

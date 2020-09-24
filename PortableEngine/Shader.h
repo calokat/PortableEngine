@@ -7,12 +7,12 @@
 class Shader
 {
 private:
-	std::ifstream stream;
 	std::string path;
 	GLint shaderType;
 	GLint id;
 public:
 	Shader(std::string pathArg, GLint typeArg);
+	~Shader();
 	void Compile();
 	GLint GetId();
 };
