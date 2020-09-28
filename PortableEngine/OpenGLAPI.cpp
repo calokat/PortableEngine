@@ -2,111 +2,115 @@
 //#include <GL/glew.h>
 //#include <GL/wglew.h>
 #include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+float vertices[] = {
+-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+ 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+ 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+ 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+ 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+ 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+ 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+ 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+ 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+ 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+ 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+ 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+ 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+ 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+ 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+ 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+ 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+ 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+ 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+};
 
 int OpenGLAPI::Init()
 {
-
-	//PIXELFORMATDESCRIPTOR pfd =
-	//{
-	//	sizeof(PIXELFORMATDESCRIPTOR),
-	//	1,
-	//	PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,    // Flags
-	//	PFD_TYPE_RGBA,        // The kind of framebuffer. RGBA or palette.
-	//	32,                   // Colordepth of the framebuffer.
-	//	0, 0, 0, 0, 0, 0,
-	//	0,
-	//	0,
-	//	0,
-	//	0, 0, 0, 0,
-	//	24,                   // Number of bits for the depthbuffer
-	//	8,                    // Number of bits for the stencilbuffer
-	//	0,                    // Number of Aux buffers in the framebuffer.
-	//	PFD_MAIN_PLANE,
-	//	0,
-	//	0, 0, 0
-	//};
-
-	//int formatID = ChoosePixelFormat((HDC)window->deviceContext, &pfd);
-	//SetPixelFormat((HDC)window->deviceContext, formatID, &pfd);
-
-	//HGLRC rc = wglCreateContext((HDC)window->deviceContext);
-	//wglMakeCurrent((HDC)window->deviceContext, rc);
-
-	//// Thanks to https://mariuszbartosik.com/opengl-4-x-initialization-in-windows-without-a-framework/
-	////const int pixelAttribs[] = {
-	////WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
-	////WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
-	////WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
-	////WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
-	////WGL_ACCELERATION_ARB, WGL_FULL_ACCELERATION_ARB,
-	////WGL_COLOR_BITS_ARB, 32,
-	////WGL_ALPHA_BITS_ARB, 8,
-	////WGL_DEPTH_BITS_ARB, 24,
-	////WGL_STENCIL_BITS_ARB, 8,
-	////WGL_SAMPLE_BUFFERS_ARB, GL_TRUE,
-	////WGL_SAMPLES_ARB, 4,
-	////0
-	////};
-
-	////int pixelFormatID; UINT numFormats;
-	////bool status = wglChoosePixelFormatARB((HDC)window->deviceContext, pixelAttribs, NULL, 1, &pixelFormatID, &numFormats);
-
-	////if (status == false || numFormats == 0)
-	////{
-	////	printf("wglChoosePixelFormatARB() failed.");
-	////	return 1;
-	////}
-
-	////PIXELFORMATDESCRIPTOR PFD;
-	////DescribePixelFormat((HDC)window->deviceContext, pixelFormatID, sizeof(PFD), &PFD);
-	////SetPixelFormat((HDC)window->deviceContext, pixelFormatID, &PFD);
-
-	////const int major_min = 4, minor_min = 5;
-	////int  contextAttribs[] = {
-	////	WGL_CONTEXT_MAJOR_VERSION_ARB, major_min,
-	////	WGL_CONTEXT_MINOR_VERSION_ARB, minor_min,
-	////	WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
-	////	0
-	////};
-	////HGLRC RC;
-	////RC = wglCreateContextAttribsARB((HDC)window->deviceContext, 0, contextAttribs);
-	////if (RC == NULL) {
-	////	printf("wglCreateContextAttribsARB() failed.");
-	////	return 1;
-	////}
-
-	////wglMakeCurrent((HDC)window->deviceContext, RC);
+	int createContextResult = glContext->GetContext(window);
+	glViewport(0, 0, window->width, window->height);
+	glEnable(GL_DEPTH_TEST);
+	GLuint vao, vbo;
+	glGenVertexArrays(1, &vao);
+	glGenBuffers(1, &vbo);
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	vertex = new Shader("C:/Users/caleb/Documents/GitHub/PortableEngine/Shaders/GLSL/vertex.glsl", GL_VERTEX_SHADER);
+	vertex->Compile();
+	pixel = new Shader("C:/Users/caleb/Documents/GitHub/PortableEngine/Shaders/GLSL/fragment.glsl", GL_FRAGMENT_SHADER);
+	pixel->Compile();
+	GLint program = glCreateProgram();
+	glAttachShader(program, vertex->GetId());
+	glAttachShader(program, pixel->GetId());
+	glLinkProgram(program);
+	glUseProgram(program);
 
 
-	//glewExperimental = true;
-	//GLenum  glewStatus = glewInit();
-	//if (glewStatus != GLEW_OK)
-	//{
-	//	printf("GLEW initialization failed");
-	//	return -1;
-	//}
-	return glContext->GetContext(window);
+
+	glm::mat4 model(1.0f);
+	GLint modelLoc = glGetUniformLocation(program, "model");
+	GLint viewLoc = glGetUniformLocation(program, "view");
+	GLint projLoc = glGetUniformLocation(program, "projection");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+	glm::mat4 view = glm::lookAtRH(glm::vec3(0, 0, -5), glm::vec3(0, 0, -4), glm::vec3(0, 1, 0));
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+	glm::mat4 proj = glm::perspective(3.14f / 3, (float)window->width / window->height, .1f, 100.f);
+	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	GLint posLoc = glGetAttribLocation(program, "in_position");
+	glEnableVertexAttribArray(posLoc);
+	glVertexAttribPointer(posLoc, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (GLvoid*)0);
+	
+	return createContextResult;
 }
 
 void OpenGLAPI::ClearScreen()
 {
-	glClearColor(1.0f, 1.0f, 0.0f, 1.0f); // rgb(33,150,243)
+	glClearColor(0.0f, 1.0f, 0.0f, 1.0f); // rgb(33,150,243)
 	glClear(GL_COLOR_BUFFER_BIT);
 	//BOOL res = SwapBuffers((HDC)window->deviceContext);
 	// TODO: Make swapping buffers the Platform API's responsibility
-	glContext->_SwapBuffers(window->deviceContext);
+	//glContext->_SwapBuffers(window->deviceContext);
+	//glContext->_SwapBuffers(-1);
 	// SwapBuffers((HDC)window->deviceContext);
 }
 
 void OpenGLAPI::Draw()
 {
 	ClearScreen();
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	//glContext->_SwapBuffers(-1);
 }
 
-OpenGLAPI::OpenGLAPI(GameWindow* win) : window(win)
+OpenGLAPI::OpenGLAPI(GameWindow* win, IPlatform* plat) : window(win), platform(plat)
 {
 #ifdef _WIN64
-	glContext = new WinOpenGLContext();
+	glContext = new WinOpenGLContext(platform);
 #elif defined(__EMSCRIPTEN__)
 	glContext = new OpenGLESContext();
 #endif
@@ -115,4 +119,6 @@ OpenGLAPI::OpenGLAPI(GameWindow* win) : window(win)
 OpenGLAPI::~OpenGLAPI()
 {
 	delete glContext;
+	delete vertex;
+	delete pixel;
 }
