@@ -6,13 +6,15 @@
 #elif defined(__EMSCRIPTEN__)
 #include "OpenGLESContext.h"
 #endif
+#include "IPlatform.h"
+#include "Shader.h"
 class OpenGLAPI : public IGraphicsAPI
 {
 public:
 	int Init();
 	void ClearScreen();
 	void Draw();
-	OpenGLAPI(GameWindow*);
+	OpenGLAPI(GameWindow*, IPlatform*);
 	~OpenGLAPI();
 private:
 	GameWindow* window;
@@ -22,5 +24,8 @@ private:
 	//OpenGLESContext* glContext;
 //#endif
 	IOpenGLContext* glContext;
+	IPlatform* platform;
+	Shader* vertex;
+	Shader* pixel;
 };
 
