@@ -4,9 +4,9 @@ Shader::Shader(std::string pathArg, GLint typeArg)
 {
 	shaderType = typeArg;
 	id = glCreateShader(shaderType);
-	path = pathArg;
+	//path = pathArg;
 	std::ifstream stream;
-	stream.open(path, std::ios::binary);
+	stream.open(pathArg, std::ios::binary);
 	if (!stream.is_open())
 	{
 		std::cout << "No file found";
@@ -42,7 +42,7 @@ Shader::Shader(std::string pathArg, GLint typeArg)
 
 Shader::~Shader()
 {
-	printf("Destroying shader");
+ 	printf("Destroying shader");
 }
 
 void Shader::Compile()
