@@ -104,7 +104,7 @@ void OpenGLAPI::Draw()
 {
 	ClearScreen();
 	glDrawArrays(GL_TRIANGLES, 0, 36);
-	//glContext->_SwapBuffers(-1);
+	glContext->_SwapBuffers(-1);
 }
 
 OpenGLAPI::OpenGLAPI(GameWindow* win, IPlatform* plat) : window(win), platform(plat)
