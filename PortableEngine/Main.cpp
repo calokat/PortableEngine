@@ -1,11 +1,17 @@
-
+#ifdef _WIN64
 #include <Windows.h>
-#include "Game.h"
-#include "GLCore.h"
 #include "WindowsPlatform.h"
 #include "DirectXAPI.h"
+#endif
+#ifdef __EMSCRIPTEN__
+#include "EmscriptenPlatform.h"
+#endif
 #include "OpenGLAPI.h"
 #include "PortableGame.h"
+#include "Mesh.h"
+#include "Renderer.h"
+#include "GLCore.h"
+#include <entt.hpp>
 // --------------------------------------------------------
 // Entry point for a graphical (non-console) Windows application
 // --------------------------------------------------------
@@ -48,7 +54,15 @@
 //
 //}
 
-int main()
+IPlatform* plat;
+IGraphicsAPI* graph;
+entt::registry registry;
+void Loop()
+{
+	graph->Draw();
+}
+
+int main(int argc, char* argv[])
 {
 #if defined(DEBUG) | defined(_DEBUG)
 	// Enable memory leak detection as a quick and dirty
@@ -62,31 +76,90 @@ int main()
 	//Game dxGame(GetModuleHandle(NULL));
 	//GLCore glGame;
 	// Result variable for function calls below
-	HRESULT hr = S_OK;
+	 //long hr = S_OK;
 
 	// Attempt to create the window for our program, and
 	// exit early if something failed
 	//hr = dxGame.InitWindow();
 	//hr = glGame.InitWindow();
-	if(FAILED(hr)) return hr;
+	//if((hr < 0)) return hr;
 
 	// Attempt to initialize DirectX, and exit
 	// early if something failed
 	//hr = dxGame.InitDirectX();
 	//hr = glGame.InitGL();
-	if(FAILED(hr)) return hr;
+	//if(FAILED(hr)) return hr;
 
 	// Begin the message and game loop, and then return
 	// whatever we get back once the game loop is over
 	//return dxGame.Run();
 	//return glGame.Run();
 	GameWindow* window = new GameWindow(0, 0, 800, 600);
-	WindowsPlatform win = WindowsPlatform(window);
-	DirectXAPI dx = DirectXAPI(window);
-	//OpenGLAPI gl = OpenGLAPI(window);
-	PortableGame game = PortableGame(&win, &dx, window);
-	game.Start();
-	game.Run();
+	auto entity = registry.create();
+
+
+
+#ifdef _WIN64
+	plat = new WindowsPlatform(window);
+#elif defined __EMSCRIPTEN__
+	plat = new EmscriptenPlatform();
+#endif
+#ifdef _WIN64
+	graph = new OpenGLAPI(window, plat);
+#elif defined __EMSCRIPTEN__
+	graph = new OpenGLAPI(window);
+#endif
+	plat->InitWindow();
+	graph->Init();
+#ifdef __EMSCRIPTEN__
+	emscripten_set_main_loop(Loop, 0, 1);
+#else
+
+	//GLCore glCore;
+	glewExperimental = true;
+	GLenum  glewStatus = glewInit();
+	if (glewStatus != GLEW_OK)
+	{
+		printf("GLEW initialization failed");
+		return -1;
+	}
+
+	graph->Init();
+
+	//Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/helix.obj").c_str());
+	//Renderer& renderer = registry.emplace<Renderer>(entity, plat);
+	//renderer.LoadMesh(mesh.GetRawVertices());
+	
+	//game.Run();
+	while (plat->Run() == 0)
+	{
+
+
+
+		//auto view = registry.view<Mesh, Renderer>();
+		//for (auto renderable : view)
+		//{
+		//	//Mesh& entMesh = view.get<Mesh>(renderable);
+		//	//Renderer& entRenderer = view.get<Renderer>(renderable);
+		//	//renderer.LoadMesh(mesh.GetRawVertices());
+		//	//graph->ClearScreen();
+		//	//renderer.Draw();
+		//	//graph->Draw();
+		//}
+		//graph->ClearScreen();
+		
+		
+		
+		graph->Draw();
+		graph->ClearScreen();
+	}
+	//glCore.InitWindow();
+	//glCore.InitGL();
+	//return glCore.Run();
+#endif
+	registry.destroy(entity);
 	delete window;
+	delete plat;
+	delete graph;
 	return 0;
 }
