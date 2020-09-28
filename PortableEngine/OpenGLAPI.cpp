@@ -53,7 +53,6 @@ float vertices[] = {
 int OpenGLAPI::Init()
 {
 	int createContextResult = glContext->GetContext(window);
-	glViewport(0, 0, window->width, window->height);
 	glEnable(GL_DEPTH_TEST);
 	GLuint vao, vbo;
 	glGenVertexArrays(1, &vao);
@@ -92,7 +91,7 @@ int OpenGLAPI::Init()
 void OpenGLAPI::ClearScreen()
 {
 	glClearColor(0.0f, 1.0f, 0.0f, 1.0f); // rgb(33,150,243)
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//BOOL res = SwapBuffers((HDC)window->deviceContext);
 	// TODO: Make swapping buffers the Platform API's responsibility
 	//glContext->_SwapBuffers(window->deviceContext);
