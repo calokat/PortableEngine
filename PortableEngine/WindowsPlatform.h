@@ -1,3 +1,4 @@
+#ifdef _WIN64
 #pragma once
 #include "IPlatform.h"
 #include "GameWindow.h"
@@ -16,6 +17,8 @@ public:
 	long Run();
 	std::string GetAssetPath(std::string relativePath);
 	std::wstring GetAssetPath_Wide(std::wstring relativePath);
+	void* GetWindowHandle();
+	void* GetDeviceContext();
 private:
 	static WindowsPlatform* staticThis;
 	HINSTANCE hInstance;
@@ -27,5 +30,7 @@ private:
 	bool hasFocus;
 	std::string GetExePath();
 	std::wstring GetExePath_Wide();
+	HWND hwnd;
+	HDC hdc;
 };
-
+#endif

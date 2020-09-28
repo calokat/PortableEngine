@@ -1,3 +1,4 @@
+#ifdef _WIN64
 #include "WindowsPlatform.h"
 
 WindowsPlatform* WindowsPlatform::staticThis = 0;
@@ -43,7 +44,7 @@ int WindowsPlatform::InitWindow()
 	int centeredX = (desktopRect.right / 2) - (clientRect.right / 2);
 	int centeredY = (desktopRect.bottom / 2) - (clientRect.bottom / 2);
 
-	window->windowHandle = (int)CreateWindow(
+	hwnd = CreateWindow(
 		wndClass.lpszClassName,
 		"Portable Engine",
 		WS_OVERLAPPEDWINDOW,
@@ -55,9 +56,9 @@ int WindowsPlatform::InitWindow()
 		0,			// No menu
 		hInstance,	// The app's handle
 		0);			// No other windows in our application
-
+	window->windowHandle = (int)hwnd;
 	// Ensure the window was created properly
-	if (window->windowHandle == NULL)
+	if (hwnd == NULL)
 	{
 		DWORD error = GetLastError();
 		return HRESULT_FROM_WIN32(error);
@@ -65,9 +66,10 @@ int WindowsPlatform::InitWindow()
 
 	// The window exists but is not visible yet
 	// We need to tell Windows to show it, and how to show it
-	ShowWindow((HWND)window->windowHandle, SW_SHOW);
+	ShowWindow(hwnd, SW_SHOW);
 
-	window->deviceContext = (int)GetDC((HWND)window->windowHandle);
+	hdc = GetDC(hwnd);
+	window->deviceContext = (int)hdc;
 
 	// Return an "everything is ok" HRESULT value
 	return S_OK;
@@ -130,6 +132,16 @@ std::string WindowsPlatform::GetAssetPath(std::string relativePath)
 std::wstring WindowsPlatform::GetAssetPath_Wide(std::wstring relativePath)
 {
 	return GetExePath_Wide() + L"\\" + relativePath;
+}
+
+void* WindowsPlatform::GetWindowHandle()
+{
+	return &hwnd;
+}
+
+void* WindowsPlatform::GetDeviceContext()
+{
+	return &hdc;
 }
 
 WindowsPlatform::WindowsPlatform(GameWindow* win)
@@ -237,3 +249,4 @@ std::wstring WindowsPlatform::GetExePath_Wide()
 	// Create a wstring for it and return
 	return std::wstring(widePath);
 }
+#endif
