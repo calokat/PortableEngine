@@ -10,7 +10,7 @@
 #include "PortableGame.h"
 #include "Mesh.h"
 #include "Renderer.h"
-#include "GLCore.h"
+#include "Camera.h"
 #include <entt.hpp>
 // --------------------------------------------------------
 // Entry point for a graphical (non-console) Windows application
@@ -95,6 +95,7 @@ int main(int argc, char* argv[])
 	//return dxGame.Run();
 	//return glGame.Run();
 	GameWindow* window = new GameWindow(0, 0, 800, 600);
+	Camera cam = Camera(glm::vec3(0, 0, -3), (float)window->width / window->height);
 	auto entity = registry.create();
 
 
@@ -123,8 +124,8 @@ int main(int argc, char* argv[])
 	//	printf("GLEW initialization failed");
 	//	return -1;
 	//}
-	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/helix.obj").c_str());
-	Renderer& renderer = registry.emplace<Renderer>(entity, plat);
+	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/torus.obj").c_str());
+	Renderer& renderer = registry.emplace<Renderer>(entity, plat, &cam);
 	renderer.LoadMesh(mesh.GetRawVertices());
 	
 	//game.Run();

@@ -3,8 +3,7 @@
 Camera::Camera() : Camera(glm::vec3(0, 0, 0), 1)
 {
 }
-//using namespace std;
-//using namespace DirectX;
+
 Camera::Camera(glm::vec3 initialPos, float aspectRatio)
 {
 	transform = new Transform();
@@ -16,7 +15,8 @@ Camera::Camera(glm::vec3 initialPos, float aspectRatio)
 	transform->SetPosition(initialPos);
 	UpdateViewMatrix();
 	this->aspectRatio = aspectRatio;
-	prevMousePosition = POINT();
+	UpdateProjectionMatrix(this->aspectRatio);
+	prevMousePosition = glm::vec2();
 	prevMousePosition.x = -1;
 	prevMousePosition.y = -1;
 	//XMStoreFloat4x4(&this->view, XMMatrixIdentity());
@@ -48,52 +48,52 @@ void Camera::UpdateViewMatrix()
 	this->view = glm::lookAtRH(this->transform->GetPosition(), this->transform->GetPosition() + this->transform->GetForward(), glm::vec3(0, 1, 0));
 }
 
-void Camera::Update(float dt, HWND windowHandle)
-{
-	if (GetAsyncKeyState('W') & 0x8000)
-	{
-		transform->MoveRelative(glm::vec3(0, 0, dt * movementSpeed));
-	}
-	if (GetAsyncKeyState('S') & 0x8000)
-	{
-		transform->MoveRelative(glm::vec3(0, 0, -dt * movementSpeed));
-	}
-	if (GetAsyncKeyState('A') & 0x8000)
-	{
-		transform->MoveRelative(glm::vec3(dt * movementSpeed, 0, 0));
-	}
-	if (GetAsyncKeyState('D') & 0x8000)
-	{
-		transform->MoveRelative(glm::vec3(-dt * movementSpeed, 0, 0));
-	}
-	if (GetAsyncKeyState('Q') & 0x8000)
-	{
-		transform->MoveAbsolute(glm::vec3(0, -dt * movementSpeed, 0));
-	}
-	if (GetAsyncKeyState('E') & 0x8000)
-	{
-		transform->MoveAbsolute(glm::vec3(0, dt * movementSpeed, 0));
-	}
-
-	// mouse input
-	POINT mousePos = {};
-	GetCursorPos(&mousePos);
-	ScreenToClient(windowHandle, &mousePos);
-	if (prevMousePosition.x == -1)
-	{
-		prevMousePosition.x = mousePos.x;
-		prevMousePosition.y = mousePos.y;
-	}
-	float mouseMoveDeltaX, mouseMoveDeltaY;
-	mouseMoveDeltaX = (mousePos.x - prevMousePosition.x) * lookSpeed * dt;
-	mouseMoveDeltaY = (mousePos.y - prevMousePosition.y) * lookSpeed * dt;
-	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)
-	{
-		transform->Rotate(glm::vec3(mouseMoveDeltaY, -mouseMoveDeltaX, 0));
-	}
-	UpdateViewMatrix();
-	prevMousePosition = mousePos;
-}
+//void Camera::Update(float dt, HWND windowHandle)
+//{
+//	if (GetAsyncKeyState('W') & 0x8000)
+//	{
+//		transform->MoveRelative(glm::vec3(0, 0, dt * movementSpeed));
+//	}
+//	if (GetAsyncKeyState('S') & 0x8000)
+//	{
+//		transform->MoveRelative(glm::vec3(0, 0, -dt * movementSpeed));
+//	}
+//	if (GetAsyncKeyState('A') & 0x8000)
+//	{
+//		transform->MoveRelative(glm::vec3(dt * movementSpeed, 0, 0));
+//	}
+//	if (GetAsyncKeyState('D') & 0x8000)
+//	{
+//		transform->MoveRelative(glm::vec3(-dt * movementSpeed, 0, 0));
+//	}
+//	if (GetAsyncKeyState('Q') & 0x8000)
+//	{
+//		transform->MoveAbsolute(glm::vec3(0, -dt * movementSpeed, 0));
+//	}
+//	if (GetAsyncKeyState('E') & 0x8000)
+//	{
+//		transform->MoveAbsolute(glm::vec3(0, dt * movementSpeed, 0));
+//	}
+//
+//	// mouse input
+//	POINT mousePos = {};
+//	GetCursorPos(&mousePos);
+//	ScreenToClient(windowHandle, &mousePos);
+//	if (prevMousePosition.x == -1)
+//	{
+//		prevMousePosition.x = mousePos.x;
+//		prevMousePosition.y = mousePos.y;
+//	}
+//	float mouseMoveDeltaX, mouseMoveDeltaY;
+//	mouseMoveDeltaX = (mousePos.x - prevMousePosition.x) * lookSpeed * dt;
+//	mouseMoveDeltaY = (mousePos.y - prevMousePosition.y) * lookSpeed * dt;
+//	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)
+//	{
+//		transform->Rotate(glm::vec3(mouseMoveDeltaY, -mouseMoveDeltaX, 0));
+//	}
+//	UpdateViewMatrix();
+//	prevMousePosition = mousePos;
+//}
 
 Transform* Camera::GetTransform()
 {

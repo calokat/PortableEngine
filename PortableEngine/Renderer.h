@@ -2,6 +2,7 @@
 #include "Shader.h"
 //#include "IGraphicsAPI.h"
 #include "IPlatform.h"
+#include "Camera.h"
 #include <string>
 #include <vector>
 #include "Vertex.h"
@@ -20,8 +21,9 @@ private:
 	GLuint vao, vbo, ibo;
 	GLint projLoc, viewLoc, modelLoc;
 	int numVertices;
+	Camera* camera;
 public:
-	Renderer(IPlatform*);
+	Renderer(IPlatform*, Camera*);
 	void LoadMesh(std::vector<Vertex>);
 	void Draw();
 	~Renderer();
