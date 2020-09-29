@@ -116,19 +116,16 @@ int main(int argc, char* argv[])
 #else
 
 	//GLCore glCore;
-	glewExperimental = true;
-	GLenum  glewStatus = glewInit();
-	if (glewStatus != GLEW_OK)
-	{
-		printf("GLEW initialization failed");
-		return -1;
-	}
-
-	graph->Init();
-
-	//Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/helix.obj").c_str());
-	//Renderer& renderer = registry.emplace<Renderer>(entity, plat);
-	//renderer.LoadMesh(mesh.GetRawVertices());
+	//glewExperimental = true;
+	//GLenum  glewStatus = glewInit();
+	//if (glewStatus != GLEW_OK)
+	//{
+	//	printf("GLEW initialization failed");
+	//	return -1;
+	//}
+	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/helix.obj").c_str());
+	Renderer& renderer = registry.emplace<Renderer>(entity, plat);
+	renderer.LoadMesh(mesh.GetRawVertices());
 	
 	//game.Run();
 	while (plat->Run() == 0)
@@ -136,28 +133,29 @@ int main(int argc, char* argv[])
 
 
 
-		//auto view = registry.view<Mesh, Renderer>();
-		//for (auto renderable : view)
-		//{
-		//	//Mesh& entMesh = view.get<Mesh>(renderable);
-		//	//Renderer& entRenderer = view.get<Renderer>(renderable);
-		//	//renderer.LoadMesh(mesh.GetRawVertices());
-		//	//graph->ClearScreen();
-		//	//renderer.Draw();
-		//	//graph->Draw();
-		//}
+		auto view = registry.view<Mesh, Renderer>();
+		for (auto renderable : view)
+		{
+			//Mesh& entMesh = view.get<Mesh>(renderable);
+			//Renderer& entRenderer = view.get<Renderer>(renderable);
+			//renderer.LoadMesh(mesh.GetRawVertices());
+			graph->ClearScreen();
+			renderer.Draw();
+			graph->_SwapBuffers();
+			//graph->Draw();
+		}
 		//graph->ClearScreen();
 		
 		
 		
-		graph->Draw();
-		graph->ClearScreen();
+		//graph->Draw();
+		//graph->ClearScreen();
 	}
 	//glCore.InitWindow();
 	//glCore.InitGL();
 	//return glCore.Run();
 #endif
-	registry.destroy(entity);
+	//registry.destroy(entity);
 	delete window;
 	delete plat;
 	delete graph;
