@@ -16,6 +16,7 @@ public:
 	void ClearScreen();
 	void Draw();
 	~DirectXAPI();
+	void _SwapBuffers();
 private:
 	void LoadShaders();
 	void CreateMatrices();

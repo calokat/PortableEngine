@@ -213,11 +213,11 @@ void DirectXAPI::Draw()
 		0);    // Offset to add to each index when looking up vertices
 
 
-	swapChain->Present(0, 0);
+	//swapChain->Present(0, 0);
 
-	// Due to the usage of a more sophisticated swap chain,
-	// the render target must be re-bound after every call to Present()
-	context->OMSetRenderTargets(1, backBufferRTV.GetAddressOf(), depthStencilView.Get());
+	//// Due to the usage of a more sophisticated swap chain,
+	//// the render target must be re-bound after every call to Present()
+	//context->OMSetRenderTargets(1, backBufferRTV.GetAddressOf(), depthStencilView.Get());
 }
 
 DirectXAPI::~DirectXAPI()
@@ -424,4 +424,13 @@ void DirectXAPI::CreateBasicGeometry()
 	// Actually create the buffer with the initial data
 	// - Once we do this, we'll NEVER CHANGE THE BUFFER AGAIN
 	device->CreateBuffer(&ibd, &initialIndexData, &indexBuffer);
+}
+
+void DirectXAPI::_SwapBuffers()
+{
+	swapChain->Present(0, 0);
+
+	// Due to the usage of a more sophisticated swap chain,
+	// the render target must be re-bound after every call to Present()
+	context->OMSetRenderTargets(1, backBufferRTV.GetAddressOf(), depthStencilView.Get());
 }

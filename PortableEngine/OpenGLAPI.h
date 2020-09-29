@@ -15,6 +15,7 @@ public:
 	void ClearScreen();
 	void Draw();
 	OpenGLAPI(GameWindow*, IPlatform*);
+	void _SwapBuffers();
 	~OpenGLAPI();
 private:
 	GameWindow* window;
