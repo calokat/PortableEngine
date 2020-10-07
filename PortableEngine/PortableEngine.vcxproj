@@ -185,6 +185,7 @@
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="GLCore.h" />
     <ClInclude Include="IGraphicsAPI.h" />
+    <ClInclude Include="IInputSystem.h" />
     <ClInclude Include="IOpenGLContext.h" />
     <ClInclude Include="IPlatform.h" />
     <ClInclude Include="Lights.h" />
