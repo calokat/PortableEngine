@@ -194,6 +194,7 @@
     <ClInclude Include="OpenGLESContext.h" />
     <ClInclude Include="PortableGame.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleShader.h" />
     <ClInclude Include="Timer.h" />
