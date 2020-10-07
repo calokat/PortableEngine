@@ -135,16 +135,16 @@ int main(int argc, char* argv[])
 
 
 		auto view = registry.view<Mesh, Renderer>();
+		graph->ClearScreen();
 		for (auto renderable : view)
 		{
 			//Mesh& entMesh = view.get<Mesh>(renderable);
 			//Renderer& entRenderer = view.get<Renderer>(renderable);
 			//renderer.LoadMesh(mesh.GetRawVertices());
-			graph->ClearScreen();
 			renderer.Draw();
-			graph->_SwapBuffers();
 			//graph->Draw();
 		}
+		graph->_SwapBuffers();
 		//graph->ClearScreen();
 		
 		
