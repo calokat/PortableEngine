@@ -98,6 +98,8 @@ int main(int argc, char* argv[])
 	Camera cam = Camera(glm::vec3(0, 0, -3), (float)window->width / window->height);
 	auto entity = registry.create();
 
+	float camMoveSpeed = .05f;
+	glm::vec2 prevCursorPos{-1, -1}, currentCursorPos;
 
 
 #ifdef _WIN64
@@ -127,13 +129,38 @@ int main(int argc, char* argv[])
 	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/torus.obj").c_str());
 	Renderer& renderer = registry.emplace<Renderer>(entity, plat, &cam);
 	renderer.LoadMesh(mesh.GetRawVertices());
-	
+
+	auto MoveCameraForward = [&cam, camMoveSpeed]() {
+		cam.GetTransform()->MoveRelative(glm::vec3(0, 0, 1 * camMoveSpeed));
+	};
+	auto MoveCameraBackward = [&cam, camMoveSpeed]() {
+		cam.GetTransform()->MoveRelative(glm::vec3(0, 0, -1 * camMoveSpeed));
+	};
+	auto MoveCameraLeft = [&cam, camMoveSpeed]() {
+		cam.GetTransform()->MoveRelative(glm::vec3(1 * camMoveSpeed, 0, 0));
+	};
+	auto MoveCameraRight = [&cam, camMoveSpeed]() {
+		cam.GetTransform()->MoveRelative(glm::vec3(-1 * camMoveSpeed, 0, 0));
+	};
+	plat->GetInputSystem()->RegisterKeyPressFunction('W', MoveCameraForward);
+	plat->GetInputSystem()->RegisterKeyPressFunction('S', MoveCameraBackward);
+	plat->GetInputSystem()->RegisterKeyPressFunction('A', MoveCameraLeft);
+	plat->GetInputSystem()->RegisterKeyPressFunction('D', MoveCameraRight);
+
+	plat->GetInputSystem()->RegisterRightMouseFunction([&prevCursorPos, &currentCursorPos, &cam]() {
+		if (prevCursorPos.x == -1)
+		{
+			prevCursorPos = currentCursorPos;
+		}
+		glm::vec2 delta = currentCursorPos - prevCursorPos;
+		cam.GetTransform()->Rotate(glm::vec3(delta.x * .01f, -delta.y * .01f, 0));
+		prevCursorPos = currentCursorPos;
+	});
 	//game.Run();
 	while (plat->Run() == 0)
 	{
-
-
-
+		currentCursorPos = plat->GetCursorPosition();
+		plat->GetInputSystem()->GetKeyPressed();
 		auto view = registry.view<Mesh, Renderer>();
 		graph->ClearScreen();
 		for (auto renderable : view)
@@ -141,6 +168,7 @@ int main(int argc, char* argv[])
 			//Mesh& entMesh = view.get<Mesh>(renderable);
 			//Renderer& entRenderer = view.get<Renderer>(renderable);
 			//renderer.LoadMesh(mesh.GetRawVertices());
+			renderer.Update();
 			renderer.Draw();
 			//graph->Draw();
 		}
