@@ -1,5 +1,9 @@
 #pragma once
+#include <functional>
 class IInputSystem
 {
-	virtual void GetKeyPressed(char) = 0;
+public:
+	virtual void GetKeyPressed() = 0;
+	virtual void RegisterKeyPressFunction(char, std::function<void()>) = 0;
+	virtual void RegisterRightMouseFunction(std::function<void()>) = 0;
 };
