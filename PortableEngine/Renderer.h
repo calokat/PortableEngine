@@ -26,5 +26,6 @@ public:
 	Renderer(IPlatform*, Camera*);
 	void LoadMesh(std::vector<Vertex>);
 	void Draw();
+	void Update();
 	~Renderer();
 };

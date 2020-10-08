@@ -46,6 +46,12 @@ void Renderer::Draw()
 		glDrawArrays(GL_TRIANGLES, 0, numVertices);
 }
 
+void Renderer::Update()
+{
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera->GetViewMatrix()));
+	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix()));
+}
+
 Renderer::~Renderer()
 {
 	delete vertex;
