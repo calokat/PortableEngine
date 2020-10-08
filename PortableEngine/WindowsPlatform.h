@@ -3,12 +3,12 @@
 #include "IPlatform.h"
 #include "GameWindow.h"
 #include <Windows.h>
-#include <functional>
 class WindowsPlatform :
 	public IPlatform
 {
 public:
 	WindowsPlatform(GameWindow* win);
+	~WindowsPlatform();
 	int InitWindow();
 	unsigned int GetWindowWidth();
 	unsigned int GetWindowHeight();
@@ -19,6 +19,7 @@ public:
 	std::wstring GetAssetPath_Wide(std::wstring relativePath);
 	void* GetWindowHandle();
 	void* GetDeviceContext();
+	glm::vec2 GetCursorPosition();
 private:
 	static WindowsPlatform* staticThis;
 	HINSTANCE hInstance;
