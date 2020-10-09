@@ -59,7 +59,19 @@ IGraphicsAPI* graph;
 entt::registry registry;
 void Loop()
 {
-	graph->Draw();
+	auto view = registry.view<Mesh, Renderer>();
+	graph->ClearScreen();
+	for (auto renderable : view)
+	{
+		Renderer& renderer = registry.get<Renderer>(renderable);
+		//Mesh& entMesh = view.get<Mesh>(renderable);
+		//Renderer& entRenderer = view.get<Renderer>(renderable);
+		//renderer.LoadMesh(mesh.GetRawVertices());
+		renderer.Update();
+		renderer.Draw();
+		//graph->Draw();
+	}
+	graph->_SwapBuffers();
 }
 
 int main(int argc, char* argv[])
@@ -105,15 +117,19 @@ int main(int argc, char* argv[])
 #ifdef _WIN64
 	plat = new WindowsPlatform(window);
 #elif defined __EMSCRIPTEN__
-	plat = new EmscriptenPlatform();
+	plat = new EmscriptenPlatform(window);
 #endif
 #ifdef _WIN64
 	graph = new OpenGLAPI(window, plat);
 #elif defined __EMSCRIPTEN__
-	graph = new OpenGLAPI(window);
+	graph = new OpenGLAPI(window, plat);
 #endif
 	plat->InitWindow();
 	graph->Init();
+
+	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/torus.obj").c_str());
+	Renderer& renderer = registry.emplace<Renderer>(entity, plat, &cam);
+	renderer.LoadMesh(mesh.GetRawVertices());
 #ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop(Loop, 0, 1);
 #else
@@ -126,9 +142,6 @@ int main(int argc, char* argv[])
 	//	printf("GLEW initialization failed");
 	//	return -1;
 	//}
-	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/torus.obj").c_str());
-	Renderer& renderer = registry.emplace<Renderer>(entity, plat, &cam);
-	renderer.LoadMesh(mesh.GetRawVertices());
 
 	auto MoveCameraForward = [&cam, camMoveSpeed]() {
 		cam.GetTransform()->MoveRelative(glm::vec3(0, 0, 1 * camMoveSpeed));
