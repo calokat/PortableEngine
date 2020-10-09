@@ -20,6 +20,7 @@ public:
 	void* GetWindowHandle();
 	void* GetDeviceContext();
 	glm::vec2 GetCursorPosition();
+	IInputSystem* GetInputSystem();
 private:
 	static WindowsPlatform* staticThis;
 	HINSTANCE hInstance;
@@ -33,5 +34,7 @@ private:
 	std::wstring GetExePath_Wide();
 	HWND hwnd;
 	HDC hdc;
+	IInputSystem* inputSystem;
+
 };
 #endif
