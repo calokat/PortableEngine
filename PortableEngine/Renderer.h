@@ -28,4 +28,9 @@ public:
 	void Draw();
 	void Update();
 	~Renderer();
+	// Move assignment operator
+	Renderer& operator=(Renderer&& other);
+	// Move constructor
+	Renderer (Renderer&& other) noexcept;
+	Renderer(Renderer& other);
 };

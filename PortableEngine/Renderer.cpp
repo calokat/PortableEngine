@@ -57,3 +57,32 @@ Renderer::~Renderer()
 	delete vertex;
 	delete pixel;
 }
+
+Renderer& Renderer::operator=(Renderer&& other)
+{
+	if (this != &other)
+	{
+		this->vertex = other.vertex;
+		this->pixel = other.pixel;
+		this->vao = other.vao;
+		this->vbo = other.vbo;
+		this->ibo = other.ibo;
+		this->program = other.program;
+		this->projLoc = other.projLoc;
+		this->viewLoc = other.viewLoc;
+		this->modelLoc = other.modelLoc;
+		this->numVertices = other.numVertices;
+		this->camera = other.camera;
+	}
+	return *this;
+}
+
+Renderer::Renderer(Renderer&& other) noexcept
+{
+	*this = std::move(other);
+}
+
+Renderer::Renderer(Renderer& other)
+{
+	*this = std::move(other);
+}

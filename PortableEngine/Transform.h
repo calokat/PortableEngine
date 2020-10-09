@@ -25,4 +25,7 @@ class Transform
 		void Scale(glm::vec3);
 		void RotateAroundPoint(glm::vec3 point, float angle);
 		glm::vec3 GetForward();
+		Transform& operator=(Transform&& other);
+		Transform(Transform&& other) noexcept;
+		Transform(Transform& other);
 };

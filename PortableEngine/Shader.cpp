@@ -9,7 +9,7 @@ Shader::Shader(std::string pathArg, GLint typeArg)
 	stream.open(pathArg, std::ios::binary);
 	if (!stream.is_open())
 	{
-		std::cout << "No file found";
+		printf("No file found\n");
 		return;
 	}
 	stream.seekg(0, std::ios::end);
@@ -42,7 +42,7 @@ Shader::Shader(std::string pathArg, GLint typeArg)
 
 Shader::~Shader()
 {
- 	printf("Destroying shader");
+ 	printf("Destroying shader\n");
 }
 
 void Shader::Compile()
@@ -54,14 +54,15 @@ void Shader::Compile()
 	{
 		GLint length = 0;
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-		GLchar* log = new char[length + 1];
+		GLchar* log = new char[length + 2];
 		glGetShaderInfoLog(id, length, 0, log);
+		log[length - 1] = '\n';
 		log[length] = '\0';
-		std::cout << log << '/n';
+		printf(log);
 		glDeleteShader(id);
 		delete[] log;
 
-		std::cout << "Shader compilation failed" << std::endl;
+		printf("Shader compilation failed\n");
 		return;
 	}
 
@@ -70,4 +71,24 @@ void Shader::Compile()
 GLint Shader::GetId()
 {
 	return id;
+}
+
+Shader& Shader::operator=(Shader&& other)
+{
+	if (this != &other)
+	{
+		this->shaderType = other.shaderType;
+		this->id = other.id;
+	}
+	return *this;
+}
+
+Shader::Shader(Shader&& other) noexcept
+{
+	*this = std::move(other);
+}
+
+Shader::Shader(Shader& other)
+{
+	*this = std::move(other);
 }
