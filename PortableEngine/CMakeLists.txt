@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(EmscriptenPortTest)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z --preload-file ../../Assets/Models --preload-file ../../Shaders/GLSL")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z --preload-file ../../Assets/Models --preload-file ../../Shaders/GLSL-ES")
 add_executable(EmscriptenPortTest Main.cpp esUtil.c PortableGame.cpp		
 GameWindow.cpp		
 EmscriptenPlatform.cpp
