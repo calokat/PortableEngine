@@ -9,8 +9,16 @@ Renderer::Renderer(IPlatform* plat, Camera* cam) : camera(cam)
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+#ifndef __EMSCRIPTEN__
 	vertex = new Shader(plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), GL_VERTEX_SHADER);
+#else
+	vertex = new Shader(plat->GetAssetPath("../../Shaders/GLSL-ES/vertex.glsl"), GL_VERTEX_SHADER);
+#endif
+#ifndef __EMSCRIPTEN__
 	pixel = new Shader(plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"), GL_FRAGMENT_SHADER);
+#else
+	pixel = new Shader(plat->GetAssetPath("../../Shaders/GLSL-ES/fragment.glsl"), GL_FRAGMENT_SHADER);
+#endif
 	vertex->Compile();
 	pixel->Compile();
 	program = glCreateProgram();
