@@ -116,7 +116,7 @@ OpenGLAPI::OpenGLAPI(GameWindow* win, IPlatform* plat) : window(win), platform(p
 #ifdef _WIN64
 	glContext = new WinOpenGLContext(platform);
 #elif defined(__EMSCRIPTEN__)
-	glContext = new OpenGLESContext();
+	glContext = new OpenGLESContext(platform);
 #endif
 }
 
