@@ -1,6 +1,7 @@
 #pragma once
 #include "Mesh.h"
 #include <fstream>
+#pragma warning(disable : 4996)
 //#include <DirectXMath.h>
 //using namespace DirectX;
 using namespace std;
@@ -260,6 +261,10 @@ Mesh::Mesh(const char* objFile)
 		printf("Mesh not found");
 		return;
 	}
+	else
+	{
+		printf("Whoopee!\n");
+	}
 
 	// Variables used while reading the file
 	std::vector<glm::vec3> positions;     // Positions from the file
@@ -281,7 +286,7 @@ Mesh::Mesh(const char* objFile)
 		{
 			// Read the 3 numbers directly into an XMFLOAT3
 			glm::vec3 norm;
-			sscanf_s(
+			sscanf(
 				chars,
 				"vn %f %f %f",
 				&norm.x, &norm.y, &norm.z);
@@ -293,7 +298,7 @@ Mesh::Mesh(const char* objFile)
 		{
 			// Read the 2 numbers directly into an XMFLOAT2
 			glm::vec2 uv;
-			sscanf_s(
+			sscanf(
 				chars,
 				"vt %f %f",
 				&uv.x, &uv.y);
@@ -305,11 +310,10 @@ Mesh::Mesh(const char* objFile)
 		{
 			// Read the 3 numbers directly into an XMFLOAT3
 			glm::vec3 pos;
-			sscanf_s(
+			sscanf(
 				chars,
 				"v %f %f %f",
 				&pos.x, &pos.y, &pos.z);
-
 			// Add to the positions
 			positions.push_back(pos);
 		}
@@ -321,7 +325,7 @@ Mesh::Mesh(const char* objFile)
 			//  If the model is missing any of these, this 
 			//  code will not handle the file correctly!
 			unsigned int i[12];
-			int facesRead = sscanf_s(
+			int facesRead = sscanf(
 				chars,
 				"f %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d",
 				&i[0], &i[1], &i[2],
