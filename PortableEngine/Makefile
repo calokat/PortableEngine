@@ -122,6 +122,33 @@ EmscriptenPortTest/fast:
 	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/build
 .PHONY : EmscriptenPortTest/fast
 
+Camera.o: Camera.cpp.o
+
+.PHONY : Camera.o
+
+# target to build an object file
+Camera.cpp.o:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Camera.cpp.o
+.PHONY : Camera.cpp.o
+
+Camera.i: Camera.cpp.i
+
+.PHONY : Camera.i
+
+# target to preprocess a source file
+Camera.cpp.i:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Camera.cpp.i
+.PHONY : Camera.cpp.i
+
+Camera.s: Camera.cpp.s
+
+.PHONY : Camera.s
+
+# target to generate assembly for a file
+Camera.cpp.s:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Camera.cpp.s
+.PHONY : Camera.cpp.s
+
 EmscriptenPlatform.o: EmscriptenPlatform.cpp.o
 
 .PHONY : EmscriptenPlatform.o
@@ -202,6 +229,33 @@ Main.s: Main.cpp.s
 Main.cpp.s:
 	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Main.cpp.s
 .PHONY : Main.cpp.s
+
+Mesh.o: Mesh.cpp.o
+
+.PHONY : Mesh.o
+
+# target to build an object file
+Mesh.cpp.o:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Mesh.cpp.o
+.PHONY : Mesh.cpp.o
+
+Mesh.i: Mesh.cpp.i
+
+.PHONY : Mesh.i
+
+# target to preprocess a source file
+Mesh.cpp.i:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Mesh.cpp.i
+.PHONY : Mesh.cpp.i
+
+Mesh.s: Mesh.cpp.s
+
+.PHONY : Mesh.s
+
+# target to generate assembly for a file
+Mesh.cpp.s:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Mesh.cpp.s
+.PHONY : Mesh.cpp.s
 
 OpenGLAPI.o: OpenGLAPI.cpp.o
 
@@ -284,6 +338,114 @@ PortableGame.cpp.s:
 	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/PortableGame.cpp.s
 .PHONY : PortableGame.cpp.s
 
+Renderer.o: Renderer.cpp.o
+
+.PHONY : Renderer.o
+
+# target to build an object file
+Renderer.cpp.o:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Renderer.cpp.o
+.PHONY : Renderer.cpp.o
+
+Renderer.i: Renderer.cpp.i
+
+.PHONY : Renderer.i
+
+# target to preprocess a source file
+Renderer.cpp.i:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Renderer.cpp.i
+.PHONY : Renderer.cpp.i
+
+Renderer.s: Renderer.cpp.s
+
+.PHONY : Renderer.s
+
+# target to generate assembly for a file
+Renderer.cpp.s:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Renderer.cpp.s
+.PHONY : Renderer.cpp.s
+
+Shader.o: Shader.cpp.o
+
+.PHONY : Shader.o
+
+# target to build an object file
+Shader.cpp.o:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Shader.cpp.o
+.PHONY : Shader.cpp.o
+
+Shader.i: Shader.cpp.i
+
+.PHONY : Shader.i
+
+# target to preprocess a source file
+Shader.cpp.i:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Shader.cpp.i
+.PHONY : Shader.cpp.i
+
+Shader.s: Shader.cpp.s
+
+.PHONY : Shader.s
+
+# target to generate assembly for a file
+Shader.cpp.s:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Shader.cpp.s
+.PHONY : Shader.cpp.s
+
+Timer.o: Timer.cpp.o
+
+.PHONY : Timer.o
+
+# target to build an object file
+Timer.cpp.o:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Timer.cpp.o
+.PHONY : Timer.cpp.o
+
+Timer.i: Timer.cpp.i
+
+.PHONY : Timer.i
+
+# target to preprocess a source file
+Timer.cpp.i:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Timer.cpp.i
+.PHONY : Timer.cpp.i
+
+Timer.s: Timer.cpp.s
+
+.PHONY : Timer.s
+
+# target to generate assembly for a file
+Timer.cpp.s:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Timer.cpp.s
+.PHONY : Timer.cpp.s
+
+Transform.o: Transform.cpp.o
+
+.PHONY : Transform.o
+
+# target to build an object file
+Transform.cpp.o:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Transform.cpp.o
+.PHONY : Transform.cpp.o
+
+Transform.i: Transform.cpp.i
+
+.PHONY : Transform.i
+
+# target to preprocess a source file
+Transform.cpp.i:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Transform.cpp.i
+.PHONY : Transform.cpp.i
+
+Transform.s: Transform.cpp.s
+
+.PHONY : Transform.s
+
+# target to generate assembly for a file
+Transform.cpp.s:
+	$(MAKE) -f CMakeFiles\EmscriptenPortTest.dir\build.make CMakeFiles/EmscriptenPortTest.dir/Transform.cpp.s
+.PHONY : Transform.cpp.s
+
 esUtil.o: esUtil.c.o
 
 .PHONY : esUtil.o
@@ -320,6 +482,9 @@ help:
 	@echo ... edit_cache
 	@echo ... EmscriptenPortTest
 	@echo ... rebuild_cache
+	@echo ... Camera.o
+	@echo ... Camera.i
+	@echo ... Camera.s
 	@echo ... EmscriptenPlatform.o
 	@echo ... EmscriptenPlatform.i
 	@echo ... EmscriptenPlatform.s
@@ -329,6 +494,9 @@ help:
 	@echo ... Main.o
 	@echo ... Main.i
 	@echo ... Main.s
+	@echo ... Mesh.o
+	@echo ... Mesh.i
+	@echo ... Mesh.s
 	@echo ... OpenGLAPI.o
 	@echo ... OpenGLAPI.i
 	@echo ... OpenGLAPI.s
@@ -338,6 +506,18 @@ help:
 	@echo ... PortableGame.o
 	@echo ... PortableGame.i
 	@echo ... PortableGame.s
+	@echo ... Renderer.o
+	@echo ... Renderer.i
+	@echo ... Renderer.s
+	@echo ... Shader.o
+	@echo ... Shader.i
+	@echo ... Shader.s
+	@echo ... Timer.o
+	@echo ... Timer.i
+	@echo ... Timer.s
+	@echo ... Transform.o
+	@echo ... Transform.i
+	@echo ... Transform.s
 	@echo ... esUtil.o
 	@echo ... esUtil.i
 	@echo ... esUtil.s
