@@ -4,6 +4,13 @@ WindowsInputSystem::WindowsInputSystem(HWND h) : hwnd(h)
 }
 void WindowsInputSystem::GetKeyPressed()
 {
+	prevCursorPos = cursorPos;
+	POINT mousePos = {};
+	GetCursorPos(&mousePos);
+	ScreenToClient(hwnd, &mousePos);
+	cursorPos = glm::vec2(mousePos.y, mousePos.x);
+
+
 	for (std::_Tree_const_iterator it = keyToFunction.begin(); it != keyToFunction.end(); ++it)
 	{
 		if (GetAsyncKeyState(it->first) & 0x8000)
@@ -30,8 +37,10 @@ void WindowsInputSystem::RegisterRightMouseFunction(std::function<void()> rcFunc
 
 glm::vec2 WindowsInputSystem::GetCursorPosition()
 {
-	POINT mousePos = {};
-	GetCursorPos(&mousePos);
-	ScreenToClient(hwnd, &mousePos);
-	return glm::vec2(mousePos.y, mousePos.x);
+	return cursorPos;
+}
+
+glm::vec2 WindowsInputSystem::GetPreviousCursorPosition()
+{
+	return prevCursorPos;
 }

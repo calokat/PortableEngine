@@ -13,10 +13,13 @@ public:
 	void RegisterKeyPressFunction(char, std::function<void()>);
 	void RegisterRightMouseFunction(std::function<void()>);
 	glm::vec2 GetCursorPosition();
+	glm::vec2 GetPreviousCursorPosition();
 
 private:
 	std::map<char, std::function<void()>> keyToFunction;
 	std::function<void()> rightClickFunction;
 	HWND hwnd;
+	glm::vec2 cursorPos;
+	glm::vec2 prevCursorPos;
 };
 
