@@ -5,6 +5,12 @@
 
 EmscriptenPlatform::EmscriptenPlatform(GameWindow* win) : window(win)
 {
+	inputSystem = new EmscriptenInputSystem();
+}
+
+EmscriptenPlatform::~EmscriptenPlatform()
+{
+	delete inputSystem;
 }
 
 int EmscriptenPlatform::InitWindow()

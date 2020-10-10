@@ -13,6 +13,7 @@ class EmscriptenPlatform :
 {
 public:
 	EmscriptenPlatform(GameWindow* win);
+	~EmscriptenPlatform();
 	GameWindow* window;
 	int InitWindow();
 	long Run();
