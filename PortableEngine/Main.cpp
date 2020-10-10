@@ -68,6 +68,12 @@ int main(int argc, char* argv[])
 	Renderer& renderer = registry.emplace<Renderer>(entity, plat, &cam);
 	renderer.LoadMesh(mesh.GetRawVertices());
 #ifdef __EMSCRIPTEN__
+	plat->GetInputSystem()->RegisterRightMouseFunction([&cam]()
+	{
+		glm::vec2 delta = plat->GetInputSystem()->GetCursorPosition() - plat->GetInputSystem()->GetPreviousCursorPosition();
+		printf("Delta: %f, %f\n", delta.x, delta.y);
+		cam.GetTransform()->Rotate(glm::vec3(delta.y * .01f, -delta.x * .01f, 0));
+	});
 	emscripten_set_main_loop(Loop, 0, 1);
 #else
 	auto MoveCameraForward = [&cam, camMoveSpeed]() {

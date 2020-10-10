@@ -11,6 +11,7 @@ public:
 	void RegisterKeyPressFunction(char, std::function<void()>);
 	void RegisterRightMouseFunction(std::function<void()>);
 	glm::vec2 GetCursorPosition();
+	glm::vec2 GetPreviousCursorPosition();
 private:
 	static EM_BOOL MouseCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData);
 	static EM_BOOL MouseClickCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData);
