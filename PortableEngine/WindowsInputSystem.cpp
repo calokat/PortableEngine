@@ -1,4 +1,7 @@
 #include "WindowsInputSystem.h"
+WindowsInputSystem::WindowsInputSystem(HWND h) : hwnd(h)
+{
+}
 void WindowsInputSystem::GetKeyPressed()
 {
 	for (std::_Tree_const_iterator it = keyToFunction.begin(); it != keyToFunction.end(); ++it)
@@ -23,4 +26,12 @@ void WindowsInputSystem::RegisterKeyPressFunction(char key, std::function<void()
 void WindowsInputSystem::RegisterRightMouseFunction(std::function<void()> rcFunc)
 {
 	rightClickFunction = rcFunc;
+}
+
+glm::vec2 WindowsInputSystem::GetCursorPosition()
+{
+	POINT mousePos = {};
+	GetCursorPos(&mousePos);
+	ScreenToClient(hwnd, &mousePos);
+	return glm::vec2(mousePos.y, mousePos.x);
 }

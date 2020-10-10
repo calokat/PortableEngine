@@ -11,7 +11,6 @@ public:
 	virtual std::wstring GetAssetPath_Wide(std::wstring relativePath) = 0;
 	virtual void* GetWindowHandle() = 0;
 	virtual void* GetDeviceContext() = 0;
-	virtual glm::vec2 GetCursorPosition() = 0;
 	virtual IInputSystem* GetInputSystem() = 0;
 	virtual ~IPlatform() {};
 };

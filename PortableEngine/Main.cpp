@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
 	});
 	while (plat->Run() == 0)
 	{
-		currentCursorPos = plat->GetCursorPosition();
+		currentCursorPos = plat->GetInputSystem()->GetCursorPosition();
 		plat->GetInputSystem()->GetKeyPressed();
 		auto view = registry.view<Mesh, Renderer>();
 		graph->ClearScreen();

@@ -19,7 +19,6 @@ public:
 	std::wstring GetAssetPath_Wide(std::wstring relativePath);
 	void* GetWindowHandle();
 	void* GetDeviceContext();
-	glm::vec2 GetCursorPosition();
 	IInputSystem* GetInputSystem();
 private:
 	static WindowsPlatform* staticThis;
