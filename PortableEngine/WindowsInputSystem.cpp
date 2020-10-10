@@ -1,4 +1,5 @@
 #include "WindowsInputSystem.h"
+#include <ctype.h>
 WindowsInputSystem::WindowsInputSystem(HWND h) : hwnd(h)
 {
 }
@@ -27,7 +28,10 @@ void WindowsInputSystem::GetKeyPressed()
 
 void WindowsInputSystem::RegisterKeyPressFunction(char key, std::function<void()> function)
 {
-	keyToFunction.emplace(key, function);
+	// To my knowledge, the Windows API requires the char in GetAsyncKeyState() to be uppercase,
+	// while Emscripten is case sensitive, i.e. pressing just the A key results in 'a', 
+	// while A + Shift is 'A'. toupper() helps to strike a compromise.
+	keyToFunction.emplace(toupper(key), function);
 }
 
 void WindowsInputSystem::RegisterRightMouseFunction(std::function<void()> rcFunc)

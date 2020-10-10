@@ -73,12 +73,10 @@ int main(int argc, char* argv[])
 		printf("Delta: %f, %f\n", delta.x, delta.y);
 		cam.GetTransform()->Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0));
 	});
-#ifdef __EMSCRIPTEN__
-	emscripten_set_main_loop(Loop, 0, 1);
-#else
+
 	auto MoveCameraForward = [&cam, camMoveSpeed]() {
 		cam.GetTransform()->MoveRelative(glm::vec3(0, 0, 1 * camMoveSpeed));
-	};
+};
 	auto MoveCameraBackward = [&cam, camMoveSpeed]() {
 		cam.GetTransform()->MoveRelative(glm::vec3(0, 0, -1 * camMoveSpeed));
 	};
@@ -88,10 +86,14 @@ int main(int argc, char* argv[])
 	auto MoveCameraRight = [&cam, camMoveSpeed]() {
 		cam.GetTransform()->MoveRelative(glm::vec3(-1 * camMoveSpeed, 0, 0));
 	};
-	plat->GetInputSystem()->RegisterKeyPressFunction('W', MoveCameraForward);
-	plat->GetInputSystem()->RegisterKeyPressFunction('S', MoveCameraBackward);
-	plat->GetInputSystem()->RegisterKeyPressFunction('A', MoveCameraLeft);
-	plat->GetInputSystem()->RegisterKeyPressFunction('D', MoveCameraRight);
+	plat->GetInputSystem()->RegisterKeyPressFunction('w', MoveCameraForward);
+	plat->GetInputSystem()->RegisterKeyPressFunction('s', MoveCameraBackward);
+	plat->GetInputSystem()->RegisterKeyPressFunction('a', MoveCameraLeft);
+	plat->GetInputSystem()->RegisterKeyPressFunction('d', MoveCameraRight);
+
+#ifdef __EMSCRIPTEN__
+	emscripten_set_main_loop(Loop, 0, 1);
+#else
 
 	//plat->GetInputSystem()->RegisterRightMouseFunction([&prevCursorPos, &currentCursorPos, &cam]() {
 	//	if (prevCursorPos.x == -1)
