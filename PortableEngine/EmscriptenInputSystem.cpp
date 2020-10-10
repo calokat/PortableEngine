@@ -7,17 +7,21 @@ std::function<void()> EmscriptenInputSystem::rightClickFunction;
 
 glm::vec2 EmscriptenInputSystem::prevCursorPos = glm::vec2(0, 0);
 
+std::map<char, std::function<void()>> EmscriptenInputSystem::keyToFunction;
+
 EmscriptenInputSystem::EmscriptenInputSystem()
 {
 	emscripten_set_mousemove_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseCallback);
 	emscripten_set_click_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseClickCallback);
+	emscripten_set_keydown_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::KeyDownCallback);
 }
 
 void EmscriptenInputSystem::GetKeyPressed()
 {
 }
-void EmscriptenInputSystem::RegisterKeyPressFunction(char, std::function<void()>)
+void EmscriptenInputSystem::RegisterKeyPressFunction(char key, std::function<void()> func)
 {
+	keyToFunction.emplace(key, func);
 }
 void EmscriptenInputSystem::RegisterRightMouseFunction(std::function<void()> rcFunc)
 {
@@ -35,7 +39,6 @@ EM_BOOL EmscriptenInputSystem::MouseCallback(int eventType, const EmscriptenMous
 {
 	prevCursorPos = cursorPos;
 	cursorPos = glm::vec2(mouseEvent->targetX, mouseEvent->targetY);
-	printf("Mouse button: %i\n", mouseEvent->buttons);
 	if (mouseEvent->buttons == 2)
 	{
 		rightClickFunction();
@@ -44,7 +47,14 @@ EM_BOOL EmscriptenInputSystem::MouseCallback(int eventType, const EmscriptenMous
 }
 EM_BOOL EmscriptenInputSystem::MouseClickCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
 {
-	printf("Mouse button: %i\n", mouseEvent->buttons);
+	return true;
+}
+EM_BOOL EmscriptenInputSystem::KeyDownCallback(int eventType, const EmscriptenKeyboardEvent* kbEvent, void* userData)
+{
+	if (keyToFunction[kbEvent->key[0]])
+	{
+		keyToFunction[kbEvent->key[0]]();
+	}
 	return true;
 }
 #endif
