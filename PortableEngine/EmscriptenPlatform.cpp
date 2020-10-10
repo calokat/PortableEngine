@@ -2,10 +2,11 @@
 #include "EmscriptenPlatform.h"
 #include <GLES3/gl3.h>
 
-glm::vec2 cursorPos = glm::vec2(0, 0);
+glm::vec2 EmscriptenPlatform::cursorPos = glm::vec2(0, 0);
 
 EM_BOOL EmscriptenPlatform::MouseCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
 {
+	cursorPos = glm::vec2(mouseEvent->targetX, mouseEvent->targetY);
 	printf("%li, %li\n", mouseEvent->targetX, mouseEvent->targetY);
 	//cursorPos = glm::vec2(mouseEvent->canvasX, mouseEvent->canvasY);
 	return true;
