@@ -8,7 +8,7 @@ void WindowsInputSystem::GetKeyPressed()
 	POINT mousePos = {};
 	GetCursorPos(&mousePos);
 	ScreenToClient(hwnd, &mousePos);
-	cursorPos = glm::vec2(mousePos.y, mousePos.x);
+	cursorPos = glm::vec2(mousePos.x, mousePos.y);
 
 
 	for (std::_Tree_const_iterator it = keyToFunction.begin(); it != keyToFunction.end(); ++it)

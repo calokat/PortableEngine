@@ -67,13 +67,13 @@ int main(int argc, char* argv[])
 	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/torus.obj").c_str());
 	Renderer& renderer = registry.emplace<Renderer>(entity, plat, &cam);
 	renderer.LoadMesh(mesh.GetRawVertices());
-#ifdef __EMSCRIPTEN__
 	plat->GetInputSystem()->RegisterRightMouseFunction([&cam]()
 	{
 		glm::vec2 delta = plat->GetInputSystem()->GetCursorPosition() - plat->GetInputSystem()->GetPreviousCursorPosition();
 		printf("Delta: %f, %f\n", delta.x, delta.y);
-		cam.GetTransform()->Rotate(glm::vec3(delta.y * .01f, -delta.x * .01f, 0));
+		cam.GetTransform()->Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0));
 	});
+#ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop(Loop, 0, 1);
 #else
 	auto MoveCameraForward = [&cam, camMoveSpeed]() {
@@ -93,15 +93,15 @@ int main(int argc, char* argv[])
 	plat->GetInputSystem()->RegisterKeyPressFunction('A', MoveCameraLeft);
 	plat->GetInputSystem()->RegisterKeyPressFunction('D', MoveCameraRight);
 
-	plat->GetInputSystem()->RegisterRightMouseFunction([&prevCursorPos, &currentCursorPos, &cam]() {
-		if (prevCursorPos.x == -1)
-		{
-			prevCursorPos = currentCursorPos;
-		}
-		glm::vec2 delta = currentCursorPos - prevCursorPos;
-		cam.GetTransform()->Rotate(glm::vec3(delta.x * .01f, -delta.y * .01f, 0));
-		prevCursorPos = currentCursorPos;
-	});
+	//plat->GetInputSystem()->RegisterRightMouseFunction([&prevCursorPos, &currentCursorPos, &cam]() {
+	//	if (prevCursorPos.x == -1)
+	//	{
+	//		prevCursorPos = currentCursorPos;
+	//	}
+	//	glm::vec2 delta = currentCursorPos - prevCursorPos;
+	//	cam.GetTransform()->Rotate(glm::vec3(delta.x * .01f, -delta.y * .01f, 0));
+	//	prevCursorPos = currentCursorPos;
+	//});
 	while (plat->Run() == 0)
 	{
 		currentCursorPos = plat->GetInputSystem()->GetCursorPosition();
