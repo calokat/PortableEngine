@@ -27,5 +27,6 @@ private:
 	Display *x_display;
 	static EM_BOOL MouseCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData);
 	static glm::vec2 cursorPos;
+	IInputSystem* inputSystem;
 };
 #endif
