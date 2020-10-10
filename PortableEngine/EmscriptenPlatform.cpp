@@ -1,16 +1,7 @@
 #ifdef __EMSCRIPTEN__
 #include "EmscriptenPlatform.h"
+#include "EmscriptenInputSystem.h"
 #include <GLES3/gl3.h>
-
-glm::vec2 EmscriptenPlatform::cursorPos = glm::vec2(0, 0);
-
-EM_BOOL EmscriptenPlatform::MouseCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
-{
-	cursorPos = glm::vec2(mouseEvent->targetX, mouseEvent->targetY);
-	printf("%li, %li\n", mouseEvent->targetX, mouseEvent->targetY);
-	//cursorPos = glm::vec2(mouseEvent->canvasX, mouseEvent->canvasY);
-	return true;
-}
 
 EmscriptenPlatform::EmscriptenPlatform(GameWindow* win) : window(win)
 {
@@ -77,16 +68,7 @@ int EmscriptenPlatform::InitWindow()
 		&xev);
 
 	hWnd = (EGLNativeWindowType)win;
-
-
-	// register mouse move callback
-	// With help from https://stackoverflow.com/questions/26331628/reference-to-non-static-member-function-must-be-called
-	EM_BOOL (*mouseMoveRef)(int, const EmscriptenMouseEvent*, void*);
-	mouseMoveRef = EmscriptenPlatform::MouseCallback;
-	printf("About to register mouse move\n");
-	emscripten_set_mousemove_callback("canvas.emscripten", this, true, mouseMoveRef);
-	return EGL_TRUE;
-	//return 0;
+	return 0;
 }
 
 long EmscriptenPlatform::Run()
@@ -110,10 +92,6 @@ void* EmscriptenPlatform::GetWindowHandle()
 void* EmscriptenPlatform::GetDeviceContext()
 {
 	return x_display;
-}
-glm::vec2 EmscriptenPlatform::GetCursorPosition()
-{
-	return cursorPos;
 }
 IInputSystem* EmscriptenPlatform::GetInputSystem()
 {

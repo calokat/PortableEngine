@@ -20,13 +20,10 @@ public:
 	std::wstring GetAssetPath_Wide(std::wstring relativePath);
 	void* GetWindowHandle();
 	void* GetDeviceContext();
-	glm::vec2 GetCursorPosition();
 	IInputSystem* GetInputSystem();
 private:
 	EGLNativeWindowType hWnd;
 	Display *x_display;
-	static EM_BOOL MouseCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData);
-	static glm::vec2 cursorPos;
 	IInputSystem* inputSystem;
 };
 #endif
