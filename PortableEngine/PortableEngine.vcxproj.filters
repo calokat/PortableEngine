@@ -90,6 +90,9 @@
     <ClCompile Include="WindowsInputSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EmscriptenInputSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BufferStructs.h">
@@ -183,6 +186,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WindowsInputSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EmscriptenInputSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
