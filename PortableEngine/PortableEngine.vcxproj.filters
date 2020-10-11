@@ -93,6 +93,9 @@
     <ClCompile Include="EmscriptenInputSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RenderSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BufferStructs.h">
