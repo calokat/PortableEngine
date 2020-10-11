@@ -41,17 +41,20 @@ Renderer::Renderer(IPlatform* plat, Camera* cam) : camera(cam)
 
 void Renderer::LoadMesh(std::vector<Vertex> rawVertices)
 {
+	glBindVertexArray(vao);
 	glBufferData(GL_ARRAY_BUFFER, rawVertices.size() * sizeof(Vertex), rawVertices.data(), GL_STATIC_DRAW);
 	GLint posAttrib = glGetAttribLocation(program, "in_position");
 	glEnableVertexAttribArray(posAttrib);
 	SetupAttribute(posAttrib, 3, GL_FLOAT, Vertex, Position);
 	numVertices = rawVertices.size();
+	glBindVertexArray(0);
 }
 
 void Renderer::Draw()
 {
-
-		glDrawArrays(GL_TRIANGLES, 0, numVertices);
+	glBindVertexArray(vao);
+	glDrawArrays(GL_TRIANGLES, 0, numVertices);
+	glBindVertexArray(0);
 }
 
 void Renderer::Update()
@@ -71,7 +74,9 @@ Renderer& Renderer::operator=(Renderer&& other)
 	if (this != &other)
 	{
 		this->vertex = other.vertex;
+		other.vertex = nullptr;
 		this->pixel = other.pixel;
+		other.pixel = nullptr;
 		this->vao = other.vao;
 		this->vbo = other.vbo;
 		this->ibo = other.ibo;
@@ -92,5 +97,18 @@ Renderer::Renderer(Renderer&& other) noexcept
 
 Renderer::Renderer(Renderer& other)
 {
-	*this = std::move(other);
+	if (this != &other)
+	{
+		this->vertex = other.vertex;
+		this->pixel = other.pixel;
+		this->vao = other.vao;
+		this->vbo = other.vbo;
+		this->ibo = other.ibo;
+		this->program = other.program;
+		this->projLoc = other.projLoc;
+		this->viewLoc = other.viewLoc;
+		this->modelLoc = other.modelLoc;
+		this->numVertices = other.numVertices;
+		this->camera = other.camera;
+	}
 }
