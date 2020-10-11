@@ -43,6 +43,7 @@ int main(int argc, char* argv[])
 	GameWindow* window = new GameWindow(0, 0, 800, 600);
 	Camera cam = Camera(glm::vec3(0, 0, -3), (float)window->width / window->height);
 	auto entity = registry.create();
+	auto entityTwo = registry.create();
 
 	float camMoveSpeed = .05f;
 	glm::vec2 prevCursorPos{-1, -1}, currentCursorPos;
@@ -61,9 +62,14 @@ int main(int argc, char* argv[])
 	plat->InitWindow();
 	graph->Init();
 
-	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/torus.obj").c_str());
+	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/cone.obj").c_str());
 	Renderer& renderer = registry.emplace<Renderer>(entity, plat, &cam);
 	renderer.LoadMesh(mesh.GetRawVertices());
+
+	Mesh& helix = registry.emplace<Mesh>(entityTwo, plat->GetAssetPath("../../Assets/Models/helix.obj").c_str());
+	Renderer& rendererTwo = registry.emplace<Renderer>(entityTwo, plat, &cam);
+	rendererTwo.LoadMesh(helix.GetRawVertices());
+
 	plat->GetInputSystem()->RegisterRightMouseFunction([&cam]()
 	{
 		glm::vec2 delta = plat->GetInputSystem()->GetCursorPosition() - plat->GetInputSystem()->GetPreviousCursorPosition();
