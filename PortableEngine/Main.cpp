@@ -19,17 +19,14 @@ IGraphicsAPI* graph;
 entt::registry registry;
 void Loop()
 {
+	plat->GetInputSystem()->GetKeyPressed();
 	auto view = registry.view<Mesh, Renderer>();
 	graph->ClearScreen();
 	for (auto renderable : view)
 	{
 		Renderer& renderer = registry.get<Renderer>(renderable);
-		//Mesh& entMesh = view.get<Mesh>(renderable);
-		//Renderer& entRenderer = view.get<Renderer>(renderable);
-		//renderer.LoadMesh(mesh.GetRawVertices());
 		renderer.Update();
 		renderer.Draw();
-		//graph->Draw();
 	}
 	graph->_SwapBuffers();
 }
@@ -89,28 +86,9 @@ int main(int argc, char* argv[])
 #ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop(Loop, 0, 1);
 #else
-
-	//plat->GetInputSystem()->RegisterRightMouseFunction([&prevCursorPos, &currentCursorPos, &cam]() {
-	//	if (prevCursorPos.x == -1)
-	//	{
-	//		prevCursorPos = currentCursorPos;
-	//	}
-	//	glm::vec2 delta = currentCursorPos - prevCursorPos;
-	//	cam.GetTransform()->Rotate(glm::vec3(delta.x * .01f, -delta.y * .01f, 0));
-	//	prevCursorPos = currentCursorPos;
-	//});
 	while (plat->Run() == 0)
 	{
-		currentCursorPos = plat->GetInputSystem()->GetCursorPosition();
-		plat->GetInputSystem()->GetKeyPressed();
-		auto view = registry.view<Mesh, Renderer>();
-		graph->ClearScreen();
-		for (auto renderable : view)
-		{
-			renderer.Update();
-			renderer.Draw();
-		}
-		graph->_SwapBuffers();
+		Loop();
 	}
 #endif
 	delete window;
