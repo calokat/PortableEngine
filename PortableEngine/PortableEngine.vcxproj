@@ -70,18 +70,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\caleb\Documents\common\glfw\lib\Debug;C:\Users\caleb\Documents\common\glew\lib\Release\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\caleb\Documents\common\glfw\lib\Debug;C:\Users\caleb\Documents\common\glew\lib\Release\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>C:\Users\caleb\Documents\common\glew\lib\Release\x64;C:\Users\caleb\Documents\common\glfw\lib\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>C:\Users\caleb\Documents\common\glew\lib\Release\x64;C:\Users\caleb\Documents\common\glfw\lib\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -146,6 +148,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\imgui\examples\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\..\imgui\examples\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\..\imgui\imgui.cpp" />
+    <ClCompile Include="..\..\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\..\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\..\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="DirectXAPI.cpp" />
