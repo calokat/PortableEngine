@@ -555,3 +555,8 @@ Mesh::Mesh(Mesh&& other) noexcept
 {
 	*this = std::move(other);
 }
+
+Mesh::Mesh(Mesh& other)
+{
+	*this = std::move(other);
+}

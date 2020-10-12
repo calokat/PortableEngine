@@ -26,4 +26,5 @@ public:
 	Mesh& operator=(Mesh&& other);
 	// Move constructor
 	Mesh(Mesh&& other) noexcept;
+	Mesh(Mesh& other);
 };
