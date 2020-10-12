@@ -11,6 +11,7 @@
 #include "PortableGame.h"
 #include "Mesh.h"
 #include "Renderer.h"
+#include "RenderSystem.h"
 #include "Camera.h"
 #include <entt.hpp>
 
@@ -25,8 +26,10 @@ void Loop()
 	for (auto renderable : view)
 	{
 		Renderer& renderer = registry.get<Renderer>(renderable);
-		renderer.Update();
-		renderer.Draw();
+		//renderer.Update();
+		//renderer.Draw();
+		UpdateRenderer(renderer);
+		Draw(renderer);
 	}
 	graph->_SwapBuffers();
 }
@@ -64,11 +67,15 @@ int main(int argc, char* argv[])
 
 	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/cone.obj").c_str());
 	Renderer& renderer = registry.emplace<Renderer>(entity, plat, &cam);
-	renderer.LoadMesh(mesh.GetRawVertices());
+	Load(renderer);
+	//renderer.LoadMesh(mesh.GetRawVertices());
+	LoadMesh(renderer, mesh);
 
 	Mesh& helix = registry.emplace<Mesh>(entityTwo, plat->GetAssetPath("../../Assets/Models/helix.obj").c_str());
 	Renderer& rendererTwo = registry.emplace<Renderer>(entityTwo, plat, &cam);
-	rendererTwo.LoadMesh(helix.GetRawVertices());
+	Load(rendererTwo);
+	//rendererTwo.LoadMesh(helix.GetRawVertices());
+	LoadMesh(rendererTwo, helix);
 
 	plat->GetInputSystem()->RegisterRightMouseFunction([&cam]()
 	{
