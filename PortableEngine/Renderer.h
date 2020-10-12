@@ -13,7 +13,7 @@
 
 class Renderer
 {
-private:
+public:
 	Shader* vertex;
 	Shader* pixel;
 	//IGraphicsAPI* glAPI;
@@ -22,11 +22,10 @@ private:
 	GLint projLoc, viewLoc, modelLoc;
 	int numVertices;
 	Camera* camera;
-public:
 	Renderer(IPlatform*, Camera*);
-	void LoadMesh(std::vector<Vertex>);
-	void Draw();
-	void Update();
+	//void LoadMesh(std::vector<Vertex>);
+	//void Draw();
+	//void Update();
 	~Renderer();
 	// Move assignment operator
 	Renderer& operator=(Renderer&& other);
