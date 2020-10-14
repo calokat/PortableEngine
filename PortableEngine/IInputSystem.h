@@ -9,4 +9,5 @@ public:
 	virtual void RegisterRightMouseFunction(std::function<void()>) = 0;
 	virtual glm::vec2 GetCursorPosition() = 0;
 	virtual glm::vec2 GetPreviousCursorPosition() = 0;
+	virtual ~IInputSystem() {};
 };
