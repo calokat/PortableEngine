@@ -14,12 +14,23 @@
 #include "RenderSystem.h"
 #include "Camera.h"
 #include <entt.hpp>
+#include <imgui.h>
+#include <examples/imgui_impl_win32.h>
+#include <examples/imgui_impl_opengl3.h>
 
 IPlatform* plat;
 IGraphicsAPI* graph;
 entt::registry registry;
+
+bool show_demo_window = true;
+
 void Loop()
 {
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+	ImGui::ShowDemoWindow(&show_demo_window);
+
 	plat->GetInputSystem()->GetKeyPressed();
 	auto view = registry.view<Mesh, Renderer>();
 	graph->ClearScreen();
@@ -31,6 +42,8 @@ void Loop()
 		UpdateRenderer(renderer);
 		Draw(renderer);
 	}
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	graph->_SwapBuffers();
 }
 
@@ -50,6 +63,12 @@ int main(int argc, char* argv[])
 
 	float camMoveSpeed = .05f;
 	glm::vec2 prevCursorPos{-1, -1}, currentCursorPos;
+
+	// (Try to) Setup IMGUI	
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui::StyleColorsDark();
 
 
 #ifdef _WIN64
@@ -107,5 +126,8 @@ int main(int argc, char* argv[])
 	delete window;
 	delete plat;
 	delete graph;
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
 	return 0;
 }
