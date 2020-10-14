@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <examples/imgui_impl_opengl3.h>
 
 //float vertices[] = {
 //-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -84,7 +85,7 @@ int OpenGLAPI::Init()
 	//GLint posLoc = glGetAttribLocation(program, "in_position");
 	//glEnableVertexAttribArray(posLoc);
 	//glVertexAttribPointer(posLoc, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (GLvoid*)0);
-	
+	ImGui_ImplOpenGL3_Init();
 	return createContextResult;
 }
 
