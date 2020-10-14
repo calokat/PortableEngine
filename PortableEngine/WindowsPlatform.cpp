@@ -1,8 +1,12 @@
 #ifdef _WIN64
 #include "WindowsInputSystem.h"
 #include "WindowsPlatform.h"
+#include <imgui.h>
+#include <examples/imgui_impl_win32.h>
+
 
 WindowsPlatform* WindowsPlatform::staticThis = 0;
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 int WindowsPlatform::InitWindow()
 {
@@ -68,9 +72,13 @@ int WindowsPlatform::InitWindow()
 	// The window exists but is not visible yet
 	// We need to tell Windows to show it, and how to show it
 	ShowWindow(hwnd, SW_SHOW);
+	//UpdateWindow(hwnd);
 
 	hdc = GetDC(hwnd);
 	window->deviceContext = (int)hdc;
+
+
+	ImGui_ImplWin32_Init(hwnd);
 
 	// Return an "everything is ok" HRESULT value
 	return S_OK;
@@ -89,7 +97,7 @@ unsigned int WindowsPlatform::GetWindowHeight()
 
 HWND WindowsPlatform::GetHwnd()
 {
-	return (HWND)window->windowHandle;
+	return hwnd;
 }
 
 long WindowsPlatform::Run()
@@ -109,7 +117,6 @@ long WindowsPlatform::Run()
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
-
 			return 0;
 			//else
 			//{
@@ -173,6 +180,7 @@ LRESULT WindowsPlatform::WindowsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 
 LRESULT WindowsPlatform::ProcessMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam);
 	// Check the incoming message and handle any we care about
 	switch (uMsg)
 	{
