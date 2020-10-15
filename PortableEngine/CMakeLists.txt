@@ -9,11 +9,16 @@ Mesh.cpp
 OpenGLAPI.cpp			
 OpenGLESContext.cpp
 Renderer.cpp
+RenderSystem.cpp
 Camera.cpp
 Shader.cpp
 Timer.cpp
-Transform.cpp)
+Transform.cpp
+imgui_impl_emscripten.cpp)
 include_directories(../../../common/glm)
 include_directories(../../entt/src/entt)
+include_directories(../../imgui)
+include_directories(../../imgui/examples)
+add_subdirectory(../../imgui imgui)
 set(CMAKE_EXECUTABLE_SUFFIX ".html")
-target_link_libraries(EmscriptenPortTest GLESv2 EGL m X11)
+target_link_libraries(EmscriptenPortTest GLESv2 EGL m X11 imgui)
