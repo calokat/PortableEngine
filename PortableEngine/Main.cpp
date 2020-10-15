@@ -27,7 +27,8 @@ bool show_demo_window = true;
 void Loop()
 {
 	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplWin32_NewFrame();
+	//ImGui_ImplWin32_NewFrame();
+	plat->NewGuiFrame();
 	ImGui::NewFrame();
 	ImGui::ShowDemoWindow(&show_demo_window);
 
@@ -127,7 +128,7 @@ int main(int argc, char* argv[])
 	delete plat;
 	delete graph;
 	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplWin32_Shutdown();
+	//ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 	return 0;
 }
