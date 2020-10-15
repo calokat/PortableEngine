@@ -22,6 +22,7 @@ public:
 	void* GetWindowHandle();
 	void* GetDeviceContext();
 	IInputSystem* GetInputSystem();
+	void NewGuiFrame();
 private:
 	EGLNativeWindowType hWnd;
 	Display *x_display;

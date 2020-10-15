@@ -2,10 +2,12 @@
 #include "EmscriptenPlatform.h"
 #include "EmscriptenInputSystem.h"
 #include <GLES3/gl3.h>
+#include "imgui_impl_emscripten.h"
 
 EmscriptenPlatform::EmscriptenPlatform(GameWindow* win) : window(win)
 {
 	inputSystem = new EmscriptenInputSystem();
+	ImGui_ImplEmscripten_Init(window, inputSystem);
 }
 
 EmscriptenPlatform::~EmscriptenPlatform()
@@ -102,5 +104,9 @@ void* EmscriptenPlatform::GetDeviceContext()
 IInputSystem* EmscriptenPlatform::GetInputSystem()
 {
 	return inputSystem;
+}
+void EmscriptenPlatform::NewGuiFrame()
+{
+	ImGui_ImplEmscripten_NewFrame();
 }
 #endif
