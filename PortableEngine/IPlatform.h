@@ -12,6 +12,7 @@ public:
 	virtual void* GetWindowHandle() = 0;
 	virtual void* GetDeviceContext() = 0;
 	virtual IInputSystem* GetInputSystem() = 0;
+	virtual void NewGuiFrame() = 0;
 	virtual ~IPlatform() {};
 };
 
