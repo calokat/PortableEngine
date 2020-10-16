@@ -123,6 +123,7 @@ OpenGLAPI::OpenGLAPI(GameWindow* win, IPlatform* plat) : window(win), platform(p
 
 OpenGLAPI::~OpenGLAPI()
 {
+	ImGui_ImplOpenGL3_Shutdown();
 	delete glContext;
 	delete vertex;
 	delete pixel;
