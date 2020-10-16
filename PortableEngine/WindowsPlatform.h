@@ -20,6 +20,7 @@ public:
 	void* GetWindowHandle();
 	void* GetDeviceContext();
 	IInputSystem* GetInputSystem();
+	void NewGuiFrame();
 private:
 	static WindowsPlatform* staticThis;
 	HINSTANCE hInstance;

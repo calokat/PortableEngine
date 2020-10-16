@@ -157,6 +157,11 @@ IInputSystem* WindowsPlatform::GetInputSystem()
 	return inputSystem;
 }
 
+void WindowsPlatform::NewGuiFrame()
+{
+	ImGui_ImplWin32_NewFrame();
+}
+
 WindowsPlatform::WindowsPlatform(GameWindow* win)
 {
 	staticThis = this;
@@ -170,6 +175,7 @@ WindowsPlatform::WindowsPlatform(GameWindow* win)
 
 WindowsPlatform::~WindowsPlatform()
 {
+	ImGui_ImplWin32_Shutdown();
 	delete inputSystem;
 }
 
