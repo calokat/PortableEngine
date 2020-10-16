@@ -127,8 +127,6 @@ int main(int argc, char* argv[])
 	delete window;
 	delete plat;
 	delete graph;
-	ImGui_ImplOpenGL3_Shutdown();
-	//ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 	return 0;
 }
