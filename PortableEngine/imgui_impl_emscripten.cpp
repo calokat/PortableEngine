@@ -1,3 +1,4 @@
+#ifdef __EMSCRIPTEN__
 #include "imgui_impl_emscripten.h"
 #include <imgui.h>
 #include <emscripten.h>
@@ -41,3 +42,4 @@ void ImGui_ImplEmscripten_NewFrame()
 	ImGui_ImplEmscripten_UpdateMousePos();
 }
 
+#endif
