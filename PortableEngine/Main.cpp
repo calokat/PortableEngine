@@ -30,7 +30,12 @@ void Loop()
 	//ImGui_ImplWin32_NewFrame();
 	plat->NewGuiFrame();
 	ImGui::NewFrame();
-	ImGui::ShowDemoWindow(&show_demo_window);
+
+	static float vertColorPick[4];
+	ImGui::Begin("Vertex color picker");
+	ImGui::Text("Vertex color: ");
+	ImGui::ColorPicker4("Vertex color: ", vertColorPick);
+	ImGui::End();
 
 	plat->GetInputSystem()->GetKeyPressed();
 	auto view = registry.view<Mesh, Renderer>();
@@ -38,6 +43,12 @@ void Loop()
 	for (auto renderable : view)
 	{
 		Renderer& renderer = registry.get<Renderer>(renderable);
+		Mesh& mesh = registry.get<Mesh>(renderable);
+		for (auto it = mesh.GetRawVertices().begin(); it != mesh.GetRawVertices().end(); ++it)
+		{
+			it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
+		}
+		LoadMesh(renderer, mesh);
 		//renderer.Update();
 		//renderer.Draw();
 		UpdateRenderer(renderer);

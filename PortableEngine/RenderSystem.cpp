@@ -1,4 +1,5 @@
 #include "RenderSystem.h"
+#include <imgui.h>
 
 void Load(Renderer& renderer)
 {
@@ -28,6 +29,9 @@ void LoadMesh(Renderer& renderer, Mesh mesh)
 	GLint posAttrib = glGetAttribLocation(renderer.program, "in_position");
 	glEnableVertexAttribArray(posAttrib);
 	SetupAttribute(posAttrib, 3, GL_FLOAT, Vertex, Position);
+	GLint vertColorAttrib = glGetAttribLocation(renderer.program, "in_color");
+	glEnableVertexAttribArray(vertColorAttrib);
+	SetupAttribute(vertColorAttrib, 3, GL_FLOAT, Vertex, Color);
 	renderer.numVertices = mesh.GetRawVertices().size();
 	glBindVertexArray(0);
 }
@@ -41,6 +45,7 @@ void Draw(Renderer& renderer)
 
 void UpdateRenderer(Renderer& renderer)
 {
+	glUseProgram(renderer.program);
 	glUniformMatrix4fv(renderer.viewLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->GetViewMatrix()));
 	glUniformMatrix4fv(renderer.projLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->GetProjectionMatrix()));
 }

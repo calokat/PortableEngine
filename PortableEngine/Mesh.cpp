@@ -530,7 +530,7 @@ void Mesh::CalculateTangents(Vertex* verts, int numVerts, unsigned int* indices,
 	}
 }
 
-std::vector<Vertex> Mesh::GetRawVertices()
+std::vector<Vertex>& Mesh::GetRawVertices()
 {
 	return rawVertices;
 }
