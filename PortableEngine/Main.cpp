@@ -111,7 +111,30 @@ int main(int argc, char* argv[])
 	plat->GetInputSystem()->RegisterRightMouseFunction([&cam]()
 	{
 		glm::vec2 delta = plat->GetInputSystem()->GetCursorPosition() - plat->GetInputSystem()->GetPreviousCursorPosition();
-		cam.GetTransform()->Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0));
+		float camRotX = cam.GetTransform()->GetRotation().x;
+		bool tooFarUp = camRotX > 3.f / 2;
+		bool tooFarDown = camRotX < -3.f / 2;
+		// checks to see if camera is in danger of gimbal lock
+		if (tooFarUp || tooFarDown)
+		{
+			float newCamRotX;
+			// we allow the input to rotate the camera on the x axis
+			// if it is "too far down" and going up or "too far up" 
+			// and going down. Otherwise zero out the x axis input
+			if ((tooFarUp && delta.y < 0) || (tooFarDown && delta.y > 0))
+			{
+				newCamRotX = delta.y;
+			}
+			else
+			{
+				newCamRotX = 0;
+			}
+			cam.GetTransform()->Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0));
+		}
+		else
+		{
+			cam.GetTransform()->Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0));
+		}
 	});
 
 	auto MoveCamera = [&cam](glm::vec3 dir) {
