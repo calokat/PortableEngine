@@ -70,7 +70,6 @@ EM_BOOL EmscriptenInputSystem::MouseUpCallback(int eventType, const EmscriptenMo
 }
 EM_BOOL EmscriptenInputSystem::KeyDownCallback(int eventType, const EmscriptenKeyboardEvent* kbEvent, void* userData)
 {
-	printf("KeyDown\n");
 	if (keyToFunction[kbEvent->key[0]])
 	{
 		keyToFunction[kbEvent->key[0]]();
