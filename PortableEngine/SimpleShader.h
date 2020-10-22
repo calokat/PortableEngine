@@ -1,3 +1,4 @@
+#ifdef _WIN64
 #pragma once
 #pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "d3dcompiler.lib")
@@ -297,3 +298,4 @@ protected:
 	void SetShaderAndCBs();
 	void CleanUp();
 };
+#endif

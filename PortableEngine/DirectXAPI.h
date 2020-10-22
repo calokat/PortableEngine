@@ -1,3 +1,4 @@
+#if 0
 #pragma once
 #include "IGraphicsAPI.h"
 #include "WindowsPlatform.h"
@@ -49,3 +50,4 @@ private:
 
 };
 
+#endif

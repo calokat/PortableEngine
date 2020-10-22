@@ -1,3 +1,4 @@
+#if 0
 #include "DirectXAPI.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "Vertex.h"
@@ -434,3 +435,4 @@ void DirectXAPI::_SwapBuffers()
 	// the render target must be re-bound after every call to Present()
 	context->OMSetRenderTargets(1, backBufferRTV.GetAddressOf(), depthStencilView.Get());
 }
+#endif

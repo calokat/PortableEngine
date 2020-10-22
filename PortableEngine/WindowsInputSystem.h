@@ -1,3 +1,4 @@
+#ifdef _WIN64
 #pragma once
 #include "IInputSystem.h"
 #include <entt.hpp>
@@ -22,4 +23,4 @@ private:
 	glm::vec2 cursorPos;
 	glm::vec2 prevCursorPos;
 };
-
+#endif

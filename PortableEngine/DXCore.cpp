@@ -1,3 +1,4 @@
+#if 0
 #include "DXCore.h"
 
 #include <WindowsX.h>
@@ -671,3 +672,4 @@ LRESULT DXCore::ProcessMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
+#endif

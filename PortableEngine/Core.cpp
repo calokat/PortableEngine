@@ -1,3 +1,4 @@
+#if 0
 #pragma once
 #include "Core.h"
 #include <Windows.h>
@@ -51,3 +52,4 @@ std::wstring Core::GetFullPathTo_Wide(std::wstring relativeFilePath)
 {
 	return GetExePath_Wide() + L"\\" + relativeFilePath;
 }
+#endif

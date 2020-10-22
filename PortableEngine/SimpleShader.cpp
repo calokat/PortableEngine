@@ -1,3 +1,4 @@
+#ifdef _WIN64
 #include "SimpleShader.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1729,3 +1730,4 @@ int SimpleComputeShader::GetUnorderedAccessViewIndex(std::string name)
 	// Success
 	return result->second;
 }
+#endif

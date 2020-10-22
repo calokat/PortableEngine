@@ -1,3 +1,4 @@
+#ifdef _WIN64
 #include "WindowsInputSystem.h"
 #include <ctype.h>
 WindowsInputSystem::WindowsInputSystem(HWND h) : hwnd(h)
@@ -48,3 +49,4 @@ glm::vec2 WindowsInputSystem::GetPreviousCursorPosition()
 {
 	return prevCursorPos;
 }
+#endif

@@ -1,3 +1,4 @@
+#if 0
 #pragma once
 
 #include <Windows.h>
@@ -95,4 +96,4 @@ private:
 	void UpdateTimer();			// Updates the timer for this frame
 	void UpdateTitleBarStats();	// Puts debug info in the title bar
 };
-
+#endif

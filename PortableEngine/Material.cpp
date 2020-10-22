@@ -1,3 +1,4 @@
+#if 0
 #include "Material.h"
 
 Material::Material(DirectX::XMFLOAT4 tint, SimplePixelShader* pixel, SimpleVertexShader* vertex, float specInt, ID3D11ShaderResourceView* srvParam, ID3D11ShaderResourceView* normalSrvParam, ID3D11SamplerState* state)
@@ -50,3 +51,4 @@ ID3D11SamplerState* Material::GetSamplerState()
 {
 	return samplerState;
 }
+#endif
