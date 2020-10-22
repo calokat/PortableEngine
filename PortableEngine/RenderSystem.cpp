@@ -1,5 +1,6 @@
 #include "RenderSystem.h"
 #include <imgui.h>
+#include <ImGuizmo.h>
 
 void Load(Renderer& renderer)
 {
@@ -48,4 +49,12 @@ void UpdateRenderer(Renderer& renderer)
 	glUseProgram(renderer.program);
 	glUniformMatrix4fv(renderer.viewLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->GetViewMatrix()));
 	glUniformMatrix4fv(renderer.projLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->GetProjectionMatrix()));
+}
+
+void DrawGizmo(Camera camera)
+{
+	static glm::mat4 newView(1.0f);
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+	ImGuizmo::Manipulate(glm::value_ptr(camera.GetViewMatrix()), glm::value_ptr(camera.GetProjectionMatrix()), ImGuizmo::TRANSLATE, ImGuizmo::WORLD, glm::value_ptr(newView));
 }

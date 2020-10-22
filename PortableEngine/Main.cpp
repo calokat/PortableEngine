@@ -17,6 +17,7 @@
 #include <imgui.h>
 #include <examples/imgui_impl_win32.h>
 #include <examples/imgui_impl_opengl3.h>
+#include <ImGuizmo.h>
 
 IPlatform* plat;
 IGraphicsAPI* graph;
@@ -30,7 +31,8 @@ void Loop()
 	//ImGui_ImplWin32_NewFrame();
 	plat->NewGuiFrame();
 	ImGui::NewFrame();
-
+	ImGuizmo::BeginFrame();
+	ImGuizmo::Enable(true);
 	static float vertColorPick[4];
 	ImGui::Begin("Vertex color picker");
 	ImGui::Text("Vertex color: ");
@@ -54,6 +56,9 @@ void Loop()
 		UpdateRenderer(renderer);
 		Draw(renderer);
 	}
+	auto camEntityView = registry.view<Camera>();
+	Camera& camera = registry.get<Camera>(camEntityView[0]);
+	DrawGizmo(camera);
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	graph->_SwapBuffers();
@@ -69,9 +74,12 @@ int main(int argc, char* argv[])
 #endif
 
 	GameWindow* window = new GameWindow(0, 0, 800, 600);
-	Camera cam = Camera(glm::vec3(0, 0, -3), (float)window->width / window->height);
 	auto entity = registry.create();
 	auto entityTwo = registry.create();
+	auto cameraEntity = registry.create();
+
+	Camera& cam = registry.emplace<Camera>(cameraEntity, glm::vec3(0, 0, -3), (float)window->width / window->height);
+	//Camera cam = Camera(glm::vec3(0, 0, -3), (float)window->width / window->height);
 
 	float camMoveSpeed = .05f;
 	glm::vec2 prevCursorPos{-1, -1}, currentCursorPos;

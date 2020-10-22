@@ -113,6 +113,7 @@ Camera& Camera::operator=(Camera&& other)
 		this->movementSpeed = other.movementSpeed;
 		this->lookSpeed = other.lookSpeed;
 		this->prevMousePosition = other.prevMousePosition;
+		this->transform = new Transform((*other.transform));
 	}
 	return *this;
 }
