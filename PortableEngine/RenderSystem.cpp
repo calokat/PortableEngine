@@ -1,6 +1,9 @@
 #include "RenderSystem.h"
 #include <imgui.h>
 #include <ImGuizmo.h>
+#include "CameraSystem.h"
+
+static glm::mat4 newView(1.0f);
 
 void Load(Renderer& renderer)
 {
@@ -19,8 +22,8 @@ void Load(Renderer& renderer)
 	renderer.modelLoc = glGetUniformLocation(renderer.program, "model");
 	glm::mat4 model(1.0f);
 	glUniformMatrix4fv(renderer.modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-	glUniformMatrix4fv(renderer.viewLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->GetViewMatrix()));
-	glUniformMatrix4fv(renderer.projLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->GetProjectionMatrix()));
+	glUniformMatrix4fv(renderer.viewLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->view));
+	glUniformMatrix4fv(renderer.projLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->projection));
 }
 
 void LoadMesh(Renderer& renderer, Mesh mesh)
@@ -47,14 +50,15 @@ void Draw(Renderer& renderer)
 void UpdateRenderer(Renderer& renderer)
 {
 	glUseProgram(renderer.program);
-	glUniformMatrix4fv(renderer.viewLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->GetViewMatrix()));
-	glUniformMatrix4fv(renderer.projLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->GetProjectionMatrix()));
+	CameraSystem::CalculateViewMatrix(*renderer.camera);
+	glUniformMatrix4fv(renderer.viewLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->view));
+	glUniformMatrix4fv(renderer.projLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->projection));
+	glUniformMatrix4fv(renderer.modelLoc, 1, GL_FALSE, glm::value_ptr(newView));
 }
 
 void DrawGizmo(Camera camera)
 {
-	static glm::mat4 newView(1.0f);
 	ImGuiIO& io = ImGui::GetIO();
 	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-	ImGuizmo::Manipulate(glm::value_ptr(camera.GetViewMatrix()), glm::value_ptr(camera.GetProjectionMatrix()), ImGuizmo::TRANSLATE, ImGuizmo::WORLD, glm::value_ptr(newView));
+	ImGuizmo::Manipulate(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), ImGuizmo::TRANSLATE, ImGuizmo::WORLD, glm::value_ptr(newView));
 }
