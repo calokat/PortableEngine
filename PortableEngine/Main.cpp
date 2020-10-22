@@ -18,6 +18,8 @@
 #include <examples/imgui_impl_win32.h>
 #include <examples/imgui_impl_opengl3.h>
 #include <ImGuizmo.h>
+#include "TransformSystem.h"
+#include "CameraSystem.h"
 
 IPlatform* plat;
 IGraphicsAPI* graph;
@@ -79,6 +81,10 @@ int main(int argc, char* argv[])
 	auto cameraEntity = registry.create();
 
 	Camera& cam = registry.emplace<Camera>(cameraEntity, glm::vec3(0, 0, -3), (float)window->width / window->height);
+	Transform& camTransform = registry.emplace<Transform>(cameraEntity);
+	camTransform.position += glm::vec3(0, 0, -3);
+	cam.transform = &camTransform;
+	CameraSystem::CalculateProjectionMatrix(cam, (float)window->width / window->height);
 	//Camera cam = Camera(glm::vec3(0, 0, -3), (float)window->width / window->height);
 
 	float camMoveSpeed = .05f;
@@ -116,10 +122,10 @@ int main(int argc, char* argv[])
 	//rendererTwo.LoadMesh(helix.GetRawVertices());
 	LoadMesh(rendererTwo, helix);
 
-	plat->GetInputSystem()->RegisterRightMouseFunction([&cam]()
+	plat->GetInputSystem()->RegisterRightMouseFunction([&cam, &camTransform]()
 	{
 		glm::vec2 delta = plat->GetInputSystem()->GetCursorPosition() - plat->GetInputSystem()->GetPreviousCursorPosition();
-		float camRotX = cam.GetTransform()->GetRotation().x;
+		float camRotX = camTransform.rotation.x;
 		bool tooFarUp = camRotX > 3.f / 2;
 		bool tooFarDown = camRotX < -3.f / 2;
 		// checks to see if camera is in danger of gimbal lock
@@ -137,17 +143,19 @@ int main(int argc, char* argv[])
 			{
 				newCamRotX = 0;
 			}
-			cam.GetTransform()->Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0));
+			//cam.GetTransform()->Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0));
+			TransformSystem::Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0), &camTransform);
 		}
 		else
 		{
-			cam.GetTransform()->Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0));
+			//cam.GetTransform()->Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0));
+			TransformSystem::Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0), &camTransform);
 		}
 	});
 
-	auto MoveCamera = [&cam](glm::vec3 dir) {
-		return[&cam, dir]() {
-			cam.GetTransform()->MoveRelative(dir);
+	auto MoveCamera = [&camTransform](glm::vec3 dir) {
+		return[&camTransform, dir]() {
+			TransformSystem::MoveRelative(dir, &camTransform);
 		};
 	};
 
