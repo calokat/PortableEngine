@@ -6,47 +6,47 @@ Camera::Camera() : Camera(glm::vec3(0, 0, 0), 1)
 
 Camera::Camera(glm::vec3 initialPos, float aspectRatio)
 {
-	transform = new Transform();
+	//transform = new Transform();
 	nearPlaneDistance = .1f;
 	farPlaneDistance = 1000.0f;
 	movementSpeed = 10;
 	lookSpeed = 1;
 	fieldOfView = 3.14f / 3;
-	transform->SetPosition(initialPos);
-	UpdateViewMatrix();
+	//transform->SetPosition(initialPos);
+	//UpdateViewMatrix();
 	this->aspectRatio = aspectRatio;
-	UpdateProjectionMatrix(this->aspectRatio);
+	//UpdateProjectionMatrix(this->aspectRatio);
 	prevMousePosition = glm::vec2();
 	prevMousePosition.x = -1;
 	prevMousePosition.y = -1;
 	//XMStoreFloat4x4(&this->view, XMMatrixIdentity());
 	//XMStoreFloat4x4(&this->projection, XMMatrixIdentity());
 }
-glm::mat4 Camera::GetViewMatrix()
-{
-	UpdateViewMatrix();
-	return this->view;
-}
-glm::mat4 Camera::GetProjectionMatrix()
-{
-	return this->projection;
-}
-void Camera::UpdateProjectionMatrix(float aspect)
-{
-	//XMStoreFloat4x4(&this->projection, XMMatrixPerspectiveFovLH(fieldOfView, aspect, nearPlaneDistance, farPlaneDistance));
-	this->projection = glm::perspective(fieldOfView, aspect, nearPlaneDistance, farPlaneDistance);
-}
+//glm::mat4 Camera::GetViewMatrix()
+//{
+//	UpdateViewMatrix();
+//	return this->view;
+//}
+//glm::mat4 Camera::GetProjectionMatrix()
+//{
+//	return this->projection;
+//}
+//void Camera::UpdateProjectionMatrix(float aspect)
+//{
+//	//XMStoreFloat4x4(&this->projection, XMMatrixPerspectiveFovLH(fieldOfView, aspect, nearPlaneDistance, farPlaneDistance));
+//	this->projection = glm::perspective(fieldOfView, aspect, nearPlaneDistance, farPlaneDistance);
+//}
 
-void Camera::UpdateViewMatrix()
-{
-	//XMVECTOR position = XMVectorSet(transform.GetPosition().x, transform.GetPosition().y, transform.GetPosition().z, 0);
-	//XMVECTOR forward = XMVectorSet(transform.GetForward().x, transform.GetForward().y, transform.GetForward().z, 0);
-	//XMStoreFloat4x4(&this->view, XMMatrixLookToLH(position, forward, XMVectorSet(0, 1, 0, 0)));
-	//glm::vec3 position(transform.GetPosition().x, transform.GetPosition().y, transform.GetPosition().z);
-	//glm::vec3 forward(transform.GetForward().x, transform.GetForward().y, transform.GetForward().z);
-	glm::vec3 forward = this->transform->GetForward();
-	this->view = glm::lookAtRH(this->transform->GetPosition(), this->transform->GetPosition() + this->transform->GetForward(), glm::vec3(0, 1, 0));
-}
+//void Camera::UpdateViewMatrix()
+//{
+//	//XMVECTOR position = XMVectorSet(transform.GetPosition().x, transform.GetPosition().y, transform.GetPosition().z, 0);
+//	//XMVECTOR forward = XMVectorSet(transform.GetForward().x, transform.GetForward().y, transform.GetForward().z, 0);
+//	//XMStoreFloat4x4(&this->view, XMMatrixLookToLH(position, forward, XMVectorSet(0, 1, 0, 0)));
+//	//glm::vec3 position(transform.GetPosition().x, transform.GetPosition().y, transform.GetPosition().z);
+//	//glm::vec3 forward(transform.GetForward().x, transform.GetForward().y, transform.GetForward().z);
+//	glm::vec3 forward = this->transform->GetForward();
+//	this->view = glm::lookAtRH(this->transform->GetPosition(), this->transform->GetPosition() + this->transform->GetForward(), glm::vec3(0, 1, 0));
+//}
 
 //void Camera::Update(float dt, HWND windowHandle)
 //{
@@ -95,10 +95,10 @@ void Camera::UpdateViewMatrix()
 //	prevMousePosition = mousePos;
 //}
 
-Transform* Camera::GetTransform()
-{
-	return transform;
-}
+//Transform* Camera::GetTransform()
+//{
+//	return transform;
+//}
 
 Camera& Camera::operator=(Camera&& other)
 {
@@ -113,7 +113,8 @@ Camera& Camera::operator=(Camera&& other)
 		this->movementSpeed = other.movementSpeed;
 		this->lookSpeed = other.lookSpeed;
 		this->prevMousePosition = other.prevMousePosition;
-		this->transform = new Transform((*other.transform));
+		//this->transform = new Transform((*other.transform));
+		this->transform = other.transform;
 	}
 	return *this;
 }
@@ -128,7 +129,7 @@ Camera::Camera(Camera& other)
 	*this = std::move(other);
 }
 
-Camera::~Camera()
-{
-	delete transform;
-}
+//Camera::~Camera()
+//{
+//	//delete transform;
+//}
