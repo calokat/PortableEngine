@@ -170,6 +170,7 @@
     <ClCompile Include="esUtil.c" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameWindow.cpp" />
+    <ClCompile Include="GizmoSystem.cpp" />
     <ClCompile Include="GLCore.cpp" />
     <ClCompile Include="imgui_impl_emscripten.cpp" />
     <ClCompile Include="IOpenGLContext.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="esUtil.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameWindow.h" />
+    <ClInclude Include="GizmoSystem.h" />
     <ClInclude Include="GLCore.h" />
     <ClInclude Include="IGraphicsAPI.h" />
     <ClInclude Include="IInputSystem.h" />
