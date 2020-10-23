@@ -20,15 +20,13 @@ public:
 	float movementSpeed;
 	float lookSpeed;
 	glm::vec2 prevMousePosition;
-	Transform* transform;
-	Camera();
-	Camera(glm::vec3 initialPos, float aspectRatio);
+	Camera(float aspectRatio);
 	//glm::mat4 GetViewMatrix();
 	//glm::mat4 GetProjectionMatrix();
 	//void UpdateProjectionMatrix(float aspect);
 	//void Update(float dt, HWND windowHandle);
 	//Transform* GetTransform();
-	Camera& operator=(Camera&& other);
+	Camera& operator=(Camera&& other) noexcept;
 	Camera(Camera&& other) noexcept;
 	Camera(Camera& other);
 	//~Camera();

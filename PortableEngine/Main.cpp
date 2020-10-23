@@ -42,12 +42,17 @@ void Loop()
 	ImGui::End();
 
 	plat->GetInputSystem()->GetKeyPressed();
-	auto view = registry.view<Mesh, Renderer>();
+	auto view = registry.view<Mesh, Renderer, Transform>();
 	graph->ClearScreen();
+	auto camEntityView = registry.view<Camera>();
+	//Camera& camera = registry.get<Camera>(camEntityView[0]);
+	auto [camera, camTransform] = registry.get<Camera, Transform>(camEntityView[0]);
+	CameraSystem::CalculateViewMatrix(camera, camTransform);
 	for (auto renderable : view)
 	{
 		Renderer& renderer = registry.get<Renderer>(renderable);
 		Mesh& mesh = registry.get<Mesh>(renderable);
+		Transform& meshTransform = registry.get<Transform>(renderable);
 		for (auto it = mesh.GetRawVertices().begin(); it != mesh.GetRawVertices().end(); ++it)
 		{
 			it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
@@ -55,11 +60,10 @@ void Loop()
 		LoadMesh(renderer, mesh);
 		//renderer.Update();
 		//renderer.Draw();
-		UpdateRenderer(renderer);
+		UpdateRenderer(renderer, meshTransform);
 		Draw(renderer);
 	}
-	auto camEntityView = registry.view<Camera>();
-	Camera& camera = registry.get<Camera>(camEntityView[0]);
+	//camera.transform = transform;
 	DrawGizmo(camera);
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -80,10 +84,10 @@ int main(int argc, char* argv[])
 	auto entityTwo = registry.create();
 	auto cameraEntity = registry.create();
 
-	Camera& cam = registry.emplace<Camera>(cameraEntity, glm::vec3(0, 0, -3), (float)window->width / window->height);
 	Transform& camTransform = registry.emplace<Transform>(cameraEntity);
+	Camera& cam = registry.emplace<Camera>(cameraEntity, (float)window->width / window->height);
 	camTransform.position += glm::vec3(0, 0, -3);
-	cam.transform = &camTransform;
+	//cam.transform = &camTransform;
 	CameraSystem::CalculateProjectionMatrix(cam, (float)window->width / window->height);
 	//Camera cam = Camera(glm::vec3(0, 0, -3), (float)window->width / window->height);
 
@@ -112,6 +116,7 @@ int main(int argc, char* argv[])
 
 	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/cone.obj").c_str());
 	Renderer& renderer = registry.emplace<Renderer>(entity, plat, &cam);
+	Transform& t1 = registry.emplace<Transform>(entity);
 	Load(renderer);
 	//renderer.LoadMesh(mesh.GetRawVertices());
 	LoadMesh(renderer, mesh);
@@ -122,8 +127,10 @@ int main(int argc, char* argv[])
 	//rendererTwo.LoadMesh(helix.GetRawVertices());
 	LoadMesh(rendererTwo, helix);
 
-	plat->GetInputSystem()->RegisterRightMouseFunction([&cam, &camTransform]()
+	plat->GetInputSystem()->RegisterRightMouseFunction([]()
 	{
+		auto camView = registry.view<Camera>();
+		auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
 		glm::vec2 delta = plat->GetInputSystem()->GetCursorPosition() - plat->GetInputSystem()->GetPreviousCursorPosition();
 		float camRotX = camTransform.rotation.x;
 		bool tooFarUp = camRotX > 3.f / 2;
@@ -153,8 +160,10 @@ int main(int argc, char* argv[])
 		}
 	});
 
-	auto MoveCamera = [&camTransform](glm::vec3 dir) {
-		return[&camTransform, dir]() {
+	auto MoveCamera = [](glm::vec3 dir) {
+		return[dir]() {
+			auto camView = registry.view<Camera>();
+			auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
 			TransformSystem::MoveRelative(dir, &camTransform);
 		};
 	};

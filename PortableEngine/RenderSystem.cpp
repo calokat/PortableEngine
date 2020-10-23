@@ -47,13 +47,12 @@ void Draw(Renderer& renderer)
 	glBindVertexArray(0);
 }
 
-void UpdateRenderer(Renderer& renderer)
+void UpdateRenderer(Renderer& renderer, Transform meshTransform)
 {
 	glUseProgram(renderer.program);
-	CameraSystem::CalculateViewMatrix(*renderer.camera);
 	glUniformMatrix4fv(renderer.viewLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->view));
 	glUniformMatrix4fv(renderer.projLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->projection));
-	glUniformMatrix4fv(renderer.modelLoc, 1, GL_FALSE, glm::value_ptr(newView));
+	glUniformMatrix4fv(renderer.modelLoc, 1, GL_FALSE, glm::value_ptr(meshTransform.worldMatrix));
 }
 
 void DrawGizmo(Camera camera)

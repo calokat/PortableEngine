@@ -121,13 +121,7 @@ Transform& Transform::operator=(Transform&& other)
 
 Transform& Transform::operator=(Transform& other)
 {
-	if (this != &other)
-	{
-		this->worldMatrix = other.worldMatrix;
-		this->position = other.position;
-		this->rotation = other.rotation;
-		this->scale = other.scale;
-	}
+	*this = std::move(other);
 	return *this;
 }
 

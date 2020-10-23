@@ -1,10 +1,10 @@
 #include "Camera.h"
 #include <iostream>
-Camera::Camera() : Camera(glm::vec3(0, 0, 0), 1)
-{
-}
+//Camera::Camera() : Camera(glm::vec3(0, 0, 0), 1)
+//{
+//}
 
-Camera::Camera(glm::vec3 initialPos, float aspectRatio)
+Camera::Camera(float aspectRatio)
 {
 	//transform = new Transform();
 	nearPlaneDistance = .1f;
@@ -100,7 +100,7 @@ Camera::Camera(glm::vec3 initialPos, float aspectRatio)
 //	return transform;
 //}
 
-Camera& Camera::operator=(Camera&& other)
+Camera& Camera::operator=(Camera&& other) noexcept
 {
 	if (this != &other)
 	{
@@ -114,7 +114,6 @@ Camera& Camera::operator=(Camera&& other)
 		this->lookSpeed = other.lookSpeed;
 		this->prevMousePosition = other.prevMousePosition;
 		//this->transform = new Transform((*other.transform));
-		this->transform = other.transform;
 	}
 	return *this;
 }

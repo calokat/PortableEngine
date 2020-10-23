@@ -4,7 +4,7 @@
 class CameraSystem
 {
 public:
-	static void CalculateViewMatrix(Camera& camera);
+	static void CalculateViewMatrix(Camera& camera, Transform camTransform);
 	static void CalculateProjectionMatrix(Camera& camera, float aspect);
 };
 

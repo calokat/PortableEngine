@@ -10,5 +10,5 @@
 void Load(Renderer& renderer);
 void LoadMesh(Renderer& renderer, Mesh mesh);
 void Draw(Renderer& renderer);
-void UpdateRenderer(Renderer& renderer);
+void UpdateRenderer(Renderer& renderer, Transform meshTransform);
 void DrawGizmo(Camera camera);
