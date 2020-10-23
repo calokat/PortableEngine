@@ -20,6 +20,7 @@
 #include <ImGuizmo.h>
 #include "TransformSystem.h"
 #include "CameraSystem.h"
+#include "GizmoSystem.h"
 
 IPlatform* plat;
 IGraphicsAPI* graph;
@@ -64,7 +65,7 @@ void Loop()
 		Draw(renderer);
 	}
 	//camera.transform = transform;
-	DrawGizmo(camera);
+	GizmoSystem::DrawGizmo(camera);
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	graph->_SwapBuffers();
@@ -121,6 +122,8 @@ int main(int argc, char* argv[])
 	//renderer.LoadMesh(mesh.GetRawVertices());
 	LoadMesh(renderer, mesh);
 
+	GizmoSystem::Select(&t1);
+
 	Mesh& helix = registry.emplace<Mesh>(entityTwo, plat->GetAssetPath("../../Assets/Models/helix.obj").c_str());
 	Renderer& rendererTwo = registry.emplace<Renderer>(entityTwo, plat, &cam);
 	Load(rendererTwo);
@@ -174,6 +177,11 @@ int main(int argc, char* argv[])
 	plat->GetInputSystem()->RegisterKeyPressFunction('d', MoveCamera(glm::vec3(-1 * camMoveSpeed, 0, 0)));
 	plat->GetInputSystem()->RegisterKeyPressFunction('q', MoveCamera(glm::vec3(0, -1 * camMoveSpeed, 0)));
 	plat->GetInputSystem()->RegisterKeyPressFunction('e', MoveCamera(glm::vec3(0, 1 * camMoveSpeed, 0)));
+
+	// gizmo keyboard controls
+	plat->GetInputSystem()->RegisterKeyPressFunction('r', []() {GizmoSystem::op = ImGuizmo::SCALE; });
+	//plat->GetInputSystem()->RegisterKeyPressFunction('e', []() {GizmoSystem::op = ImGuizmo::ROTATE; });
+	//plat->GetInputSystem()->RegisterKeyPressFunction('w', []() {GizmoSystem::op = ImGuizmo::TRANSLATE; });
 
 #ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop(Loop, 0, 1);
