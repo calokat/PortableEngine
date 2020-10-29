@@ -2,9 +2,17 @@
 #pragma once
 #include "IInputSystem.h"
 #include <entt.hpp>
-#include <map>
+#include <vector>
 #include <functional>
 #include <Windows.h>
+
+
+struct InputFunction 
+{
+	std::function<void()> func;
+	char key;
+};
+
 class WindowsInputSystem :
 	public IInputSystem
 {
@@ -17,7 +25,8 @@ public:
 	glm::vec2 GetPreviousCursorPosition();
 
 private:
-	std::map<char, std::function<void()>> keyToFunction;
+	//std::map<char, std::function<void()>> keyToFunction;
+	std::vector<InputFunction> keyToFunction;
 	std::function<void()> rightClickFunction;
 	HWND hwnd;
 	glm::vec2 cursorPos;

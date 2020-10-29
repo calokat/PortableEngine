@@ -13,11 +13,11 @@ void WindowsInputSystem::GetKeyPressed()
 	cursorPos = glm::vec2(mousePos.x, mousePos.y);
 
 
-	for (std::_Tree_const_iterator it = keyToFunction.begin(); it != keyToFunction.end(); ++it)
+	for (auto it = keyToFunction.begin(); it != keyToFunction.end(); ++it)
 	{
-		if (GetAsyncKeyState(it->first) & 0x8000)
+		if (GetAsyncKeyState(it->key) & 0x8000)
 		{
-			it->second();
+			it->func();
 		}
 	}
 
@@ -32,7 +32,8 @@ void WindowsInputSystem::RegisterKeyPressFunction(char key, std::function<void()
 	// To my knowledge, the Windows API requires the char in GetAsyncKeyState() to be uppercase,
 	// while Emscripten is case sensitive, i.e. pressing just the A key results in 'a', 
 	// while A + Shift is 'A'. toupper() helps to strike a compromise.
-	keyToFunction.emplace(toupper(key), function);
+	//InputFunction ipF = ;
+	keyToFunction.push_back({ function, (char)toupper(key) });
 }
 
 void WindowsInputSystem::RegisterRightMouseFunction(std::function<void()> rcFunc)
