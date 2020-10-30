@@ -218,6 +218,7 @@
     <ClInclude Include="OpenGLAPI.h" />
     <ClInclude Include="OpenGLESContext.h" />
     <ClInclude Include="PortableGame.h" />
+    <ClInclude Include="Relationship.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="Shader.h" />
