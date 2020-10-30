@@ -70,23 +70,23 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\caleb\Documents\GitHub\json\single_include\nlohmann;C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\caleb\Documents\common\glfw\lib\Debug;C:\Users\caleb\Documents\common\glew\lib\Release\x64;$(LibraryPath)</LibraryPath>
     <SourcePath>C:\Users\caleb\Documents\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\caleb\Documents\GitHub\json\single_include\nlohmann;C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\caleb\Documents\common\glfw\lib\Debug;C:\Users\caleb\Documents\common\glew\lib\Release\x64;$(LibraryPath)</LibraryPath>
     <SourcePath>C:\Users\caleb\Documents\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>C:\Users\caleb\Documents\common\glew\lib\Release\x64;C:\Users\caleb\Documents\common\glfw\lib\Release;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>C:\Users\caleb\Documents\GitHub\json\single_include\nlohmann;C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <SourcePath>C:\Users\caleb\Documents\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>C:\Users\caleb\Documents\common\glew\lib\Release\x64;C:\Users\caleb\Documents\common\glfw\lib\Release;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>C:\Users\caleb\Documents\GitHub\json\single_include\nlohmann;C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <SourcePath>C:\Users\caleb\Documents\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
