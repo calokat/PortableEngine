@@ -192,6 +192,7 @@
     <ClCompile Include="WinOpenGLContext.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABB.h" />
     <ClInclude Include="BufferStructs.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraSystem.h" />
