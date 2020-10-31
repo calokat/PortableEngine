@@ -29,14 +29,14 @@ void Load(Renderer& renderer)
 void LoadMesh(Renderer& renderer, Mesh mesh)
 {
 	glBindVertexArray(renderer.vao);
-	glBufferData(GL_ARRAY_BUFFER, mesh.GetRawVertices().size() * sizeof(Vertex), mesh.GetRawVertices().data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, mesh.rawVertices.size() * sizeof(Vertex), mesh.rawVertices.data(), GL_STATIC_DRAW);
 	GLint posAttrib = glGetAttribLocation(renderer.program, "in_position");
 	glEnableVertexAttribArray(posAttrib);
 	SetupAttribute(posAttrib, 3, GL_FLOAT, Vertex, Position);
 	GLint vertColorAttrib = glGetAttribLocation(renderer.program, "in_color");
 	glEnableVertexAttribArray(vertColorAttrib);
 	SetupAttribute(vertColorAttrib, 3, GL_FLOAT, Vertex, Color);
-	renderer.numVertices = mesh.GetRawVertices().size();
+	renderer.numVertices = mesh.rawVertices.size();
 	glBindVertexArray(0);
 }
 
