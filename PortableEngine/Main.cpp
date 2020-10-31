@@ -21,6 +21,7 @@
 #include "TransformSystem.h"
 #include "CameraSystem.h"
 #include "GizmoSystem.h"
+#include "MeshLoaderSystem.h"
 #include <json.hpp>
 IPlatform* plat;
 IGraphicsAPI* graph;
@@ -121,7 +122,7 @@ void Loop()
 		Renderer& renderer = registry.get<Renderer>(renderable);
 		Mesh& mesh = registry.get<Mesh>(renderable);
 		Transform& meshTransform = registry.get<Transform>(renderable);
-		for (auto it = mesh.GetRawVertices().begin(); it != mesh.GetRawVertices().end(); ++it)
+		for (auto it = mesh.rawVertices.begin(); it != mesh.rawVertices.end(); ++it)
 		{
 			it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
 		}
@@ -188,6 +189,7 @@ int main(int argc, char* argv[])
 	graph->Init();
 
 	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/cone.obj").c_str());
+	MeshLoaderSystem::LoadMesh(mesh.path.c_str(), mesh);
 	Renderer& renderer = registry.emplace<Renderer>(entity, plat, &cam);
 	Transform& t1 = registry.emplace<Transform>(entity);
 	Load(renderer);
