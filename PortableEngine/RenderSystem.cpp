@@ -5,7 +5,7 @@
 
 static glm::mat4 newView(1.0f);
 
-void Load(Renderer& renderer)
+void Load(Renderer& renderer, Camera camera)
 {
 	glGenVertexArrays(1, &renderer.vao);
 	glBindVertexArray(renderer.vao);
@@ -22,8 +22,8 @@ void Load(Renderer& renderer)
 	renderer.modelLoc = glGetUniformLocation(renderer.program, "model");
 	glm::mat4 model(1.0f);
 	glUniformMatrix4fv(renderer.modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-	glUniformMatrix4fv(renderer.viewLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->view));
-	glUniformMatrix4fv(renderer.projLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->projection));
+	glUniformMatrix4fv(renderer.viewLoc, 1, GL_FALSE, glm::value_ptr(camera.view));
+	glUniformMatrix4fv(renderer.projLoc, 1, GL_FALSE, glm::value_ptr(camera.projection));
 }
 
 void LoadMesh(Renderer& renderer, Mesh mesh)
@@ -47,11 +47,11 @@ void Draw(Renderer& renderer)
 	glBindVertexArray(0);
 }
 
-void UpdateRenderer(Renderer& renderer, Transform meshTransform)
+void UpdateRenderer(Renderer& renderer, Transform meshTransform, Camera camera)
 {
 	glUseProgram(renderer.program);
-	glUniformMatrix4fv(renderer.viewLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->view));
-	glUniformMatrix4fv(renderer.projLoc, 1, GL_FALSE, glm::value_ptr(renderer.camera->projection));
+	glUniformMatrix4fv(renderer.viewLoc, 1, GL_FALSE, glm::value_ptr(camera.view));
+	glUniformMatrix4fv(renderer.projLoc, 1, GL_FALSE, glm::value_ptr(camera.projection));
 	glUniformMatrix4fv(renderer.modelLoc, 1, GL_FALSE, glm::value_ptr(meshTransform.worldMatrix));
 }
 
