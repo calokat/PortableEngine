@@ -177,6 +177,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshLoaderSystem.cpp" />
     <ClCompile Include="OpenGLAPI.cpp" />
     <ClCompile Include="OpenGLESContext.cpp" />
     <ClCompile Include="PortableGame.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshLoaderSystem.h" />
     <ClInclude Include="OpenGLAPI.h" />
     <ClInclude Include="OpenGLESContext.h" />
     <ClInclude Include="PortableGame.h" />
