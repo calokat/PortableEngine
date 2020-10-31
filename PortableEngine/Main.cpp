@@ -21,12 +21,79 @@
 #include "TransformSystem.h"
 #include "CameraSystem.h"
 #include "GizmoSystem.h"
-
+#include <json.hpp>
 IPlatform* plat;
 IGraphicsAPI* graph;
 entt::registry registry;
 
 bool show_demo_window = true;
+using json = nlohmann::json;
+void to_json(json& j, const glm::vec3& vec)
+{
+	j = json{ {"x", vec.x}, {"y", vec.y}, {"z", vec.z} };
+}
+
+void from_json(const json& j, glm::vec3& vec)
+{
+	j.at("x").get_to(vec.x);
+	j.at("y").get_to(vec.y);
+	j.at("z").get_to(vec.z);
+}
+
+void to_json(json& j, const glm::mat4& mat)
+{
+	j = json{
+		{"00", mat[0][0]}, {"01", mat[0][1]}, {"02", mat[0][2]}, {"03", mat[0][3]},
+		{"10", mat[1][0]}, {"11", mat[1][1]}, {"12", mat[1][2]}, {"13", mat[1][3]},
+		{"20", mat[2][0]}, {"21", mat[2][1]}, {"22", mat[2][2]}, {"23", mat[2][3]},
+		{"30", mat[3][0]}, {"31", mat[3][1]}, {"32", mat[3][2]}, {"33", mat[3][3]},
+	};
+}
+
+void from_json(const json& j, glm::mat4& mat)
+{
+	j.at("00").get_to(mat[0][0]);
+	j.at("01").get_to(mat[0][1]);
+	j.at("02").get_to(mat[0][2]);
+	j.at("03").get_to(mat[0][3]);
+	j.at("10").get_to(mat[1][0]);
+	j.at("11").get_to(mat[1][1]);
+	j.at("12").get_to(mat[1][2]);
+	j.at("13").get_to(mat[1][3]);
+	j.at("20").get_to(mat[2][0]);
+	j.at("21").get_to(mat[2][1]);
+	j.at("22").get_to(mat[2][2]);
+	j.at("23").get_to(mat[2][3]);
+	j.at("30").get_to(mat[3][0]);
+	j.at("31").get_to(mat[3][1]);
+	j.at("32").get_to(mat[3][2]);
+	j.at("33").get_to(mat[3][3]);
+}
+
+void to_json(json& j, const Transform& t)
+{
+	json worldJson, posJson, rotJson, scaleJson;
+	to_json(worldJson, t.worldMatrix);
+	to_json(posJson, t.position);
+	to_json(rotJson, t.rotation);
+	to_json(scaleJson, t.scale);
+	j["worldMatrix"] = worldJson;
+	j["position"] = posJson;
+	j["rotation"] = rotJson;
+	j["scale"] = scaleJson;
+
+}
+
+void from_json(json& j, Transform& t)
+{
+	//j.at("worldMatrix").get_to(t.worldMatrix);
+	//j["worldMatrix"] = t.position;
+	//j.at("worldMatrix").get_to(t.position);
+	from_json(j["worldMatrix"], t.worldMatrix);
+	from_json(j["position"], t.position);
+	from_json(j["rotation"], t.rotation);
+	from_json(j["scale"], t.scale);
+}
 
 void Loop()
 {
@@ -89,6 +156,11 @@ int main(int argc, char* argv[])
 	Camera& cam = registry.emplace<Camera>(cameraEntity, (float)window->width / window->height);
 	camTransform.position += glm::vec3(0, 0, -3);
 	//cam.transform = &camTransform;
+	json daddy = camTransform;
+	std::ofstream jsonStream("test.json");
+	jsonStream << daddy << std::endl;
+	Transform diditwork;
+	from_json(daddy, diditwork);
 	CameraSystem::CalculateProjectionMatrix(cam, (float)window->width / window->height);
 	//Camera cam = Camera(glm::vec3(0, 0, -3), (float)window->width / window->height);
 
