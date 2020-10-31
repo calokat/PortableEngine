@@ -21,7 +21,9 @@ public:
 	GLuint vao, vbo, ibo;
 	GLint projLoc, viewLoc, modelLoc;
 	int numVertices;
-	Renderer(IPlatform*);
+	std::string vertexShaderPath;
+	std::string fragmentShaderPath;
+	Renderer(std::string vertexShaderPathParam, std::string fragmentShaderPathParam);
 	//void LoadMesh(std::vector<Vertex>);
 	//void Draw();
 	//void Update();

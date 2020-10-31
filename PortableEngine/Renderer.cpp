@@ -2,22 +2,24 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-Renderer::Renderer(IPlatform* plat)
+Renderer::Renderer(std::string vertexShaderPathParam, std::string fragmentShaderPathParam)
 {
 	//glGenVertexArrays(1, &vao);
 	//glBindVertexArray(vao);
 	//glGenBuffers(1, &vbo);
 	//glGenBuffers(1, &ibo);
 	//glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	this->vertexShaderPath = vertexShaderPathParam;
+	this->fragmentShaderPath = fragmentShaderPathParam;
 #ifndef __EMSCRIPTEN__
-	vertex = new Shader(plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), GL_VERTEX_SHADER);
+	vertex = new Shader(vertexShaderPathParam, GL_VERTEX_SHADER);
 #else
-	vertex = new Shader(plat->GetAssetPath("../../Shaders/GLSL-ES/vertex.glsl"), GL_VERTEX_SHADER);
+	vertex = new Shader(fragmentShaderPathParam, GL_VERTEX_SHADER);
 #endif
 #ifndef __EMSCRIPTEN__
-	pixel = new Shader(plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"), GL_FRAGMENT_SHADER);
+	pixel = new Shader(fragmentShaderPathParam, GL_FRAGMENT_SHADER);
 #else
-	pixel = new Shader(plat->GetAssetPath("../../Shaders/GLSL-ES/fragment.glsl"), GL_FRAGMENT_SHADER);
+	pixel = new Shader(fragmentShaderPathParam, GL_FRAGMENT_SHADER);
 #endif
 	vertex->Compile();
 	pixel->Compile();
