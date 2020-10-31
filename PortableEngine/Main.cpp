@@ -129,7 +129,7 @@ void Loop()
 		LoadMesh(renderer, mesh);
 		//renderer.Update();
 		//renderer.Draw();
-		UpdateRenderer(renderer, meshTransform);
+		UpdateRenderer(renderer, meshTransform, camera);
 		Draw(renderer);
 	}
 	//camera.transform = transform;
@@ -190,17 +190,17 @@ int main(int argc, char* argv[])
 
 	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/cone.obj").c_str());
 	MeshLoaderSystem::LoadMesh(mesh.path.c_str(), mesh);
-	Renderer& renderer = registry.emplace<Renderer>(entity, plat, &cam);
+	Renderer& renderer = registry.emplace<Renderer>(entity, plat/*, &cam*/);
 	Transform& t1 = registry.emplace<Transform>(entity);
-	Load(renderer);
+	Load(renderer, cam);
 	//renderer.LoadMesh(mesh.GetRawVertices());
 	LoadMesh(renderer, mesh);
 
 	GizmoSystem::Select(&t1);
 
 	Mesh& helix = registry.emplace<Mesh>(entityTwo, plat->GetAssetPath("../../Assets/Models/helix.obj").c_str());
-	Renderer& rendererTwo = registry.emplace<Renderer>(entityTwo, plat, &cam);
-	Load(rendererTwo);
+	Renderer& rendererTwo = registry.emplace<Renderer>(entityTwo, plat/*, &cam*/);
+	Load(rendererTwo, cam);
 	//rendererTwo.LoadMesh(helix.GetRawVertices());
 	LoadMesh(rendererTwo, helix);
 
