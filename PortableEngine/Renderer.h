@@ -21,8 +21,7 @@ public:
 	GLuint vao, vbo, ibo;
 	GLint projLoc, viewLoc, modelLoc;
 	int numVertices;
-	Camera* camera;
-	Renderer(IPlatform*, Camera*);
+	Renderer(IPlatform*);
 	//void LoadMesh(std::vector<Vertex>);
 	//void Draw();
 	//void Update();

@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-Renderer::Renderer(IPlatform* plat, Camera* cam) : camera(cam)
+Renderer::Renderer(IPlatform* plat)
 {
 	//glGenVertexArrays(1, &vao);
 	//glBindVertexArray(vao);
@@ -81,7 +81,6 @@ Renderer& Renderer::operator=(Renderer&& other)
 		this->viewLoc = other.viewLoc;
 		this->modelLoc = other.modelLoc;
 		this->numVertices = other.numVertices;
-		this->camera = other.camera;
 	}
 	return *this;
 }
@@ -105,6 +104,5 @@ Renderer::Renderer(Renderer& other)
 		this->viewLoc = other.viewLoc;
 		this->modelLoc = other.modelLoc;
 		this->numVertices = other.numVertices;
-		this->camera = other.camera;
 	}
 }
