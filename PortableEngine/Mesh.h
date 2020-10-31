@@ -1,14 +1,12 @@
 #pragma once
 #include <vector>
 #include "Vertex.h"
+#include <string>
 class Mesh
 {
 private:
 	//Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
 	//Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
-	int numIndices;
-	std::vector<Vertex> rawVertices;
-	std::vector<unsigned int> rawIndices;
 	//void CreateBuffers(Vertex* vertices, int numVertices, unsigned int* indices, int numIndicesParam, Microsoft::WRL::ComPtr<ID3D11Device> device);
 
 public:
@@ -18,10 +16,14 @@ public:
 	Mesh(const char* fileName);
 	//Microsoft::WRL::ComPtr<ID3D11Buffer> GetVertexBuffer();
 	//Microsoft::WRL::ComPtr<ID3D11Buffer> GetIndexBuffer();
-	int GetIndexCount();
-	void CalculateTangents(Vertex* verts, int numVerts, unsigned int* indices, int numIndices);
-	std::vector<Vertex>& GetRawVertices();
-	std::vector<unsigned int> GetRawIndices();
+	int numIndices;
+	std::string path;
+	std::vector<Vertex> rawVertices;
+	std::vector<unsigned int> rawIndices;
+	//int GetIndexCount();
+	//void CalculateTangents(Vertex* verts, int numVerts, unsigned int* indices, int numIndices);
+	//std::vector<Vertex>& GetRawVertices();
+	//std::vector<unsigned int> GetRawIndices();
 	// Move assignment operator
 	Mesh& operator=(Mesh&& other);
 	// Move constructor
