@@ -1,8 +1,18 @@
 #include "Camera.h"
 #include <iostream>
-//Camera::Camera() : Camera(glm::vec3(0, 0, 0), 1)
-//{
-//}
+
+Camera::Camera()
+{
+	nearPlaneDistance = 0;
+	farPlaneDistance = 0;
+	movementSpeed = 0;
+	lookSpeed = 0;
+	fieldOfView = 0;
+	aspectRatio = 0;
+	prevMousePosition = { -1, -1 };
+	projection = glm::mat4(1.0f);
+	view = glm::mat4(1.0f);
+}
 
 Camera::Camera(float aspectRatio)
 {

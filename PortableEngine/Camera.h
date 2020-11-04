@@ -20,6 +20,7 @@ public:
 	float movementSpeed;
 	float lookSpeed;
 	glm::vec2 prevMousePosition;
+	Camera();
 	Camera(float aspectRatio);
 	//glm::mat4 GetViewMatrix();
 	//glm::mat4 GetProjectionMatrix();
