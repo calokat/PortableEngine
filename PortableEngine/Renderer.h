@@ -14,8 +14,8 @@
 class Renderer
 {
 public:
-	Shader* vertex;
-	Shader* pixel;
+	Shader vertex;
+	Shader pixel;
 	//IGraphicsAPI* glAPI;
 	GLuint program;
 	GLuint vao, vbo, ibo;
@@ -24,6 +24,7 @@ public:
 	std::string vertexShaderPath;
 	std::string fragmentShaderPath;
 	Renderer(std::string vertexShaderPathParam, std::string fragmentShaderPathParam);
+	Renderer();
 	//void LoadMesh(std::vector<Vertex>);
 	//void Draw();
 	//void Update();

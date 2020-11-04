@@ -13,8 +13,8 @@ void Load(Renderer& renderer, Camera camera)
 	glGenBuffers(1, &renderer.ibo);
 	glBindBuffer(GL_ARRAY_BUFFER, renderer.vbo);
 	renderer.program = glCreateProgram();
-	glAttachShader(renderer.program, renderer.vertex->GetId());
-	glAttachShader(renderer.program, renderer.pixel->GetId());
+	glAttachShader(renderer.program, renderer.vertex.GetId());
+	glAttachShader(renderer.program, renderer.pixel.GetId());
 	glLinkProgram(renderer.program);
 	glUseProgram(renderer.program);
 	renderer.projLoc = glGetUniformLocation(renderer.program, "projection");

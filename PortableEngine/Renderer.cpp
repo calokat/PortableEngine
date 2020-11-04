@@ -12,17 +12,17 @@ Renderer::Renderer(std::string vertexShaderPathParam, std::string fragmentShader
 	this->vertexShaderPath = vertexShaderPathParam;
 	this->fragmentShaderPath = fragmentShaderPathParam;
 #ifndef __EMSCRIPTEN__
-	vertex = new Shader(vertexShaderPathParam, GL_VERTEX_SHADER);
+	vertex = Shader(vertexShaderPathParam, GL_VERTEX_SHADER);
 #else
 	vertex = new Shader(fragmentShaderPathParam, GL_VERTEX_SHADER);
 #endif
 #ifndef __EMSCRIPTEN__
-	pixel = new Shader(fragmentShaderPathParam, GL_FRAGMENT_SHADER);
+	pixel = Shader(fragmentShaderPathParam, GL_FRAGMENT_SHADER);
 #else
 	pixel = new Shader(fragmentShaderPathParam, GL_FRAGMENT_SHADER);
 #endif
-	vertex->Compile();
-	pixel->Compile();
+	vertex.Compile();
+	pixel.Compile();
 	//program = glCreateProgram();
 	//glAttachShader(program, vertex->GetId());
 	//glAttachShader(program, pixel->GetId());
@@ -35,6 +35,15 @@ Renderer::Renderer(std::string vertexShaderPathParam, std::string fragmentShader
 	//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	//glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera->GetViewMatrix()));
 	//glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix()));
+}
+
+Renderer::Renderer()
+{
+	program = -1;
+	vao = -1;
+	vbo = -1;
+	ibo = -1;
+	numVertices = -1;
 }
 
 //void Renderer::LoadMesh(std::vector<Vertex> rawVertices)
@@ -63,8 +72,9 @@ Renderer::Renderer(std::string vertexShaderPathParam, std::string fragmentShader
 
 Renderer::~Renderer()
 {
-	delete vertex;
-	delete pixel;
+	//delete vertex;
+	//delete pixel;
+	printf("%s", vertexShaderPath.c_str());
 }
 
 Renderer& Renderer::operator=(Renderer&& other)
@@ -72,9 +82,7 @@ Renderer& Renderer::operator=(Renderer&& other)
 	if (this != &other)
 	{
 		this->vertex = other.vertex;
-		other.vertex = nullptr;
 		this->pixel = other.pixel;
-		other.pixel = nullptr;
 		this->vao = other.vao;
 		this->vbo = other.vbo;
 		this->ibo = other.ibo;
@@ -83,6 +91,8 @@ Renderer& Renderer::operator=(Renderer&& other)
 		this->viewLoc = other.viewLoc;
 		this->modelLoc = other.modelLoc;
 		this->numVertices = other.numVertices;
+		this->vertexShaderPath = other.vertexShaderPath;
+		this->fragmentShaderPath = other.fragmentShaderPath;
 	}
 	return *this;
 }
@@ -96,15 +106,6 @@ Renderer::Renderer(Renderer& other)
 {
 	if (this != &other)
 	{
-		this->vertex = other.vertex;
-		this->pixel = other.pixel;
-		this->vao = other.vao;
-		this->vbo = other.vbo;
-		this->ibo = other.ibo;
-		this->program = other.program;
-		this->projLoc = other.projLoc;
-		this->viewLoc = other.viewLoc;
-		this->modelLoc = other.modelLoc;
-		this->numVertices = other.numVertices;
+		*this = Renderer(other.vertexShaderPath, other.fragmentShaderPath);
 	}
 }
