@@ -304,10 +304,65 @@ void Loop()
 	ImGuizmo::BeginFrame();
 	ImGuizmo::Enable(true);
 	static float vertColorPick[4];
-	ImGui::Begin("Vertex color picker");
-	ImGui::Text("Vertex color: ");
-	ImGui::ColorPicker4("Vertex color: ", vertColorPick);
-	ImGui::End();
+	ImGui::BeginMainMenuBar();
+	if (ImGui::BeginMenu("File"))
+	{
+		if (ImGui::BeginMenu("New"))
+		{
+			if (ImGui::MenuItem("Cube"))
+			{
+				MakeMesh(plat->GetAssetPath("../../Assets/Models/cube.obj").c_str());
+			}
+			if (ImGui::MenuItem("Helix"))
+			{
+				MakeMesh(plat->GetAssetPath("../../Assets/Models/helix.obj").c_str());
+			}
+			if (ImGui::MenuItem("Cone"))
+			{
+				MakeMesh(plat->GetAssetPath("../../Assets/Models/cone.obj").c_str());
+			}
+			if (ImGui::MenuItem("Cylinder"))
+			{
+				MakeMesh(plat->GetAssetPath("../../Assets/Models/cylinder.obj").c_str());
+			}
+			if (ImGui::MenuItem("Sphere"))
+			{
+				MakeMesh(plat->GetAssetPath("../../Assets/Models/sphere.obj").c_str());
+			}
+			if (ImGui::MenuItem("Torus"))
+			{
+				MakeMesh(plat->GetAssetPath("../../Assets/Models/torus.obj").c_str());
+			}
+			ImGui::EndMenu();
+		}
+		if (ImGui::MenuItem("Save"))
+		{
+			Serialize();
+		}
+		if (ImGui::MenuItem("Open"))
+		{
+			Deserialize();
+		}
+		ImGui::EndMenu();
+	}
+	if (ImGui::BeginMenu("Components"))
+	{
+		if (ImGui::BeginMenu("Color picker"))
+		{
+			ImGui::ColorPicker4("Vertex color: ", vertColorPick);
+			ImGui::EndMenu();
+		}
+		if (ImGui::MenuItem("Random Vertex Colors"))
+		{
+			RandomizeVertexColors();
+		}
+		ImGui::EndMenu();
+	}
+	ImGui::EndMainMenuBar();
+	//ImGui::Begin("Vertex color picker", NULL, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoMove);
+	//ImGui::Text("Vertex color: ");
+	//ImGui::ColorPicker4("Vertex color: ", vertColorPick);
+	//ImGui::End();
 
 	plat->GetInputSystem()->GetKeyPressed();
 	auto view = registry.view<Mesh, Renderer, Transform>();
