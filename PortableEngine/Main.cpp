@@ -222,6 +222,7 @@ void TryDeserializeComponent(std::map<std::string, entt::entity> entityMap, std:
 }
 void Deserialize()
 {
+	GizmoSystem::DeselectAll();
 	registry.clear();
 	std::vector<std::string> storedEntities;
 	std::ifstream entitiesFile("entities.json");
@@ -252,6 +253,11 @@ void Deserialize()
 		Renderer& renderer = registry.get<Renderer>(rv);
 		Load(renderer, camera);
 	}
+	auto meshView = registry.view<Mesh, Transform>();
+	Transform& meshTransform = registry.get<Transform>(*meshView.begin());
+	GizmoSystem::Select(&meshTransform);
+}
+
 }
 
 void Loop()
