@@ -276,6 +276,23 @@ void MakeMesh(const char* path) {
 }
 
 
+void RandomizeVertexColors()
+{
+	auto rcView = registry.view<RandomColor, Mesh, Renderer, Transform>();
+	for (auto rc : rcView)
+	{
+		Mesh& m = registry.get<Mesh>(rc);
+		for (Vertex& v : m.rawVertices)
+		{
+			v.Color = { (rand() % 255) / 255.0f, (rand() % 255) / 255.0f, (rand() % 255) / 255.0f, 1 };
+		}
+		Renderer& renderer = registry.get<Renderer>(rc);
+		LoadMesh(renderer, m);
+		Transform& t = registry.get<Transform>(rc);
+		auto cameraView = registry.view<Camera>();
+		Camera& cam = registry.get<Camera>(*cameraView.begin());
+		UpdateRenderer(renderer, t, cam);
+	}
 }
 
 void Loop()
