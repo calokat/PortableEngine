@@ -190,6 +190,7 @@ void Serialize()
 	TrySerializeComponent<Mesh>();
 	TrySerializeComponent<Camera>();
 	TrySerializeComponent<Renderer>();
+	TrySerializeComponent<RandomColor>();
 }
 template<class T>
 void TryDeserializeComponent(std::map<std::string, entt::entity> entityMap, std::vector<std::string> storedEntities)
@@ -239,6 +240,7 @@ void Deserialize()
 	TryDeserializeComponent<Camera>(entityMap, storedEntities);
 	TryDeserializeComponent<Renderer>(entityMap, storedEntities);
 	TryDeserializeComponent<Transform>(entityMap, storedEntities);
+	TryDeserializeComponent<RandomColor>(entityMap, storedEntities);
 	auto compView = registry.view<Mesh>();
 	for (auto v : compView)
 	{
