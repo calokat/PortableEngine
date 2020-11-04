@@ -149,6 +149,16 @@ void from_json(const json& j, Camera& c)
 	c.movementSpeed = j["movementSpeed"];
 }
 
+void to_json(json& j, const RandomColor& c)
+{
+	j = {};
+}
+
+void from_json(const json& j, RandomColor& c)
+{
+	
+}
+
 template<class T>
 void TrySerializeComponent()
 {
