@@ -376,14 +376,18 @@ void Loop()
 		Renderer& renderer = registry.get<Renderer>(renderable);
 		Mesh& mesh = registry.get<Mesh>(renderable);
 		Transform& meshTransform = registry.get<Transform>(renderable);
-		for (auto it = mesh.rawVertices.begin(); it != mesh.rawVertices.end(); ++it)
+		// if RandomColor component is attached, do not assign every vertex a color
+		if (!registry.has<RandomColor>(renderable))
 		{
-			it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
+			for (auto it = mesh.rawVertices.begin(); it != mesh.rawVertices.end(); ++it)
+			{
+				it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
+			}
 		}
 		LoadMesh(renderer, mesh);
+		UpdateRenderer(renderer, meshTransform, camera);
 		//renderer.Update();
 		//renderer.Draw();
-		UpdateRenderer(renderer, meshTransform, camera);
 		Draw(renderer);
 	}
 	//camera.transform = transform;
