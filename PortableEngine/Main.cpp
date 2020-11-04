@@ -166,11 +166,11 @@ void TrySerializeComponent()
 	std::ofstream jsonFile = std::ofstream(typeName);
 	nlohmann::json json;
 	registry.each([&json](entt::entity e) {
-		T* obj = registry.try_get<T>(e);
-		if (obj != nullptr)
+		if (registry.has<T>(e))
 		{
+			T& obj = registry.get<T>(e);
 			std::string stringified = std::to_string((int)e);
-			json[stringified] = *obj;
+			json[stringified] = obj;
 		}
 	});
 	jsonFile << json << std::endl;
