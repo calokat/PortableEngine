@@ -23,6 +23,8 @@
 #include "GizmoSystem.h"
 #include "MeshLoaderSystem.h"
 #include <json.hpp>
+#include <typeinfo>
+#include <map>
 IPlatform* plat;
 IGraphicsAPI* graph;
 entt::registry registry;
@@ -85,7 +87,7 @@ void to_json(json& j, const Transform& t)
 
 }
 
-void from_json(json& j, Transform& t)
+void from_json(const json& j, Transform& t)
 {
 	//j.at("worldMatrix").get_to(t.worldMatrix);
 	//j["worldMatrix"] = t.position;
@@ -94,6 +96,145 @@ void from_json(json& j, Transform& t)
 	from_json(j["position"], t.position);
 	from_json(j["rotation"], t.rotation);
 	from_json(j["scale"], t.scale);
+}
+
+void to_json(json& j, const Renderer& r)
+{
+	j["vertexShaderPath"] = r.vertexShaderPath;
+	j["fragmentShaderPath"] = r.fragmentShaderPath;
+}
+
+void from_json(const json& j, Renderer& r)
+{
+	r = Renderer(j["vertexShaderPath"], j["fragmentShaderPath"]);
+	r.vertexShaderPath = j["vertexShaderPath"];
+	r.fragmentShaderPath = j["fragmentShaderPath"];
+}
+
+void to_json(json& j, const Mesh& m)
+{
+	j["path"] = m.path;
+}
+
+void from_json(const json& j, Mesh& m)
+{
+	std::string path = j["path"];
+	m = Mesh(j["path"].get<std::string>().c_str());
+}
+
+void to_json(json& j, const Camera& c)
+{
+	to_json(j["view"], c.view);
+	to_json(j["projection"], c.projection);
+	j["fieldOfView"] = c.fieldOfView;
+	j["nearPlaneDistance"] = c.nearPlaneDistance;
+	j["farPlaneDistance"] = c.farPlaneDistance;
+	j["movementSpeed"] = c.movementSpeed;
+}
+
+void from_json(const json& j, Camera& c)
+{
+	from_json(j["view"], c.view);
+	from_json(j["projection"], c.projection);
+	c.fieldOfView = j["fieldOfView"];
+	c.nearPlaneDistance = j["nearPlaneDistance"];
+	c.farPlaneDistance = j["farPlaneDistance"];
+	c.movementSpeed = j["movementSpeed"];
+}
+
+template<class T>
+void TrySerializeComponent()
+{
+	std::string typeName = std::string(typeid(T).name()).append(".json");
+	std::ofstream jsonFile = std::ofstream(typeName);
+	nlohmann::json json;
+	registry.each([&json](entt::entity e) {
+		T* obj = registry.try_get<T>(e);
+		if (obj != nullptr)
+		{
+			std::string stringified = std::to_string((int)e);
+			json[stringified] = *obj;
+		}
+	});
+	jsonFile << json << std::endl;
+}
+void Serialize()
+{
+	json entitiesJson;
+	std::vector<std::string> stringifiedEntities;
+	registry.each([&stringifiedEntities](entt::entity e)
+	{
+		stringifiedEntities.push_back(std::to_string((int)e));
+	});
+	entitiesJson = stringifiedEntities;
+	std::ofstream entitiesFile("entities.json");
+	entitiesFile << entitiesJson << std::endl;
+	TrySerializeComponent<Transform>();
+	TrySerializeComponent<Mesh>();
+	TrySerializeComponent<Camera>();
+	TrySerializeComponent<Renderer>();
+}
+template<class T>
+void TryDeserializeComponent(std::map<std::string, entt::entity> entityMap, std::vector<std::string> storedEntities)
+{
+	std::string g = std::string(typeid(T).name()).append(".json");
+	std::ifstream inFile(g);
+	json objJson;
+	inFile >> objJson;
+	//T obj = objJson.get<T>();
+	for (auto it = storedEntities.begin(); it != storedEntities.end(); ++it)
+	{
+		//auto compIterator = objJson.find(*it);
+		if (objJson.find(*it) != objJson.end())
+		{
+			auto compIter = objJson[*it];
+			//auto meshMaybe = compIter.get<Mesh>();
+			T obj;
+			from_json(compIter, obj);
+			//T comp;
+			//from_json(compIter->, comp);
+			//T comp = objJson[*it];
+			//T comp = objJson[*it].get<T>();
+			//objJson[*it];
+			//T comp;
+			//from_json(objJson[*it], comp);
+
+			registry.emplace<T>(entityMap[*it], std::move(obj));
+		}
+	}
+}
+void Deserialize()
+{
+	registry.clear();
+	std::vector<std::string> storedEntities;
+	std::ifstream entitiesFile("entities.json");
+	json entitiesJson;
+	entitiesFile >> entitiesJson;
+	storedEntities = entitiesJson.get<std::vector<std::string>>();
+	std::map<std::string, entt::entity> entityMap;
+	for (auto it = storedEntities.begin(); it != storedEntities.end(); ++it)
+	{
+		entt::entity e = registry.create();
+		entityMap.emplace(*it, e);
+	}
+	TryDeserializeComponent<Mesh>(entityMap, storedEntities);
+	TryDeserializeComponent<Camera>(entityMap, storedEntities);
+	TryDeserializeComponent<Renderer>(entityMap, storedEntities);
+	TryDeserializeComponent<Transform>(entityMap, storedEntities);
+	auto compView = registry.view<Mesh>();
+	for (auto v : compView)
+	{
+		Mesh& m = registry.get<Mesh>(v);
+		MeshLoaderSystem::LoadMesh(m.path.c_str(), m);
+	}
+	auto rendererView = registry.view<Renderer>();
+	auto cameraView = registry.view<Camera>();
+	Camera& camera = registry.get<Camera>(cameraView[0]);
+	for (auto rv : rendererView)
+	{
+		Renderer& renderer = registry.get<Renderer>(rv);
+		Load(renderer, camera);
+	}
 }
 
 void Loop()
@@ -147,7 +288,6 @@ int main(int argc, char* argv[])
 	//  - You may want to use something more advanced, like Visual Leak Detector
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
-
 	GameWindow* window = new GameWindow(0, 0, 800, 600);
 	auto entity = registry.create();
 	auto entityTwo = registry.create();
@@ -157,14 +297,8 @@ int main(int argc, char* argv[])
 	Camera& cam = registry.emplace<Camera>(cameraEntity, (float)window->width / window->height);
 	camTransform.position += glm::vec3(0, 0, -3);
 	//cam.transform = &camTransform;
-	json daddy = camTransform;
-	std::ofstream jsonStream("test.json");
-	jsonStream << daddy << std::endl;
-	Transform diditwork;
-	from_json(daddy, diditwork);
 	CameraSystem::CalculateProjectionMatrix(cam, (float)window->width / window->height);
 	//Camera cam = Camera(glm::vec3(0, 0, -3), (float)window->width / window->height);
-
 	float camMoveSpeed = .05f;
 	glm::vec2 prevCursorPos{-1, -1}, currentCursorPos;
 
@@ -198,11 +332,6 @@ int main(int argc, char* argv[])
 
 	GizmoSystem::Select(&t1);
 
-	Mesh& helix = registry.emplace<Mesh>(entityTwo, plat->GetAssetPath("../../Assets/Models/helix.obj").c_str());
-	Renderer& rendererTwo = registry.emplace<Renderer>(entityTwo, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
-	Load(rendererTwo, cam);
-	//rendererTwo.LoadMesh(helix.GetRawVertices());
-	LoadMesh(rendererTwo, helix);
 
 	plat->GetInputSystem()->RegisterRightMouseFunction([]()
 	{
@@ -257,6 +386,21 @@ int main(int argc, char* argv[])
 	plat->GetInputSystem()->RegisterKeyPressFunction('e', []() {GizmoSystem::op = ImGuizmo::ROTATE; });
 	plat->GetInputSystem()->RegisterKeyPressFunction('w', []() {GizmoSystem::op = ImGuizmo::TRANSLATE; });
 
+	plat->GetInputSystem()->RegisterKeyPressFunction('b', []() {Serialize(); });
+	plat->GetInputSystem()->RegisterKeyPressFunction('m', []() {Deserialize(); });
+	plat->GetInputSystem()->RegisterKeyPressFunction('l', []() {
+		auto camView = registry.view<Camera>();
+		auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
+		glm::vec3 newMeshPos = camTransform.position + TransformSystem::CalculateForward(&camTransform);
+		auto newMeshEntity = registry.create();
+		Mesh& newMesh = registry.emplace<Mesh>(newMeshEntity, plat->GetAssetPath("../../Assets/Models/cube.obj").c_str());
+		MeshLoaderSystem::LoadMesh(newMesh.path.c_str(), newMesh);
+		Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
+		meshTransform.position = newMeshPos;
+		TransformSystem::CalculateWorldMatrix(&meshTransform);
+		Renderer& newMeshRenderer = registry.emplace<Renderer>(newMeshEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
+		Load(newMeshRenderer, camera);
+	});
 #ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop(Loop, 0, 1);
 #else
