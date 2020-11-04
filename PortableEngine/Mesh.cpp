@@ -551,6 +551,7 @@ Mesh& Mesh::operator=(Mesh&& other)
 		this->numIndices = other.numIndices;
 		this->rawVertices = other.rawVertices;
 		this->rawIndices = other.rawIndices;
+		this->path = other.path;
 	}
 	return *this;
 }
