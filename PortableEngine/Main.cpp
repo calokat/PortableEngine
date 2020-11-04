@@ -260,6 +260,22 @@ void Deserialize()
 	GizmoSystem::Select(&meshTransform);
 }
 
+void MakeMesh(const char* path) {
+	auto camView = registry.view<Camera>();
+	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
+	glm::vec3 newMeshPos = camTransform.position + TransformSystem::CalculateForward(&camTransform);
+	auto newMeshEntity = registry.create();
+	Mesh& newMesh = registry.emplace<Mesh>(newMeshEntity, path);
+	MeshLoaderSystem::LoadMesh(newMesh.path.c_str(), newMesh);
+	Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
+	meshTransform.position = newMeshPos;
+	TransformSystem::CalculateWorldMatrix(&meshTransform);
+	Renderer& newMeshRenderer = registry.emplace<Renderer>(newMeshEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
+	Load(newMeshRenderer, camera);
+	registry.emplace<RandomColor>(newMeshEntity);
+}
+
+
 }
 
 void Loop()
@@ -411,21 +427,8 @@ int main(int argc, char* argv[])
 	plat->GetInputSystem()->RegisterKeyPressFunction('e', []() {GizmoSystem::op = ImGuizmo::ROTATE; });
 	plat->GetInputSystem()->RegisterKeyPressFunction('w', []() {GizmoSystem::op = ImGuizmo::TRANSLATE; });
 
-	plat->GetInputSystem()->RegisterKeyPressFunction('b', []() {Serialize(); });
-	plat->GetInputSystem()->RegisterKeyPressFunction('m', []() {Deserialize(); });
-	plat->GetInputSystem()->RegisterKeyPressFunction('l', []() {
-		auto camView = registry.view<Camera>();
-		auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
-		glm::vec3 newMeshPos = camTransform.position + TransformSystem::CalculateForward(&camTransform);
-		auto newMeshEntity = registry.create();
-		Mesh& newMesh = registry.emplace<Mesh>(newMeshEntity, plat->GetAssetPath("../../Assets/Models/cube.obj").c_str());
-		MeshLoaderSystem::LoadMesh(newMesh.path.c_str(), newMesh);
-		Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
-		meshTransform.position = newMeshPos;
-		TransformSystem::CalculateWorldMatrix(&meshTransform);
-		Renderer& newMeshRenderer = registry.emplace<Renderer>(newMeshEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
-		Load(newMeshRenderer, camera);
-	});
+	//plat->GetInputSystem()->RegisterKeyPressFunction('b', []() {Serialize(); });
+	//plat->GetInputSystem()->RegisterKeyPressFunction('m', []() {Deserialize(); });
 #ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop(Loop, 0, 1);
 #else
