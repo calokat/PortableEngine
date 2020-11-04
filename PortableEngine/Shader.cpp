@@ -1,5 +1,11 @@
 #include "Shader.h"
 
+Shader::Shader()
+{
+	shaderType = -1;
+	id = -1;
+}
+
 Shader::Shader(std::string pathArg, GLint typeArg)
 {
 	shaderType = typeArg;
@@ -74,6 +80,16 @@ GLint Shader::GetId()
 }
 
 Shader& Shader::operator=(Shader&& other)
+{
+	if (this != &other)
+	{
+		this->shaderType = other.shaderType;
+		this->id = other.id;
+	}
+	return *this;
+}
+
+Shader& Shader::operator=(Shader& other)
 {
 	if (this != &other)
 	{
