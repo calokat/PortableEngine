@@ -25,6 +25,13 @@
 #include <json.hpp>
 #include <typeinfo>
 #include <map>
+#include <random>
+class RandomColor
+{
+	bool foo;
+public:
+	RandomColor() {};
+};
 IPlatform* plat;
 IGraphicsAPI* graph;
 entt::registry registry;
