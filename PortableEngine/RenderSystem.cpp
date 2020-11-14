@@ -43,7 +43,14 @@ void LoadMesh(Renderer& renderer, Mesh mesh)
 void Draw(Renderer& renderer)
 {
 	glBindVertexArray(renderer.vao);
-	glDrawArrays(GL_TRIANGLES, 0, renderer.numVertices);
+	if (renderer.numVertices == 2)
+	{
+		glDrawArrays(GL_LINES, 0, renderer.numVertices);
+	}
+	else
+	{
+		glDrawArrays(GL_TRIANGLES, 0, renderer.numVertices);
+	}
 	glBindVertexArray(0);
 }
 
