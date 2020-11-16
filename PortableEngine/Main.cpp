@@ -442,8 +442,8 @@ void Loop()
 	ImGui::End();
 	graph->ClearScreen();
 	auto camEntityView = registry.view<Camera>();
-	//Camera& camera = registry.get<Camera>(camEntityView[0]);
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camEntityView[0]);
+	TransformSystem::CalculateWorldMatrix(&camTransform);
 	CameraSystem::CalculateViewMatrix(camera, camTransform);
 	for (auto renderable : view)
 	{
