@@ -507,6 +507,8 @@ int main(int argc, char* argv[])
 	MeshLoaderSystem::LoadMesh(mesh.path.c_str(), mesh);
 	Renderer& renderer = registry.emplace<Renderer>(entity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
 	Transform& t1 = registry.emplace<Transform>(entity);
+	Name& name = registry.emplace<Name>(entity);
+	name = { "Cone" };
 	Load(renderer, cam);
 	//renderer.LoadMesh(mesh.GetRawVertices());
 	LoadMesh(renderer, mesh);
