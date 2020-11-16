@@ -48,7 +48,6 @@ Shader::Shader(std::string pathArg, GLint typeArg)
 
 Shader::~Shader()
 {
- 	printf("Destroying shader\n");
 }
 
 void Shader::Compile()

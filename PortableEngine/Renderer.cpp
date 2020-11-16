@@ -72,9 +72,6 @@ Renderer::Renderer()
 
 Renderer::~Renderer()
 {
-	//delete vertex;
-	//delete pixel;
-	printf("%s", vertexShaderPath.c_str());
 }
 
 Renderer& Renderer::operator=(Renderer&& other)
