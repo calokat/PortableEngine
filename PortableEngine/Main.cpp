@@ -39,6 +39,7 @@ public:
 };
 IPlatform* plat;
 IGraphicsAPI* graph;
+GameWindow* window;
 entt::registry registry;
 
 bool show_demo_window = true;
@@ -303,27 +304,43 @@ void MakeRayFromCamera()
 {
 	auto camView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
-	//auto lineEntity = registry.create();
-	//Mesh& lineMesh = registry.emplace<Mesh>(lineEntity);
-	//lineMesh.numIndices = 2;
-	//lineMesh.path = "";
-	//lineMesh.rawIndices = { 0, 1 };
-	Vertex lineStart = { camTransform.position, {0, 0, 0}, {0, 0}, {0, 0, 0}, {0, 0, 1, 1} };
 	RECT clientRect;
 	GetClientRect(GetDesktopWindow(), &clientRect);
 	glm::vec2 clientDimensions{ clientRect.right - clientRect.left, clientRect.bottom - clientRect.top };
-	glm::vec2 mousePos = plat->GetInputSystem()->GetCursorPosition();
-	float depth;
-	glReadPixels(mousePos.x, mousePos.y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	glm::vec3 toUnproject(mousePos.x, clientDimensions.y - 1 - mousePos.y, depth);
-	//glm::vec4 ohno = glm::vec4(toUnproject.x, toUnproject.y, toUnproject.z, 1)* glm::inverse(camera.projection)* camTransform.worldMatrix;
-	glm::vec3 whoopee = glm::unProject(toUnproject, camera.view, camera.projection, glm::vec4(0, 0, 800, 600));
-	//glm::vec3 whoopee = { ohno.x, ohno.y, ohno.z };
-	whoopee = (whoopee - camTransform.position);
-	whoopee = glm::normalize(whoopee);
-	whoopee *= 5;
+	ImGuiIO& io = ImGui::GetIO();
+
+	ImVec2 mousePos = io.MousePos;
+	//glm::vec2 mousePos = plat->GetInputSystem()->GetCursorPosition();
+
+	// mostly stolen from ImGuizmo.cpp
+	//float ndcX = ((plat->GetInputSystem()->GetCursorPosition().x - window->x) / window->width) * 2.f - 1.f;
+	//float ndcY = (1.f - ((plat->GetInputSystem()->GetCursorPosition().y - window->y) / window->height)) * 2.f - 1.f;
 	
-	MakeMesh(plat->GetAssetPath("../../Assets/Models/cube.obj").c_str(), whoopee);
+	float ndcX = ((mousePos.x - window->x) / window->width) * 2.f - 1.f;
+	float ndcY = (1.f - ((mousePos.y - window->y) / window->height)) * 2.f - 1.f;
+
+
+	glm::mat4 viewProjInverse = camera.projection * camera.view;
+	viewProjInverse = glm::inverse(viewProjInverse);
+	
+	glm::vec4 rayOrigin = glm::vec4(ndcX, ndcY, 0, 1) * viewProjInverse;
+	rayOrigin /= rayOrigin.w;
+	glm::vec4 rayEnd = glm::vec4(ndcX, ndcY, 1.0f - FLT_EPSILON, 1) * viewProjInverse;
+	rayEnd /= rayEnd.w;
+	glm::vec3 ray = glm::normalize(rayOrigin - rayEnd);
+	ray *= 3;
+
+	//float depth;
+	//glReadPixels(mousePos.x, mousePos.y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	//glm::vec3 toUnproject(mousePos.x, clientDimensions.y - 1 - mousePos.y, depth);
+	////glm::vec4 ohno = glm::vec4(toUnproject.x, toUnproject.y, toUnproject.z, 1)* glm::inverse(camera.projection)* camTransform.worldMatrix;
+	//glm::vec3 whoopee = glm::unProject(toUnproject, camera.view, camera.projection, glm::vec4(0, 0, 800, 600));
+	////glm::vec3 whoopee = { ohno.x, ohno.y, ohno.z };
+	//whoopee = (whoopee - camTransform.position);
+	//whoopee = glm::normalize(whoopee);
+	//whoopee *= 5;
+	//
+	MakeMesh(plat->GetAssetPath("../../Assets/Models/cube.obj").c_str(), ray);
 	
 	
 	//whoopee *= 10;
@@ -480,7 +497,7 @@ int main(int argc, char* argv[])
 	//  - You may want to use something more advanced, like Visual Leak Detector
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
-	GameWindow* window = new GameWindow(0, 0, 800, 600);
+	window = new GameWindow(0, 0, 800, 600);
 	auto entity = registry.create();
 	auto entityTwo = registry.create();
 	auto cameraEntity = registry.create();
@@ -582,6 +599,9 @@ int main(int argc, char* argv[])
 
 	//plat->GetInputSystem()->RegisterKeyPressFunction('b', []() {Serialize(); });
 	//plat->GetInputSystem()->RegisterKeyPressFunction('m', []() {Deserialize(); });
+
+	// TODO: Remove this MakeRayFromCamera call
+	plat->GetInputSystem()->RegisterKeyPressFunction('j', []() {MakeRayFromCamera(); });
 #ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop(Loop, 0, 1);
 #else
