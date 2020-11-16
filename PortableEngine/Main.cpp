@@ -262,7 +262,7 @@ void Deserialize()
 	}
 	auto meshView = registry.view<Mesh, Transform>();
 	Transform& meshTransform = registry.get<Transform>(*meshView.begin());
-	GizmoSystem::Select(&meshTransform);
+	GizmoSystem::Select(*meshView.begin());
 }
 
 void MakeMesh(const char* path, const char* name = "GameObject") {
@@ -436,7 +436,7 @@ void Loop()
 		{
 			GizmoSystem::DeselectAll();
 			Transform& newSelected = view.get<Transform>(renderable);
-			GizmoSystem::Select(&newSelected);
+			GizmoSystem::Select(renderable);
 		}
 	}
 	ImGui::End();
@@ -464,8 +464,9 @@ void Loop()
 		//renderer.Draw();
 		Draw(renderer);
 	}
+	auto transformView = registry.view<Transform>();
 	//camera.transform = transform;
-	GizmoSystem::DrawGizmo(camera);
+	GizmoSystem::DrawGizmo(camera, transformView);
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	graph->_SwapBuffers();
@@ -523,7 +524,7 @@ int main(int argc, char* argv[])
 	//renderer.LoadMesh(mesh.GetRawVertices());
 	LoadMesh(renderer, mesh);
 
-	GizmoSystem::Select(&t1);
+	GizmoSystem::Select(entity);
 
 
 	plat->GetInputSystem()->RegisterRightMouseFunction([]()
