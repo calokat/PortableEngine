@@ -303,24 +303,36 @@ void MakeRayFromCamera()
 {
 	auto camView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
-	auto lineEntity = registry.create();
-	Mesh& lineMesh = registry.emplace<Mesh>(lineEntity);
-	lineMesh.numIndices = 2;
-	lineMesh.path = "";
-	lineMesh.rawIndices = { 0, 1 };
-	Vertex lineStart = { camTransform.position, {0, 0, 0}, {0, 0}, {0, 0, 0}, {0, 0, 1, 0} };
+	//auto lineEntity = registry.create();
+	//Mesh& lineMesh = registry.emplace<Mesh>(lineEntity);
+	//lineMesh.numIndices = 2;
+	//lineMesh.path = "";
+	//lineMesh.rawIndices = { 0, 1 };
+	Vertex lineStart = { camTransform.position, {0, 0, 0}, {0, 0}, {0, 0, 0}, {0, 0, 1, 1} };
+	RECT clientRect;
+	GetClientRect(GetDesktopWindow(), &clientRect);
+	glm::vec2 clientDimensions{ clientRect.right - clientRect.left, clientRect.bottom - clientRect.top };
 	glm::vec2 mousePos = plat->GetInputSystem()->GetCursorPosition();
-	glm::vec3 toUnproject(mousePos.x, mousePos.y, .5f);
-	glm::vec3 whoopee = glm::unProject(toUnproject, camTransform.worldMatrix, camera.projection, glm::vec4(0, 0, 800, 600));
+	float depth;
+	glReadPixels(mousePos.x, mousePos.y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	glm::vec3 toUnproject(mousePos.x, clientDimensions.y - 1 - mousePos.y, depth);
+	//glm::vec4 ohno = glm::vec4(toUnproject.x, toUnproject.y, toUnproject.z, 1)* glm::inverse(camera.projection)* camTransform.worldMatrix;
+	glm::vec3 whoopee = glm::unProject(toUnproject, camera.view, camera.projection, glm::vec4(0, 0, 800, 600));
+	//glm::vec3 whoopee = { ohno.x, ohno.y, ohno.z };
 	whoopee = (whoopee - camTransform.position);
-	whoopee *= 10;
-	Vertex lineEnd = { whoopee, {0, 0, 0}, {0, 0}, {0, 0, 0}, {0, 0, 1, 0} };
-	lineMesh.rawVertices = { lineStart, lineEnd };
-	Renderer& lineRenderer = registry.emplace<Renderer>(lineEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
-	Transform& lineTransform = registry.emplace<Transform>(lineEntity);
-	Load(lineRenderer, camera);
-	LoadMesh(lineRenderer, lineMesh);
-
+	whoopee = glm::normalize(whoopee);
+	whoopee *= 5;
+	
+	MakeMesh(plat->GetAssetPath("../../Assets/Models/cube.obj").c_str(), whoopee);
+	
+	
+	//whoopee *= 10;
+	//Vertex lineEnd = { whoopee, {0, 0, 0}, {0, 0}, {0, 0, 0}, {0, 0, 1, 1} };
+	//lineMesh.rawVertices = { lineStart, lineEnd };
+	//Renderer& lineRenderer = registry.emplace<Renderer>(lineEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
+	//Transform& lineTransform = registry.emplace<Transform>(lineEntity);
+	//Load(lineRenderer, camera);
+	//LoadMesh(lineRenderer, lineMesh);
 }
 
 
@@ -472,8 +484,6 @@ int main(int argc, char* argv[])
 	auto entityTwo = registry.create();
 	auto cameraEntity = registry.create();
 
-	auto lineEntity = registry.create();
-
 	Transform& camTransform = registry.emplace<Transform>(cameraEntity);
 	Camera& cam = registry.emplace<Camera>(cameraEntity, (float)window->width / window->height);
 	camTransform.position += glm::vec3(0, 0, -3);
@@ -515,21 +525,6 @@ int main(int argc, char* argv[])
 
 	GizmoSystem::Select(&t1);
 
-	// now create a line
-	Mesh& lineMesh = registry.emplace<Mesh>(lineEntity);
-	lineMesh.numIndices = 2;
-	lineMesh.path = "";
-	lineMesh.rawIndices = { 0, 1 };
-	Vertex lineStart = { {0, 0, 0}, {0, 0, 0}, {0, 0}, {0, 0, 0}, {0, 0, 1, 0} };
-	Vertex lineEnd = { {0, 10, 0}, {0, 0, 0}, {0, 0}, {0, 0, 0}, {0, 0, 1, 0} };
-	lineMesh.rawVertices = { lineStart, lineEnd };
-	Renderer& lineRenderer = registry.emplace<Renderer>(lineEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
-	Transform& lineTransform = registry.emplace<Transform>(lineEntity);
-	Load(lineRenderer, cam);
-	LoadMesh(lineRenderer, lineMesh);
-
-
-	plat->GetInputSystem()->RegisterKeyPressFunction('p', []() {MakeRayFromCamera(); });
 
 	plat->GetInputSystem()->RegisterRightMouseFunction([]()
 	{
