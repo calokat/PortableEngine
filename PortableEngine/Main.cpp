@@ -265,7 +265,7 @@ void Deserialize()
 	GizmoSystem::Select(&meshTransform);
 }
 
-void MakeMesh(const char* path) {
+void MakeMesh(const char* path, const char* name = "GameObject") {
 	auto camView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
 	glm::vec3 newMeshPos = camTransform.position + TransformSystem::CalculateForward(&camTransform);
@@ -278,6 +278,25 @@ void MakeMesh(const char* path) {
 	Renderer& newMeshRenderer = registry.emplace<Renderer>(newMeshEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
 	Load(newMeshRenderer, camera);
 	registry.emplace<RandomColor>(newMeshEntity);
+	Name& nameComp = registry.emplace<Name>(newMeshEntity);
+	nameComp = { name };
+}
+
+void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") {
+	auto camView = registry.view<Camera>();
+	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
+	//glm::vec3 newMeshPos = camTransform.position + TransformSystem::CalculateForward(&camTransform);
+	auto newMeshEntity = registry.create();
+	Mesh& newMesh = registry.emplace<Mesh>(newMeshEntity, path);
+	MeshLoaderSystem::LoadMesh(newMesh.path.c_str(), newMesh);
+	Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
+	meshTransform.position = pos;
+	TransformSystem::CalculateWorldMatrix(&meshTransform);
+	Renderer& newMeshRenderer = registry.emplace<Renderer>(newMeshEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
+	Load(newMeshRenderer, camera);
+	registry.emplace<RandomColor>(newMeshEntity);
+	Name& nameComp = registry.emplace<Name>(newMeshEntity);
+	nameComp = { name };
 }
 
 void MakeRayFromCamera()
@@ -340,27 +359,27 @@ void Loop()
 		{
 			if (ImGui::MenuItem("Cube"))
 			{
-				MakeMesh(plat->GetAssetPath("../../Assets/Models/cube.obj").c_str());
+				MakeMesh(plat->GetAssetPath("../../Assets/Models/cube.obj").c_str(), "Cube");
 			}
 			if (ImGui::MenuItem("Helix"))
 			{
-				MakeMesh(plat->GetAssetPath("../../Assets/Models/helix.obj").c_str());
+				MakeMesh(plat->GetAssetPath("../../Assets/Models/helix.obj").c_str(), "Helix");
 			}
 			if (ImGui::MenuItem("Cone"))
 			{
-				MakeMesh(plat->GetAssetPath("../../Assets/Models/cone.obj").c_str());
+				MakeMesh(plat->GetAssetPath("../../Assets/Models/cone.obj").c_str(), "Cone");
 			}
 			if (ImGui::MenuItem("Cylinder"))
 			{
-				MakeMesh(plat->GetAssetPath("../../Assets/Models/cylinder.obj").c_str());
+				MakeMesh(plat->GetAssetPath("../../Assets/Models/cylinder.obj").c_str(), "Cylinder");
 			}
 			if (ImGui::MenuItem("Sphere"))
 			{
-				MakeMesh(plat->GetAssetPath("../../Assets/Models/sphere.obj").c_str());
+				MakeMesh(plat->GetAssetPath("../../Assets/Models/sphere.obj").c_str(), "Sphere");
 			}
 			if (ImGui::MenuItem("Torus"))
 			{
-				MakeMesh(plat->GetAssetPath("../../Assets/Models/torus.obj").c_str());
+				MakeMesh(plat->GetAssetPath("../../Assets/Models/torus.obj").c_str(), "Torus");
 			}
 			ImGui::EndMenu();
 		}
