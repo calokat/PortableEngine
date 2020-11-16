@@ -413,7 +413,21 @@ void Loop()
 	//ImGui::End();
 
 	plat->GetInputSystem()->GetKeyPressed();
-	auto view = registry.view<Mesh, Renderer, Transform>();
+	auto view = registry.view<Mesh, Renderer, Transform, Name>();
+	ImGui::Begin("Entity List");
+	//ImGui::SetWindowPos("Entity List", { 600, 20 });
+	//ImGui::SetWindowSize({ 200, 780 });
+	for (auto renderable : view)
+	{
+		Name name = view.get<Name>(renderable);
+		if (ImGui::MenuItem(name.nameString.c_str()))
+		{
+			GizmoSystem::DeselectAll();
+			Transform& newSelected = view.get<Transform>(renderable);
+			GizmoSystem::Select(&newSelected);
+		}
+	}
+	ImGui::End();
 	graph->ClearScreen();
 	auto camEntityView = registry.view<Camera>();
 	//Camera& camera = registry.get<Camera>(camEntityView[0]);
