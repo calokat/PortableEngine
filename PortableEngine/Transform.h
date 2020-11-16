@@ -29,4 +29,5 @@ class Transform
 		Transform& operator=(Transform& other);
 		Transform(Transform&& other) noexcept;
 		Transform(Transform& other);
+		bool operator==(Transform& other);
 };

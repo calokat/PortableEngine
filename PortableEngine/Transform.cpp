@@ -134,3 +134,8 @@ Transform::Transform(Transform& other)
 {
 	*this = std::move(other);
 }
+
+bool Transform::operator==(Transform& other)
+{
+	return this->worldMatrix == other.worldMatrix;
+}
