@@ -8,5 +8,8 @@ public:
 	static void Rotate(glm::vec3 rotation, Transform*);
 	static void CalculateWorldMatrix(Transform* transform);
 	static glm::vec3 CalculateForward(Transform* transform);
+	static void CalculatePosition(Transform& transform);
+	static void CalculateEulerAngles(Transform& transform);
+	static void CalculateScale(Transform& transform);
 };
 
