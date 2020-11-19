@@ -22,3 +22,8 @@ void ComponentGUI(Transform& t)
 	//t.rotation = TransformSystem::CalculateEulerAngles(t);
 	//ImGui::DragFloat3("Rotation", glm::value_ptr(t.rotation));
 }
+
+void ComponentGUI(Renderer& r)
+{
+	ImGui::ColorPicker4("Renderer Color", glm::value_ptr(r.vertexColor));
+}
