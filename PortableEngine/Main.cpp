@@ -304,52 +304,19 @@ void MakeRayFromCamera()
 {
 	auto camView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
-	RECT clientRect;
-	GetClientRect(GetDesktopWindow(), &clientRect);
-	glm::vec2 clientDimensions{ clientRect.right - clientRect.left, clientRect.bottom - clientRect.top };
 	ImGuiIO& io = ImGui::GetIO();
-
 	ImVec2 mousePos = io.MousePos;
-	//glm::vec2 mousePos = plat->GetInputSystem()->GetCursorPosition();
-
-	// mostly stolen from ImGuizmo.cpp
-	//float ndcX = ((plat->GetInputSystem()->GetCursorPosition().x - window->x) / window->width) * 2.f - 1.f;
-	//float ndcY = (1.f - ((plat->GetInputSystem()->GetCursorPosition().y - window->y) / window->height)) * 2.f - 1.f;
-	
 	float ndcX = ((mousePos.x - window->x) / window->width) * 2.f - 1.f;
 	float ndcY = (1.f - ((mousePos.y - window->y) / window->height)) * 2.f - 1.f;
-
-
 	glm::mat4 viewProjInverse = camera.projection * camera.view;
 	viewProjInverse = glm::inverse(viewProjInverse);
-	
 	glm::vec4 rayOrigin = glm::vec4(ndcX, ndcY, 0, 1) * viewProjInverse;
 	rayOrigin /= rayOrigin.w;
 	glm::vec4 rayEnd = glm::vec4(ndcX, ndcY, 1.0f - FLT_EPSILON, 1) * viewProjInverse;
 	rayEnd /= rayEnd.w;
 	glm::vec3 ray = glm::normalize(rayOrigin - rayEnd);
 	ray *= 3;
-
-	//float depth;
-	//glReadPixels(mousePos.x, mousePos.y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	//glm::vec3 toUnproject(mousePos.x, clientDimensions.y - 1 - mousePos.y, depth);
-	////glm::vec4 ohno = glm::vec4(toUnproject.x, toUnproject.y, toUnproject.z, 1)* glm::inverse(camera.projection)* camTransform.worldMatrix;
-	//glm::vec3 whoopee = glm::unProject(toUnproject, camera.view, camera.projection, glm::vec4(0, 0, 800, 600));
-	////glm::vec3 whoopee = { ohno.x, ohno.y, ohno.z };
-	//whoopee = (whoopee - camTransform.position);
-	//whoopee = glm::normalize(whoopee);
-	//whoopee *= 5;
-	//
 	MakeMesh(plat->GetAssetPath("../../Assets/Models/cube.obj").c_str(), ray);
-	
-	
-	//whoopee *= 10;
-	//Vertex lineEnd = { whoopee, {0, 0, 0}, {0, 0}, {0, 0, 0}, {0, 0, 1, 1} };
-	//lineMesh.rawVertices = { lineStart, lineEnd };
-	//Renderer& lineRenderer = registry.emplace<Renderer>(lineEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
-	//Transform& lineTransform = registry.emplace<Transform>(lineEntity);
-	//Load(lineRenderer, camera);
-	//LoadMesh(lineRenderer, lineMesh);
 }
 
 
