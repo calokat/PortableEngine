@@ -184,6 +184,7 @@
     <ClCompile Include="PortableGame.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="SerializationSystem.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleShader.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="Relationship.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="SerializationSystem.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleShader.h" />
     <ClInclude Include="Timer.h" />
