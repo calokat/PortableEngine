@@ -26,6 +26,7 @@
 #include <typeinfo>
 #include <map>
 #include <random>
+#include "InspectorGUI.h"
 class RandomColor
 {
 	bool foo;
@@ -427,8 +428,8 @@ void Loop()
 	plat->GetInputSystem()->GetKeyPressed();
 	auto view = registry.view<Mesh, Renderer, Transform, Name>();
 	ImGui::Begin("Entity List");
-	//ImGui::SetWindowPos("Entity List", { 600, 20 });
-	//ImGui::SetWindowSize({ 200, 780 });
+	ImGui::SetWindowPos({ 0, 20 });
+	ImGui::SetWindowSize({ 200, 780 });
 	for (auto renderable : view)
 	{
 		Name name = view.get<Name>(renderable);
@@ -440,6 +441,17 @@ void Loop()
 		}
 	}
 	ImGui::End();
+
+	ImGui::Begin("Inspector");
+	ImGui::SetWindowPos({ 600, 20 });
+	ImGui::SetWindowSize({ 200, 780 });
+	for (auto renderable : view)
+	{
+		Transform& t = view.get<Transform>(renderable);
+		ComponentGUI(t);
+	}
+	ImGui::End();
+
 	graph->ClearScreen();
 	auto camEntityView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camEntityView[0]);
