@@ -16,5 +16,6 @@ public:
 	static void Deselect(entt::entity toDeselect);
 	static void DeselectAll();
 	static ImGuizmo::OPERATION op;
+	static entt::entity GetSelectedEntity();
 };
 

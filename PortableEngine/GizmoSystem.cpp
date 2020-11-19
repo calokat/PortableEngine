@@ -43,3 +43,8 @@ void GizmoSystem::DeselectAll()
 {
 	selected.clear();
 }
+
+entt::entity GizmoSystem::GetSelectedEntity()
+{
+	return selected[0];
+}
