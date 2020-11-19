@@ -445,12 +445,16 @@ void Loop()
 	ImGui::Begin("Inspector");
 	ImGui::SetWindowPos({ 600, 20 });
 	ImGui::SetWindowSize({ 200, 780 });
-	for (auto renderable : view)
+	entt::entity selected = GizmoSystem::GetSelectedEntity();
+	Transform* t = registry.try_get<Transform>(selected);
+	if (t)
 	{
-		Transform& t = view.get<Transform>(renderable);
-		ComponentGUI(t);
-		Renderer& r = view.get<Renderer>(renderable);
-		ComponentGUI(r);
+		ComponentGUI(*t);
+	}
+	Renderer* r = registry.try_get<Renderer>(selected);
+	if (r)
+	{
+		ComponentGUI(*r);
 	}
 	ImGui::End();
 
