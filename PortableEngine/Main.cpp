@@ -309,7 +309,7 @@ void MakeRayFromCamera()
 	//lineMesh.numIndices = 2;
 	//lineMesh.path = "";
 	//lineMesh.rawIndices = { 0, 1 };
-	Vertex lineStart = { camTransform.position, {0, 0, 0}, {0, 0}, {0, 0, 0}, {0, 0, 1, 1} };
+	//Vertex lineStart = { camTransform.position, {0, 0, 0}, {0, 0}, {0, 0, 0}, {0, 0, 1, 1} };
 	RECT clientRect;
 	GetClientRect(GetDesktopWindow(), &clientRect);
 	glm::vec2 clientDimensions{ clientRect.right - clientRect.left, clientRect.bottom - clientRect.top };
@@ -337,24 +337,24 @@ void MakeRayFromCamera()
 }
 
 
-void RandomizeVertexColors()
-{
-	auto rcView = registry.view<RandomColor, Mesh, Renderer, Transform>();
-	for (auto rc : rcView)
-	{
-		Mesh& m = registry.get<Mesh>(rc);
-		for (Vertex& v : m.rawVertices)
-		{
-			v.Color = { (rand() % 255) / 255.0f, (rand() % 255) / 255.0f, (rand() % 255) / 255.0f, 1 };
-		}
-		Renderer& renderer = registry.get<Renderer>(rc);
-		LoadMesh(renderer, m);
-		Transform& t = registry.get<Transform>(rc);
-		auto cameraView = registry.view<Camera>();
-		Camera& cam = registry.get<Camera>(*cameraView.begin());
-		UpdateRenderer(renderer, t, cam);
-	}
-}
+//void RandomizeVertexColors()
+//{
+//	auto rcView = registry.view<RandomColor, Mesh, Renderer, Transform>();
+//	for (auto rc : rcView)
+//	{
+//		Mesh& m = registry.get<Mesh>(rc);
+//		for (Vertex& v : m.rawVertices)
+//		{
+//			v.Color = { (rand() % 255) / 255.0f, (rand() % 255) / 255.0f, (rand() % 255) / 255.0f, 1 };
+//		}
+//		Renderer& renderer = registry.get<Renderer>(rc);
+//		LoadMesh(renderer, m);
+//		Transform& t = registry.get<Transform>(rc);
+//		auto cameraView = registry.view<Camera>();
+//		Camera& cam = registry.get<Camera>(*cameraView.begin());
+//		UpdateRenderer(renderer, t, cam);
+//	}
+//}
 
 void Loop()
 {
@@ -406,19 +406,19 @@ void Loop()
 		}
 		ImGui::EndMenu();
 	}
-	if (ImGui::BeginMenu("Components"))
-	{
-		if (ImGui::BeginMenu("Color picker"))
-		{
-			ImGui::ColorPicker4("Vertex color: ", vertColorPick);
-			ImGui::EndMenu();
-		}
-		if (ImGui::MenuItem("Random Vertex Colors"))
-		{
-			RandomizeVertexColors();
-		}
-		ImGui::EndMenu();
-	}
+	//if (ImGui::BeginMenu("Components"))
+	//{
+	//	if (ImGui::BeginMenu("Color picker"))
+	//	{
+	//		ImGui::ColorPicker4("Vertex color: ", vertColorPick);
+	//		ImGui::EndMenu();
+	//	}
+	//	if (ImGui::MenuItem("Random Vertex Colors"))
+	//	{
+	//		RandomizeVertexColors();
+	//	}
+	//	ImGui::EndMenu();
+	//}
 	ImGui::EndMainMenuBar();
 	//ImGui::Begin("Vertex color picker", NULL, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoMove);
 	//ImGui::Text("Vertex color: ");
@@ -463,13 +463,13 @@ void Loop()
 		Mesh& mesh = registry.get<Mesh>(renderable);
 		Transform& meshTransform = registry.get<Transform>(renderable);
 		// if RandomColor component is attached, do not assign every vertex a color
-		if (!registry.has<RandomColor>(renderable))
-		{
-			for (auto it = mesh.rawVertices.begin(); it != mesh.rawVertices.end(); ++it)
-			{
-				it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
-			}
-		}
+		//if (!registry.has<RandomColor>(renderable))
+		//{
+		//	for (auto it = mesh.rawVertices.begin(); it != mesh.rawVertices.end(); ++it)
+		//	{
+		//		it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
+		//	}
+		//}
 		LoadMesh(renderer, mesh);
 		UpdateRenderer(renderer, meshTransform, camera);
 		//renderer.Update();
