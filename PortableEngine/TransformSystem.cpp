@@ -41,5 +41,5 @@ void TransformSystem::CalculateWorldMatrix(Transform* transform)
 	glm::mat4 translationMat = glm::translate(glm::mat4(1.0), transform->position);
 	glm::mat4 rotationMat = glm::yawPitchRoll(transform->rotation.y, transform->rotation.x, transform->rotation.z);
 	glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), transform->scale);
-	transform->worldMatrix = scaleMat * rotationMat * translationMat;
+	transform->worldMatrix = translationMat * scaleMat * rotationMat;
 }
