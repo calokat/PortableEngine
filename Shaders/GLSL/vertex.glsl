@@ -1,7 +1,8 @@
 #version 430
 layout (location=0) in vec3 in_position;
 // layout (location=2) in vec2 aTexCoord;
- layout (location=2) in vec4 in_color;
+// layout (location=2) in vec4 in_color;
+uniform vec4 in_color;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
