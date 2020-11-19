@@ -87,6 +87,7 @@ Renderer& Renderer::operator=(Renderer&& other)
 		this->projLoc = other.projLoc;
 		this->viewLoc = other.viewLoc;
 		this->modelLoc = other.modelLoc;
+		this->colorLoc = other.colorLoc;
 		this->numVertices = other.numVertices;
 		this->vertexShaderPath = other.vertexShaderPath;
 		this->fragmentShaderPath = other.fragmentShaderPath;

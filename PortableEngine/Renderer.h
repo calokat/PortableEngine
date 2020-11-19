@@ -19,7 +19,7 @@ public:
 	//IGraphicsAPI* glAPI;
 	GLuint program;
 	GLuint vao, vbo, ibo;
-	GLint projLoc, viewLoc, modelLoc;
+	GLint projLoc, viewLoc, modelLoc, colorLoc;
 	int numVertices;
 	std::string vertexShaderPath;
 	std::string fragmentShaderPath;
@@ -34,4 +34,5 @@ public:
 	// Move constructor
 	Renderer (Renderer&& other) noexcept;
 	Renderer(Renderer& other);
+	glm::vec4 vertexColor;
 };
