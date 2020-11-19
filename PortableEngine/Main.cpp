@@ -449,6 +449,8 @@ void Loop()
 	{
 		Transform& t = view.get<Transform>(renderable);
 		ComponentGUI(t);
+		Renderer& r = view.get<Renderer>(renderable);
+		ComponentGUI(r);
 	}
 	ImGui::End();
 
