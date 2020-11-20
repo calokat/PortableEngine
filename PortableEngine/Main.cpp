@@ -22,11 +22,15 @@
 #include "CameraSystem.h"
 #include "GizmoSystem.h"
 #include "MeshLoaderSystem.h"
-#include <json.hpp>
 #include <typeinfo>
 #include <map>
 #include <random>
+#include <json.hpp>
+#include <iomanip>
 #include "InspectorGUI.h"
+#include "SerializationSystem.h"
+#include "misc_components.h"
+using json = nlohmann::json;
 class RandomColor
 {
 	bool foo;
@@ -38,133 +42,12 @@ IGraphicsAPI* graph;
 entt::registry registry;
 
 bool show_demo_window = true;
-using json = nlohmann::json;
-void to_json(json& j, const glm::vec3& vec)
-{
-	j = json{ {"x", vec.x}, {"y", vec.y}, {"z", vec.z} };
-}
-
-void from_json(const json& j, glm::vec3& vec)
-{
-	j.at("x").get_to(vec.x);
-	j.at("y").get_to(vec.y);
-	j.at("z").get_to(vec.z);
-}
-
-void to_json(json& j, const glm::mat4& mat)
-{
-	j = json{
-		{"00", mat[0][0]}, {"01", mat[0][1]}, {"02", mat[0][2]}, {"03", mat[0][3]},
-		{"10", mat[1][0]}, {"11", mat[1][1]}, {"12", mat[1][2]}, {"13", mat[1][3]},
-		{"20", mat[2][0]}, {"21", mat[2][1]}, {"22", mat[2][2]}, {"23", mat[2][3]},
-		{"30", mat[3][0]}, {"31", mat[3][1]}, {"32", mat[3][2]}, {"33", mat[3][3]},
-	};
-}
-
-void from_json(const json& j, glm::mat4& mat)
-{
-	j.at("00").get_to(mat[0][0]);
-	j.at("01").get_to(mat[0][1]);
-	j.at("02").get_to(mat[0][2]);
-	j.at("03").get_to(mat[0][3]);
-	j.at("10").get_to(mat[1][0]);
-	j.at("11").get_to(mat[1][1]);
-	j.at("12").get_to(mat[1][2]);
-	j.at("13").get_to(mat[1][3]);
-	j.at("20").get_to(mat[2][0]);
-	j.at("21").get_to(mat[2][1]);
-	j.at("22").get_to(mat[2][2]);
-	j.at("23").get_to(mat[2][3]);
-	j.at("30").get_to(mat[3][0]);
-	j.at("31").get_to(mat[3][1]);
-	j.at("32").get_to(mat[3][2]);
-	j.at("33").get_to(mat[3][3]);
-}
-
-void to_json(json& j, const Transform& t)
-{
-	json worldJson, posJson, rotJson, scaleJson;
-	to_json(worldJson, t.worldMatrix);
-	to_json(posJson, t.position);
-	to_json(rotJson, t.rotation);
-	to_json(scaleJson, t.scale);
-	j["worldMatrix"] = worldJson;
-	j["position"] = posJson;
-	j["rotation"] = rotJson;
-	j["scale"] = scaleJson;
-
-}
-
-void from_json(const json& j, Transform& t)
-{
-	//j.at("worldMatrix").get_to(t.worldMatrix);
-	//j["worldMatrix"] = t.position;
-	//j.at("worldMatrix").get_to(t.position);
-	from_json(j["worldMatrix"], t.worldMatrix);
-	from_json(j["position"], t.position);
-	from_json(j["rotation"], t.rotation);
-	from_json(j["scale"], t.scale);
-}
-
-void to_json(json& j, const Renderer& r)
-{
-	j["vertexShaderPath"] = r.vertexShaderPath;
-	j["fragmentShaderPath"] = r.fragmentShaderPath;
-}
-
-void from_json(const json& j, Renderer& r)
-{
-	r = Renderer(j["vertexShaderPath"], j["fragmentShaderPath"]);
-	r.vertexShaderPath = j["vertexShaderPath"];
-	r.fragmentShaderPath = j["fragmentShaderPath"];
-}
-
-void to_json(json& j, const Mesh& m)
-{
-	j["path"] = m.path;
-}
-
-void from_json(const json& j, Mesh& m)
-{
-	std::string path = j["path"];
-	m = Mesh(j["path"].get<std::string>().c_str());
-}
-
-void to_json(json& j, const Camera& c)
-{
-	to_json(j["view"], c.view);
-	to_json(j["projection"], c.projection);
-	j["fieldOfView"] = c.fieldOfView;
-	j["nearPlaneDistance"] = c.nearPlaneDistance;
-	j["farPlaneDistance"] = c.farPlaneDistance;
-	j["movementSpeed"] = c.movementSpeed;
-}
-
-void from_json(const json& j, Camera& c)
-{
-	from_json(j["view"], c.view);
-	from_json(j["projection"], c.projection);
-	c.fieldOfView = j["fieldOfView"];
-	c.nearPlaneDistance = j["nearPlaneDistance"];
-	c.farPlaneDistance = j["farPlaneDistance"];
-	c.movementSpeed = j["movementSpeed"];
-}
-
-void to_json(json& j, const RandomColor& c)
-{
-	j = {};
-}
-
-void from_json(const json& j, RandomColor& c)
-{
-	
-}
 
 template<class T>
-void TrySerializeComponent()
+void TrySerializeComponent(json& master)
 {
-	std::string typeName = std::string(typeid(T).name()).append(".json");
-	std::ofstream jsonFile = std::ofstream(typeName);
+	std::string typeName = typeid(T).name();
+	//std::ofstream jsonFile = std::ofstream(typeName);
 	nlohmann::json json;
 	registry.each([&json](entt::entity e) {
 		if (registry.has<T>(e))
@@ -174,10 +57,12 @@ void TrySerializeComponent()
 			json[stringified] = obj;
 		}
 	});
-	jsonFile << json << std::endl;
+	//jsonFile << json << std::endl;
+	master[typeName] = json;
 }
 void Serialize()
 {
+	json saveJson;
 	json entitiesJson;
 	std::vector<std::string> stringifiedEntities;
 	registry.each([&stringifiedEntities](entt::entity e)
@@ -185,39 +70,34 @@ void Serialize()
 		stringifiedEntities.push_back(std::to_string((int)e));
 	});
 	entitiesJson = stringifiedEntities;
-	std::ofstream entitiesFile("entities.json");
-	entitiesFile << entitiesJson << std::endl;
-	TrySerializeComponent<Transform>();
-	TrySerializeComponent<Mesh>();
-	TrySerializeComponent<Camera>();
-	TrySerializeComponent<Renderer>();
-	TrySerializeComponent<RandomColor>();
+	//std::ofstream entitiesFile("entities.json");
+	//entitiesFile << entitiesJson << std::endl;
+	saveJson["entities"] = entitiesJson;
+	TrySerializeComponent<Transform>(saveJson);
+	TrySerializeComponent<Mesh>(saveJson);
+	TrySerializeComponent<Camera>(saveJson);
+	TrySerializeComponent<Renderer>(saveJson);
+	TrySerializeComponent<Name>(saveJson);
+	std::ofstream saveFile("save.pg");
+	saveFile << std::setw(4) << saveJson << std::endl;
 }
 template<class T>
-void TryDeserializeComponent(std::map<std::string, entt::entity> entityMap, std::vector<std::string> storedEntities)
+void TryDeserializeComponent(std::map<std::string, entt::entity> entityMap, std::vector<std::string> storedEntities, json master)
 {
-	std::string g = std::string(typeid(T).name()).append(".json");
-	std::ifstream inFile(g);
-	json objJson;
-	inFile >> objJson;
-	//T obj = objJson.get<T>();
+	//std::string g = std::string(typeid(T).name()).append(".json");
+	//std::ifstream inFile(g);
+	//json objJson;
+	//inFile >> objJson;
+	json entitiesJson = master["entities"];
+	const char* className = typeid(T).name();
+	json objJson = master[className];
 	for (auto it = storedEntities.begin(); it != storedEntities.end(); ++it)
 	{
-		//auto compIterator = objJson.find(*it);
 		if (objJson.find(*it) != objJson.end())
 		{
 			auto compIter = objJson[*it];
-			//auto meshMaybe = compIter.get<Mesh>();
 			T obj;
 			from_json(compIter, obj);
-			//T comp;
-			//from_json(compIter->, comp);
-			//T comp = objJson[*it];
-			//T comp = objJson[*it].get<T>();
-			//objJson[*it];
-			//T comp;
-			//from_json(objJson[*it], comp);
-
 			registry.emplace<T>(entityMap[*it], std::move(obj));
 		}
 	}
@@ -227,9 +107,10 @@ void Deserialize()
 	GizmoSystem::DeselectAll();
 	registry.clear();
 	std::vector<std::string> storedEntities;
-	std::ifstream entitiesFile("entities.json");
-	json entitiesJson;
-	entitiesFile >> entitiesJson;
+	std::ifstream saveFile("save.pg");
+	json saveJson;
+	saveFile >> saveJson;
+	json entitiesJson = saveJson["entities"];
 	storedEntities = entitiesJson.get<std::vector<std::string>>();
 	std::map<std::string, entt::entity> entityMap;
 	for (auto it = storedEntities.begin(); it != storedEntities.end(); ++it)
@@ -237,11 +118,11 @@ void Deserialize()
 		entt::entity e = registry.create();
 		entityMap.emplace(*it, e);
 	}
-	TryDeserializeComponent<Mesh>(entityMap, storedEntities);
-	TryDeserializeComponent<Camera>(entityMap, storedEntities);
-	TryDeserializeComponent<Renderer>(entityMap, storedEntities);
-	TryDeserializeComponent<Transform>(entityMap, storedEntities);
-	TryDeserializeComponent<RandomColor>(entityMap, storedEntities);
+	TryDeserializeComponent<Mesh>(entityMap, storedEntities, saveJson);
+	TryDeserializeComponent<Camera>(entityMap, storedEntities, saveJson);
+	TryDeserializeComponent<Renderer>(entityMap, storedEntities, saveJson);
+	TryDeserializeComponent<Transform>(entityMap, storedEntities, saveJson);
+	TryDeserializeComponent<Name>(entityMap, storedEntities, saveJson);
 	auto compView = registry.view<Mesh>();
 	for (auto v : compView)
 	{
