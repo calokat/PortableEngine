@@ -343,7 +343,10 @@ void Loop()
 	{
 		if (ImGui::MenuItem("Rotator"))
 		{
-			registry.emplace_or_replace<Rotator>(selected);
+			if (!registry.has<Rotator>(selected))
+			{
+				registry.emplace_or_replace<Rotator>(selected);
+			}
 		}
 		ImGui::EndMenu();
 	}
