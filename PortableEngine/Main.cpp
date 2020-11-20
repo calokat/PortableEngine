@@ -78,6 +78,7 @@ void Serialize()
 	TrySerializeComponent<Camera>(saveJson);
 	TrySerializeComponent<Renderer>(saveJson);
 	TrySerializeComponent<Name>(saveJson);
+	TrySerializeComponent<Rotator>(saveJson);
 	std::ofstream saveFile("save.pg");
 	saveFile << std::setw(4) << saveJson << std::endl;
 }
@@ -123,6 +124,7 @@ void Deserialize()
 	TryDeserializeComponent<Renderer>(entityMap, storedEntities, saveJson);
 	TryDeserializeComponent<Transform>(entityMap, storedEntities, saveJson);
 	TryDeserializeComponent<Name>(entityMap, storedEntities, saveJson);
+	TryDeserializeComponent<Rotator>(entityMap, storedEntities, saveJson);
 	auto compView = registry.view<Mesh>();
 	for (auto v : compView)
 	{
