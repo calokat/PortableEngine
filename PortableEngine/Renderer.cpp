@@ -91,6 +91,7 @@ Renderer& Renderer::operator=(Renderer&& other)
 		this->numVertices = other.numVertices;
 		this->vertexShaderPath = other.vertexShaderPath;
 		this->fragmentShaderPath = other.fragmentShaderPath;
+		this->vertexColor = other.vertexColor;
 	}
 	return *this;
 }
