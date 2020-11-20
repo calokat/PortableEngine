@@ -22,7 +22,6 @@ void Load(Renderer& renderer, Camera camera)
 	renderer.modelLoc = glGetUniformLocation(renderer.program, "model");
 	renderer.colorLoc = glGetUniformLocation(renderer.program, "in_color");
 	glm::mat4 model(1.0f);
-	renderer.vertexColor = { 0, 0, 0, 1 };
 	glUniformMatrix4fv(renderer.modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	glUniformMatrix4fv(renderer.viewLoc, 1, GL_FALSE, glm::value_ptr(camera.view));
 	glUniformMatrix4fv(renderer.projLoc, 1, GL_FALSE, glm::value_ptr(camera.projection));
