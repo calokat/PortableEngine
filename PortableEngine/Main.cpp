@@ -30,6 +30,9 @@
 #include "InspectorGUI.h"
 #include "SerializationSystem.h"
 #include "misc_components.h"
+// Thanks to https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c
+#include <filesystem>
+
 using json = nlohmann::json;
 class RandomColor
 {
@@ -60,7 +63,7 @@ void TrySerializeComponent(json& master)
 	//jsonFile << json << std::endl;
 	master[typeName] = json;
 }
-void Serialize()
+void Serialize(const char* saveFileName)
 {
 	json saveJson;
 	json entitiesJson;
@@ -79,7 +82,10 @@ void Serialize()
 	TrySerializeComponent<Renderer>(saveJson);
 	TrySerializeComponent<Name>(saveJson);
 	TrySerializeComponent<Rotator>(saveJson);
-	std::ofstream saveFile("save.pg");
+	char fullSavePath[150];
+	strcpy_s(fullSavePath, saveFileName);
+	strcat_s(fullSavePath, ".pg");
+	std::ofstream saveFile(fullSavePath);
 	saveFile << std::setw(4) << saveJson << std::endl;
 }
 template<class T>
@@ -103,12 +109,12 @@ void TryDeserializeComponent(std::map<std::string, entt::entity> entityMap, std:
 		}
 	}
 }
-void Deserialize()
+void Deserialize(const char* saveFileName)
 {
 	GizmoSystem::DeselectAll();
 	registry.clear();
 	std::vector<std::string> storedEntities;
-	std::ifstream saveFile("save.pg");
+	std::ifstream saveFile(saveFileName);
 	json saveJson;
 	saveFile >> saveJson;
 	json entitiesJson = saveJson["entities"];
@@ -274,13 +280,31 @@ void Loop()
 			}
 			ImGui::EndMenu();
 		}
-		if (ImGui::MenuItem("Save"))
+		if (ImGui::BeginMenu("Save"))
 		{
-			Serialize();
+			static char saveFileName[100] = {};
+			ImGui::InputText("Save as: ", saveFileName, 100);
+			if (ImGui::Button("Save"))
+			{
+				Serialize(saveFileName);
+			}
+			ImGui::EndMenu();
 		}
-		if (ImGui::MenuItem("Open"))
+		if (ImGui::BeginMenu("Open"))
 		{
-			Deserialize();
+			for (const auto& saveFile : std::filesystem::directory_iterator("./"))
+			{
+				if (saveFile.path().extension().generic_string() == ".pg")
+				{
+					std::string fileStr = saveFile.path().generic_string();
+
+					if (ImGui::MenuItem(fileStr.c_str()))
+					{
+						Deserialize(fileStr.c_str());
+					}
+				}
+			}
+			ImGui::EndMenu();
 		}
 		ImGui::EndMenu();
 	}
