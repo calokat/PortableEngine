@@ -34,5 +34,5 @@ public:
 	// Move constructor
 	Renderer (Renderer&& other) noexcept;
 	Renderer(Renderer& other);
-	glm::vec4 vertexColor;
+	glm::vec4 vertexColor = { 0, 0, 0, 1 };
 };
