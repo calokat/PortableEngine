@@ -334,6 +334,11 @@ void Loop()
 	{
 		ComponentGUI(*r);
 	}
+	Rotator* rot = registry.try_get<Rotator>(selected);
+	if (rot)
+	{
+		ComponentGUI(*rot);
+	}
 	ImGui::End();
 
 	graph->ClearScreen();
