@@ -263,6 +263,9 @@
     <ClInclude Include="SerializationSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="misc_components.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -33,11 +33,6 @@ class RandomColor
 public:
 	RandomColor() {};
 };
-struct Name
-{
-public:
-	std::string nameString;
-};
 IPlatform* plat;
 IGraphicsAPI* graph;
 entt::registry registry;

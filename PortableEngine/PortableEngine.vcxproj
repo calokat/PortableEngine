@@ -220,6 +220,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshLoaderSystem.h" />
+    <ClInclude Include="misc_components.h" />
     <ClInclude Include="OpenGLAPI.h" />
     <ClInclude Include="OpenGLESContext.h" />
     <ClInclude Include="PortableGame.h" />
