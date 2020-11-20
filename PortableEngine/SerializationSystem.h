@@ -142,3 +142,13 @@ void from_json(const nlohmann::json& j, Name& n)
 {
 	n.nameString = j["nameString"];
 }
+
+void to_json(nlohmann::json& j, const Rotator& r)
+{
+	to_json(j["deltaRot"], r.deltaRot);
+}
+
+void from_json(const nlohmann::json& j, Rotator& r)
+{
+	from_json(j["deltaRot"], r.deltaRot);
+}
