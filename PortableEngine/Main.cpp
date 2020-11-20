@@ -339,6 +339,14 @@ void Loop()
 	{
 		ComponentGUI(*rot);
 	}
+	if (ImGui::BeginMenu("+"))
+	{
+		if (ImGui::MenuItem("Rotator"))
+		{
+			registry.emplace_or_replace<Rotator>(selected);
+		}
+		ImGui::EndMenu();
+	}
 	ImGui::End();
 
 	graph->ClearScreen();
