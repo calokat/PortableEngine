@@ -495,7 +495,6 @@ int main(int argc, char* argv[])
 #endif
 	GameWindow* window = new GameWindow(0, 0, 800, 600);
 	auto entity = registry.create();
-	auto entityTwo = registry.create();
 	auto cameraEntity = registry.create();
 
 	Transform& camTransform = registry.emplace<Transform>(cameraEntity);
