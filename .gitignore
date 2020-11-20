@@ -353,3 +353,4 @@ CMakeCache.txt
 # ImGui files
 */imgui.ini
 PortableEngine/*.json
+*.pg
