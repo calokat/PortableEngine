@@ -349,6 +349,13 @@ void Loop()
 	}
 	ImGui::End();
 
+	auto rotatorView = registry.view<Transform, Rotator>();
+	for (auto rotEntity : rotatorView)
+	{
+		auto [transform, rot] = rotatorView.get<Transform, Rotator>(rotEntity);
+		TransformSystem::Rotate(rot.deltaRot, &transform);
+	}
+
 	graph->ClearScreen();
 	auto camEntityView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camEntityView[0]);
