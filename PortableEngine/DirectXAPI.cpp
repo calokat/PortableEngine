@@ -6,6 +6,8 @@
 // Needed for a helper function to read compiled shader files from the hard drive
 #pragma comment(lib, "d3dcompiler.lib")
 #include <d3dcompiler.h>
+#pragma comment(lib, "d3d11.lib")
+
 // ********** REQUIRED WITHOUT SIMPLE SHADER **********
 
 struct VertShaderExternalData
