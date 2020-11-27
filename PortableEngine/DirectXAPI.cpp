@@ -372,9 +372,9 @@ void DirectXAPI::CreateBasicGeometry()
 	//    over to a DirectX-controlled data structure (the vertex buffer)
 	Vertex vertices[] =
 	{
-		{ glm::vec3(+0.0f, +1.0f, +0.0f), glm::vec3(0), glm::vec2(0), glm::vec3(0), red },
-		{ glm::vec3(+1.5f, -1.0f, +0.0f), glm::vec3(0), glm::vec2(0), glm::vec3(0), blue },
-		{ glm::vec3(-1.5f, -1.0f, +0.0f), glm::vec3(0), glm::vec2(0), glm::vec3(0), green },
+		{ glm::vec3(+0.0f, +1.0f, +0.0f), glm::vec3(0), glm::vec2(0), glm::vec3(0)},
+		{ glm::vec3(+1.5f, -1.0f, +0.0f), glm::vec3(0), glm::vec2(0), glm::vec3(0) },
+		{ glm::vec3(-1.5f, -1.0f, +0.0f), glm::vec3(0), glm::vec2(0), glm::vec3(0) },
 	};
 
 	// Set up the indices, which tell us which vertices to use and in which order
