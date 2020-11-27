@@ -270,7 +270,7 @@ void DirectXAPI::LoadShaders()
 	//     sitting inside a vertex buffer
 	//  - Doing this NOW because it requires a vertex shader's byte code to verify against!
 	//  - Luckily, we already have that loaded (the blob above)
-	D3D11_INPUT_ELEMENT_DESC inputElements[5] = {};
+	D3D11_INPUT_ELEMENT_DESC inputElements[4] = {};
 
 	// Set up the first element - a position, which is 3 float values
 	inputElements[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;  // Most formats are described as color channels, really it just means "Three 32-bit floats"
@@ -289,13 +289,14 @@ void DirectXAPI::LoadShaders()
 	inputElements[3].SemanticName = "TANGENT";				// This is "POSITTION" - needs to match the semantics in our vertex shader input!
 	inputElements[3].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT; // How far into the vertex is this?  Assume it's after the previous element
 
+	// TODO: DELETE THIS???????????????????????????????
 	// Set up the second element - a color, which is 4 more float values
-	inputElements[4].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;	// 4x 32-bit floats
-	inputElements[4].SemanticName = "COLOR";					// Match our vertex shader input!
-	inputElements[4].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;	// After the previous element
+	//inputElements[4].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;	// 4x 32-bit floats
+	//inputElements[4].SemanticName = "COLOR";					// Match our vertex shader input!
+	//inputElements[4].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;	// After the previous element
 
 	// Create the input layout, verifying our description against actual shader code
-	device->CreateInputLayout(inputElements, 5, shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), &inputLayout);
+	device->CreateInputLayout(inputElements, 4, shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), &inputLayout);
 
 	// Read and create the pixel shader
 	//  - Reusing the same blob here, since we're done with the vert shader code
