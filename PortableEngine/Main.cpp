@@ -306,6 +306,25 @@ void MakeRayFromCamera()
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
 	ImGuiIO& io = ImGui::GetIO();
 	ImVec2 mousePos = io.MousePos;
+	// Blessed be this code taken from https://gamedev.stackexchange.com/questions/157674/simple-mouseray-picking-in-opengl
+	glm::vec3 mouse_world_nearplane = glm::unProject(
+		glm::vec3(mousePos.x, 600 - mousePos.y, 0.0f),
+		camera.view, //view matrix
+		camera.projection,
+		glm::ivec4(0, 0, 800, 600));
+
+	glm::vec3 mouse_world_farplane = glm::unProject(
+		glm::vec3(mousePos.x, 600 - mousePos.y, 1.0f),
+		camera.view, //view matrix
+		camera.projection,
+		glm::ivec4(0, 0, 800, 600));
+
+	glm::vec3 camray = glm::normalize(mouse_world_farplane - mouse_world_nearplane);
+	//camray.y = -camray.y;
+	camray *= 30;
+	glm::vec3 newMeshLocation = mouse_world_nearplane + camray;
+	MakeMesh(plat->GetAssetPath("../../Assets/Models/cube.obj").c_str(), newMeshLocation);
+	return;
 	float ndcX = ((mousePos.x - window->x) / window->width) * 2.f - 1.f;
 	float ndcY = (1.f - ((mousePos.y - window->y) / window->height)) * 2.f - 1.f;
 	glm::mat4 viewProjInverse = camera.projection * camera.view;
@@ -569,6 +588,7 @@ int main(int argc, char* argv[])
 
 	// TODO: Remove this MakeRayFromCamera call
 	plat->GetInputSystem()->RegisterKeyPressFunction('j', []() {MakeRayFromCamera(); });
+	//plat->GetInputSystem()->RegisterKeyPressFunction('k', [&camTransform, &cam]() {camTransform.rotation = glm::vec3(0, 0, 0); TransformSystem::CalculateWorldMatrix(&camTransform); CameraSystem::CalculateViewMatrix(cam, camTransform); });
 #ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop(Loop, 0, 1);
 #else
