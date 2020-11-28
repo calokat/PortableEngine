@@ -9,8 +9,8 @@ class DirectXRenderer
 public:
 	std::string vertexShaderPath;
 	std::string fragmentShaderPath;
-	SimpleVertexShader vertexShader;
-	SimplePixelShader pixelShader;
+	SimpleVertexShader* vertexShader;
+	SimplePixelShader* pixelShader;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
 	int numVertices;
