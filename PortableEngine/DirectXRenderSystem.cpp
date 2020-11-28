@@ -5,13 +5,12 @@ UINT offset = 0;
 
 void Load(DirectXRenderer& renderer, Camera camera, DirectXAPI* dxApi, WindowsPlatform* winPlat)
 {
-	renderer.vertexShader = new SimpleVertexShader(dxApi->device.Get(), dxApi->context.Get(), winPlat->GetAssetPath_Wide(L"VertexShader.cso").c_str());
-	renderer.pixelShader = new SimplePixelShader(dxApi->device.Get(), dxApi->context.Get(), winPlat->GetAssetPath_Wide(L"PixelShader.cso").c_str());
+	renderer.vertexShader = new SimpleVertexShader(dxApi->device.Get(), dxApi->context.Get(), L"VertexShader.cso");
+	renderer.pixelShader = new SimplePixelShader(dxApi->device.Get(), dxApi->context.Get(), L"PixelShader.cso");
 	renderer.vertexShader->SetMatrix4x4("viewMatrix", camera.view);
 	renderer.vertexShader->SetMatrix4x4("projectionMatrix", camera.projection);
 	renderer.vertexShader->SetMatrix4x4("worldMatrix", glm::mat4(1.0f));
 	renderer.vertexShader->CopyAllBufferData();
-
 }
 
 void LoadMesh(DirectXRenderer& renderer, Mesh& mesh, ID3D11Device* device)
