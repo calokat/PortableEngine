@@ -133,13 +133,13 @@ int DirectXAPI::Init()
 	viewport.MaxDepth = 1.0f;
 	context->RSSetViewports(1, &viewport);
 
-	LoadShaders();
-	CreateMatrices();
-	CreateBasicGeometry();
+	//LoadShaders();
+	//CreateMatrices();
+	//CreateBasicGeometry();
 
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	context->IASetInputLayout(inputLayout);
+	//context->IASetInputLayout(inputLayout);
 	// Return the "everything is ok" HRESULT value
 	return S_OK;
 
