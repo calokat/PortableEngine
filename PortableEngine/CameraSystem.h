@@ -4,7 +4,10 @@
 class CameraSystem
 {
 public:
-	static void CalculateViewMatrix(Camera& camera, Transform camTransform);
-	static void CalculateProjectionMatrix(Camera& camera, float aspect);
+	static void CalculateViewMatrixRH(Camera& camera, Transform camTransform, bool transpose  = false);
+	static void CalculateProjectionMatrixRH(Camera& camera, float aspect, bool transpose = false);
+	static void CalculateViewMatrixLH(Camera& camera, Transform camTransform, bool transpose = false);
+	static void CalculateProjectionMatrixLH(Camera& camera, float aspect, bool transpose = false);
+
 };
 
