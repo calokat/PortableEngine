@@ -2,6 +2,8 @@
 #include <Windows.h>
 #include "WindowsPlatform.h"
 #include "DirectXAPI.h"
+#include "DirectXRenderer.h"
+#include "DirectXRenderSystem.h"
 #endif
 #ifdef __EMSCRIPTEN__
 #include "EmscriptenPlatform.h"
