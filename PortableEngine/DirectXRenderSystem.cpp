@@ -15,6 +15,8 @@ void Load(DirectXRenderer& renderer, Camera camera, DirectXAPI* dxApi, WindowsPl
 
 void LoadMesh(DirectXRenderer& renderer, Mesh& mesh, ID3D11Device* device)
 {
+	renderer.numVertices = mesh.rawVertices.size();
+	renderer.numIndices = mesh.numIndices;
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	vbd.ByteWidth = sizeof(Vertex) * renderer.numVertices;       // 3 = number of vertices in the buffer
