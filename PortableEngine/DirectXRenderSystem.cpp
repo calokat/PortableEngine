@@ -26,7 +26,7 @@ void LoadMesh(DirectXRenderer& renderer, Mesh& mesh, ID3D11Device* device)
 	vbd.StructureByteStride = 0;
 
 	D3D11_SUBRESOURCE_DATA initialVertexData;
-	initialVertexData.pSysMem = 0;
+	initialVertexData.pSysMem = mesh.rawVertices.data();
 
 	device->CreateBuffer(&vbd, &initialVertexData, renderer.vertexBuffer.GetAddressOf());
 
@@ -39,7 +39,7 @@ void LoadMesh(DirectXRenderer& renderer, Mesh& mesh, ID3D11Device* device)
 	ibd.StructureByteStride = 0;
 
 	D3D11_SUBRESOURCE_DATA initialIndexData;
-	initialIndexData.pSysMem = 0;
+	initialIndexData.pSysMem = mesh.rawIndices.data();
 
 	device->CreateBuffer(&ibd, &initialIndexData, renderer.indexBuffer.GetAddressOf());
 }
