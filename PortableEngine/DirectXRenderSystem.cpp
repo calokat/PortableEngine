@@ -3,14 +3,14 @@
 UINT stride = sizeof(Vertex);
 UINT offset = 0;
 
-void Load(DirectXRenderer& renderer, Camera camera, ID3D11Device* device, ID3D11DeviceContext* context, IPlatform* plat)
+void Load(DirectXRenderer& renderer, Camera camera, DirectXAPI* dxApi, WindowsPlatform* winPlat)
 {
-	renderer.vertexShader = SimpleVertexShader(device, context, plat->GetAssetPath_Wide(L"VertexShader.cso").c_str());
-	renderer.pixelShader = SimplePixelShader(device, context, plat->GetAssetPath_Wide(L"PixelShader.cso").c_str());
-	renderer.vertexShader.SetMatrix4x4("viewMatrix", camera.view);
-	renderer.vertexShader.SetMatrix4x4("projectionMatrix", camera.projection);
-	renderer.vertexShader.SetMatrix4x4("worldMatrix", glm::mat4(1.0f));
-	renderer.vertexShader.CopyAllBufferData();
+	renderer.vertexShader = new SimpleVertexShader(dxApi->device.Get(), dxApi->context.Get(), winPlat->GetAssetPath_Wide(L"VertexShader.cso").c_str());
+	renderer.pixelShader = new SimplePixelShader(dxApi->device.Get(), dxApi->context.Get(), winPlat->GetAssetPath_Wide(L"PixelShader.cso").c_str());
+	renderer.vertexShader->SetMatrix4x4("viewMatrix", camera.view);
+	renderer.vertexShader->SetMatrix4x4("projectionMatrix", camera.projection);
+	renderer.vertexShader->SetMatrix4x4("worldMatrix", glm::mat4(1.0f));
+	renderer.vertexShader->CopyAllBufferData();
 
 }
 
@@ -47,8 +47,8 @@ void Draw(DirectXRenderer& renderer, ID3D11DeviceContext* context)
 {
 	context->IASetVertexBuffers(0, 1, renderer.vertexBuffer.GetAddressOf(), &stride, &offset);
 	context->IASetIndexBuffer(renderer.indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	renderer.vertexShader.SetShader();
-	renderer.pixelShader.SetShader();
+	renderer.vertexShader->SetShader();
+	renderer.pixelShader->SetShader();
 	context->DrawIndexed(
 		renderer.numIndices,     // The number of indices to use (we could draw a subset if we wanted)
 		0,     // Offset to the first index we want to use
@@ -58,8 +58,8 @@ void Draw(DirectXRenderer& renderer, ID3D11DeviceContext* context)
 
 void UpdateRenderer(DirectXRenderer& renderer, Transform meshTransform, Camera camera)
 {
-	renderer.vertexShader.SetMatrix4x4("viewMatrix", camera.view);
-	renderer.vertexShader.SetMatrix4x4("projectionMatrix", camera.projection);
-	renderer.vertexShader.SetMatrix4x4("worldMatrix", meshTransform.worldMatrix);
-	renderer.vertexShader.CopyAllBufferData();
+	renderer.vertexShader->SetMatrix4x4("viewMatrix", camera.view);
+	renderer.vertexShader->SetMatrix4x4("projectionMatrix", camera.projection);
+	renderer.vertexShader->SetMatrix4x4("worldMatrix", meshTransform.worldMatrix);
+	renderer.vertexShader->CopyAllBufferData();
 }
