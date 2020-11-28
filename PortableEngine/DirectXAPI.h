@@ -17,14 +17,15 @@ public:
 	void Draw();
 	~DirectXAPI();
 	void _SwapBuffers();
+	Microsoft::WRL::ComPtr<ID3D11Device>		device;
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext>	context;
+
 private:
 	void LoadShaders();
 	void CreateMatrices();
 	void CreateBasicGeometry();
 	D3D_FEATURE_LEVEL		dxFeatureLevel;
 	Microsoft::WRL::ComPtr<IDXGISwapChain>		swapChain;
-	Microsoft::WRL::ComPtr<ID3D11Device>		device;
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext>	context;
 
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> backBufferRTV;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> depthStencilView;
