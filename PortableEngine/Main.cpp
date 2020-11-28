@@ -163,8 +163,8 @@ void MakeMesh(const char* path, const char* name = "GameObject") {
 	Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
 	meshTransform.position = newMeshPos;
 	TransformSystem::CalculateWorldMatrix(&meshTransform);
-	Renderer& newMeshRenderer = registry.emplace<Renderer>(newMeshEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
-	Load(newMeshRenderer, camera);
+	DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
+	Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
@@ -180,8 +180,8 @@ void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") 
 	Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
 	meshTransform.position = pos;
 	TransformSystem::CalculateWorldMatrix(&meshTransform);
-	Renderer& newMeshRenderer = registry.emplace<Renderer>(newMeshEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
-	Load(newMeshRenderer, camera);
+	DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
+	Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
@@ -334,7 +334,7 @@ void Loop()
 	//ImGui::End();
 
 	plat->GetInputSystem()->GetKeyPressed();
-	auto view = registry.view<Mesh, Renderer, Transform, Name>();
+	auto view = registry.view<Mesh, DirectXRenderer, Transform, Name>();
 	//ImGui::Begin("Entity List");
 	//ImGui::SetWindowPos({ 0, 20 });
 	//ImGui::SetWindowSize({ 200, 780 });
@@ -396,7 +396,7 @@ void Loop()
 	CameraSystem::CalculateViewMatrix(camera, camTransform);
 	for (auto renderable : view)
 	{
-		Renderer& renderer = registry.get<Renderer>(renderable);
+		DirectXRenderer& renderer = registry.get<DirectXRenderer>(renderable);
 		Mesh& mesh = registry.get<Mesh>(renderable);
 		Transform& meshTransform = registry.get<Transform>(renderable);
 		// if RandomColor component is attached, do not assign every vertex a color
@@ -407,11 +407,11 @@ void Loop()
 		//		it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
 		//	}
 		//}
-		LoadMesh(renderer, mesh);
+		LoadMesh(renderer, mesh, ((DirectXAPI*)(graph))->device.Get());
 		UpdateRenderer(renderer, meshTransform, camera);
 		//renderer.Update();
 		//renderer.Draw();
-		Draw(renderer);
+		Draw(renderer, ((DirectXAPI*)(graph))->context.Get());
 	}
 	auto transformView = registry.view<Transform>();
 	//camera.transform = transform;
@@ -455,7 +455,7 @@ int main(int argc, char* argv[])
 	plat = new EmscriptenPlatform(window);
 #endif
 #ifdef _WIN64
-	graph = new OpenGLAPI(window, plat);
+	graph = new DirectXAPI(window);
 #elif defined __EMSCRIPTEN__
 	graph = new OpenGLAPI(window, plat);
 #endif
@@ -464,13 +464,13 @@ int main(int argc, char* argv[])
 
 	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/cone.obj").c_str());
 	MeshLoaderSystem::LoadMesh(mesh.path.c_str(), mesh);
-	Renderer& renderer = registry.emplace<Renderer>(entity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
+	DirectXRenderer& renderer = registry.emplace<DirectXRenderer>(entity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
 	Transform& t1 = registry.emplace<Transform>(entity);
 	Name& name = registry.emplace<Name>(entity);
 	name = { "Cone" };
-	Load(renderer, cam);
+	Load(renderer, cam, (DirectXAPI*)graph, (WindowsPlatform*)plat);
 	//renderer.LoadMesh(mesh.GetRawVertices());
-	LoadMesh(renderer, mesh);
+	LoadMesh(renderer, mesh, ((DirectXAPI*)(graph))->device.Get());
 
 	//GizmoSystem::Select(entity);
 
