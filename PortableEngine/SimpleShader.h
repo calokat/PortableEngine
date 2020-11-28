@@ -5,7 +5,7 @@
 
 #include <d3d11.h>
 #include <d3dcompiler.h>
-#include <DirectXMath.h>
+#include "glm/glm.hpp"
 
 #include <unordered_map>
 #include <vector>
@@ -79,13 +79,13 @@ public:
 	bool SetInt(std::string name, int data);
 	bool SetFloat(std::string name, float data);
 	bool SetFloat2(std::string name, const float data[2]);
-	bool SetFloat2(std::string name, const DirectX::XMFLOAT2 data);
+	bool SetFloat2(std::string name, const glm::vec2 data);
 	bool SetFloat3(std::string name, const float data[3]);
-	bool SetFloat3(std::string name, const DirectX::XMFLOAT3 data);
+	bool SetFloat3(std::string name, const glm::vec3 data);
 	bool SetFloat4(std::string name, const float data[4]);
-	bool SetFloat4(std::string name, const DirectX::XMFLOAT4 data);
+	bool SetFloat4(std::string name, const glm::vec4 data);
 	bool SetMatrix4x4(std::string name, const float data[16]);
-	bool SetMatrix4x4(std::string name, const DirectX::XMFLOAT4X4 data);
+	bool SetMatrix4x4(std::string name, const glm::mat4 data);
 
 	// Setting shader resources
 	virtual bool SetShaderResourceView(std::string name, ID3D11ShaderResourceView* srv) = 0;
