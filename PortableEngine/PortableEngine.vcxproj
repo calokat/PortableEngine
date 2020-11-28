@@ -163,6 +163,7 @@
     <ClCompile Include="CameraSystem.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="DirectXAPI.cpp" />
+    <ClCompile Include="DirectXRenderSystem.cpp" />
     <ClCompile Include="DXCore.cpp" />
     <ClCompile Include="EmscriptenInputSystem.cpp" />
     <ClCompile Include="EmscriptenPlatform.cpp" />
@@ -201,6 +202,8 @@
     <ClInclude Include="CameraSystem.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="DirectXAPI.h" />
+    <ClInclude Include="DIrectXRenderer.h" />
+    <ClInclude Include="DirectXRenderSystem.h" />
     <ClInclude Include="DXCore.h" />
     <ClInclude Include="EmscriptenInputSystem.h" />
     <ClInclude Include="EmscriptenPlatform.h" />
