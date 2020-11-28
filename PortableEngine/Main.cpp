@@ -393,7 +393,7 @@ void Loop()
 	auto camEntityView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camEntityView[0]);
 	TransformSystem::CalculateWorldMatrix(&camTransform);
-	CameraSystem::CalculateViewMatrix(camera, camTransform);
+	CameraSystem::CalculateViewMatrixLH(camera, camTransform, true);
 	for (auto renderable : view)
 	{
 		DirectXRenderer& renderer = registry.get<DirectXRenderer>(renderable);
@@ -437,7 +437,7 @@ int main(int argc, char* argv[])
 	Camera& cam = registry.emplace<Camera>(cameraEntity, (float)window->width / window->height);
 	camTransform.position += glm::vec3(0, 0, -3);
 	//cam.transform = &camTransform;
-	CameraSystem::CalculateProjectionMatrix(cam, (float)window->width / window->height);
+	CameraSystem::CalculateProjectionMatrixLH(cam, (float)window->width / window->height, true);
 	//Camera cam = Camera(glm::vec3(0, 0, -3), (float)window->width / window->height);
 	float camMoveSpeed = .05f;
 	glm::vec2 prevCursorPos{-1, -1}, currentCursorPos;
