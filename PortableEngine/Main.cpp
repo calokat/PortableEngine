@@ -241,21 +241,7 @@ void MakeRayFromCamera()
 
 	RaycastAgainstAABB(mouse_world_nearplane, mouse_world_farplane - mouse_world_nearplane, registry.view <AABB>());
 	//MakeMesh(plat->GetAssetPath("../../Assets/Models/cube.obj").c_str(), newMeshLocation);
-	
-	
-	
 	return;
-	float ndcX = ((mousePos.x - window->x) / window->width) * 2.f - 1.f;
-	float ndcY = (1.f - ((mousePos.y - window->y) / window->height)) * 2.f - 1.f;
-	glm::mat4 viewProjInverse = camera.projection * camera.view;
-	viewProjInverse = glm::inverse(viewProjInverse);
-	glm::vec4 rayOrigin = glm::vec4(ndcX, ndcY, 0, 1) * viewProjInverse;
-	rayOrigin /= rayOrigin.w;
-	glm::vec4 rayEnd = glm::vec4(ndcX, ndcY, 1.0f - FLT_EPSILON, 1) * viewProjInverse;
-	rayEnd /= rayEnd.w;
-	glm::vec3 ray = glm::normalize(rayOrigin - rayEnd);
-	ray *= 3;
-	MakeMesh(plat->GetAssetPath("../../Assets/Models/cube.obj").c_str(), ray);
 }
 
 
