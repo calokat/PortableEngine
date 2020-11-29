@@ -367,7 +367,7 @@ void Loop()
 	//ImGui::End();
 
 	plat->GetInputSystem()->GetKeyPressed();
-	auto view = registry.view<Mesh, Renderer, Transform, Name>();
+	auto view = registry.view<Mesh, Renderer, Transform, Name, AABB>();
 	ImGui::Begin("Entity List");
 	ImGui::SetWindowPos({ 0, 20 });
 	ImGui::SetWindowSize({ 200, 780 });
@@ -432,6 +432,7 @@ void Loop()
 		Renderer& renderer = registry.get<Renderer>(renderable);
 		Mesh& mesh = registry.get<Mesh>(renderable);
 		Transform& meshTransform = registry.get<Transform>(renderable);
+		AABB& aabb = registry.get<AABB>(renderable);
 		// if RandomColor component is attached, do not assign every vertex a color
 		//if (!registry.has<RandomColor>(renderable))
 		//{
@@ -440,6 +441,7 @@ void Loop()
 		//		it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
 		//	}
 		//}
+		InitializeAABB(aabb, mesh, meshTransform);
 		LoadMesh(renderer, mesh);
 		UpdateRenderer(renderer, meshTransform, camera);
 		//renderer.Update();
