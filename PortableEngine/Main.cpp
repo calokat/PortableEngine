@@ -475,6 +475,15 @@ int main(int argc, char* argv[])
 	LoadMesh(renderer, mesh, ((DirectXAPI*)(graph))->device.Get());
 
 	//GizmoSystem::Select(entity);
+	//auto ent2 = registry.create();
+	//Mesh& mesh2 = registry.emplace<Mesh>(ent2, plat->GetAssetPath("../../Assets/Models/helix.obj").c_str());
+	//MeshLoaderSystem::LoadMesh(mesh2.path.c_str(), mesh2);
+	//DirectXRenderer& renderer2 = registry.emplace<DirectXRenderer>(ent2/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
+	//Transform& t2 = registry.emplace<Transform>(ent2);
+	//t2.position += glm::vec3(0, -2, 0);
+	//TransformSystem::CalculateWorldMatrix(&t2);
+	//Load(renderer2, cam, (DirectXAPI*)graph, (WindowsPlatform*)plat);
+	//LoadMesh(renderer2, mesh2, ((DirectXAPI*)(graph))->device.Get());
 
 
 	plat->GetInputSystem()->RegisterRightMouseFunction([]()
