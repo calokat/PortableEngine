@@ -500,6 +500,8 @@ int main(int argc, char* argv[])
 	Renderer& renderer = registry.emplace<Renderer>(entity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
 	Transform& t1 = registry.emplace<Transform>(entity);
 	Name& name = registry.emplace<Name>(entity);
+	AABB& aabb = registry.emplace<AABB>(entity);
+	InitializeAABB(aabb, mesh, t1);
 	name = { "Cone" };
 	Load(renderer, cam);
 	//renderer.LoadMesh(mesh.GetRawVertices());
