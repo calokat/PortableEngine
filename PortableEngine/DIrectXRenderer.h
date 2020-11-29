@@ -15,4 +15,9 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
 	int numVertices;
 	int numIndices;
+	~DirectXRenderer()
+	{
+		delete vertexShader;
+		delete pixelShader;
+	}
 };
