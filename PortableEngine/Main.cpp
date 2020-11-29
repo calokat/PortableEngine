@@ -509,7 +509,7 @@ int main(int argc, char* argv[])
 	//renderer.LoadMesh(mesh.GetRawVertices());
 	LoadMesh(renderer, mesh);
 
-	GizmoSystem::Select(entity);
+	//GizmoSystem::Select(entity);
 
 
 	plat->GetInputSystem()->RegisterRightMouseFunction([]()
