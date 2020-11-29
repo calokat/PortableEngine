@@ -393,7 +393,7 @@ void Loop()
 	auto camEntityView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camEntityView[0]);
 	TransformSystem::CalculateWorldMatrix(&camTransform);
-	CameraSystem::CalculateViewMatrixLH(camera, camTransform, true);
+	CameraSystem::CalculateViewMatrixLH(camera, camTransform);
 	for (auto renderable : view)
 	{
 		DirectXRenderer& renderer = registry.get<DirectXRenderer>(renderable);
@@ -437,7 +437,7 @@ int main(int argc, char* argv[])
 	Camera& cam = registry.emplace<Camera>(cameraEntity, (float)window->width / window->height);
 	camTransform.position += glm::vec3(0, 0, -3);
 	//cam.transform = &camTransform;
-	CameraSystem::CalculateProjectionMatrixLH(cam, (float)window->width / window->height, true);
+	CameraSystem::CalculateProjectionMatrixLH(cam, (float)window->width / window->height);
 	//Camera cam = Camera(glm::vec3(0, 0, -3), (float)window->width / window->height);
 	float camMoveSpeed = .05f;
 	glm::vec2 prevCursorPos{-1, -1}, currentCursorPos;
@@ -466,6 +466,8 @@ int main(int argc, char* argv[])
 	MeshLoaderSystem::LoadMesh(mesh.path.c_str(), mesh);
 	DirectXRenderer& renderer = registry.emplace<DirectXRenderer>(entity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
 	Transform& t1 = registry.emplace<Transform>(entity);
+	t1.position += glm::vec3(0, 1, 0);
+	TransformSystem::CalculateWorldMatrix(&t1);
 	Name& name = registry.emplace<Name>(entity);
 	name = { "Cone" };
 	Load(renderer, cam, (DirectXAPI*)graph, (WindowsPlatform*)plat);
