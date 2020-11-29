@@ -237,7 +237,13 @@ void MakeRayFromCamera()
 	//camray.y = -camray.y;
 	camray *= 30;
 	glm::vec3 newMeshLocation = mouse_world_nearplane + camray;
-	MakeMesh(plat->GetAssetPath("../../Assets/Models/cube.obj").c_str(), newMeshLocation);
+
+
+	RaycastAgainstAABB(mouse_world_nearplane, mouse_world_farplane - mouse_world_nearplane, registry.view <AABB>());
+	//MakeMesh(plat->GetAssetPath("../../Assets/Models/cube.obj").c_str(), newMeshLocation);
+	
+	
+	
 	return;
 	float ndcX = ((mousePos.x - window->x) / window->width) * 2.f - 1.f;
 	float ndcY = (1.f - ((mousePos.y - window->y) / window->height)) * 2.f - 1.f;
