@@ -6,30 +6,30 @@ void EngineCameraControllerSystem::ControlCamera(IInputSystem* inputSystem, Tran
 	if (inputSystem->IsMouseButtonPressed(MouseButton::Right))
 	{
 		LookCamera(inputSystem, camTransform);
-	}
-	if (inputSystem->IsKeyPressed(KeyCode::W))
-	{
-		MoveCameraRelative(camTransform, glm::vec3(0, 0, 1) * cameraMoveSpeed);
-	}
-	if (inputSystem->IsKeyPressed(KeyCode::S))
-	{
-		MoveCameraRelative(camTransform, glm::vec3(0, 0, -1) * cameraMoveSpeed);
-	}
-	if (inputSystem->IsKeyPressed(KeyCode::A))
-	{
-		MoveCameraRelative(camTransform, glm::vec3(1, 0, 0) * cameraMoveSpeed);
-	}
-	if (inputSystem->IsKeyPressed(KeyCode::D))
-	{
-		MoveCameraRelative(camTransform, glm::vec3(-1, 0, 0) * cameraMoveSpeed);
-	}
-	if (inputSystem->IsKeyPressed(KeyCode::Q))
-	{
-		MoveCameraRelative(camTransform, glm::vec3(0, -1, 0) * cameraMoveSpeed);
-	}
-	if (inputSystem->IsKeyPressed(KeyCode::E))
-	{
-		MoveCameraRelative(camTransform, glm::vec3(0, 1, 0) * cameraMoveSpeed);
+		if (inputSystem->IsKeyPressed(KeyCode::W))
+		{
+			MoveCameraRelative(camTransform, glm::vec3(0, 0, 1) * cameraMoveSpeed);
+		}
+		if (inputSystem->IsKeyPressed(KeyCode::S))
+		{
+			MoveCameraRelative(camTransform, glm::vec3(0, 0, -1) * cameraMoveSpeed);
+		}
+		if (inputSystem->IsKeyPressed(KeyCode::A))
+		{
+			MoveCameraRelative(camTransform, glm::vec3(1, 0, 0) * cameraMoveSpeed);
+		}
+		if (inputSystem->IsKeyPressed(KeyCode::D))
+		{
+			MoveCameraRelative(camTransform, glm::vec3(-1, 0, 0) * cameraMoveSpeed);
+		}
+		if (inputSystem->IsKeyPressed(KeyCode::Q))
+		{
+			MoveCameraRelative(camTransform, glm::vec3(0, -1, 0) * cameraMoveSpeed);
+		}
+		if (inputSystem->IsKeyPressed(KeyCode::E))
+		{
+			MoveCameraRelative(camTransform, glm::vec3(0, 1, 0) * cameraMoveSpeed);
+		}
 	}
 }
 
