@@ -84,6 +84,7 @@ void Serialize(const char* saveFileName)
 	TrySerializeComponent<Renderer>(saveJson);
 	TrySerializeComponent<Name>(saveJson);
 	TrySerializeComponent<Rotator>(saveJson);
+	TrySerializeComponent<AABB>(saveJson);
 	char fullSavePath[150];
 	strcpy_s(fullSavePath, saveFileName);
 	strcat_s(fullSavePath, ".pg");
@@ -133,6 +134,7 @@ void Deserialize(const char* saveFileName)
 	TryDeserializeComponent<Transform>(entityMap, storedEntities, saveJson);
 	TryDeserializeComponent<Name>(entityMap, storedEntities, saveJson);
 	TryDeserializeComponent<Rotator>(entityMap, storedEntities, saveJson);
+	TryDeserializeComponent<AABB>(entityMap, storedEntities, saveJson);
 	auto compView = registry.view<Mesh>();
 	for (auto v : compView)
 	{

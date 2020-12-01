@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "Camera.h"
 #include "misc_components.h"
+#include "AABB.h"
 
 void to_json(nlohmann::json& j, const glm::vec3& vec)
 {
@@ -151,4 +152,16 @@ void to_json(nlohmann::json& j, const Rotator& r)
 void from_json(const nlohmann::json& j, Rotator& r)
 {
 	from_json(j["deltaRot"], r.deltaRot);
+}
+
+void to_json(nlohmann::json& j, const AABB& aabb)
+{
+	to_json(j["min"], aabb.min);
+	to_json(j["max"], aabb.max);
+}
+
+void from_json(const nlohmann::json& j, AABB& aabb)
+{
+	from_json(j["min"], aabb.min);
+	from_json(j["max"], aabb.max);
 }
