@@ -19,17 +19,14 @@ class WindowsInputSystem :
 public:
 	WindowsInputSystem(HWND h);
 	void GetKeyPressed();
-	void RegisterKeyPressFunction(char, std::function<void()>);
-	void RegisterRightMouseFunction(std::function<void()>);
 	glm::vec2 GetCursorPosition();
 	glm::vec2 GetPreviousCursorPosition();
+	bool IsKeyPressed(KeyCode kc);
+	bool WasKeyPressed(KeyCode kc);
+	bool IsMouseButtonPressed(MouseButton mb);
+	bool WasMouseButtonPressed(MouseButton mb);
 
 private:
-	//std::map<char, std::function<void()>> keyToFunction;
-	std::vector<InputFunction> keyToFunction;
-	std::function<void()> rightClickFunction;
 	HWND hwnd;
-	glm::vec2 cursorPos;
-	glm::vec2 prevCursorPos;
 };
 #endif
