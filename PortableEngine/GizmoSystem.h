@@ -5,6 +5,7 @@
 #include "Mesh.h"
 #include <vector>
 #include <entt.hpp>
+#include "IInputSystem.h"
 class GizmoSystem
 {
 private:
@@ -17,5 +18,6 @@ public:
 	static void DeselectAll();
 	static ImGuizmo::OPERATION op;
 	static entt::entity GetSelectedEntity();
+	static void UpdateGizmo(IInputSystem* inputSystem);
 };
 

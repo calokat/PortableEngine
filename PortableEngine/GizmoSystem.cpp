@@ -52,3 +52,19 @@ entt::entity GizmoSystem::GetSelectedEntity()
 	}
 	return entt::null;
 }
+
+void GizmoSystem::UpdateGizmo(IInputSystem* inputSystem)
+{
+	if (inputSystem->IsKeyPressed(KeyCode::W))
+	{
+		op = ImGuizmo::TRANSLATE;
+	}
+	if (inputSystem->IsKeyPressed(KeyCode::E))
+	{
+		op = ImGuizmo::ROTATE;
+	}
+	if (inputSystem->IsKeyPressed(KeyCode::R))
+	{
+		op = ImGuizmo::SCALE;
+	}
+}
