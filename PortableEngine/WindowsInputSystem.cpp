@@ -6,6 +6,8 @@ WindowsInputSystem::WindowsInputSystem(HWND h) : hwnd(h)
 }
 void WindowsInputSystem::GetKeyPressed()
 {
+	previous = current;
+
 	POINT mousePos = {};
 	GetCursorPos(&mousePos);
 	ScreenToClient(hwnd, &mousePos);
@@ -59,8 +61,6 @@ void WindowsInputSystem::GetKeyPressed()
 	current.mouseButtons[MouseButton::Left] = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
 	current.mouseButtons[MouseButton::Middle] = GetAsyncKeyState(VK_MBUTTON) & 0x8000;
 	current.mouseButtons[MouseButton::Right] = GetAsyncKeyState(VK_RBUTTON) & 0x8000;
-
-	previous = current;
 }
 
 glm::vec2 WindowsInputSystem::GetCursorPosition()
