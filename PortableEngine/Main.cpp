@@ -33,6 +33,7 @@
 // Thanks to https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c
 #include <filesystem>
 #include "AABB.h"
+#include "AABBSystem.h"
 using json = nlohmann::json;
 class RandomColor
 {
@@ -166,6 +167,8 @@ void MakeMesh(const char* path, const char* name = "GameObject") {
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
+	AABB& aabb = registry.emplace<AABB>(newMeshEntity);
+	AABBSystem::UpdateAABB(aabb, newMesh, meshTransform);
 }
 
 void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") {
@@ -245,42 +248,6 @@ void MakeRayFromCamera()
 }
 
 
-void InitializeAABB(AABB& bb, const Mesh& m, const Transform& t)
-{
-	glm::vec3 min(FLT_MAX);
-	glm::vec3 max(FLT_MIN);
-	for (std::vector<Vertex>::const_iterator it = m.rawVertices.begin(); it != m.rawVertices.end(); ++it)
-	{
-		if (it->Position.x < min.x)
-		{
-			min.x = it->Position.x;
-		}
-		if (it->Position.y < min.y)
-		{
-			min.y = it->Position.y;
-		}
-		if (it->Position.z < min.z)
-		{
-			min.z = it->Position.z;
-		}
-		if (it->Position.x > max.x)
-		{
-			max.x = it->Position.x;
-		}
-		if (it->Position.y > max.y)
-		{
-			max.y = it->Position.y;
-		}
-		if (it->Position.z > max.z)
-		{
-			max.z = it->Position.z;
-		}
-	}
-	max += t.position;
-	min += t.position;
-	bb.min = min;
-	bb.max = max;
-}
 //void RandomizeVertexColors()
 //{
 //	auto rcView = registry.view<RandomColor, Mesh, Renderer, Transform>();
@@ -465,7 +432,7 @@ void Loop()
 		//		it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
 		//	}
 		//}
-		InitializeAABB(aabb, mesh, meshTransform);
+		AABBSystem::UpdateAABB(aabb, mesh, meshTransform);
 		LoadMesh(renderer, mesh);
 		UpdateRenderer(renderer, meshTransform, camera);
 		//renderer.Update();
@@ -495,6 +462,7 @@ int main(int argc, char* argv[])
 	Transform& camTransform = registry.emplace<Transform>(cameraEntity);
 	Camera& cam = registry.emplace<Camera>(cameraEntity, (float)window->width / window->height);
 	camTransform.position += glm::vec3(0, 0, -3);
+	TransformSystem::CalculateWorldMatrix(&camTransform);
 	//cam.transform = &camTransform;
 	CameraSystem::CalculateProjectionMatrix(cam, (float)window->width / window->height);
 	//Camera cam = Camera(glm::vec3(0, 0, -3), (float)window->width / window->height);
@@ -527,7 +495,7 @@ int main(int argc, char* argv[])
 	Transform& t1 = registry.emplace<Transform>(entity);
 	Name& name = registry.emplace<Name>(entity);
 	AABB& aabb = registry.emplace<AABB>(entity);
-	InitializeAABB(aabb, mesh, t1);
+	AABBSystem::UpdateAABB(aabb, mesh, t1);
 	name = { "Cone" };
 	Load(renderer, cam);
 	//renderer.LoadMesh(mesh.GetRawVertices());
