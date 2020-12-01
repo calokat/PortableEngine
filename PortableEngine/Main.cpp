@@ -446,6 +446,9 @@ void Loop()
 			DrawWireframe(renderer, glm::vec4(1, 1, 1, 1));
 		}
 	}
+	if (plat->GetInputSystem()->IsKeyPressed(KeyCode::Esc))
+	{
+		GizmoSystem::DeselectAll();
 	}
 	auto transformView = registry.view<Transform>();
 	//camera.transform = transform;
