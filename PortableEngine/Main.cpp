@@ -441,6 +441,11 @@ void Loop()
 		//renderer.Update();
 		//renderer.Draw();
 		Draw(renderer);
+		if (renderable == selected)
+		{
+			DrawWireframe(renderer, glm::vec4(1, 1, 1, 1));
+		}
+	}
 	}
 	auto transformView = registry.view<Transform>();
 	//camera.transform = transform;
