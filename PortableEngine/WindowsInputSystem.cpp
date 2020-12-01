@@ -54,7 +54,7 @@ void WindowsInputSystem::GetKeyPressed()
 	current.keys[KeyCode::ForwardSlash] = GetAsyncKeyState('/') & 0x8000;
 	current.keys[KeyCode::BackSlash] = GetAsyncKeyState('\\') & 0x8000;
 	current.keys[KeyCode::Enter] = GetAsyncKeyState('\n') & 0x8000;
-	current.keys[KeyCode::Escape] = GetAsyncKeyState(VK_ESCAPE) & 0x8000;
+	current.keys[KeyCode::Esc] = GetAsyncKeyState(VK_ESCAPE) & 0x8000;
 	
 	current.mouseButtons[MouseButton::Left] = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
 	current.mouseButtons[MouseButton::Middle] = GetAsyncKeyState(VK_MBUTTON) & 0x8000;
