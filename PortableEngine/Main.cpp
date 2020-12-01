@@ -34,6 +34,7 @@
 #include <filesystem>
 #include "AABB.h"
 #include "AABBSystem.h"
+#include "EngineCameraControllerSystem.h"
 using json = nlohmann::json;
 class RandomColor
 {
@@ -444,6 +445,9 @@ void Loop()
 	auto transformView = registry.view<Transform>();
 	//camera.transform = transform;
 	GizmoSystem::DrawGizmo(camera, transformView);
+
+	EngineCameraControllerSystem::ControlCamera(plat->GetInputSystem(), camTransform);
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	graph->_SwapBuffers();
@@ -506,38 +510,38 @@ int main(int argc, char* argv[])
 	//GizmoSystem::Select(entity);
 
 
-	plat->GetInputSystem()->RegisterRightMouseFunction([]()
-	{
-		auto camView = registry.view<Camera>();
-		auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
-		glm::vec2 delta = plat->GetInputSystem()->GetCursorPosition() - plat->GetInputSystem()->GetPreviousCursorPosition();
-		float camRotX = camTransform.rotation.x;
-		bool tooFarUp = camRotX > 3.f / 2;
-		bool tooFarDown = camRotX < -3.f / 2;
-		// checks to see if camera is in danger of gimbal lock
-		if (tooFarUp || tooFarDown)
-		{
-			float newCamRotX;
-			// we allow the input to rotate the camera on the x axis
-			// if it is "too far down" and going up or "too far up" 
-			// and going down. Otherwise zero out the x axis input
-			if ((tooFarUp && delta.y < 0) || (tooFarDown && delta.y > 0))
-			{
-				newCamRotX = delta.y;
-			}
-			else
-			{
-				newCamRotX = 0;
-			}
-			//cam.GetTransform()->Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0));
-			TransformSystem::Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0), &camTransform);
-		}
-		else
-		{
-			//cam.GetTransform()->Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0));
-			TransformSystem::Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0), &camTransform);
-		}
-	});
+	//plat->GetInputSystem()->RegisterRightMouseFunction([]()
+	//{
+	//	auto camView = registry.view<Camera>();
+	//	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
+	//	glm::vec2 delta = plat->GetInputSystem()->GetCursorPosition() - plat->GetInputSystem()->GetPreviousCursorPosition();
+	//	float camRotX = camTransform.rotation.x;
+	//	bool tooFarUp = camRotX > 3.f / 2;
+	//	bool tooFarDown = camRotX < -3.f / 2;
+	//	// checks to see if camera is in danger of gimbal lock
+	//	if (tooFarUp || tooFarDown)
+	//	{
+	//		float newCamRotX;
+	//		// we allow the input to rotate the camera on the x axis
+	//		// if it is "too far down" and going up or "too far up" 
+	//		// and going down. Otherwise zero out the x axis input
+	//		if ((tooFarUp && delta.y < 0) || (tooFarDown && delta.y > 0))
+	//		{
+	//			newCamRotX = delta.y;
+	//		}
+	//		else
+	//		{
+	//			newCamRotX = 0;
+	//		}
+	//		//cam.GetTransform()->Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0));
+	//		TransformSystem::Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0), &camTransform);
+	//	}
+	//	else
+	//	{
+	//		//cam.GetTransform()->Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0));
+	//		TransformSystem::Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0), &camTransform);
+	//	}
+	//});
 
 	auto MoveCamera = [](glm::vec3 dir) {
 		return[dir]() {
@@ -547,23 +551,23 @@ int main(int argc, char* argv[])
 		};
 	};
 
-	plat->GetInputSystem()->RegisterKeyPressFunction('w', MoveCamera(glm::vec3(0, 0, 1 * camMoveSpeed)));
-	plat->GetInputSystem()->RegisterKeyPressFunction('s', MoveCamera(glm::vec3(0, 0, -1 * camMoveSpeed)));
-	plat->GetInputSystem()->RegisterKeyPressFunction('a', MoveCamera(glm::vec3(1 * camMoveSpeed, 0, 0)));
-	plat->GetInputSystem()->RegisterKeyPressFunction('d', MoveCamera(glm::vec3(-1 * camMoveSpeed, 0, 0)));
-	plat->GetInputSystem()->RegisterKeyPressFunction('q', MoveCamera(glm::vec3(0, -1 * camMoveSpeed, 0)));
-	plat->GetInputSystem()->RegisterKeyPressFunction('e', MoveCamera(glm::vec3(0, 1 * camMoveSpeed, 0)));
+	//plat->GetInputSystem()->RegisterKeyPressFunction('w', MoveCamera(glm::vec3(0, 0, 1 * camMoveSpeed)));
+	//plat->GetInputSystem()->RegisterKeyPressFunction('s', MoveCamera(glm::vec3(0, 0, -1 * camMoveSpeed)));
+	//plat->GetInputSystem()->RegisterKeyPressFunction('a', MoveCamera(glm::vec3(1 * camMoveSpeed, 0, 0)));
+	//plat->GetInputSystem()->RegisterKeyPressFunction('d', MoveCamera(glm::vec3(-1 * camMoveSpeed, 0, 0)));
+	//plat->GetInputSystem()->RegisterKeyPressFunction('q', MoveCamera(glm::vec3(0, -1 * camMoveSpeed, 0)));
+	//plat->GetInputSystem()->RegisterKeyPressFunction('e', MoveCamera(glm::vec3(0, 1 * camMoveSpeed, 0)));
 
-	// gizmo keyboard controls
-	plat->GetInputSystem()->RegisterKeyPressFunction('r', []() {GizmoSystem::op = ImGuizmo::SCALE; });
-	plat->GetInputSystem()->RegisterKeyPressFunction('e', []() {GizmoSystem::op = ImGuizmo::ROTATE; });
-	plat->GetInputSystem()->RegisterKeyPressFunction('w', []() {GizmoSystem::op = ImGuizmo::TRANSLATE; });
+	//// gizmo keyboard controls
+	//plat->GetInputSystem()->RegisterKeyPressFunction('r', []() {GizmoSystem::op = ImGuizmo::SCALE; });
+	//plat->GetInputSystem()->RegisterKeyPressFunction('e', []() {GizmoSystem::op = ImGuizmo::ROTATE; });
+	//plat->GetInputSystem()->RegisterKeyPressFunction('w', []() {GizmoSystem::op = ImGuizmo::TRANSLATE; });
 
 	//plat->GetInputSystem()->RegisterKeyPressFunction('b', []() {Serialize(); });
 	//plat->GetInputSystem()->RegisterKeyPressFunction('m', []() {Deserialize(); });
 
 	// TODO: Remove this MakeRayFromCamera call
-	plat->GetInputSystem()->RegisterKeyPressFunction('j', []() {MakeRayFromCamera(); });
+	//plat->GetInputSystem()->RegisterKeyPressFunction('j', []() {MakeRayFromCamera(); });
 	//plat->GetInputSystem()->RegisterKeyPressFunction('k', [&camTransform, &cam]() {camTransform.rotation = glm::vec3(0, 0, 0); TransformSystem::CalculateWorldMatrix(&camTransform); CameraSystem::CalculateViewMatrix(cam, camTransform); });
 #ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop(Loop, 0, 1);
