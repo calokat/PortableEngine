@@ -50,5 +50,5 @@ entt::entity GizmoSystem::GetSelectedEntity()
 	{
 		return selected[0];
 	}
-	entt::null;
+	return entt::null;
 }
