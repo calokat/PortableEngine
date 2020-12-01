@@ -448,7 +448,12 @@ void Loop()
 	GizmoSystem::DrawGizmo(camera, transformView);
 
 	EngineCameraControllerSystem::ControlCamera(plat->GetInputSystem(), camTransform);
-
+	
+	// TODO: Put the picking code in its own system
+	if (plat->GetInputSystem()->IsMouseButtonPressed(MouseButton::Left) && !plat->GetInputSystem()->WasMouseButtonPressed(MouseButton::Left))
+	{
+		MakeRayFromCamera();
+	}
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	graph->_SwapBuffers();
