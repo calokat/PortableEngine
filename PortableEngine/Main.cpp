@@ -408,31 +408,34 @@ void Loop()
 	ImGui::SetWindowPos({ 600, 20 });
 	ImGui::SetWindowSize({ 200, 780 });
 	entt::entity selected = GizmoSystem::GetSelectedEntity();
-	Transform* t = registry.try_get<Transform>(selected);
-	if (t)
+	if (selected != entt::null)
 	{
-		ComponentGUI(*t);
-	}
-	Renderer* r = registry.try_get<Renderer>(selected);
-	if (r)
-	{
-		ComponentGUI(*r);
-	}
-	Rotator* rot = registry.try_get<Rotator>(selected);
-	if (rot)
-	{
-		ComponentGUI(*rot);
-	}
-	if (ImGui::BeginMenu("+"))
-	{
-		if (ImGui::MenuItem("Rotator"))
+		Transform* t = registry.try_get<Transform>(selected);
+		if (t)
 		{
-			if (!registry.has<Rotator>(selected))
-			{
-				registry.emplace_or_replace<Rotator>(selected);
-			}
+			ComponentGUI(*t);
 		}
-		ImGui::EndMenu();
+		Renderer* r = registry.try_get<Renderer>(selected);
+		if (r)
+		{
+			ComponentGUI(*r);
+		}
+		Rotator* rot = registry.try_get<Rotator>(selected);
+		if (rot)
+		{
+			ComponentGUI(*rot);
+		}
+		if (ImGui::BeginMenu("+"))
+		{
+			if (ImGui::MenuItem("Rotator"))
+			{
+				if (!registry.has<Rotator>(selected))
+				{
+					registry.emplace_or_replace<Rotator>(selected);
+				}
+			}
+			ImGui::EndMenu();
+		}
 	}
 	ImGui::End();
 
