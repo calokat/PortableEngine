@@ -211,6 +211,7 @@ void RaycastAgainstAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, entt::basic_view<
 		// if tmax < 0, ray (line) is intersecting AABB, but whole AABB is behing us
 		if (tmax >= 0 && tmin <= tmax)
 		{
+			GizmoSystem::DeselectAll();
 			GizmoSystem::Select(ae);
 			return;
 		}
