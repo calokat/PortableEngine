@@ -217,7 +217,6 @@ void RaycastAgainstAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, entt::basic_view<
 		}
 
 	}
-	GizmoSystem::DeselectAll();
 }
 
 
