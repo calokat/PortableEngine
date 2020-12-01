@@ -444,6 +444,7 @@ void Loop()
 	}
 	auto transformView = registry.view<Transform>();
 	//camera.transform = transform;
+	GizmoSystem::UpdateGizmo(plat->GetInputSystem());
 	GizmoSystem::DrawGizmo(camera, transformView);
 
 	EngineCameraControllerSystem::ControlCamera(plat->GetInputSystem(), camTransform);
