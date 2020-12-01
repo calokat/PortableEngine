@@ -59,6 +59,14 @@ void Draw(Renderer& renderer)
 	glBindVertexArray(0);
 }
 
+void DrawWireframe(Renderer& renderer, glm::vec4 wireframeColor)
+{
+	glBindVertexArray(renderer.vao);
+	glUniform4f(renderer.colorLoc, wireframeColor.x, wireframeColor.y, wireframeColor.z, wireframeColor.w);
+	glDrawArrays(GL_LINES, 0, renderer.numVertices);
+	glBindVertexArray(0);
+}
+
 void UpdateRenderer(Renderer& renderer, Transform meshTransform, Camera camera)
 {
 	glUseProgram(renderer.program);
