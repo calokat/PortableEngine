@@ -510,12 +510,12 @@ int main(int argc, char* argv[])
 				newCamRotX = 0;
 			}
 			//cam.GetTransform()->Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0));
-			TransformSystem::Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0), &camTransform);
+			TransformSystem::Rotate(glm::vec3(newCamRotX * .005f, delta.x * .005f, 0), &camTransform);
 		}
 		else
 		{
 			//cam.GetTransform()->Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0));
-			TransformSystem::Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0), &camTransform);
+			TransformSystem::Rotate(glm::vec3(delta.y * .005f, delta.x * .005f, 0), &camTransform);
 		}
 	});
 
@@ -529,8 +529,8 @@ int main(int argc, char* argv[])
 
 	plat->GetInputSystem()->RegisterKeyPressFunction('w', MoveCamera(glm::vec3(0, 0, 1 * camMoveSpeed)));
 	plat->GetInputSystem()->RegisterKeyPressFunction('s', MoveCamera(glm::vec3(0, 0, -1 * camMoveSpeed)));
-	plat->GetInputSystem()->RegisterKeyPressFunction('a', MoveCamera(glm::vec3(1 * camMoveSpeed, 0, 0)));
-	plat->GetInputSystem()->RegisterKeyPressFunction('d', MoveCamera(glm::vec3(-1 * camMoveSpeed, 0, 0)));
+	plat->GetInputSystem()->RegisterKeyPressFunction('a', MoveCamera(glm::vec3(-1 * camMoveSpeed, 0, 0)));
+	plat->GetInputSystem()->RegisterKeyPressFunction('d', MoveCamera(glm::vec3(1 * camMoveSpeed, 0, 0)));
 	plat->GetInputSystem()->RegisterKeyPressFunction('q', MoveCamera(glm::vec3(0, -1 * camMoveSpeed, 0)));
 	plat->GetInputSystem()->RegisterKeyPressFunction('e', MoveCamera(glm::vec3(0, 1 * camMoveSpeed, 0)));
 
