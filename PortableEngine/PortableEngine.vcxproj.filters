@@ -269,10 +269,10 @@
     <ClInclude Include="misc_components.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DIrectXRenderer.h">
+    <ClInclude Include="DirectXRenderSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXRenderSystem.h">
+    <ClInclude Include="DirectXRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

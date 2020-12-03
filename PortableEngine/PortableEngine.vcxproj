@@ -202,7 +202,7 @@
     <ClInclude Include="CameraSystem.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="DirectXAPI.h" />
-    <ClInclude Include="DIrectXRenderer.h" />
+    <ClInclude Include="DirectXRenderer.h" />
     <ClInclude Include="DirectXRenderSystem.h" />
     <ClInclude Include="DXCore.h" />
     <ClInclude Include="EmscriptenInputSystem.h" />
