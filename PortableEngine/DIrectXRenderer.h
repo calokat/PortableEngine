@@ -8,9 +8,10 @@
 class DirectXRenderer
 {
 public:
+	DirectXRenderer();
 	DirectXRenderer(DirectXRenderer&& other);
 	DirectXRenderer& operator=(DirectXRenderer&& other) noexcept;
-	DirectXRenderer(DirectXAPI* dxApi);
+	//DirectXRenderer(DirectXAPI* dxApi);
 	std::string vertexShaderPath;
 	std::string fragmentShaderPath;
 	SimpleVertexShader* vertexShader;
