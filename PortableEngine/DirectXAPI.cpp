@@ -2,6 +2,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "Vertex.h"
 #include <iostream>
+#include <examples/imgui_impl_dx11.h>
 // ********** REQUIRED WITHOUT SIMPLE SHADER **********
 // Needed for a helper function to read compiled shader files from the hard drive
 #pragma comment(lib, "d3dcompiler.lib")
@@ -139,6 +140,7 @@ int DirectXAPI::Init()
 
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+	ImGui_ImplDX11_Init(device.Get(), context.Get());
 	//context->IASetInputLayout(inputLayout);
 	// Return the "everything is ok" HRESULT value
 	return S_OK;
@@ -239,7 +241,7 @@ DirectXAPI::~DirectXAPI()
 
 	//if (testHelix) delete testHelix;
 	// ********** REQUIRED WITHOUT SIMPLE SHADER **********
-
+	ImGui_ImplDX11_Shutdown();
 }
 
 void DirectXAPI::LoadShaders()
