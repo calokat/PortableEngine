@@ -25,3 +25,9 @@ DirectXRenderer::DirectXRenderer(DirectXAPI* dxApi)
 	this->vertexShader = new SimpleVertexShader(dxApi->device.Get(), dxApi->context.Get(), L"VertexShader.cso");
 	this->pixelShader = new SimplePixelShader(dxApi->device.Get(), dxApi->context.Get(), L"PixelShader.cso");
 }
+
+DirectXRenderer::~DirectXRenderer()
+{
+	delete vertexShader;
+	delete pixelShader;
+}
