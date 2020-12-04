@@ -16,8 +16,9 @@
 //#include "RenderSystem.h"
 #include "Camera.h"
 #include <entt.hpp>
-//#include <imgui.h>
-//#include <examples/imgui_impl_win32.h>
+#include <imgui.h>
+#include <examples/imgui_impl_win32.h>
+#include <examples/imgui_impl_dx11.h>
 //#include <examples/imgui_impl_opengl3.h>
 //#include <ImGuizmo.h>
 #include "TransformSystem.h"
@@ -248,14 +249,16 @@ void MakeRayFromCamera()
 
 void Loop()
 {
-	//ImGui_ImplOpenGL3_NewFrame();
+	
 	//ImGui_ImplWin32_NewFrame();
+	ImGui_ImplDX11_NewFrame();
+	//ImGui_ImplOpenGL_NewFrame();
 	plat->NewGuiFrame();
-	//ImGui::NewFrame();
+	ImGui::NewFrame();
 	//ImGuizmo::BeginFrame();
 	//ImGuizmo::Enable(true);
 	static float vertColorPick[4];
-	/*ImGui::BeginMainMenuBar();
+	ImGui::BeginMainMenuBar();
 	if (ImGui::BeginMenu("File"))
 	{
 		if (ImGui::BeginMenu("New"))
@@ -286,34 +289,34 @@ void Loop()
 			}
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Save"))
-		{
-			static char saveFileName[100] = {};
-			ImGui::InputText("Save as: ", saveFileName, 100);
-			if (ImGui::Button("Save"))
-			{
-				Serialize(saveFileName);
-			}
-			ImGui::EndMenu();
-		}
-		if (ImGui::BeginMenu("Open"))
-		{
-			for (const auto& saveFile : std::filesystem::directory_iterator("./"))
-			{
-				if (saveFile.path().extension().generic_string() == ".pg")
-				{
-					std::string fileStr = saveFile.path().generic_string();
+		//if (ImGui::BeginMenu("Save"))
+		//{
+		//	static char saveFileName[100] = {};
+		//	ImGui::InputText("Save as: ", saveFileName, 100);
+		//	if (ImGui::Button("Save"))
+		//	{
+		//		Serialize(saveFileName);
+		//	}
+		//	ImGui::EndMenu();
+		//}
+		//if (ImGui::BeginMenu("Open"))
+		//{
+		//	for (const auto& saveFile : std::filesystem::directory_iterator("./"))
+		//	{
+		//		if (saveFile.path().extension().generic_string() == ".pg")
+		//		{
+		//			std::string fileStr = saveFile.path().generic_string();
 
-					if (ImGui::MenuItem(fileStr.c_str()))
-					{
-						Deserialize(fileStr.c_str());
-					}
-				}
-			}
-			ImGui::EndMenu();
-		}
+		//			if (ImGui::MenuItem(fileStr.c_str()))
+		//			{
+		//				Deserialize(fileStr.c_str());
+		//			}
+		//		}
+		//	}
+		//	ImGui::EndMenu();
+		//}
 		ImGui::EndMenu();
-	}*/
+	}
 	//if (ImGui::BeginMenu("Components"))
 	//{
 	//	if (ImGui::BeginMenu("Color picker"))
@@ -327,7 +330,7 @@ void Loop()
 	//	}
 	//	ImGui::EndMenu();
 	//}
-	//ImGui::EndMainMenuBar();
+	ImGui::EndMainMenuBar();
 	//ImGui::Begin("Vertex color picker", NULL, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoMove);
 	//ImGui::Text("Vertex color: ");
 	//ImGui::ColorPicker4("Vertex color: ", vertColorPick);
@@ -416,8 +419,9 @@ void Loop()
 	auto transformView = registry.view<Transform>();
 	//camera.transform = transform;
 	//GizmoSystem::DrawGizmo(camera, transformView);
-	//ImGui::Render();
+	ImGui::Render();
 	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	graph->_SwapBuffers();
 }
 
@@ -443,10 +447,10 @@ int main(int argc, char* argv[])
 	glm::vec2 prevCursorPos{-1, -1}, currentCursorPos;
 
 	// (Try to) Setup IMGUI	
-	/*IMGUI_CHECKVERSION();
+	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
-	ImGui::StyleColorsDark();*/
+	ImGui::StyleColorsDark();
 
 
 #ifdef _WIN64
@@ -556,6 +560,6 @@ int main(int argc, char* argv[])
 	delete window;
 	delete plat;
 	delete graph;
-	//ImGui::DestroyContext();
+	ImGui::DestroyContext();
 	return 0;
 }
