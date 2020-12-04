@@ -163,7 +163,7 @@ void MakeMesh(const char* path, const char* name = "GameObject") {
 	Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
 	meshTransform.position = newMeshPos;
 	TransformSystem::CalculateWorldMatrix(&meshTransform);
-	DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
+	DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity, (DirectXAPI*)graph/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
 	Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
@@ -180,7 +180,7 @@ void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") 
 	Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
 	meshTransform.position = pos;
 	TransformSystem::CalculateWorldMatrix(&meshTransform);
-	DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
+	DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity, (DirectXAPI*)graph/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
 	Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
@@ -464,7 +464,7 @@ int main(int argc, char* argv[])
 
 	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/cone.obj").c_str());
 	MeshLoaderSystem::LoadMesh(mesh.path.c_str(), mesh);
-	DirectXRenderer& renderer = registry.emplace<DirectXRenderer>(entity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
+	DirectXRenderer& renderer = registry.emplace<DirectXRenderer>(entity, (DirectXAPI*)graph/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
 	Transform& t1 = registry.emplace<Transform>(entity);
 	t1.position += glm::vec3(0, 1, 0);
 	TransformSystem::CalculateWorldMatrix(&t1);
@@ -548,10 +548,10 @@ int main(int argc, char* argv[])
 #ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop(Loop, 0, 1);
 #else
-	while (plat->Run() == 0)
-	{
+	//while (plat->Run() == 0)
+	//{
 		Loop();
-	}
+	//}
 #endif
 	delete window;
 	delete plat;

@@ -4,9 +4,13 @@
 #include "SimpleShader.h"
 #include <d3d11.h>
 #include <wrl/client.h>
+#include "DirectXAPI.h"
 class DirectXRenderer
 {
 public:
+	DirectXRenderer(DirectXRenderer&& other);
+	DirectXRenderer& operator=(DirectXRenderer&& other) noexcept;
+	DirectXRenderer(DirectXAPI* dxApi);
 	std::string vertexShaderPath;
 	std::string fragmentShaderPath;
 	SimpleVertexShader* vertexShader;
