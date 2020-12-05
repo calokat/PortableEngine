@@ -23,7 +23,7 @@
 //#include <ImGuizmo.h>
 #include "TransformSystem.h"
 #include "CameraSystem.h"
-//#include "GizmoSystem.h"
+#include "GizmoSystem.h"
 #include "MeshLoaderSystem.h"
 #include <typeinfo>
 #include <map>
@@ -255,8 +255,8 @@ void Loop()
 	//ImGui_ImplOpenGL_NewFrame();
 	plat->NewGuiFrame();
 	ImGui::NewFrame();
-	//ImGuizmo::BeginFrame();
-	//ImGuizmo::Enable(true);
+	ImGuizmo::BeginFrame();
+	ImGuizmo::Enable(true);
 	static float vertColorPick[4];
 	ImGui::BeginMainMenuBar();
 	if (ImGui::BeginMenu("File"))
@@ -338,20 +338,20 @@ void Loop()
 
 	plat->GetInputSystem()->GetKeyPressed();
 	auto view = registry.view<Mesh, DirectXRenderer, Transform, Name>();
-	//ImGui::Begin("Entity List");
-	//ImGui::SetWindowPos({ 0, 20 });
-	//ImGui::SetWindowSize({ 200, 780 });
-	//for (auto renderable : view)
-	//{
-	//	Name name = view.get<Name>(renderable);
-	//	if (ImGui::MenuItem(name.nameString.c_str()))
-	//	{
-	//		GizmoSystem::DeselectAll();
-	//		Transform& newSelected = view.get<Transform>(renderable);
-	//		GizmoSystem::Select(renderable);
-	//	}
-	//}
-	//ImGui::End();
+	ImGui::Begin("Entity List");
+	ImGui::SetWindowPos({ 0, 20 });
+	ImGui::SetWindowSize({ 200, 780 });
+	for (auto renderable : view)
+	{
+		Name name = view.get<Name>(renderable);
+		if (ImGui::MenuItem(name.nameString.c_str()))
+		{
+			GizmoSystem::DeselectAll();
+			Transform& newSelected = view.get<Transform>(renderable);
+			GizmoSystem::Select(renderable);
+		}
+	}
+	ImGui::End();
 
 	//ImGui::Begin("Inspector");
 	//ImGui::SetWindowPos({ 600, 20 });
@@ -418,7 +418,7 @@ void Loop()
 	}
 	auto transformView = registry.view<Transform>();
 	//camera.transform = transform;
-	//GizmoSystem::DrawGizmo(camera, transformView);
+	GizmoSystem::DrawGizmo(camera, transformView);
 	ImGui::Render();
 	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -539,9 +539,9 @@ int main(int argc, char* argv[])
 	plat->GetInputSystem()->RegisterKeyPressFunction('e', MoveCamera(glm::vec3(0, 1 * camMoveSpeed, 0)));
 
 	// gizmo keyboard controls
-	//plat->GetInputSystem()->RegisterKeyPressFunction('r', []() {GizmoSystem::op = ImGuizmo::SCALE; });
-	//plat->GetInputSystem()->RegisterKeyPressFunction('e', []() {GizmoSystem::op = ImGuizmo::ROTATE; });
-	//plat->GetInputSystem()->RegisterKeyPressFunction('w', []() {GizmoSystem::op = ImGuizmo::TRANSLATE; });
+	plat->GetInputSystem()->RegisterKeyPressFunction('r', []() {GizmoSystem::op = ImGuizmo::SCALE; });
+	plat->GetInputSystem()->RegisterKeyPressFunction('e', []() {GizmoSystem::op = ImGuizmo::ROTATE; });
+	plat->GetInputSystem()->RegisterKeyPressFunction('w', []() {GizmoSystem::op = ImGuizmo::TRANSLATE; });
 
 	//plat->GetInputSystem()->RegisterKeyPressFunction('b', []() {Serialize(); });
 	//plat->GetInputSystem()->RegisterKeyPressFunction('m', []() {Deserialize(); });
