@@ -20,5 +20,6 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
 	int numVertices;
 	int numIndices;
+	glm::vec4 vertexColor = { 1, 0, 0, 1 };
 	~DirectXRenderer();
 };
