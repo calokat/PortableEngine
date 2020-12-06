@@ -46,5 +46,9 @@ void GizmoSystem::DeselectAll()
 
 entt::entity GizmoSystem::GetSelectedEntity()
 {
-	return selected[0];
+	if (!selected.empty())
+	{
+		return selected[0];
+	}
+	return entt::null;
 }
