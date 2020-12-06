@@ -30,7 +30,7 @@
 #include <random>
 #include <json.hpp>
 #include <iomanip>
-//#include "InspectorGUI.h"
+#include "InspectorGUI.h"
 //#include "SerializationSystem.h"
 #include "misc_components.h"
 // Thanks to https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c
@@ -353,37 +353,45 @@ void Loop()
 	}
 	ImGui::End();
 
-	//ImGui::Begin("Inspector");
-	//ImGui::SetWindowPos({ 600, 20 });
-	//ImGui::SetWindowSize({ 200, 780 });
-	//entt::entity selected = GizmoSystem::GetSelectedEntity();
-	//Transform* t = registry.try_get<Transform>(selected);
-	//if (t)
-	//{
-	//	ComponentGUI(*t);
-	//}
-	//Renderer* r = registry.try_get<Renderer>(selected);
-	//if (r)
-	//{
-	//	ComponentGUI(*r);
-	//}
-	//Rotator* rot = registry.try_get<Rotator>(selected);
-	//if (rot)
-	//{
-	//	ComponentGUI(*rot);
-	//}
-	//if (ImGui::BeginMenu("+"))
-	//{
-	//	if (ImGui::MenuItem("Rotator"))
-	//	{
-	//		if (!registry.has<Rotator>(selected))
-	//		{
-	//			registry.emplace_or_replace<Rotator>(selected);
-	//		}
-	//	}
-	//	ImGui::EndMenu();
-	//}
-	//ImGui::End();
+	ImGui::Begin("Inspector");
+	ImGui::SetWindowPos({ 600, 20 });
+	ImGui::SetWindowSize({ 200, 780 });
+	entt::entity selected = GizmoSystem::GetSelectedEntity();
+	if (selected != entt::null)
+	{
+		Transform* t = registry.try_get<Transform>(selected);
+		if (t)
+		{
+			ComponentGUI(*t);
+		}
+		//Renderer* r = registry.try_get<Renderer>(selected);
+		//if (r)
+		//{
+		//	ComponentGUI(*r);
+		//}
+		DirectXRenderer* r = registry.try_get<DirectXRenderer>(selected);
+		if (r)
+		{
+			ComponentGUI(*r);
+		}
+		//Rotator* rot = registry.try_get<Rotator>(selected);
+		//if (rot)
+		//{
+		//	ComponentGUI(*rot);
+		//}
+		//if (ImGui::BeginMenu("+"))
+		//{
+		//	if (ImGui::MenuItem("Rotator"))
+		//	{
+		//		if (!registry.has<Rotator>(selected))
+		//		{
+		//			registry.emplace_or_replace<Rotator>(selected);
+		//		}
+		//	}
+		//	ImGui::EndMenu();
+		//}
+	}
+	ImGui::End();
 
 	auto rotatorView = registry.view<Transform, Rotator>();
 	for (auto rotEntity : rotatorView)
