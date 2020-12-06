@@ -62,5 +62,6 @@ void UpdateRenderer(DirectXRenderer& renderer, Transform meshTransform, Camera c
 	renderer.vertexShader->SetMatrix4x4("viewMatrix", camera.view);
 	renderer.vertexShader->SetMatrix4x4("projectionMatrix", camera.projection);
 	renderer.vertexShader->SetMatrix4x4("worldMatrix", meshTransform.worldMatrix);
+	renderer.vertexShader->SetFloat4("colorTint", renderer.vertexColor);
 	renderer.vertexShader->CopyAllBufferData();
 }
