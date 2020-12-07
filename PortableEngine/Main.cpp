@@ -192,9 +192,9 @@ void MakeRayFromCamera()
 {
 	auto camView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
-	//ImGuiIO& io = ImGui::GetIO();
-	//ImVec2 mousePos = io.MousePos;
-	glm::vec2 mousePos = plat->GetInputSystem()->GetCursorPosition();
+	ImGuiIO& io = ImGui::GetIO();
+	ImVec2 mousePos = io.MousePos;
+	//glm::vec2 mousePos = plat->GetInputSystem()->GetCursorPosition();
 	// Blessed be this code taken from https://gamedev.stackexchange.com/questions/157674/simple-mouseray-picking-in-opengl
 	glm::vec3 mouse_world_nearplane = glm::unProject(
 		glm::vec3(mousePos.x, 600 - mousePos.y, 0.0f),
