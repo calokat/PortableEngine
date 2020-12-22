@@ -232,7 +232,7 @@
     <ClInclude Include="PortableGame.h" />
     <ClInclude Include="Relationship.h" />
     <ClInclude Include="GLRenderer.h" />
-    <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="GLRenderSystem.h" />
     <ClInclude Include="SerializationSystem.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleShader.h" />
