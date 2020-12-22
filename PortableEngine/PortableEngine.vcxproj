@@ -221,6 +221,7 @@
     <ClInclude Include="InspectorGUI.h" />
     <ClInclude Include="IOpenGLContext.h" />
     <ClInclude Include="IPlatform.h" />
+    <ClInclude Include="IRenderer.h" />
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
