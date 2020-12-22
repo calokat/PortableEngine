@@ -186,7 +186,7 @@
     <ClCompile Include="OpenGLESContext.cpp" />
     <ClCompile Include="PortableGame.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
-    <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="GLRenderSystem.cpp" />
     <ClCompile Include="SerializationSystem.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleShader.cpp" />
