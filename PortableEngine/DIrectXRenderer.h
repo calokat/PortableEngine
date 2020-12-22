@@ -5,7 +5,8 @@
 #include <d3d11.h>
 #include <wrl/client.h>
 #include "DirectXAPI.h"
-class DirectXRenderer
+#include "IRenderer.h"
+class DirectXRenderer : public IRenderer
 {
 public:
 	DirectXRenderer();
