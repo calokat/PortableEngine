@@ -1,5 +1,5 @@
 #pragma once
-#include "Renderer.h"
+#include "GLRenderer.h"
 #include "Mesh.h"
 #include "GL/glew.h"
 #include "Camera.h"

@@ -230,9 +230,6 @@
     <ClInclude Include="EmscriptenPlatform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RenderSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -282,6 +279,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,6 @@
 #pragma once
 #include "Transform.h"
-#include "Renderer.h"
+#include "GLRenderer.h"
 #include "misc_components.h"
 #ifdef _WIN64
 #include "DIrectXRenderer.h"
