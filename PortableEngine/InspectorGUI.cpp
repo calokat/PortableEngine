@@ -23,7 +23,7 @@ void ComponentGUI(Transform& t)
 	//ImGui::DragFloat3("Rotation", glm::value_ptr(t.rotation));
 }
 
-void ComponentGUI(Renderer& r)
+void ComponentGUI(GLRenderer& r)
 {
 	ImGui::ColorPicker4("Renderer Color", glm::value_ptr(r.vertexColor));
 }

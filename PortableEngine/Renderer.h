@@ -11,7 +11,7 @@
 	glVertexAttribPointer(index, size, type, 0, sizeof(structure), (void*)offsetof(structure, element)); \
 
 
-class Renderer
+class GLRenderer
 {
 public:
 	Shader vertex;
@@ -23,16 +23,16 @@ public:
 	int numVertices;
 	std::string vertexShaderPath;
 	std::string fragmentShaderPath;
-	Renderer(std::string vertexShaderPathParam, std::string fragmentShaderPathParam);
-	Renderer();
+	GLRenderer(std::string vertexShaderPathParam, std::string fragmentShaderPathParam);
+	GLRenderer();
 	//void LoadMesh(std::vector<Vertex>);
 	//void Draw();
 	//void Update();
-	~Renderer();
+	~GLRenderer();
 	// Move assignment operator
-	Renderer& operator=(Renderer&& other);
+	GLRenderer& operator=(GLRenderer&& other);
 	// Move constructor
-	Renderer (Renderer&& other) noexcept;
-	Renderer(Renderer& other);
+	GLRenderer (GLRenderer&& other) noexcept;
+	GLRenderer(GLRenderer& other);
 	glm::vec4 vertexColor = { 0, 0, 0, 1 };
 };

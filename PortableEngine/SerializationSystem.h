@@ -85,7 +85,7 @@ void from_json(const nlohmann::json& j, Transform& t)
 	from_json(j["scale"], t.scale);
 }
 
-void to_json(nlohmann::json& j, const Renderer& r)
+void to_json(nlohmann::json& j, const GLRenderer& r)
 {
 	j["vertexShaderPath"] = r.vertexShaderPath;
 	j["fragmentShaderPath"] = r.fragmentShaderPath;
@@ -94,9 +94,9 @@ void to_json(nlohmann::json& j, const Renderer& r)
 	j["vertexColor"] = colorJson;
 }
 
-void from_json(const nlohmann::json& j, Renderer& r)
+void from_json(const nlohmann::json& j, GLRenderer& r)
 {
-	r = Renderer(j["vertexShaderPath"], j["fragmentShaderPath"]);
+	r = GLRenderer(j["vertexShaderPath"], j["fragmentShaderPath"]);
 	r.vertexShaderPath = j["vertexShaderPath"];
 	r.fragmentShaderPath = j["fragmentShaderPath"];
 	from_json(j["vertexColor"], r.vertexColor);

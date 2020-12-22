@@ -5,7 +5,7 @@
 
 static glm::mat4 newView(1.0f);
 
-void Load(Renderer& renderer, Camera camera)
+void Load(GLRenderer& renderer, Camera camera)
 {
 	glGenVertexArrays(1, &renderer.vao);
 	glBindVertexArray(renderer.vao);
@@ -28,7 +28,7 @@ void Load(Renderer& renderer, Camera camera)
 	glUniform4f(renderer.colorLoc, renderer.vertexColor.x, renderer.vertexColor.y, renderer.vertexColor.z, renderer.vertexColor.w);
 }
 
-void LoadMesh(Renderer& renderer, Mesh& mesh)
+void LoadMesh(GLRenderer& renderer, Mesh& mesh)
 {
 	glBindVertexArray(renderer.vao);
 	glBufferData(GL_ARRAY_BUFFER, mesh.rawVertices.size() * sizeof(Vertex), mesh.rawVertices.data(), GL_STATIC_DRAW);
@@ -45,7 +45,7 @@ void LoadMesh(Renderer& renderer, Mesh& mesh)
 	glBindVertexArray(0);
 }
 
-void Draw(Renderer& renderer)
+void Draw(GLRenderer& renderer)
 {
 	glBindVertexArray(renderer.vao);
 	if (renderer.numVertices == 2)
@@ -59,7 +59,7 @@ void Draw(Renderer& renderer)
 	glBindVertexArray(0);
 }
 
-void UpdateRenderer(Renderer& renderer, Transform meshTransform, Camera camera)
+void UpdateRenderer(GLRenderer& renderer, Transform meshTransform, Camera camera)
 {
 	glUseProgram(renderer.program);
 	glUniformMatrix4fv(renderer.viewLoc, 1, GL_FALSE, glm::value_ptr(camera.view));

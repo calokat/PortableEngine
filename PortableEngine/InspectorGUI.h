@@ -7,7 +7,7 @@
 #endif
 
 void ComponentGUI(Transform& t);
-void ComponentGUI(Renderer& r);
+void ComponentGUI(GLRenderer& r);
 void ComponentGUI(Rotator& r);
 #ifdef _WIN64
 void ComponentGUI(DirectXRenderer& dxr);

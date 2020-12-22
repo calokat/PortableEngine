@@ -8,8 +8,8 @@
 #define SetupAttribute(index, size, type, structure, element) \
 	glVertexAttribPointer(index, size, type, 0, sizeof(structure), (void*)offsetof(structure, element)); \
 
-void Load(Renderer& renderer, Camera camera);
-void LoadMesh(Renderer& renderer, Mesh& mesh);
-void Draw(Renderer& renderer);
-void UpdateRenderer(Renderer& renderer, Transform meshTransform, Camera camera);
+void Load(GLRenderer& renderer, Camera camera);
+void LoadMesh(GLRenderer& renderer, Mesh& mesh);
+void Draw(GLRenderer& renderer);
+void UpdateRenderer(GLRenderer& renderer, Transform meshTransform, Camera camera);
 void DrawGizmo(Camera camera);
