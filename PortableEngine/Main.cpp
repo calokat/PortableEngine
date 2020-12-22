@@ -165,7 +165,7 @@ void MakeMesh(const char* path, const char* name = "GameObject") {
 	meshTransform.position = newMeshPos;
 	TransformSystem::CalculateWorldMatrix(&meshTransform);
 	DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
-	Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
+	DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
@@ -182,7 +182,7 @@ void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") 
 	meshTransform.position = pos;
 	TransformSystem::CalculateWorldMatrix(&meshTransform);
 	DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
-	Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
+	DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
@@ -418,11 +418,11 @@ void Loop()
 		//		it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
 		//	}
 		//}
-		LoadMesh(renderer, mesh, ((DirectXAPI*)(graph))->device.Get());
-		UpdateRenderer(renderer, meshTransform, camera);
+		DirectXRenderSystem::LoadMesh(renderer, mesh, ((DirectXAPI*)(graph))->device.Get());
+		DirectXRenderSystem::UpdateRenderer(renderer, meshTransform, camera);
 		//renderer.Update();
 		//renderer.Draw();
-		Draw(renderer, ((DirectXAPI*)(graph))->context.Get());
+		DirectXRenderSystem::Draw(renderer, ((DirectXAPI*)(graph))->context.Get());
 	}
 	auto transformView = registry.view<Transform>();
 	//camera.transform = transform;
@@ -482,9 +482,9 @@ int main(int argc, char* argv[])
 	TransformSystem::CalculateWorldMatrix(&t1);
 	Name& name = registry.emplace<Name>(entity);
 	name = { "Cone" };
-	Load(renderer, cam, (DirectXAPI*)graph, (WindowsPlatform*)plat);
+	DirectXRenderSystem::Load(renderer, cam, (DirectXAPI*)graph, (WindowsPlatform*)plat);
 	//renderer.LoadMesh(mesh.GetRawVertices());
-	LoadMesh(renderer, mesh, ((DirectXAPI*)(graph))->device.Get());
+	DirectXRenderSystem::LoadMesh(renderer, mesh, ((DirectXAPI*)(graph))->device.Get());
 
 	//GizmoSystem::Select(entity);
 	//auto ent2 = registry.create();
