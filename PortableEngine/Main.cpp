@@ -373,18 +373,18 @@ void Loop()
 	//ImGui::End();
 
 	plat->GetInputSystem()->GetKeyPressed();
-	auto view = registry.view<Mesh, DirectXRenderer, Transform, Name>();
+	auto entityView = registry.view<Transform, Name>();
 	ImGui::Begin("Entity List");
 	ImGui::SetWindowPos({ 0, 20 });
 	ImGui::SetWindowSize({ 200, 780 });
-	for (auto renderable : view)
+	for (auto entity : entityView)
 	{
-		Name name = view.get<Name>(renderable);
+		Name name = entityView.get<Name>(entity);
 		if (ImGui::MenuItem(name.nameString.c_str()))
 		{
 			GizmoSystem::DeselectAll();
-			Transform& newSelected = view.get<Transform>(renderable);
-			GizmoSystem::Select(renderable);
+			Transform& newSelected = entityView.get<Transform>(entity);
+			GizmoSystem::Select(entity);
 		}
 	}
 	ImGui::End();
