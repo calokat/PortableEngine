@@ -400,11 +400,11 @@ void Loop()
 		{
 			ComponentGUI(*t);
 		}
-		//Renderer* r = registry.try_get<Renderer>(selected);
-		//if (r)
-		//{
-		//	ComponentGUI(*r);
-		//}
+		GLRenderer* glr = registry.try_get<GLRenderer>(selected);
+		if (glr)
+		{
+			ComponentGUI(*glr);
+		}
 		DirectXRenderer* r = registry.try_get<DirectXRenderer>(selected);
 		if (r)
 		{
