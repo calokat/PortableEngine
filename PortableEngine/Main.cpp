@@ -557,17 +557,19 @@ int main(int argc, char* argv[])
 	plat->InitWindow();
 	graph->Init();
 
-	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/cone.obj").c_str());
-	MeshLoaderSystem::LoadMesh(mesh.path.c_str(), mesh);
-	DirectXRenderer& renderer = registry.emplace<DirectXRenderer>(entity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
-	Transform& t1 = registry.emplace<Transform>(entity);
-	t1.position += glm::vec3(0, 1, 0);
-	TransformSystem::CalculateWorldMatrix(&t1);
-	Name& name = registry.emplace<Name>(entity);
-	name = { "Cone" };
-	DirectXRenderSystem::Load(renderer, cam, (DirectXAPI*)graph, (WindowsPlatform*)plat);
-	//renderer.LoadMesh(mesh.GetRawVertices());
-	DirectXRenderSystem::LoadMesh(renderer, mesh, ((DirectXAPI*)(graph))->device.Get());
+	//Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/cone.obj").c_str());
+	//MeshLoaderSystem::LoadMesh(mesh.path.c_str(), mesh);
+	//DirectXRenderer& renderer = registry.emplace<DirectXRenderer>(entity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
+	//Transform& t1 = registry.emplace<Transform>(entity);
+	//t1.position += glm::vec3(0, 1, 0);
+	//TransformSystem::CalculateWorldMatrix(&t1);
+	//Name& name = registry.emplace<Name>(entity);
+	//name = { "Cone" };
+	//DirectXRenderSystem::Load(renderer, cam, (DirectXAPI*)graph, (WindowsPlatform*)plat);
+	////renderer.LoadMesh(mesh.GetRawVertices());
+	//DirectXRenderSystem::LoadMesh(renderer, mesh, ((DirectXAPI*)(graph))->device.Get());
+	MakeMesh(plat->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0), "Cone");
+
 
 	//GizmoSystem::Select(entity);
 	//auto ent2 = registry.create();
