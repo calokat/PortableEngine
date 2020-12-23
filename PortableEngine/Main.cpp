@@ -35,7 +35,14 @@
 #include "misc_components.h"
 // Thanks to https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c
 #include <filesystem>
-
+enum Platform {Win32, Web, Android};
+enum GraphicsAPI {OpenGL, DirectX11};
+struct Options
+{
+	Platform platform;
+	GraphicsAPI graphicsAPI;
+};
+Options options;
 using json = nlohmann::json;
 class RandomColor
 {
