@@ -287,7 +287,7 @@ void Loop()
 {
 	
 	//ImGui_ImplWin32_NewFrame();
-	ImGui_ImplDX11_NewFrame();
+	graph->NewGuiFrame();
 	//ImGui_ImplOpenGL_NewFrame();
 	plat->NewGuiFrame();
 	ImGui::NewFrame();
@@ -492,7 +492,8 @@ void Loop()
 	GizmoSystem::DrawGizmo(camera, transformView);
 	ImGui::Render();
 	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	//ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	graph->DrawGui();
 	graph->_SwapBuffers();
 }
 
