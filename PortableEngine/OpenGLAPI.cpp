@@ -112,6 +112,16 @@ void OpenGLAPI::_SwapBuffers()
 	glContext->_SwapBuffers(-1);
 }
 
+void OpenGLAPI::NewGuiFrame()
+{
+	ImGui_ImplOpenGL3_NewFrame();
+}
+
+void OpenGLAPI::DrawGui()
+{
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
 OpenGLAPI::OpenGLAPI(GameWindow* win, IPlatform* plat) : window(win), platform(plat)
 {
 #ifdef _WIN64

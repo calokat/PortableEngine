@@ -17,6 +17,8 @@ public:
 	void Draw();
 	~DirectXAPI();
 	void _SwapBuffers();
+	void NewGuiFrame();
+	void DrawGui();
 	Microsoft::WRL::ComPtr<ID3D11Device>		device;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>	context;
 

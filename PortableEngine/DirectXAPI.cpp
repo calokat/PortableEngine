@@ -439,3 +439,13 @@ void DirectXAPI::_SwapBuffers()
 	// the render target must be re-bound after every call to Present()
 	context->OMSetRenderTargets(1, backBufferRTV.GetAddressOf(), depthStencilView.Get());
 }
+
+void DirectXAPI::NewGuiFrame()
+{
+	ImGui_ImplDX11_NewFrame();
+}
+
+void DirectXAPI::DrawGui()
+{
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+}
