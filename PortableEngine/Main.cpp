@@ -468,13 +468,60 @@ int main(int argc, char* argv[])
 	ImGui::StyleColorsDark();
 
 
+	if (argc < 4)
+	{
+		options.platform = Platform::Win32;
+		options.graphicsAPI = GraphicsAPI::DirectX11;
+	}
+	else
+	{
+		for (int i = 0; i < argc; ++i)
+		{
+			if (argv[i] == "-p")
+			{
+				if (argv[i + 1] == "Windows")
+				{
+					options.platform = Platform::Win32;
+				}
+				else if (argv[i + 1] == "Web")
+				{
+					options.platform = Platform::Web;
+				}
+			}
+			if (argv[i] == "-g")
+			{
+				if (argv[i + 1] == "DX11")
+				{
+					options.graphicsAPI = GraphicsAPI::DirectX11;
+				}
+				else if (argv[i + 1] == "OpenGL")
+				{
+					options.graphicsAPI = GraphicsAPI::OpenGL;
+				}
+			}
+		}
+	}
+
 #ifdef _WIN64
-	plat = new WindowsPlatform(window);
+	if (options.platform == Platform::Win32)
+	{
+		plat = new WindowsPlatform(window);
+	}
 #elif defined __EMSCRIPTEN__
-	plat = new EmscriptenPlatform(window);
+	if (options.platform == Platform::Web)
+	{
+		plat = new EmscriptenPlatform(window);
+	}
 #endif
 #ifdef _WIN64
-	graph = new DirectXAPI(window);
+	if (options.graphicsAPI == GraphicsAPI::DirectX11)
+	{
+		graph = new DirectXAPI(window);
+	}
+	else
+	{
+		graph = new OpenGLAPI(window, plat);
+	}
 #elif defined __EMSCRIPTEN__
 	graph = new OpenGLAPI(window, plat);
 #endif
