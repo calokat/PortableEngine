@@ -196,8 +196,10 @@ void MakeMesh(const char* path, const char* name = "GameObject") {
 	Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
 	meshTransform.position = newMeshPos;
 	TransformSystem::CalculateWorldMatrix(&meshTransform);
-	DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
-	DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
+	//DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
+	IRenderer& newMeshRenderer = EmplaceRenderer(newMeshEntity);
+	//DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
+	LoadRenderer(newMeshRenderer, camera);
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
@@ -213,8 +215,10 @@ void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") 
 	Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
 	meshTransform.position = pos;
 	TransformSystem::CalculateWorldMatrix(&meshTransform);
-	DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
-	DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
+	//DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
+	IRenderer& newMeshRenderer = EmplaceRenderer(newMeshEntity);
+	//DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
+	LoadRenderer(newMeshRenderer, camera);
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
