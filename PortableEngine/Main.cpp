@@ -57,6 +57,31 @@ entt::registry registry;
 
 bool show_demo_window = true;
 
+IRenderer& EmplaceRenderer(entt::entity newMeshEntity)
+{
+	if (options.graphicsAPI == GraphicsAPI::DirectX11)
+	{
+		return registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
+	}
+	else if (options.graphicsAPI == GraphicsAPI::OpenGL)
+	{
+		return registry.emplace<GLRenderer>(newMeshEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
+	}
+}
+
+void LoadRenderer(IRenderer& renderer, Camera& camera)
+{
+	if (options.graphicsAPI == GraphicsAPI::DirectX11)
+	{
+		DirectXRenderer& newMeshRenderer = (DirectXRenderer&)renderer;
+		DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
+	}
+	if (options.graphicsAPI == GraphicsAPI::OpenGL)
+	{
+		GLRenderer& newMeshRenderer = (GLRenderer&)renderer;
+		GLRenderSystem::Load(newMeshRenderer, camera);
+	}
+}
 //template<class T>
 //void TrySerializeComponent(json& master)
 //{
