@@ -9,11 +9,11 @@
 #include "EmscriptenPlatform.h"
 #include <emscripten/html5.h>
 #endif
-//#include "OpenGLAPI.h"
+#include "OpenGLAPI.h"
 #include "PortableGame.h"
 #include "Mesh.h"
-//#include "Renderer.h"
-//#include "RenderSystem.h"
+#include "GLRenderer.h"
+#include "GLRenderSystem.h"
 #include "Camera.h"
 #include <entt.hpp>
 #include <imgui.h>
