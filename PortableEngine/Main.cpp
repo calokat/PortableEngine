@@ -534,24 +534,24 @@ int main(int argc, char* argv[])
 	{
 		for (int i = 0; i < argc; ++i)
 		{
-			if (argv[i] == "-p")
+			if (!strcmp(argv[i], "-p"))
 			{
-				if (argv[i + 1] == "Windows")
+				if (!strcmp(argv[i + 1], "Windows"))
 				{
 					options.platform = Platform::Win32;
 				}
-				else if (argv[i + 1] == "Web")
+				else if (!strcmp(argv[i + 1], "Web"))
 				{
 					options.platform = Platform::Web;
 				}
 			}
-			if (argv[i] == "-g")
+			if (!strcmp(argv[i], "-g"))
 			{
-				if (argv[i + 1] == "DX11")
+				if (!strcmp(argv[i + 1], "DX11"))
 				{
 					options.graphicsAPI = GraphicsAPI::DirectX11;
 				}
-				else if (argv[i + 1] == "OpenGL")
+				else if (!strcmp(argv[i + 1], "OpenGL"))
 				{
 					options.graphicsAPI = GraphicsAPI::OpenGL;
 				}
