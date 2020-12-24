@@ -4,7 +4,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ------ BASE SIMPLE SHADER --------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////
-
+int max(int arg1, int arg2)
+{
+	return (arg1 > arg2) ? arg1 : arg2;
+}
 // --------------------------------------------------------
 // Constructor accepts DirectX device & context
 // --------------------------------------------------------
@@ -398,7 +401,7 @@ bool ISimpleShader::SetFloat2(std::string name, const float data[2])
 // --------------------------------------------------------
 // Sets a FLOAT2 variable by name in the local data buffer
 // --------------------------------------------------------
-bool ISimpleShader::SetFloat2(std::string name, const DirectX::XMFLOAT2 data)
+bool ISimpleShader::SetFloat2(std::string name, const glm::vec2 data)
 {
 	return this->SetData(name, &data, sizeof(float) * 2);
 }
@@ -414,7 +417,7 @@ bool ISimpleShader::SetFloat3(std::string name, const float data[3])
 // --------------------------------------------------------
 // Sets a FLOAT3 variable by name in the local data buffer
 // --------------------------------------------------------
-bool ISimpleShader::SetFloat3(std::string name, const DirectX::XMFLOAT3 data)
+bool ISimpleShader::SetFloat3(std::string name, const glm::vec3 data)
 {
 	return this->SetData(name, &data, sizeof(float) * 3);
 }
@@ -430,7 +433,7 @@ bool ISimpleShader::SetFloat4(std::string name, const float data[4])
 // --------------------------------------------------------
 // Sets a FLOAT4 variable by name in the local data buffer
 // --------------------------------------------------------
-bool ISimpleShader::SetFloat4(std::string name, const DirectX::XMFLOAT4 data)
+bool ISimpleShader::SetFloat4(std::string name, const glm::vec4 data)
 {
 	return this->SetData(name, &data, sizeof(float) * 4);
 }
@@ -446,7 +449,7 @@ bool ISimpleShader::SetMatrix4x4(std::string name, const float data[16])
 // --------------------------------------------------------
 // Sets a MATRIX (4x4) variable by name in the local data buffer
 // --------------------------------------------------------
-bool ISimpleShader::SetMatrix4x4(std::string name, const DirectX::XMFLOAT4X4 data)
+bool ISimpleShader::SetMatrix4x4(std::string name, const glm::mat4 data)
 {
 	return this->SetData(name, &data, sizeof(float) * 16);
 }

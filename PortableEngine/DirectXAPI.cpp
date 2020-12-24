@@ -1,12 +1,14 @@
-#if 0
 #include "DirectXAPI.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "Vertex.h"
 #include <iostream>
+#include <examples/imgui_impl_dx11.h>
 // ********** REQUIRED WITHOUT SIMPLE SHADER **********
 // Needed for a helper function to read compiled shader files from the hard drive
 #pragma comment(lib, "d3dcompiler.lib")
 #include <d3dcompiler.h>
+#pragma comment(lib, "d3d11.lib")
+
 // ********** REQUIRED WITHOUT SIMPLE SHADER **********
 
 struct VertShaderExternalData
@@ -132,13 +134,14 @@ int DirectXAPI::Init()
 	viewport.MaxDepth = 1.0f;
 	context->RSSetViewports(1, &viewport);
 
-	LoadShaders();
-	CreateMatrices();
-	CreateBasicGeometry();
+	//LoadShaders();
+	//CreateMatrices();
+	//CreateBasicGeometry();
 
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	context->IASetInputLayout(inputLayout);
+	ImGui_ImplDX11_Init(device.Get(), context.Get());
+	//context->IASetInputLayout(inputLayout);
 	// Return the "everything is ok" HRESULT value
 	return S_OK;
 
@@ -238,7 +241,7 @@ DirectXAPI::~DirectXAPI()
 
 	//if (testHelix) delete testHelix;
 	// ********** REQUIRED WITHOUT SIMPLE SHADER **********
-
+	ImGui_ImplDX11_Shutdown();
 }
 
 void DirectXAPI::LoadShaders()
@@ -269,7 +272,7 @@ void DirectXAPI::LoadShaders()
 	//     sitting inside a vertex buffer
 	//  - Doing this NOW because it requires a vertex shader's byte code to verify against!
 	//  - Luckily, we already have that loaded (the blob above)
-	D3D11_INPUT_ELEMENT_DESC inputElements[5] = {};
+	D3D11_INPUT_ELEMENT_DESC inputElements[4] = {};
 
 	// Set up the first element - a position, which is 3 float values
 	inputElements[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;  // Most formats are described as color channels, really it just means "Three 32-bit floats"
@@ -288,13 +291,14 @@ void DirectXAPI::LoadShaders()
 	inputElements[3].SemanticName = "TANGENT";				// This is "POSITTION" - needs to match the semantics in our vertex shader input!
 	inputElements[3].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT; // How far into the vertex is this?  Assume it's after the previous element
 
+	// TODO: DELETE THIS???????????????????????????????
 	// Set up the second element - a color, which is 4 more float values
-	inputElements[4].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;	// 4x 32-bit floats
-	inputElements[4].SemanticName = "COLOR";					// Match our vertex shader input!
-	inputElements[4].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;	// After the previous element
+	//inputElements[4].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;	// 4x 32-bit floats
+	//inputElements[4].SemanticName = "COLOR";					// Match our vertex shader input!
+	//inputElements[4].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;	// After the previous element
 
 	// Create the input layout, verifying our description against actual shader code
-	device->CreateInputLayout(inputElements, 5, shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), &inputLayout);
+	device->CreateInputLayout(inputElements, 4, shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), &inputLayout);
 
 	// Read and create the pixel shader
 	//  - Reusing the same blob here, since we're done with the vert shader code
@@ -371,9 +375,9 @@ void DirectXAPI::CreateBasicGeometry()
 	//    over to a DirectX-controlled data structure (the vertex buffer)
 	Vertex vertices[] =
 	{
-		{ glm::vec3(+0.0f, +1.0f, +0.0f), glm::vec3(0), glm::vec2(0), glm::vec3(0), red },
-		{ glm::vec3(+1.5f, -1.0f, +0.0f), glm::vec3(0), glm::vec2(0), glm::vec3(0), blue },
-		{ glm::vec3(-1.5f, -1.0f, +0.0f), glm::vec3(0), glm::vec2(0), glm::vec3(0), green },
+		{ glm::vec3(+0.0f, +1.0f, +0.0f), glm::vec3(0), glm::vec2(0), glm::vec3(0)},
+		{ glm::vec3(+1.5f, -1.0f, +0.0f), glm::vec3(0), glm::vec2(0), glm::vec3(0) },
+		{ glm::vec3(-1.5f, -1.0f, +0.0f), glm::vec3(0), glm::vec2(0), glm::vec3(0) },
 	};
 
 	// Set up the indices, which tell us which vertices to use and in which order
@@ -435,4 +439,13 @@ void DirectXAPI::_SwapBuffers()
 	// the render target must be re-bound after every call to Present()
 	context->OMSetRenderTargets(1, backBufferRTV.GetAddressOf(), depthStencilView.Get());
 }
-#endif
+
+void DirectXAPI::NewGuiFrame()
+{
+	ImGui_ImplDX11_NewFrame();
+}
+
+void DirectXAPI::DrawGui()
+{
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+}

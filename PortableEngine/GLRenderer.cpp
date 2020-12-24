@@ -1,8 +1,8 @@
-#include "Renderer.h"
+#include "GLRenderer.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-Renderer::Renderer(std::string vertexShaderPathParam, std::string fragmentShaderPathParam)
+GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentShaderPathParam)
 {
 	//glGenVertexArrays(1, &vao);
 	//glBindVertexArray(vao);
@@ -37,7 +37,7 @@ Renderer::Renderer(std::string vertexShaderPathParam, std::string fragmentShader
 	//glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix()));
 }
 
-Renderer::Renderer()
+GLRenderer::GLRenderer()
 {
 	program = -1;
 	vao = -1;
@@ -70,11 +70,11 @@ Renderer::Renderer()
 //	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix()));
 //}
 
-Renderer::~Renderer()
+GLRenderer::~GLRenderer()
 {
 }
 
-Renderer& Renderer::operator=(Renderer&& other)
+GLRenderer& GLRenderer::operator=(GLRenderer&& other)
 {
 	if (this != &other)
 	{
@@ -96,15 +96,15 @@ Renderer& Renderer::operator=(Renderer&& other)
 	return *this;
 }
 
-Renderer::Renderer(Renderer&& other) noexcept
+GLRenderer::GLRenderer(GLRenderer&& other) noexcept
 {
 	*this = std::move(other);
 }
 
-Renderer::Renderer(Renderer& other)
+GLRenderer::GLRenderer(GLRenderer& other)
 {
 	if (this != &other)
 	{
-		*this = Renderer(other.vertexShaderPath, other.fragmentShaderPath);
+		*this = GLRenderer(other.vertexShaderPath, other.fragmentShaderPath);
 	}
 }

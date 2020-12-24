@@ -16,6 +16,8 @@ public:
 	void Draw();
 	OpenGLAPI(GameWindow*, IPlatform*);
 	void _SwapBuffers();
+	void NewGuiFrame();
+	void DrawGui();
 	~OpenGLAPI();
 private:
 	GameWindow* window;

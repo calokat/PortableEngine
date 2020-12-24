@@ -2,6 +2,8 @@
 #include <Windows.h>
 #include "WindowsPlatform.h"
 #include "DirectXAPI.h"
+#include "DirectXRenderer.h"
+#include "DirectXRenderSystem.h"
 #endif
 #ifdef __EMSCRIPTEN__
 #include "EmscriptenPlatform.h"
@@ -10,14 +12,15 @@
 #include "OpenGLAPI.h"
 #include "PortableGame.h"
 #include "Mesh.h"
-#include "Renderer.h"
-#include "RenderSystem.h"
+#include "GLRenderer.h"
+#include "GLRenderSystem.h"
 #include "Camera.h"
 #include <entt.hpp>
 #include <imgui.h>
 #include <examples/imgui_impl_win32.h>
-#include <examples/imgui_impl_opengl3.h>
-#include <ImGuizmo.h>
+#include <examples/imgui_impl_dx11.h>
+//#include <examples/imgui_impl_opengl3.h>
+//#include <ImGuizmo.h>
 #include "TransformSystem.h"
 #include "CameraSystem.h"
 #include "GizmoSystem.h"
@@ -28,13 +31,21 @@
 #include <json.hpp>
 #include <iomanip>
 #include "InspectorGUI.h"
-#include "SerializationSystem.h"
+//#include "SerializationSystem.h"
 #include "misc_components.h"
 // Thanks to https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c
 #include <filesystem>
 #include "AABB.h"
 #include "AABBSystem.h"
 #include "EngineCameraControllerSystem.h"
+enum Platform {Win32, Web, Android};
+enum GraphicsAPI {OpenGL, DirectX11};
+struct Options
+{
+	Platform platform;
+	GraphicsAPI graphicsAPI;
+};
+Options options;
 using json = nlohmann::json;
 class RandomColor
 {
@@ -49,111 +60,134 @@ entt::registry registry;
 
 bool show_demo_window = true;
 
-template<class T>
-void TrySerializeComponent(json& master)
+IRenderer& EmplaceRenderer(entt::entity newMeshEntity)
 {
-	std::string typeName = typeid(T).name();
-	//std::ofstream jsonFile = std::ofstream(typeName);
-	nlohmann::json json;
-	registry.each([&json](entt::entity e) {
-		if (registry.has<T>(e))
-		{
-			T& obj = registry.get<T>(e);
-			std::string stringified = std::to_string((int)e);
-			json[stringified] = obj;
-		}
-	});
-	//jsonFile << json << std::endl;
-	master[typeName] = json;
-}
-void Serialize(const char* saveFileName)
-{
-	json saveJson;
-	json entitiesJson;
-	std::vector<std::string> stringifiedEntities;
-	registry.each([&stringifiedEntities](entt::entity e)
+	if (options.graphicsAPI == GraphicsAPI::DirectX11)
 	{
-		stringifiedEntities.push_back(std::to_string((int)e));
-	});
-	entitiesJson = stringifiedEntities;
-	//std::ofstream entitiesFile("entities.json");
-	//entitiesFile << entitiesJson << std::endl;
-	saveJson["entities"] = entitiesJson;
-	TrySerializeComponent<Transform>(saveJson);
-	TrySerializeComponent<Mesh>(saveJson);
-	TrySerializeComponent<Camera>(saveJson);
-	TrySerializeComponent<Renderer>(saveJson);
-	TrySerializeComponent<Name>(saveJson);
-	TrySerializeComponent<Rotator>(saveJson);
-	TrySerializeComponent<AABB>(saveJson);
-	char fullSavePath[150];
-	strcpy_s(fullSavePath, saveFileName);
-	strcat_s(fullSavePath, ".pg");
-	std::ofstream saveFile(fullSavePath);
-	saveFile << std::setw(4) << saveJson << std::endl;
-}
-template<class T>
-void TryDeserializeComponent(std::map<std::string, entt::entity> entityMap, std::vector<std::string> storedEntities, json master)
-{
-	//std::string g = std::string(typeid(T).name()).append(".json");
-	//std::ifstream inFile(g);
-	//json objJson;
-	//inFile >> objJson;
-	json entitiesJson = master["entities"];
-	const char* className = typeid(T).name();
-	json objJson = master[className];
-	for (auto it = storedEntities.begin(); it != storedEntities.end(); ++it)
+		return registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
+	}
+	else if (options.graphicsAPI == GraphicsAPI::OpenGL)
 	{
-		if (objJson.find(*it) != objJson.end())
-		{
-			auto compIter = objJson[*it];
-			T obj;
-			from_json(compIter, obj);
-			registry.emplace<T>(entityMap[*it], std::move(obj));
-		}
+		return registry.emplace<GLRenderer>(newMeshEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
 	}
 }
-void Deserialize(const char* saveFileName)
+
+void LoadRenderer(IRenderer& renderer, Camera& camera)
 {
-	GizmoSystem::DeselectAll();
-	registry.clear();
-	std::vector<std::string> storedEntities;
-	std::ifstream saveFile(saveFileName);
-	json saveJson;
-	saveFile >> saveJson;
-	json entitiesJson = saveJson["entities"];
-	storedEntities = entitiesJson.get<std::vector<std::string>>();
-	std::map<std::string, entt::entity> entityMap;
-	for (auto it = storedEntities.begin(); it != storedEntities.end(); ++it)
+	if (options.graphicsAPI == GraphicsAPI::DirectX11)
 	{
-		entt::entity e = registry.create();
-		entityMap.emplace(*it, e);
+		DirectXRenderer& newMeshRenderer = (DirectXRenderer&)renderer;
+		DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
 	}
-	TryDeserializeComponent<Mesh>(entityMap, storedEntities, saveJson);
-	TryDeserializeComponent<Camera>(entityMap, storedEntities, saveJson);
-	TryDeserializeComponent<Renderer>(entityMap, storedEntities, saveJson);
-	TryDeserializeComponent<Transform>(entityMap, storedEntities, saveJson);
-	TryDeserializeComponent<Name>(entityMap, storedEntities, saveJson);
-	TryDeserializeComponent<Rotator>(entityMap, storedEntities, saveJson);
-	TryDeserializeComponent<AABB>(entityMap, storedEntities, saveJson);
-	auto compView = registry.view<Mesh>();
-	for (auto v : compView)
+	if (options.graphicsAPI == GraphicsAPI::OpenGL)
 	{
-		Mesh& m = registry.get<Mesh>(v);
-		MeshLoaderSystem::LoadMesh(m.path.c_str(), m);
+		GLRenderer& newMeshRenderer = (GLRenderer&)renderer;
+		GLRenderSystem::Load(newMeshRenderer, camera);
 	}
-	auto rendererView = registry.view<Renderer>();
-	auto cameraView = registry.view<Camera>();
-	Camera& camera = registry.get<Camera>(cameraView[0]);
-	for (auto rv : rendererView)
-	{
-		Renderer& renderer = registry.get<Renderer>(rv);
-		Load(renderer, camera);
-	}
-	auto meshView = registry.view<Mesh, Transform>();
-	Transform& meshTransform = registry.get<Transform>(*meshView.begin());
-	GizmoSystem::Select(*meshView.begin());
 }
+//template<class T>
+//void TrySerializeComponent(json& master)
+//{
+//	std::string typeName = typeid(T).name();
+//	//std::ofstream jsonFile = std::ofstream(typeName);
+//	nlohmann::json json;
+//	registry.each([&json](entt::entity e) {
+//		if (registry.has<T>(e))
+//		{
+//			T& obj = registry.get<T>(e);
+//			std::string stringified = std::to_string((int)e);
+//			json[stringified] = obj;
+//		}
+//	});
+//	//jsonFile << json << std::endl;
+//	master[typeName] = json;
+//}
+//void Serialize(const char* saveFileName)
+//{
+//	json saveJson;
+//	json entitiesJson;
+//	std::vector<std::string> stringifiedEntities;
+//	registry.each([&stringifiedEntities](entt::entity e)
+//	{
+//		stringifiedEntities.push_back(std::to_string((int)e));
+//	});
+//	entitiesJson = stringifiedEntities;
+//	//std::ofstream entitiesFile("entities.json");
+//	//entitiesFile << entitiesJson << std::endl;
+//	saveJson["entities"] = entitiesJson;
+//	TrySerializeComponent<Transform>(saveJson);
+//	TrySerializeComponent<Mesh>(saveJson);
+//	TrySerializeComponent<Camera>(saveJson);
+//	TrySerializeComponent<Renderer>(saveJson);
+//	TrySerializeComponent<Name>(saveJson);
+//	TrySerializeComponent<Rotator>(saveJson);
+//	char fullSavePath[150];
+//	strcpy_s(fullSavePath, saveFileName);
+//	strcat_s(fullSavePath, ".pg");
+//	std::ofstream saveFile(fullSavePath);
+//	saveFile << std::setw(4) << saveJson << std::endl;
+//}
+//template<class T>
+//void TryDeserializeComponent(std::map<std::string, entt::entity> entityMap, std::vector<std::string> storedEntities, json master)
+//{
+//	//std::string g = std::string(typeid(T).name()).append(".json");
+//	//std::ifstream inFile(g);
+//	//json objJson;
+//	//inFile >> objJson;
+//	json entitiesJson = master["entities"];
+//	const char* className = typeid(T).name();
+//	json objJson = master[className];
+//	for (auto it = storedEntities.begin(); it != storedEntities.end(); ++it)
+//	{
+//		if (objJson.find(*it) != objJson.end())
+//		{
+//			auto compIter = objJson[*it];
+//			T obj;
+//			from_json(compIter, obj);
+//			registry.emplace<T>(entityMap[*it], std::move(obj));
+//		}
+//	}
+//}
+//void Deserialize(const char* saveFileName)
+//{
+//	//GizmoSystem::DeselectAll();
+//	registry.clear();
+//	std::vector<std::string> storedEntities;
+//	std::ifstream saveFile(saveFileName);
+//	json saveJson;
+//	saveFile >> saveJson;
+//	json entitiesJson = saveJson["entities"];
+//	storedEntities = entitiesJson.get<std::vector<std::string>>();
+//	std::map<std::string, entt::entity> entityMap;
+//	for (auto it = storedEntities.begin(); it != storedEntities.end(); ++it)
+//	{
+//		entt::entity e = registry.create();
+//		entityMap.emplace(*it, e);
+//	}
+//	TryDeserializeComponent<Mesh>(entityMap, storedEntities, saveJson);
+//	TryDeserializeComponent<Camera>(entityMap, storedEntities, saveJson);
+//	TryDeserializeComponent<Renderer>(entityMap, storedEntities, saveJson);
+//	TryDeserializeComponent<Transform>(entityMap, storedEntities, saveJson);
+//	TryDeserializeComponent<Name>(entityMap, storedEntities, saveJson);
+//	TryDeserializeComponent<Rotator>(entityMap, storedEntities, saveJson);
+//	auto compView = registry.view<Mesh>();
+//	for (auto v : compView)
+//	{
+//		Mesh& m = registry.get<Mesh>(v);
+//		MeshLoaderSystem::LoadMesh(m.path.c_str(), m);
+//	}
+//	auto rendererView = registry.view<Renderer>();
+//	auto cameraView = registry.view<Camera>();
+//	Camera& camera = registry.get<Camera>(cameraView[0]);
+//	for (auto rv : rendererView)
+//	{
+//		Renderer& renderer = registry.get<Renderer>(rv);
+//		Load(renderer, camera);
+//	}
+//	auto meshView = registry.view<Mesh, Transform>();
+//	Transform& meshTransform = registry.get<Transform>(*meshView.begin());
+//	//GizmoSystem::Select(*meshView.begin());
+//}
 
 void MakeMesh(const char* path, const char* name = "GameObject") {
 	auto camView = registry.view<Camera>();
@@ -165,8 +199,10 @@ void MakeMesh(const char* path, const char* name = "GameObject") {
 	Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
 	meshTransform.position = newMeshPos;
 	TransformSystem::CalculateWorldMatrix(&meshTransform);
-	Renderer& newMeshRenderer = registry.emplace<Renderer>(newMeshEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
-	Load(newMeshRenderer, camera);
+	//DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
+	IRenderer& newMeshRenderer = EmplaceRenderer(newMeshEntity);
+	//DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
+	LoadRenderer(newMeshRenderer, camera);
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
@@ -184,8 +220,10 @@ void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") 
 	Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
 	meshTransform.position = pos;
 	TransformSystem::CalculateWorldMatrix(&meshTransform);
-	Renderer& newMeshRenderer = registry.emplace<Renderer>(newMeshEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
-	Load(newMeshRenderer, camera);
+	//DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
+	IRenderer& newMeshRenderer = EmplaceRenderer(newMeshEntity);
+	//DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
+	LoadRenderer(newMeshRenderer, camera);
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
@@ -226,6 +264,7 @@ void MakeRayFromCamera()
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
 	ImGuiIO& io = ImGui::GetIO();
 	ImVec2 mousePos = io.MousePos;
+	//glm::vec2 mousePos = plat->GetInputSystem()->GetCursorPosition();
 	// Blessed be this code taken from https://gamedev.stackexchange.com/questions/157674/simple-mouseray-picking-in-opengl
 	glm::vec3 mouse_world_nearplane = glm::unProject(
 		glm::vec3(mousePos.x, 600 - mousePos.y, 0.0f),
@@ -272,8 +311,10 @@ void MakeRayFromCamera()
 
 void Loop()
 {
-	ImGui_ImplOpenGL3_NewFrame();
+	
 	//ImGui_ImplWin32_NewFrame();
+	graph->NewGuiFrame();
+	//ImGui_ImplOpenGL_NewFrame();
 	plat->NewGuiFrame();
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
@@ -310,32 +351,32 @@ void Loop()
 			}
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Save"))
-		{
-			static char saveFileName[100] = {};
-			ImGui::InputText("Save as: ", saveFileName, 100);
-			if (ImGui::Button("Save"))
-			{
-				Serialize(saveFileName);
-			}
-			ImGui::EndMenu();
-		}
-		if (ImGui::BeginMenu("Open"))
-		{
-			for (const auto& saveFile : std::filesystem::directory_iterator("./"))
-			{
-				if (saveFile.path().extension().generic_string() == ".pg")
-				{
-					std::string fileStr = saveFile.path().generic_string();
+		//if (ImGui::BeginMenu("Save"))
+		//{
+		//	static char saveFileName[100] = {};
+		//	ImGui::InputText("Save as: ", saveFileName, 100);
+		//	if (ImGui::Button("Save"))
+		//	{
+		//		Serialize(saveFileName);
+		//	}
+		//	ImGui::EndMenu();
+		//}
+		//if (ImGui::BeginMenu("Open"))
+		//{
+		//	for (const auto& saveFile : std::filesystem::directory_iterator("./"))
+		//	{
+		//		if (saveFile.path().extension().generic_string() == ".pg")
+		//		{
+		//			std::string fileStr = saveFile.path().generic_string();
 
-					if (ImGui::MenuItem(fileStr.c_str()))
-					{
-						Deserialize(fileStr.c_str());
-					}
-				}
-			}
-			ImGui::EndMenu();
-		}
+		//			if (ImGui::MenuItem(fileStr.c_str()))
+		//			{
+		//				Deserialize(fileStr.c_str());
+		//			}
+		//		}
+		//	}
+		//	ImGui::EndMenu();
+		//}
 		ImGui::EndMenu();
 	}
 	//if (ImGui::BeginMenu("Components"))
@@ -358,18 +399,18 @@ void Loop()
 	//ImGui::End();
 
 	plat->GetInputSystem()->GetKeyPressed();
-	auto view = registry.view<Mesh, Renderer, Transform, Name, AABB>();
+	auto entityView = registry.view<Transform, Name>();
 	ImGui::Begin("Entity List");
 	ImGui::SetWindowPos({ 0, 20 });
 	ImGui::SetWindowSize({ 200, 780 });
-	for (auto renderable : view)
+	for (auto entity : entityView)
 	{
-		Name name = view.get<Name>(renderable);
+		Name name = entityView.get<Name>(entity);
 		if (ImGui::MenuItem(name.nameString.c_str()))
 		{
 			GizmoSystem::DeselectAll();
-			Transform& newSelected = view.get<Transform>(renderable);
-			GizmoSystem::Select(renderable);
+			Transform& newSelected = entityView.get<Transform>(entity);
+			GizmoSystem::Select(entity);
 		}
 	}
 	ImGui::End();
@@ -385,27 +426,32 @@ void Loop()
 		{
 			ComponentGUI(*t);
 		}
-		Renderer* r = registry.try_get<Renderer>(selected);
+		GLRenderer* glr = registry.try_get<GLRenderer>(selected);
+		if (glr)
+		{
+			ComponentGUI(*glr);
+		}
+		DirectXRenderer* r = registry.try_get<DirectXRenderer>(selected);
 		if (r)
 		{
 			ComponentGUI(*r);
 		}
-		Rotator* rot = registry.try_get<Rotator>(selected);
-		if (rot)
-		{
-			ComponentGUI(*rot);
-		}
-		if (ImGui::BeginMenu("+"))
-		{
-			if (ImGui::MenuItem("Rotator"))
-			{
-				if (!registry.has<Rotator>(selected))
-				{
-					registry.emplace_or_replace<Rotator>(selected);
-				}
-			}
-			ImGui::EndMenu();
-		}
+		//Rotator* rot = registry.try_get<Rotator>(selected);
+		//if (rot)
+		//{
+		//	ComponentGUI(*rot);
+		//}
+		//if (ImGui::BeginMenu("+"))
+		//{
+		//	if (ImGui::MenuItem("Rotator"))
+		//	{
+		//		if (!registry.has<Rotator>(selected))
+		//		{
+		//			registry.emplace_or_replace<Rotator>(selected);
+		//		}
+		//	}
+		//	ImGui::EndMenu();
+		//}
 	}
 	ImGui::End();
 
@@ -420,35 +466,52 @@ void Loop()
 	auto camEntityView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camEntityView[0]);
 	TransformSystem::CalculateWorldMatrix(&camTransform);
-	CameraSystem::CalculateViewMatrix(camera, camTransform);
-	for (auto renderable : view)
+	CameraSystem::CalculateViewMatrixLH(camera, camTransform);
+	if (options.graphicsAPI == GraphicsAPI::DirectX11)
 	{
-		Renderer& renderer = registry.get<Renderer>(renderable);
-		Mesh& mesh = registry.get<Mesh>(renderable);
-		Transform& meshTransform = registry.get<Transform>(renderable);
-		AABB& aabb = registry.get<AABB>(renderable);
-		// if RandomColor component is attached, do not assign every vertex a color
-		//if (!registry.has<RandomColor>(renderable))
-		//{
-		//	for (auto it = mesh.rawVertices.begin(); it != mesh.rawVertices.end(); ++it)
-		//	{
-		//		it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
-		//	}
-		//}
-		AABBSystem::UpdateAABB(aabb, mesh, meshTransform);
-		LoadMesh(renderer, mesh);
-		UpdateRenderer(renderer, meshTransform, camera);
-		//renderer.Update();
-		//renderer.Draw();
-		Draw(renderer);
-		if (renderable == selected)
+		auto renderableView = registry.view<DirectXRenderer, Transform>();
+		for (auto renderable : renderableView)
 		{
-			DrawWireframe(renderer, glm::vec4(1, 1, 1, 1));
+			DirectXRenderer& renderer = registry.get<DirectXRenderer>(renderable);
+			Mesh& mesh = registry.get<Mesh>(renderable);
+			Transform& meshTransform = registry.get<Transform>(renderable);
+			// if RandomColor component is attached, do not assign every vertex a color
+			//if (!registry.has<RandomColor>(renderable))
+			//{
+			//	for (auto it = mesh.rawVertices.begin(); it != mesh.rawVertices.end(); ++it)
+			//	{
+			//		it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
+			//	}
+			//}
+			DirectXRenderSystem::LoadMesh(renderer, mesh, ((DirectXAPI*)(graph))->device.Get());
+			DirectXRenderSystem::UpdateRenderer(renderer, meshTransform, camera);
+			//renderer.Update();
+			//renderer.Draw();
+			DirectXRenderSystem::Draw(renderer, ((DirectXAPI*)(graph))->context.Get());
 		}
 	}
-	if (plat->GetInputSystem()->IsKeyPressed(KeyCode::Esc))
+	else if (options.graphicsAPI == GraphicsAPI::OpenGL)
 	{
-		GizmoSystem::DeselectAll();
+		auto renderableView = registry.view<GLRenderer, Transform>();
+		for (auto renderable : renderableView)
+		{
+			GLRenderer& renderer = registry.get<GLRenderer>(renderable);
+			Mesh& mesh = registry.get<Mesh>(renderable);
+			Transform& meshTransform = registry.get<Transform>(renderable);
+			// if RandomColor component is attached, do not assign every vertex a color
+			//if (!registry.has<RandomColor>(renderable))
+			//{
+			//	for (auto it = mesh.rawVertices.begin(); it != mesh.rawVertices.end(); ++it)
+			//	{
+			//		it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
+			//	}
+			//}
+			GLRenderSystem::LoadMesh(renderer, mesh);
+			GLRenderSystem::UpdateRenderer(renderer, meshTransform, camera);
+			//renderer.Update();
+			//renderer.Draw();
+			GLRenderSystem::Draw(renderer);
+		}
 	}
 	auto transformView = registry.view<Transform>();
 	//camera.transform = transform;
@@ -463,7 +526,9 @@ void Loop()
 		MakeRayFromCamera();
 	}
 	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	//ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	graph->DrawGui();
 	graph->_SwapBuffers();
 }
 
@@ -484,7 +549,7 @@ int main(int argc, char* argv[])
 	camTransform.position += glm::vec3(0, 0, -3);
 	TransformSystem::CalculateWorldMatrix(&camTransform);
 	//cam.transform = &camTransform;
-	CameraSystem::CalculateProjectionMatrix(cam, (float)window->width / window->height);
+	CameraSystem::CalculateProjectionMatrixLH(cam, (float)window->width / window->height);
 	//Camera cam = Camera(glm::vec3(0, 0, -3), (float)window->width / window->height);
 	float camMoveSpeed = .05f;
 	glm::vec2 prevCursorPos{-1, -1}, currentCursorPos;
@@ -496,66 +561,124 @@ int main(int argc, char* argv[])
 	ImGui::StyleColorsDark();
 
 
+	if (argc < 4)
+	{
+		options.platform = Platform::Win32;
+		options.graphicsAPI = GraphicsAPI::DirectX11;
+	}
+	else
+	{
+		for (int i = 0; i < argc; ++i)
+		{
+			if (!strcmp(argv[i], "-p"))
+			{
+				if (!strcmp(argv[i + 1], "Windows"))
+				{
+					options.platform = Platform::Win32;
+				}
+				else if (!strcmp(argv[i + 1], "Web"))
+				{
+					options.platform = Platform::Web;
+				}
+			}
+			if (!strcmp(argv[i], "-g"))
+			{
+				if (!strcmp(argv[i + 1], "DX11"))
+				{
+					options.graphicsAPI = GraphicsAPI::DirectX11;
+				}
+				else if (!strcmp(argv[i + 1], "OpenGL"))
+				{
+					options.graphicsAPI = GraphicsAPI::OpenGL;
+				}
+			}
+		}
+	}
+
 #ifdef _WIN64
-	plat = new WindowsPlatform(window);
+	if (options.platform == Platform::Win32)
+	{
+		plat = new WindowsPlatform(window);
+	}
 #elif defined __EMSCRIPTEN__
-	plat = new EmscriptenPlatform(window);
+	if (options.platform == Platform::Web)
+	{
+		plat = new EmscriptenPlatform(window);
+	}
 #endif
 #ifdef _WIN64
-	graph = new OpenGLAPI(window, plat);
+	if (options.graphicsAPI == GraphicsAPI::DirectX11)
+	{
+		graph = new DirectXAPI(window);
+	}
+	else
+	{
+		graph = new OpenGLAPI(window, plat);
+	}
 #elif defined __EMSCRIPTEN__
 	graph = new OpenGLAPI(window, plat);
 #endif
 	plat->InitWindow();
 	graph->Init();
 
-	Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/cone.obj").c_str());
-	MeshLoaderSystem::LoadMesh(mesh.path.c_str(), mesh);
-	Renderer& renderer = registry.emplace<Renderer>(entity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
-	Transform& t1 = registry.emplace<Transform>(entity);
-	Name& name = registry.emplace<Name>(entity);
-	AABB& aabb = registry.emplace<AABB>(entity);
-	AABBSystem::UpdateAABB(aabb, mesh, t1);
-	name = { "Cone" };
-	Load(renderer, cam);
-	//renderer.LoadMesh(mesh.GetRawVertices());
-	LoadMesh(renderer, mesh);
+	//Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/cone.obj").c_str());
+	//MeshLoaderSystem::LoadMesh(mesh.path.c_str(), mesh);
+	//DirectXRenderer& renderer = registry.emplace<DirectXRenderer>(entity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
+	//Transform& t1 = registry.emplace<Transform>(entity);
+	//t1.position += glm::vec3(0, 1, 0);
+	//TransformSystem::CalculateWorldMatrix(&t1);
+	//Name& name = registry.emplace<Name>(entity);
+	//name = { "Cone" };
+	//DirectXRenderSystem::Load(renderer, cam, (DirectXAPI*)graph, (WindowsPlatform*)plat);
+	////renderer.LoadMesh(mesh.GetRawVertices());
+	//DirectXRenderSystem::LoadMesh(renderer, mesh, ((DirectXAPI*)(graph))->device.Get());
+	MakeMesh(plat->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0), "Cone");
+
 
 	//GizmoSystem::Select(entity);
+	//auto ent2 = registry.create();
+	//Mesh& mesh2 = registry.emplace<Mesh>(ent2, plat->GetAssetPath("../../Assets/Models/helix.obj").c_str());
+	//MeshLoaderSystem::LoadMesh(mesh2.path.c_str(), mesh2);
+	//DirectXRenderer& renderer2 = registry.emplace<DirectXRenderer>(ent2/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
+	//Transform& t2 = registry.emplace<Transform>(ent2);
+	//t2.position += glm::vec3(0, -2, 0);
+	//TransformSystem::CalculateWorldMatrix(&t2);
+	//Load(renderer2, cam, (DirectXAPI*)graph, (WindowsPlatform*)plat);
+	//LoadMesh(renderer2, mesh2, ((DirectXAPI*)(graph))->device.Get());
 
 
-	//plat->GetInputSystem()->RegisterRightMouseFunction([]()
-	//{
-	//	auto camView = registry.view<Camera>();
-	//	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
-	//	glm::vec2 delta = plat->GetInputSystem()->GetCursorPosition() - plat->GetInputSystem()->GetPreviousCursorPosition();
-	//	float camRotX = camTransform.rotation.x;
-	//	bool tooFarUp = camRotX > 3.f / 2;
-	//	bool tooFarDown = camRotX < -3.f / 2;
-	//	// checks to see if camera is in danger of gimbal lock
-	//	if (tooFarUp || tooFarDown)
-	//	{
-	//		float newCamRotX;
-	//		// we allow the input to rotate the camera on the x axis
-	//		// if it is "too far down" and going up or "too far up" 
-	//		// and going down. Otherwise zero out the x axis input
-	//		if ((tooFarUp && delta.y < 0) || (tooFarDown && delta.y > 0))
-	//		{
-	//			newCamRotX = delta.y;
-	//		}
-	//		else
-	//		{
-	//			newCamRotX = 0;
-	//		}
-	//		//cam.GetTransform()->Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0));
-	//		TransformSystem::Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0), &camTransform);
-	//	}
-	//	else
-	//	{
-	//		//cam.GetTransform()->Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0));
-	//		TransformSystem::Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0), &camTransform);
-	//	}
-	//});
+	plat->GetInputSystem()->RegisterRightMouseFunction([]()
+	{
+		auto camView = registry.view<Camera>();
+		auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
+		glm::vec2 delta = plat->GetInputSystem()->GetCursorPosition() - plat->GetInputSystem()->GetPreviousCursorPosition();
+		float camRotX = camTransform.rotation.x;
+		bool tooFarUp = camRotX > 3.f / 2;
+		bool tooFarDown = camRotX < -3.f / 2;
+		// checks to see if camera is in danger of gimbal lock
+		if (tooFarUp || tooFarDown)
+		{
+			float newCamRotX;
+			// we allow the input to rotate the camera on the x axis
+			// if it is "too far down" and going up or "too far up" 
+			// and going down. Otherwise zero out the x axis input
+			if ((tooFarUp && delta.y < 0) || (tooFarDown && delta.y > 0))
+			{
+				newCamRotX = delta.y;
+			}
+			else
+			{
+				newCamRotX = 0;
+			}
+			//cam.GetTransform()->Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0));
+			TransformSystem::Rotate(glm::vec3(newCamRotX * .005f, delta.x * .005f, 0), &camTransform);
+		}
+		else
+		{
+			//cam.GetTransform()->Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0));
+			TransformSystem::Rotate(glm::vec3(delta.y * .005f, delta.x * .005f, 0), &camTransform);
+		}
+	});
 
 	auto MoveCamera = [](glm::vec3 dir) {
 		return[dir]() {

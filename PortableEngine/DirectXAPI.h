@@ -1,4 +1,3 @@
-#if 0
 #pragma once
 #include "IGraphicsAPI.h"
 #include "WindowsPlatform.h"
@@ -18,14 +17,17 @@ public:
 	void Draw();
 	~DirectXAPI();
 	void _SwapBuffers();
+	void NewGuiFrame();
+	void DrawGui();
+	Microsoft::WRL::ComPtr<ID3D11Device>		device;
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext>	context;
+
 private:
 	void LoadShaders();
 	void CreateMatrices();
 	void CreateBasicGeometry();
 	D3D_FEATURE_LEVEL		dxFeatureLevel;
 	Microsoft::WRL::ComPtr<IDXGISwapChain>		swapChain;
-	Microsoft::WRL::ComPtr<ID3D11Device>		device;
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext>	context;
 
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> backBufferRTV;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> depthStencilView;
@@ -49,5 +51,3 @@ private:
 	//Mesh* testHelix;
 
 };
-
-#endif

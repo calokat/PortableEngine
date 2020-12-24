@@ -23,7 +23,7 @@ void ComponentGUI(Transform& t)
 	//ImGui::DragFloat3("Rotation", glm::value_ptr(t.rotation));
 }
 
-void ComponentGUI(Renderer& r)
+void ComponentGUI(GLRenderer& r)
 {
 	ImGui::ColorPicker4("Renderer Color", glm::value_ptr(r.vertexColor));
 }
@@ -34,4 +34,9 @@ void ComponentGUI(Rotator& r)
 	//r.deltaRot.x = glm::radians(r.deltaRot.x);
 	//r.deltaRot.y = glm::radians(r.deltaRot.y);
 	//r.deltaRot.z = glm::radians(r.deltaRot.z);
+}
+
+void ComponentGUI(DirectXRenderer& dxr)
+{
+	ImGui::ColorPicker4("Renderer Color", glm::value_ptr(dxr.vertexColor));
 }

@@ -72,12 +72,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>C:\Users\caleb\Documents\GitHub\json\single_include\nlohmann;C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\caleb\Documents\common\glfw\lib\Debug;C:\Users\caleb\Documents\common\glew\lib\Release\x64;$(LibraryPath)</LibraryPath>
-    <SourcePath>C:\Users\caleb\Documents\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
+    <SourcePath>C:\Users\caleb\Documents\GitHub\imgui\examples;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\Users\caleb\Documents\GitHub\json\single_include\nlohmann;C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\caleb\Documents\common\glfw\lib\Debug;C:\Users\caleb\Documents\common\glew\lib\Release\x64;$(LibraryPath)</LibraryPath>
-    <SourcePath>C:\Users\caleb\Documents\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
+    <SourcePath>C:\Users\caleb\Documents\GitHub\imgui\examples;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>C:\Users\caleb\Documents\common\glew\lib\Release\x64;C:\Users\caleb\Documents\common\glfw\lib\Release;$(LibraryPath)</LibraryPath>
@@ -131,7 +131,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -148,11 +148,12 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="..\..\imgui\examples\imgui_impl_dx11.cpp" />
     <ClCompile Include="..\..\imgui\examples\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\..\imgui\examples\imgui_impl_win32.cpp" />
     <ClCompile Include="..\..\imgui\imgui.cpp" />
@@ -164,6 +165,8 @@
     <ClCompile Include="CameraSystem.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="DirectXAPI.cpp" />
+    <ClCompile Include="DirectXRenderer.cpp" />
+    <ClCompile Include="DirectXRenderSystem.cpp" />
     <ClCompile Include="DXCore.cpp" />
     <ClCompile Include="EmscriptenInputSystem.cpp" />
     <ClCompile Include="EmscriptenPlatform.cpp" />
@@ -184,8 +187,8 @@
     <ClCompile Include="OpenGLAPI.cpp" />
     <ClCompile Include="OpenGLESContext.cpp" />
     <ClCompile Include="PortableGame.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="GLRenderer.cpp" />
+    <ClCompile Include="GLRenderSystem.cpp" />
     <ClCompile Include="SerializationSystem.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleShader.cpp" />
@@ -204,6 +207,8 @@
     <ClInclude Include="CameraSystem.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="DirectXAPI.h" />
+    <ClInclude Include="DirectXRenderer.h" />
+    <ClInclude Include="DirectXRenderSystem.h" />
     <ClInclude Include="DXCore.h" />
     <ClInclude Include="EmscriptenInputSystem.h" />
     <ClInclude Include="EmscriptenPlatform.h" />
@@ -220,6 +225,7 @@
     <ClInclude Include="InspectorGUI.h" />
     <ClInclude Include="IOpenGLContext.h" />
     <ClInclude Include="IPlatform.h" />
+    <ClInclude Include="IRenderer.h" />
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
@@ -229,8 +235,8 @@
     <ClInclude Include="OpenGLESContext.h" />
     <ClInclude Include="PortableGame.h" />
     <ClInclude Include="Relationship.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="GLRenderer.h" />
+    <ClInclude Include="GLRenderSystem.h" />
     <ClInclude Include="SerializationSystem.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleShader.h" />
