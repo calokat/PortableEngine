@@ -1,297 +1,103 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="..\..\ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="..\..\imgui\examples\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\..\imgui\examples\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\..\imgui\examples\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\..\imgui\imgui.cpp" />
+    <ClCompile Include="..\..\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\..\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\..\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="AABBSystem.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraSystem.cpp" />
+    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="DirectXAPI.cpp" />
+    <ClCompile Include="DirectXRenderer.cpp" />
+    <ClCompile Include="DirectXRenderSystem.cpp" />
+    <ClCompile Include="DXCore.cpp" />
+    <ClCompile Include="EmscriptenInputSystem.cpp" />
+    <ClCompile Include="EmscriptenPlatform.cpp" />
+    <ClCompile Include="EngineCameraControllerSystem.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="esUtil.c" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameWindow.cpp" />
+    <ClCompile Include="GizmoSystem.cpp" />
+    <ClCompile Include="GLCore.cpp" />
+    <ClCompile Include="imgui_impl_emscripten.cpp" />
+    <ClCompile Include="InspectorGUI.cpp" />
+    <ClCompile Include="IOpenGLContext.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshLoaderSystem.cpp" />
+    <ClCompile Include="OpenGLAPI.cpp" />
+    <ClCompile Include="OpenGLESContext.cpp" />
+    <ClCompile Include="PortableGame.cpp" />
+    <ClCompile Include="GLRenderer.cpp" />
+    <ClCompile Include="GLRenderSystem.cpp" />
+    <ClCompile Include="SerializationSystem.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="SimpleShader.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TransformSystem.cpp" />
+    <ClCompile Include="WindowsInputSystem.cpp" />
+    <ClCompile Include="WindowsPlatform.cpp" />
+    <ClCompile Include="WinOpenGLContext.cpp" />
+    <ClCompile Include="IRenderSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Core.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DXCore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLCore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowsPlatform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXAPI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PortableGame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenGLAPI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IOpenGLContext.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WinOpenGLContext.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="esUtil.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenGLESContext.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EmscriptenPlatform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowsInputSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EmscriptenInputSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\imgui\imgui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\imgui\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\imgui\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\imgui\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\imgui\examples\imgui_impl_opengl3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\imgui\examples\imgui_impl_win32.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_emscripten.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ImGuizmo\ImGuizmo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TransformSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GizmoSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshLoaderSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InspectorGUI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SerializationSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AABBSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EngineCameraControllerSystem.cpp">
-    <ClCompile Include="DirectXRenderSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\imgui\examples\imgui_impl_dx11.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLRenderSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BufferStructs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DXCore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GLCore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Lights.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IPlatform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowsPlatform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IGraphicsAPI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXAPI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PortableGame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenGLAPI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IOpenGLContext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinOpenGLContext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="esUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenGLESContext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EmscriptenPlatform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IInputSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowsInputSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EmscriptenInputSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_impl_emscripten.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TransformSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GizmoSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AABB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Relationship.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshLoaderSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InspectorGUI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SerializationSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="misc_components.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AABBSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineCameraControllerSystem.h">
-    <ClInclude Include="DirectXRenderSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GLRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GLRenderSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="AABB.h" />
+    <ClInclude Include="AABBSystem.h" />
+    <ClInclude Include="BufferStructs.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraSystem.h" />
+    <ClInclude Include="Core.h" />
+    <ClInclude Include="DirectXAPI.h" />
+    <ClInclude Include="DirectXRenderer.h" />
+    <ClInclude Include="DirectXRenderSystem.h" />
+    <ClInclude Include="DXCore.h" />
+    <ClInclude Include="EmscriptenInputSystem.h" />
+    <ClInclude Include="EmscriptenPlatform.h" />
+    <ClInclude Include="EngineCameraControllerSystem.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="esUtil.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameWindow.h" />
+    <ClInclude Include="GizmoSystem.h" />
+    <ClInclude Include="GLCore.h" />
+    <ClInclude Include="IGraphicsAPI.h" />
+    <ClInclude Include="IInputSystem.h" />
+    <ClInclude Include="imgui_impl_emscripten.h" />
+    <ClInclude Include="InspectorGUI.h" />
+    <ClInclude Include="IOpenGLContext.h" />
+    <ClInclude Include="IPlatform.h" />
+    <ClInclude Include="IRenderer.h" />
+    <ClInclude Include="Lights.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshLoaderSystem.h" />
+    <ClInclude Include="misc_components.h" />
+    <ClInclude Include="OpenGLAPI.h" />
+    <ClInclude Include="OpenGLESContext.h" />
+    <ClInclude Include="PortableGame.h" />
+    <ClInclude Include="Relationship.h" />
+    <ClInclude Include="GLRenderer.h" />
+    <ClInclude Include="GLRenderSystem.h" />
+    <ClInclude Include="SerializationSystem.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="SimpleShader.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="TransformSystem.h" />
+    <ClInclude Include="Vertex.h" />
+    <ClInclude Include="WindowsInputSystem.h" />
+    <ClInclude Include="WindowsPlatform.h" />
+    <ClInclude Include="WinOpenGLContext.h" />
+    <ClInclude Include="IRenderSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -180,6 +180,7 @@
     <ClCompile Include="imgui_impl_emscripten.cpp" />
     <ClCompile Include="InspectorGUI.cpp" />
     <ClCompile Include="IOpenGLContext.cpp" />
+    <ClCompile Include="IRenderSystem.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="IOpenGLContext.h" />
     <ClInclude Include="IPlatform.h" />
     <ClInclude Include="IRenderer.h" />
+    <ClInclude Include="IRenderSystem.h" />
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
