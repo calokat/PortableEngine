@@ -13,6 +13,7 @@ namespace GLRenderSystem
 	void Load(GLRenderer& renderer, Camera camera);
 	void LoadMesh(GLRenderer& renderer, Mesh& mesh);
 	void Draw(GLRenderer& renderer);
+	void DrawWireframe(GLRenderer& renderer);
 	void UpdateRenderer(GLRenderer& renderer, Transform meshTransform, Camera camera);
 	void DrawGizmo(Camera camera);
 }

@@ -61,6 +61,14 @@ namespace GLRenderSystem
 		glBindVertexArray(0);
 	}
 
+	void DrawWireframe(GLRenderer& renderer)
+	{
+		glBindVertexArray(renderer.vao);
+		glUniform4f(renderer.colorLoc, 1, 1, 1, 1);
+		glDrawArrays(GL_LINES, 0, renderer.numVertices);
+		glBindVertexArray(0);
+	}
+
 	void UpdateRenderer(GLRenderer& renderer, Transform meshTransform, Camera camera)
 	{
 		glUseProgram(renderer.program);
