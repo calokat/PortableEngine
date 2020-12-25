@@ -527,6 +527,10 @@ void Loop()
 	{
 		MakeRayFromCamera();
 	}
+	if (plat->GetInputSystem()->IsKeyPressed(KeyCode::Esc))
+	{
+		GizmoSystem::DeselectAll();
+	}
 	ImGui::Render();
 	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	//ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
