@@ -59,6 +59,17 @@ namespace DirectXRenderSystem
 
 	}
 
+	void DrawWireframe(DirectXRenderer& renderer, ID3D11DeviceContext* context)
+	{
+		glm::vec4 oldRendererColor = renderer.vertexColor;
+		renderer.vertexShader->SetFloat4("colorTint", glm::vec4(1, 1, 1, 1));
+		renderer.vertexShader->CopyAllBufferData();
+		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+		Draw(renderer, context);
+		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		renderer.vertexShader->SetFloat4("colorTint", oldRendererColor);
+	}
+
 	void UpdateRenderer(DirectXRenderer& renderer, Transform meshTransform, Camera camera)
 	{
 		renderer.vertexShader->SetMatrix4x4("viewMatrix", camera.view);
