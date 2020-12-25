@@ -227,6 +227,8 @@ void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") 
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
+	AABB& aabb = registry.emplace<AABB>(newMeshEntity);
+	AABBSystem::UpdateAABB(aabb, newMesh, meshTransform);
 }
 
 void RaycastAgainstAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, entt::basic_view<entt::entity, entt::exclude_t<>, AABB> aabbView)
