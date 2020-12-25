@@ -491,6 +491,14 @@ void Loop()
 			//renderer.Draw();
 			DirectXRenderSystem::Draw(renderer, ((DirectXAPI*)(graph))->context.Get());
 		}
+		if (selected != entt::null)
+		{
+			if (options.graphicsAPI == GraphicsAPI::DirectX11)
+			{
+				DirectXRenderer& dxr = renderableView.get<DirectXRenderer>(selected);
+				DirectXRenderSystem::DrawWireframe(dxr, ((DirectXAPI*)(graph))->context.Get());
+			}
+		}
 	}
 	else if (options.graphicsAPI == GraphicsAPI::OpenGL)
 	{
@@ -513,6 +521,11 @@ void Loop()
 			//renderer.Update();
 			//renderer.Draw();
 			GLRenderSystem::Draw(renderer);
+		}
+		if (selected != entt::null)
+		{
+			GLRenderer& glr = renderableView.get<GLRenderer>(selected);
+			GLRenderSystem::DrawWireframe(glr);
 		}
 	}
 	auto transformView = registry.view<Transform>();
