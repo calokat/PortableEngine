@@ -16,11 +16,11 @@ void EngineCameraControllerSystem::ControlCamera(IInputSystem* inputSystem, Tran
 		}
 		if (inputSystem->IsKeyPressed(KeyCode::A))
 		{
-			MoveCameraRelative(camTransform, glm::vec3(1, 0, 0) * cameraMoveSpeed);
+			MoveCameraRelative(camTransform, glm::vec3(-1, 0, 0) * cameraMoveSpeed);
 		}
 		if (inputSystem->IsKeyPressed(KeyCode::D))
 		{
-			MoveCameraRelative(camTransform, glm::vec3(-1, 0, 0) * cameraMoveSpeed);
+			MoveCameraRelative(camTransform, glm::vec3(1, 0, 0) * cameraMoveSpeed);
 		}
 		if (inputSystem->IsKeyPressed(KeyCode::Q))
 		{
@@ -57,12 +57,12 @@ void EngineCameraControllerSystem::LookCamera(IInputSystem* inputSystem, Transfo
 			newCamRotX = 0;
 		}
 		//cam.GetTransform()->Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0));
-		TransformSystem::Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0), &camTransform);
+		TransformSystem::Rotate(glm::vec3(newCamRotX * .005f, delta.x * .005f, 0), &camTransform);
 	}
 	else
 	{
 		//cam.GetTransform()->Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0));
-		TransformSystem::Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0), &camTransform);
+		TransformSystem::Rotate(glm::vec3(delta.y * .005f, delta.x * .005f, 0), &camTransform);
 	}
 }
 
