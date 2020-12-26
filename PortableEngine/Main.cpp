@@ -179,6 +179,7 @@ void MakeMesh(const char* path, const char* name = "GameObject") {
 	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
 	//DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
 	renderSystem->Load(&newMeshRenderer, camera);
+	renderSystem->LoadMesh(&newMeshRenderer, newMesh);
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
@@ -200,6 +201,7 @@ void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") 
 	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
 	//DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
 	renderSystem->Load(&newMeshRenderer, camera);
+	renderSystem->LoadMesh(&newMeshRenderer, newMesh);
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
@@ -304,7 +306,6 @@ void DrawIteration(Camera& camera, entt::entity selected)
 		//		it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
 		//	}
 		//}
-		renderSystem->LoadMesh(&renderer, mesh);
 		renderSystem->UpdateRenderer(&renderer, meshTransform, camera);
 		//renderer.Update();
 		//renderer.Draw();
@@ -314,8 +315,6 @@ void DrawIteration(Camera& camera, entt::entity selected)
 	{
 		Mesh& selectedMesh = registry.get<Mesh>(selected);
 		T& r = renderableView.get<T>(selected);
-
-		renderSystem->LoadMesh(&r, selectedMesh);
 		renderSystem->DrawWireframe(&r);
 	}
 }
