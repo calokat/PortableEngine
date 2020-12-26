@@ -287,6 +287,36 @@ void MakeRayFromCamera()
 //	}
 //}
 
+template<class T>
+void DrawIteration(Camera& camera, entt::entity selected)
+{
+	auto renderableView = registry.view<T, Transform>();
+	for (auto renderable : renderableView)
+	{
+		T& renderer = registry.get<T>(renderable);
+		Mesh& mesh = registry.get<Mesh>(renderable);
+		Transform& meshTransform = registry.get<Transform>(renderable);
+		// if RandomColor component is attached, do not assign every vertex a color
+		//if (!registry.has<RandomColor>(renderable))
+		//{
+		//	for (auto it = mesh.rawVertices.begin(); it != mesh.rawVertices.end(); ++it)
+		//	{
+		//		it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
+		//	}
+		//}
+		renderSystem->LoadMesh(&renderer, mesh);
+		renderSystem->UpdateRenderer(&renderer, meshTransform, camera);
+		//renderer.Update();
+		//renderer.Draw();
+		renderSystem->Draw(&renderer);
+	}
+	if (selected != entt::null)
+	{
+		T& dxr = renderableView.get<T>(selected);
+		renderSystem->DrawWireframe(&dxr);
+	}
+}
+
 void Loop()
 {
 	
@@ -447,62 +477,11 @@ void Loop()
 	CameraSystem::CalculateViewMatrixLH(camera, camTransform);
 	if (options.graphicsAPI == GraphicsAPI::DirectX11)
 	{
-		auto renderableView = registry.view<DirectXRenderer, Transform>();
-		for (auto renderable : renderableView)
-		{
-			DirectXRenderer& renderer = registry.get<DirectXRenderer>(renderable);
-			Mesh& mesh = registry.get<Mesh>(renderable);
-			Transform& meshTransform = registry.get<Transform>(renderable);
-			// if RandomColor component is attached, do not assign every vertex a color
-			//if (!registry.has<RandomColor>(renderable))
-			//{
-			//	for (auto it = mesh.rawVertices.begin(); it != mesh.rawVertices.end(); ++it)
-			//	{
-			//		it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
-			//	}
-			//}
-			renderSystem->LoadMesh(&renderer, mesh);
-			renderSystem->UpdateRenderer(&renderer, meshTransform, camera);
-			//renderer.Update();
-			//renderer.Draw();
-			renderSystem->Draw(&renderer);
-		}
-		if (selected != entt::null)
-		{
-			if (options.graphicsAPI == GraphicsAPI::DirectX11)
-			{
-				DirectXRenderer& dxr = renderableView.get<DirectXRenderer>(selected);
-				renderSystem->DrawWireframe(&dxr);
-			}
-		}
+		DrawIteration<DirectXRenderer>(camera, selected);
 	}
 	else if (options.graphicsAPI == GraphicsAPI::OpenGL)
 	{
-		auto renderableView = registry.view<GLRenderer, Transform>();
-		for (auto renderable : renderableView)
-		{
-			GLRenderer& renderer = registry.get<GLRenderer>(renderable);
-			Mesh& mesh = registry.get<Mesh>(renderable);
-			Transform& meshTransform = registry.get<Transform>(renderable);
-			// if RandomColor component is attached, do not assign every vertex a color
-			//if (!registry.has<RandomColor>(renderable))
-			//{
-			//	for (auto it = mesh.rawVertices.begin(); it != mesh.rawVertices.end(); ++it)
-			//	{
-			//		it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
-			//	}
-			//}
-			renderSystem->LoadMesh(&renderer, mesh);
-			renderSystem->UpdateRenderer(&renderer, meshTransform, camera);
-			//renderer.Update();
-			//renderer.Draw();
-			renderSystem->Draw(&renderer);
-		}
-		if (selected != entt::null)
-		{
-			GLRenderer& glr = renderableView.get<GLRenderer>(selected);
-			renderSystem->DrawWireframe(&glr);
-		}
+		DrawIteration<GLRenderer>(camera, selected);
 	}
 	auto transformView = registry.view<Transform>();
 	//camera.transform = transform;
