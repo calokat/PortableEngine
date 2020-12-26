@@ -61,29 +61,6 @@ entt::registry registry;
 
 bool show_demo_window = true;
 
-IRenderer& EmplaceRenderer(entt::entity newMeshEntity)
-{
-	if (options.graphicsAPI == GraphicsAPI::DirectX11)
-	{
-		return registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
-	}
-	else if (options.graphicsAPI == GraphicsAPI::OpenGL)
-	{
-		return registry.emplace<GLRenderer>(newMeshEntity, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
-	}
-}
-
-void LoadRenderer(IRenderer& renderer, Camera& camera)
-{
-	if (options.graphicsAPI == GraphicsAPI::DirectX11)
-	{
-		renderSystem->Load(&renderer, camera);
-	}
-	if (options.graphicsAPI == GraphicsAPI::OpenGL)
-	{
-		renderSystem->Load(&renderer, camera);
-	}
-}
 //template<class T>
 //void TrySerializeComponent(json& master)
 //{
@@ -199,9 +176,9 @@ void MakeMesh(const char* path, const char* name = "GameObject") {
 	meshTransform.position = newMeshPos;
 	TransformSystem::CalculateWorldMatrix(&meshTransform);
 	//DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
-	IRenderer& newMeshRenderer = EmplaceRenderer(newMeshEntity);
+	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
 	//DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
-	LoadRenderer(newMeshRenderer, camera);
+	renderSystem->Load(&newMeshRenderer, camera);
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
@@ -220,9 +197,9 @@ void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") 
 	meshTransform.position = pos;
 	TransformSystem::CalculateWorldMatrix(&meshTransform);
 	//DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
-	IRenderer& newMeshRenderer = EmplaceRenderer(newMeshEntity);
+	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
 	//DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
-	LoadRenderer(newMeshRenderer, camera);
+	renderSystem->Load(&newMeshRenderer, camera);
 	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
