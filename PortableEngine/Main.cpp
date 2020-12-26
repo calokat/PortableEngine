@@ -19,8 +19,6 @@
 #include <imgui.h>
 #include <examples/imgui_impl_win32.h>
 #include <examples/imgui_impl_dx11.h>
-//#include <examples/imgui_impl_opengl3.h>
-//#include <ImGuizmo.h>
 #include "TransformSystem.h"
 #include "CameraSystem.h"
 #include "GizmoSystem.h"
@@ -31,7 +29,6 @@
 #include <json.hpp>
 #include <iomanip>
 #include "InspectorGUI.h"
-//#include "SerializationSystem.h"
 #include "misc_components.h"
 // Thanks to https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c
 #include <filesystem>
@@ -47,12 +44,6 @@ struct Options
 };
 Options options;
 using json = nlohmann::json;
-class RandomColor
-{
-	bool foo;
-public:
-	RandomColor() {};
-};
 IPlatform* plat;
 IGraphicsAPI* graph;
 GameWindow* window;
@@ -178,7 +169,6 @@ void MakeMesh(const char* path, const char* name = "GameObject") {
 	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
 	renderSystem->Load(&newMeshRenderer, camera);
 	renderSystem->LoadMesh(&newMeshRenderer, newMesh);
-	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
 	AABB& aabb = registry.emplace<AABB>(newMeshEntity);
@@ -197,7 +187,6 @@ void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") 
 	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
 	renderSystem->Load(&newMeshRenderer, camera);
 	renderSystem->LoadMesh(&newMeshRenderer, newMesh);
-	registry.emplace<RandomColor>(newMeshEntity);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
 	AABB& aabb = registry.emplace<AABB>(newMeshEntity);
