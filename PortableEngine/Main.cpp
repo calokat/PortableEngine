@@ -175,9 +175,7 @@ void MakeMesh(const char* path, const char* name = "GameObject") {
 	Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
 	meshTransform.position = newMeshPos;
 	TransformSystem::CalculateWorldMatrix(&meshTransform);
-	//DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
 	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
-	//DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
 	renderSystem->Load(&newMeshRenderer, camera);
 	renderSystem->LoadMesh(&newMeshRenderer, newMesh);
 	registry.emplace<RandomColor>(newMeshEntity);
@@ -190,16 +188,13 @@ void MakeMesh(const char* path, const char* name = "GameObject") {
 void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") {
 	auto camView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
-	//glm::vec3 newMeshPos = camTransform.position + TransformSystem::CalculateForward(&camTransform);
 	auto newMeshEntity = registry.create();
 	Mesh& newMesh = registry.emplace<Mesh>(newMeshEntity, path);
 	MeshLoaderSystem::LoadMesh(newMesh.path.c_str(), newMesh);
 	Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
 	meshTransform.position = pos;
 	TransformSystem::CalculateWorldMatrix(&meshTransform);
-	//DirectXRenderer& newMeshRenderer = registry.emplace<DirectXRenderer>(newMeshEntity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
 	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
-	//DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
 	renderSystem->Load(&newMeshRenderer, camera);
 	renderSystem->LoadMesh(&newMeshRenderer, newMesh);
 	registry.emplace<RandomColor>(newMeshEntity);
@@ -226,7 +221,7 @@ void RaycastAgainstAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, entt::basic_view<
 		float tmin = glm::max(glm::max(glm::min(t1, t2), glm::min(t3, t4)), glm::min(t5, t6));
 		float tmax = glm::min(glm::min(glm::max(t1, t2), glm::max(t3, t4)), glm::max(t5, t6));
 
-		// if tmax < 0, ray (line) is intersecting AABB, but whole AABB is behing us
+		// if tmax < 0, ray (line) is intersecting AABB, but whole AABB is behind us
 		if (tmax >= 0 && tmin <= tmax)
 		{
 			GizmoSystem::DeselectAll();
@@ -244,7 +239,6 @@ void MakeRayFromCamera()
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
 	ImGuiIO& io = ImGui::GetIO();
 	ImVec2 mousePos = io.MousePos;
-	//glm::vec2 mousePos = plat->GetInputSystem()->GetCursorPosition();
 	// Blessed be this code taken from https://gamedev.stackexchange.com/questions/157674/simple-mouseray-picking-in-opengl
 	glm::vec3 mouse_world_nearplane = glm::unProject(
 		glm::vec3(mousePos.x, 600 - mousePos.y, 0.0f),
@@ -259,35 +253,12 @@ void MakeRayFromCamera()
 		glm::ivec4(0, 0, 800, 600));
 
 	glm::vec3 camray = glm::normalize(mouse_world_farplane - mouse_world_nearplane);
-	//camray.y = -camray.y;
 	camray *= 30;
 	glm::vec3 newMeshLocation = mouse_world_nearplane + camray;
 
-
 	RaycastAgainstAABB(mouse_world_nearplane, mouse_world_farplane - mouse_world_nearplane, registry.view <AABB>());
-	//MakeMesh(plat->GetAssetPath("../../Assets/Models/cube.obj").c_str(), newMeshLocation);
 	return;
 }
-
-
-//void RandomizeVertexColors()
-//{
-//	auto rcView = registry.view<RandomColor, Mesh, Renderer, Transform>();
-//	for (auto rc : rcView)
-//	{
-//		Mesh& m = registry.get<Mesh>(rc);
-//		for (Vertex& v : m.rawVertices)
-//		{
-//			v.Color = { (rand() % 255) / 255.0f, (rand() % 255) / 255.0f, (rand() % 255) / 255.0f, 1 };
-//		}
-//		Renderer& renderer = registry.get<Renderer>(rc);
-//		LoadMesh(renderer, m);
-//		Transform& t = registry.get<Transform>(rc);
-//		auto cameraView = registry.view<Camera>();
-//		Camera& cam = registry.get<Camera>(*cameraView.begin());
-//		UpdateRenderer(renderer, t, cam);
-//	}
-//}
 
 template<class T>
 void DrawIteration(Camera& camera, entt::entity selected)
@@ -298,17 +269,7 @@ void DrawIteration(Camera& camera, entt::entity selected)
 		T& renderer = registry.get<T>(renderable);
 		Mesh& mesh = registry.get<Mesh>(renderable);
 		Transform& meshTransform = registry.get<Transform>(renderable);
-		// if RandomColor component is attached, do not assign every vertex a color
-		//if (!registry.has<RandomColor>(renderable))
-		//{
-		//	for (auto it = mesh.rawVertices.begin(); it != mesh.rawVertices.end(); ++it)
-		//	{
-		//		it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
-		//	}
-		//}
 		renderSystem->UpdateRenderer(&renderer, meshTransform, camera);
-		//renderer.Update();
-		//renderer.Draw();
 		renderSystem->Draw(&renderer);
 	}
 	if (selected != entt::null)
@@ -322,9 +283,7 @@ void DrawIteration(Camera& camera, entt::entity selected)
 void Loop()
 {
 	
-	//ImGui_ImplWin32_NewFrame();
 	graph->NewGuiFrame();
-	//ImGui_ImplOpenGL_NewFrame();
 	plat->NewGuiFrame();
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
@@ -362,51 +321,34 @@ void Loop()
 			ImGui::EndMenu();
 		}
 		//if (ImGui::BeginMenu("Save"))
-		//{
-		//	static char saveFileName[100] = {};
-		//	ImGui::InputText("Save as: ", saveFileName, 100);
-		//	if (ImGui::Button("Save"))
-		//	{
-		//		Serialize(saveFileName);
-		//	}
-		//	ImGui::EndMenu();
-		//}
-		//if (ImGui::BeginMenu("Open"))
-		//{
-		//	for (const auto& saveFile : std::filesystem::directory_iterator("./"))
-		//	{
-		//		if (saveFile.path().extension().generic_string() == ".pg")
-		//		{
-		//			std::string fileStr = saveFile.path().generic_string();
+//{
+//	static char saveFileName[100] = {};
+//	ImGui::InputText("Save as: ", saveFileName, 100);
+//	if (ImGui::Button("Save"))
+//	{
+//		Serialize(saveFileName);
+//	}
+//	ImGui::EndMenu();
+//}
+//if (ImGui::BeginMenu("Open"))
+//{
+//	for (const auto& saveFile : std::filesystem::directory_iterator("./"))
+//	{
+//		if (saveFile.path().extension().generic_string() == ".pg")
+//		{
+//			std::string fileStr = saveFile.path().generic_string();
 
-		//			if (ImGui::MenuItem(fileStr.c_str()))
-		//			{
-		//				Deserialize(fileStr.c_str());
-		//			}
-		//		}
-		//	}
-		//	ImGui::EndMenu();
-		//}
+//			if (ImGui::MenuItem(fileStr.c_str()))
+//			{
+//				Deserialize(fileStr.c_str());
+//			}
+//		}
+//	}
+//	ImGui::EndMenu();
+//}
 		ImGui::EndMenu();
 	}
-	//if (ImGui::BeginMenu("Components"))
-	//{
-	//	if (ImGui::BeginMenu("Color picker"))
-	//	{
-	//		ImGui::ColorPicker4("Vertex color: ", vertColorPick);
-	//		ImGui::EndMenu();
-	//	}
-	//	if (ImGui::MenuItem("Random Vertex Colors"))
-	//	{
-	//		RandomizeVertexColors();
-	//	}
-	//	ImGui::EndMenu();
-	//}
 	ImGui::EndMainMenuBar();
-	//ImGui::Begin("Vertex color picker", NULL, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoMove);
-	//ImGui::Text("Vertex color: ");
-	//ImGui::ColorPicker4("Vertex color: ", vertColorPick);
-	//ImGui::End();
 
 	plat->GetInputSystem()->GetKeyPressed();
 	auto entityView = registry.view<Transform, Name>();
@@ -486,7 +428,6 @@ void Loop()
 		DrawIteration<GLRenderer>(camera, selected);
 	}
 	auto transformView = registry.view<Transform>();
-	//camera.transform = transform;
 	GizmoSystem::UpdateGizmo(plat->GetInputSystem());
 	GizmoSystem::DrawGizmo(camera, transformView);
 
@@ -502,8 +443,6 @@ void Loop()
 		GizmoSystem::DeselectAll();
 	}
 	ImGui::Render();
-	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	//ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	graph->DrawGui();
 	graph->_SwapBuffers();
 }
@@ -524,9 +463,7 @@ int main(int argc, char* argv[])
 	Camera& cam = registry.emplace<Camera>(cameraEntity, (float)window->width / window->height);
 	camTransform.position += glm::vec3(0, 0, -3);
 	TransformSystem::CalculateWorldMatrix(&camTransform);
-	//cam.transform = &camTransform;
 	CameraSystem::CalculateProjectionMatrixLH(cam, (float)window->width / window->height);
-	//Camera cam = Camera(glm::vec3(0, 0, -3), (float)window->width / window->height);
 	float camMoveSpeed = .05f;
 	glm::vec2 prevCursorPos{-1, -1}, currentCursorPos;
 
@@ -607,58 +544,8 @@ int main(int argc, char* argv[])
 	{
 		renderSystem = new GLRenderSystem(plat);
 	}
-	//Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/cone.obj").c_str());
-	//MeshLoaderSystem::LoadMesh(mesh.path.c_str(), mesh);
-	//DirectXRenderer& renderer = registry.emplace<DirectXRenderer>(entity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
-	//Transform& t1 = registry.emplace<Transform>(entity);
-	//t1.position += glm::vec3(0, 1, 0);
-	//TransformSystem::CalculateWorldMatrix(&t1);
-	//Name& name = registry.emplace<Name>(entity);
-	//name = { "Cone" };
-	//DirectXRenderSystem::Load(renderer, cam, (DirectXAPI*)graph, (WindowsPlatform*)plat);
-	////renderer.LoadMesh(mesh.GetRawVertices());
-	//DirectXRenderSystem::LoadMesh(renderer, mesh, ((DirectXAPI*)(graph))->device.Get());
 	MakeMesh(plat->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0), "Cone");
 
-
-	//GizmoSystem::Select(entity);
-	//auto ent2 = registry.create();
-	//Mesh& mesh2 = registry.emplace<Mesh>(ent2, plat->GetAssetPath("../../Assets/Models/helix.obj").c_str());
-	//MeshLoaderSystem::LoadMesh(mesh2.path.c_str(), mesh2);
-	//DirectXRenderer& renderer2 = registry.emplace<DirectXRenderer>(ent2/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
-	//Transform& t2 = registry.emplace<Transform>(ent2);
-	//t2.position += glm::vec3(0, -2, 0);
-	//TransformSystem::CalculateWorldMatrix(&t2);
-	//Load(renderer2, cam, (DirectXAPI*)graph, (WindowsPlatform*)plat);
-	//LoadMesh(renderer2, mesh2, ((DirectXAPI*)(graph))->device.Get());
-
-
-	auto MoveCamera = [](glm::vec3 dir) {
-		return[dir]() {
-			auto camView = registry.view<Camera>();
-			auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
-			TransformSystem::MoveRelative(dir, &camTransform);
-		};
-	};
-
-	//plat->GetInputSystem()->RegisterKeyPressFunction('w', MoveCamera(glm::vec3(0, 0, 1 * camMoveSpeed)));
-	//plat->GetInputSystem()->RegisterKeyPressFunction('s', MoveCamera(glm::vec3(0, 0, -1 * camMoveSpeed)));
-	//plat->GetInputSystem()->RegisterKeyPressFunction('a', MoveCamera(glm::vec3(1 * camMoveSpeed, 0, 0)));
-	//plat->GetInputSystem()->RegisterKeyPressFunction('d', MoveCamera(glm::vec3(-1 * camMoveSpeed, 0, 0)));
-	//plat->GetInputSystem()->RegisterKeyPressFunction('q', MoveCamera(glm::vec3(0, -1 * camMoveSpeed, 0)));
-	//plat->GetInputSystem()->RegisterKeyPressFunction('e', MoveCamera(glm::vec3(0, 1 * camMoveSpeed, 0)));
-
-	//// gizmo keyboard controls
-	//plat->GetInputSystem()->RegisterKeyPressFunction('r', []() {GizmoSystem::op = ImGuizmo::SCALE; });
-	//plat->GetInputSystem()->RegisterKeyPressFunction('e', []() {GizmoSystem::op = ImGuizmo::ROTATE; });
-	//plat->GetInputSystem()->RegisterKeyPressFunction('w', []() {GizmoSystem::op = ImGuizmo::TRANSLATE; });
-
-	//plat->GetInputSystem()->RegisterKeyPressFunction('b', []() {Serialize(); });
-	//plat->GetInputSystem()->RegisterKeyPressFunction('m', []() {Deserialize(); });
-
-	// TODO: Remove this MakeRayFromCamera call
-	//plat->GetInputSystem()->RegisterKeyPressFunction('j', []() {MakeRayFromCamera(); });
-	//plat->GetInputSystem()->RegisterKeyPressFunction('k', [&camTransform, &cam]() {camTransform.rotation = glm::vec3(0, 0, 0); TransformSystem::CalculateWorldMatrix(&camTransform); CameraSystem::CalculateViewMatrix(cam, camTransform); });
 #ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop(Loop, 0, 1);
 #else
