@@ -3,17 +3,22 @@
 #include "Mesh.h"
 #include "GL/glew.h"
 #include "Camera.h"
-
-namespace GLRenderSystem 
-{
-	// source: https://github.com/IGME-RIT/Basic-OpenGL-with-GLFW-Assimp/blob/master/OpenGLObjectLoading/mesh.cpp
+#include "IRenderSystem.h"
+// source: https://github.com/IGME-RIT/Basic-OpenGL-with-GLFW-Assimp/blob/master/OpenGLObjectLoading/mesh.cpp
 #define SetupAttribute(index, size, type, structure, element) \
 	glVertexAttribPointer(index, size, type, 0, sizeof(structure), (void*)offsetof(structure, element)); \
-	
-	void Load(GLRenderer& renderer, Camera camera);
-	void LoadMesh(GLRenderer& renderer, Mesh& mesh);
-	void Draw(GLRenderer& renderer);
-	void DrawWireframe(GLRenderer& renderer);
-	void UpdateRenderer(GLRenderer& renderer, Transform meshTransform, Camera camera);
+
+class GLRenderSystem : public IRenderSystem
+{
+public:
+	IRenderer& CreateRenderer(entt::registry& reg, entt::entity& e);
+	void Load(IRenderer* renderer, Camera& camera);
+	void LoadMesh(IRenderer* renderer, Mesh& mesh);
+	void Draw(IRenderer* renderer);
+	void DrawWireframe(IRenderer* renderer);
+	void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera);
 	void DrawGizmo(Camera camera);
-}
+	GLRenderSystem(IPlatform* plat);
+private:
+	IPlatform* platform;
+};
