@@ -50,7 +50,6 @@ void GLRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
 	//SetupAttribute(vertColorAttrib, 3, GL_FLOAT, Vertex, Color);
 	//glVertexAttribPointer(vertColorAttrib, 3, GL_FLOAT, 0, sizeof(Vertex), (void*)offsetof(structure, element));
 	glRenderer->numVertices = mesh.rawVertices.size();
-	glBindVertexArray(0);
 }
 
 void GLRenderSystem::Draw(IRenderer* renderer)
@@ -65,16 +64,15 @@ void GLRenderSystem::Draw(IRenderer* renderer)
 	{
 		glDrawArrays(GL_TRIANGLES, 0, glRenderer->numVertices);
 	}
-	glBindVertexArray(0);
 }
 
 void GLRenderSystem::DrawWireframe(IRenderer* renderer)
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
 	glBindVertexArray(glRenderer->vao);
+	glUseProgram(glRenderer->program);
 	glUniform4f(glRenderer->colorLoc, 1, 1, 1, 1);
 	glDrawArrays(GL_LINES, 0, glRenderer->numVertices);
-	glBindVertexArray(0);
 }
 
 void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera)

@@ -312,8 +312,11 @@ void DrawIteration(Camera& camera, entt::entity selected)
 	}
 	if (selected != entt::null)
 	{
-		T& dxr = renderableView.get<T>(selected);
-		renderSystem->DrawWireframe(&dxr);
+		Mesh& selectedMesh = registry.get<Mesh>(selected);
+		T& r = renderableView.get<T>(selected);
+
+		renderSystem->LoadMesh(&r, selectedMesh);
+		renderSystem->DrawWireframe(&r);
 	}
 }
 
