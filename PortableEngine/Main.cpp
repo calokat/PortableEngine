@@ -56,6 +56,7 @@ public:
 IPlatform* plat;
 IGraphicsAPI* graph;
 GameWindow* window;
+IRenderSystem* renderSystem;
 entt::registry registry;
 
 bool show_demo_window = true;
@@ -76,13 +77,11 @@ void LoadRenderer(IRenderer& renderer, Camera& camera)
 {
 	if (options.graphicsAPI == GraphicsAPI::DirectX11)
 	{
-		DirectXRenderer& newMeshRenderer = (DirectXRenderer&)renderer;
-		DirectXRenderSystem::Load(newMeshRenderer, camera, (DirectXAPI*)graph, (WindowsPlatform*)plat);
+		renderSystem->Load(&renderer, camera);
 	}
 	if (options.graphicsAPI == GraphicsAPI::OpenGL)
 	{
-		GLRenderer& newMeshRenderer = (GLRenderer&)renderer;
-		GLRenderSystem::Load(newMeshRenderer, camera);
+		renderSystem->Load(&renderer, camera);
 	}
 }
 //template<class T>
@@ -485,18 +484,18 @@ void Loop()
 			//		it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
 			//	}
 			//}
-			DirectXRenderSystem::LoadMesh(renderer, mesh, ((DirectXAPI*)(graph))->device.Get());
-			DirectXRenderSystem::UpdateRenderer(renderer, meshTransform, camera);
+			renderSystem->LoadMesh(&renderer, mesh);
+			renderSystem->UpdateRenderer(&renderer, meshTransform, camera);
 			//renderer.Update();
 			//renderer.Draw();
-			DirectXRenderSystem::Draw(renderer, ((DirectXAPI*)(graph))->context.Get());
+			renderSystem->Draw(&renderer);
 		}
 		if (selected != entt::null)
 		{
 			if (options.graphicsAPI == GraphicsAPI::DirectX11)
 			{
 				DirectXRenderer& dxr = renderableView.get<DirectXRenderer>(selected);
-				DirectXRenderSystem::DrawWireframe(dxr, ((DirectXAPI*)(graph))->context.Get());
+				renderSystem->DrawWireframe(&dxr);
 			}
 		}
 	}
@@ -516,16 +515,16 @@ void Loop()
 			//		it->Color = { vertColorPick[0], vertColorPick[1], vertColorPick[2], vertColorPick[3] };
 			//	}
 			//}
-			GLRenderSystem::LoadMesh(renderer, mesh);
-			GLRenderSystem::UpdateRenderer(renderer, meshTransform, camera);
+			renderSystem->LoadMesh(&renderer, mesh);
+			renderSystem->UpdateRenderer(&renderer, meshTransform, camera);
 			//renderer.Update();
 			//renderer.Draw();
-			GLRenderSystem::Draw(renderer);
+			renderSystem->Draw(&renderer);
 		}
 		if (selected != entt::null)
 		{
 			GLRenderer& glr = renderableView.get<GLRenderer>(selected);
-			GLRenderSystem::DrawWireframe(glr);
+			renderSystem->DrawWireframe(&glr);
 		}
 	}
 	auto transformView = registry.view<Transform>();
@@ -640,6 +639,16 @@ int main(int argc, char* argv[])
 	plat->InitWindow();
 	graph->Init();
 
+#ifdef _WIN64
+	if (options.graphicsAPI == GraphicsAPI::DirectX11)
+	{
+		renderSystem = new DirectXRenderSystem(((DirectXAPI*)(graph))->device.Get(), ((DirectXAPI*)(graph))->context.Get());
+	}
+#endif
+	if (options.graphicsAPI == GraphicsAPI::OpenGL)
+	{
+		renderSystem = new GLRenderSystem(plat);
+	}
 	//Mesh& mesh = registry.emplace<Mesh>(entity, plat->GetAssetPath("../../Assets/Models/cone.obj").c_str());
 	//MeshLoaderSystem::LoadMesh(mesh.path.c_str(), mesh);
 	//DirectXRenderer& renderer = registry.emplace<DirectXRenderer>(entity/*, plat->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), plat->GetAssetPath("../../Shaders/GLSL/fragment.glsl")*/);
@@ -703,6 +712,7 @@ int main(int argc, char* argv[])
 	delete window;
 	delete plat;
 	delete graph;
+	delete renderSystem;
 	ImGui::DestroyContext();
 	return 0;
 }
