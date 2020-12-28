@@ -20,7 +20,6 @@ bool EmscriptenInputSystem::IsKeyPressed(KeyboardCode kc)
 {
 	return current.keys[kc];
 }
-void EmscriptenInputSystem::RegisterRightMouseFunction(std::function<void()> rcFunc)
 {
 	rightClickFunction = rcFunc;
 }
