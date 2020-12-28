@@ -21,6 +21,7 @@ public:
 	void GetKeyPressed();
 	glm::vec2 GetCursorPosition();
 	glm::vec2 GetPreviousCursorPosition();
+	glm::vec2 GetDeltaCursorPosition();
 	bool IsKeyPressed(KeyboardCode kc);
 	bool WasKeyPressed(KeyboardCode kc);
 	bool IsMouseButtonPressed(MouseButton mb);
