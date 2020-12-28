@@ -46,13 +46,9 @@ glm::vec2 EmscriptenInputSystem::GetPreviousCursorPosition()
 }
 EM_BOOL EmscriptenInputSystem::MouseCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
 {
-	prevCursorPos = cursorPos;
-	cursorPos = glm::vec2(mouseEvent->targetX, mouseEvent->targetY);
-	if (mouseEvent->buttons == 2)
-	{
-		rightClickFunction();
-	}
-	ImGuiIO& io = ImGui::GetIO();
+	// previous = current;
+	current.cursorPos = glm::vec2(mouseEvent->targetX, mouseEvent->targetY);
+	printf("Is RMB Down? %i\n", current.mouseButtons[MouseButton::Right]);
 	return false;
 }
 EM_BOOL EmscriptenInputSystem::MouseClickCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
