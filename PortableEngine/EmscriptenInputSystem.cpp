@@ -68,9 +68,17 @@ EM_BOOL EmscriptenInputSystem::MouseClickCallback(int eventType, const Emscripte
 EM_BOOL EmscriptenInputSystem::MouseUpCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
 {
 	ImGuiIO& io = ImGui::GetIO();
-	io.MouseDown[0] = false;
-	io.MouseDown[2] = false;
+	if ((mouseEvent->buttons & 2) != 2)
+	{
+		io.MouseDown[2] = false;
+		current.mouseButtons[MouseButton::Right] = false;
 		emscripten_exit_pointerlock();
+	}
+	if ((mouseEvent->button) == 0)
+	{
+		io.MouseDown[0] = false;
+		current.mouseButtons[MouseButton::Left] = false;
+	}
 	return false;
 }
 EM_BOOL EmscriptenInputSystem::KeyDownCallback(int eventType, const EmscriptenKeyboardEvent* kbEvent, void* userData)
