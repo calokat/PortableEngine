@@ -17,6 +17,7 @@ public:
 	virtual void GetKeyPressed() = 0;
 	virtual glm::vec2 GetCursorPosition() = 0;
 	virtual glm::vec2 GetPreviousCursorPosition() = 0;
+	virtual glm::vec2 GetDeltaCursorPosition() = 0;
 	virtual bool IsKeyPressed(KeyboardCode kc) = 0;
 	virtual bool WasKeyPressed(KeyboardCode kc) = 0;
 	virtual bool IsMouseButtonPressed(MouseButton mb) = 0;
