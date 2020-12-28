@@ -11,6 +11,7 @@ public:
 	void GetKeyPressed();
 	glm::vec2 GetCursorPosition();
 	glm::vec2 GetPreviousCursorPosition();
+	glm::vec2 GetDeltaCursorPosition();
 	bool IsKeyPressed(KeyboardCode kc);
 	bool WasKeyPressed(KeyboardCode kc);
 	bool IsMouseButtonPressed(MouseButton mb);
@@ -23,5 +24,6 @@ private:
 	static EM_BOOL KeyUpCallback(int eventType, const EmscriptenKeyboardEvent* kbEvent, void* userData);
 	static InputData current;
 	static InputData previous;
+	static glm::vec2 deltaCursorPos;
 };
 #endif

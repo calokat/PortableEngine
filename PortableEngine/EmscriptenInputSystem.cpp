@@ -4,6 +4,8 @@
 #include <imgui.h>
 InputData EmscriptenInputSystem::current;
 InputData EmscriptenInputSystem::previous;
+glm::vec2 EmscriptenInputSystem::deltaCursorPos;
+
 EmscriptenInputSystem::EmscriptenInputSystem()
 {
 	emscripten_set_keydown_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::KeyDownCallback);
@@ -44,10 +46,22 @@ glm::vec2 EmscriptenInputSystem::GetPreviousCursorPosition()
 {
 	return previous.cursorPos;
 }
+
+glm::vec2 EmscriptenInputSystem::GetDeltaCursorPosition()
+{
+	// Hack: deltaCursorPos does not become (0, 0) when the mouse stops moving. When the mouse stops moving, MouseCallback is not called,
+	// so deltaCursorPos is not assigned (0, 0) and it retains its non-zero value from the previous frame. This hack ensures that 
+	// deltaCursorPos is (0, 0) when the mouse is not moving by manually zeroing it and letting that value be overridden in MouseCallback
+	// when called.
+	glm::vec2 returnValue = deltaCursorPos;
+	deltaCursorPos = glm::vec2(0, 0);
+	return returnValue;
+}
 EM_BOOL EmscriptenInputSystem::MouseCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
 {
 	// previous = current;
 	current.cursorPos = glm::vec2(mouseEvent->targetX, mouseEvent->targetY);
+	deltaCursorPos = glm::vec2(mouseEvent->movementX, mouseEvent->movementY);
 	printf("Is RMB Down? %i\n", current.mouseButtons[MouseButton::Right]);
 	return false;
 }
