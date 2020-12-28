@@ -7,6 +7,7 @@ add_executable(EmscriptenPortTest esUtil.c ${primarySrc} ../../ImGuizmo/ImGuizmo
 include_directories(../../../common/glm)
 include_directories(../../entt/src/entt)
 include_directories(../../imgui)
+include_directories(../../json/single_include/nlohmann)
 include_directories(../../ImGuizmo)
 include_directories(../../imgui/examples)
 add_subdirectory(../../imgui imgui)
