@@ -57,6 +57,7 @@ EM_BOOL EmscriptenInputSystem::MouseClickCallback(int eventType, const Emscripte
 	if ((mouseEvent->buttons & 2) == 2)
 	{
 		io.MouseDown[2] = true;
+		emscripten_request_pointerlock("canvas.emscripten", true);
 	}
 	if ((mouseEvent->button) == 0)
 	{
@@ -69,6 +70,7 @@ EM_BOOL EmscriptenInputSystem::MouseUpCallback(int eventType, const EmscriptenMo
 	ImGuiIO& io = ImGui::GetIO();
 	io.MouseDown[0] = false;
 	io.MouseDown[2] = false;
+		emscripten_exit_pointerlock();
 	return false;
 }
 EM_BOOL EmscriptenInputSystem::KeyDownCallback(int eventType, const EmscriptenKeyboardEvent* kbEvent, void* userData)
