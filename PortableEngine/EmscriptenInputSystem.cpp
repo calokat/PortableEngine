@@ -2,14 +2,6 @@
 #include "EmscriptenInputSystem.h"
 #include <iostream>
 #include <imgui.h>
-glm::vec2 EmscriptenInputSystem::cursorPos = glm::vec2(0, 0);
-
-std::function<void()> EmscriptenInputSystem::rightClickFunction;
-
-glm::vec2 EmscriptenInputSystem::prevCursorPos = glm::vec2(0, 0);
-
-std::map<char, std::function<void()>> EmscriptenInputSystem::keyToFunction;
-
 EmscriptenInputSystem::EmscriptenInputSystem()
 {
 	emscripten_set_keydown_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::KeyDownCallback);
