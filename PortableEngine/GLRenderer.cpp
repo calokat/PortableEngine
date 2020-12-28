@@ -14,12 +14,12 @@ GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentSh
 #ifndef __EMSCRIPTEN__
 	vertex = Shader(vertexShaderPathParam, GL_VERTEX_SHADER);
 #else
-	vertex = new Shader(fragmentShaderPathParam, GL_VERTEX_SHADER);
+	vertex = Shader(vertexShaderPathParam, GL_VERTEX_SHADER);
 #endif
 #ifndef __EMSCRIPTEN__
 	pixel = Shader(fragmentShaderPathParam, GL_FRAGMENT_SHADER);
 #else
-	pixel = new Shader(fragmentShaderPathParam, GL_FRAGMENT_SHADER);
+	pixel = Shader(fragmentShaderPathParam, GL_FRAGMENT_SHADER);
 #endif
 	vertex.Compile();
 	pixel.Compile();
