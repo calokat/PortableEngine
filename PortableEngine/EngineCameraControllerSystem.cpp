@@ -37,7 +37,7 @@ void EngineCameraControllerSystem::LookCamera(IInputSystem* inputSystem, Transfo
 {
 	//auto camView = registry.view<Camera>();
 	//auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
-	glm::vec2 delta = inputSystem->GetCursorPosition() - inputSystem->GetPreviousCursorPosition();
+	glm::vec2 delta = inputSystem->GetDeltaCursorPosition();
 	float camRotX = camTransform.rotation.x;
 	bool tooFarUp = camRotX > 3.f / 2;
 	bool tooFarDown = camRotX < -3.f / 2;
