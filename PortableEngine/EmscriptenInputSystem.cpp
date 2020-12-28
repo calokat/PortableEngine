@@ -26,9 +26,16 @@ bool EmscriptenInputSystem::WasKeyPressed(KeyboardCode kc)
 	return previous.keys[kc];
 }
 
+bool EmscriptenInputSystem::IsMouseButtonPressed(MouseButton mb)
 {
-	rightClickFunction = rcFunc;
+	return current.mouseButtons[mb];
 }
+
+bool EmscriptenInputSystem::WasMouseButtonPressed(MouseButton mb)
+{
+	return previous.mouseButtons[mb];
+}
+
 glm::vec2 EmscriptenInputSystem::GetCursorPosition()
 {
 	return cursorPos;
