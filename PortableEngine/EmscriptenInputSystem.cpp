@@ -16,9 +16,9 @@ EmscriptenInputSystem::EmscriptenInputSystem()
 void EmscriptenInputSystem::GetKeyPressed()
 {
 }
-void EmscriptenInputSystem::RegisterKeyPressFunction(char key, std::function<void()> func)
+bool EmscriptenInputSystem::IsKeyPressed(KeyboardCode kc)
 {
-	keyToFunction.emplace(key, func);
+	return current.keys[kc];
 }
 void EmscriptenInputSystem::RegisterRightMouseFunction(std::function<void()> rcFunc)
 {
