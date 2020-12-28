@@ -20,6 +20,12 @@ bool EmscriptenInputSystem::IsKeyPressed(KeyboardCode kc)
 {
 	return current.keys[kc];
 }
+
+bool EmscriptenInputSystem::WasKeyPressed(KeyboardCode kc)
+{
+	return previous.keys[kc];
+}
+
 {
 	rightClickFunction = rcFunc;
 }
