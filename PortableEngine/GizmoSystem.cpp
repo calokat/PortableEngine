@@ -55,15 +55,15 @@ entt::entity GizmoSystem::GetSelectedEntity()
 
 void GizmoSystem::UpdateGizmo(IInputSystem* inputSystem)
 {
-	if (inputSystem->IsKeyPressed(KeyCode::W))
+	if (inputSystem->IsKeyPressed(KeyboardCode::W))
 	{
 		op = ImGuizmo::TRANSLATE;
 	}
-	if (inputSystem->IsKeyPressed(KeyCode::E))
+	if (inputSystem->IsKeyPressed(KeyboardCode::E))
 	{
 		op = ImGuizmo::ROTATE;
 	}
-	if (inputSystem->IsKeyPressed(KeyCode::R))
+	if (inputSystem->IsKeyPressed(KeyboardCode::R))
 	{
 		op = ImGuizmo::SCALE;
 	}

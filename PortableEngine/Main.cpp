@@ -431,7 +431,7 @@ void Loop()
 	{
 		MakeRayFromCamera();
 	}
-	if (plat->GetInputSystem()->IsKeyPressed(KeyCode::Esc))
+	if (plat->GetInputSystem()->IsKeyPressed(KeyboardCode::Esc))
 	{
 		GizmoSystem::DeselectAll();
 	}

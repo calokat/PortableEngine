@@ -6,27 +6,27 @@ void EngineCameraControllerSystem::ControlCamera(IInputSystem* inputSystem, Tran
 	if (inputSystem->IsMouseButtonPressed(MouseButton::Right))
 	{
 		LookCamera(inputSystem, camTransform);
-		if (inputSystem->IsKeyPressed(KeyCode::W))
+		if (inputSystem->IsKeyPressed(KeyboardCode::W))
 		{
 			MoveCameraRelative(camTransform, glm::vec3(0, 0, 1) * cameraMoveSpeed);
 		}
-		if (inputSystem->IsKeyPressed(KeyCode::S))
+		if (inputSystem->IsKeyPressed(KeyboardCode::S))
 		{
 			MoveCameraRelative(camTransform, glm::vec3(0, 0, -1) * cameraMoveSpeed);
 		}
-		if (inputSystem->IsKeyPressed(KeyCode::A))
+		if (inputSystem->IsKeyPressed(KeyboardCode::A))
 		{
 			MoveCameraRelative(camTransform, glm::vec3(-1, 0, 0) * cameraMoveSpeed);
 		}
-		if (inputSystem->IsKeyPressed(KeyCode::D))
+		if (inputSystem->IsKeyPressed(KeyboardCode::D))
 		{
 			MoveCameraRelative(camTransform, glm::vec3(1, 0, 0) * cameraMoveSpeed);
 		}
-		if (inputSystem->IsKeyPressed(KeyCode::Q))
+		if (inputSystem->IsKeyPressed(KeyboardCode::Q))
 		{
 			MoveCameraRelative(camTransform, glm::vec3(0, -1, 0) * cameraMoveSpeed);
 		}
-		if (inputSystem->IsKeyPressed(KeyCode::E))
+		if (inputSystem->IsKeyPressed(KeyboardCode::E))
 		{
 			MoveCameraRelative(camTransform, glm::vec3(0, 1, 0) * cameraMoveSpeed);
 		}
