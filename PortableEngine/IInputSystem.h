@@ -23,6 +23,6 @@ public:
 	virtual bool WasMouseButtonPressed(MouseButton mb) = 0;
 	virtual ~IInputSystem() {};
 protected:
-	InputData current;
-	InputData previous;
+	// InputData current;
+	// InputData previous;
 };
