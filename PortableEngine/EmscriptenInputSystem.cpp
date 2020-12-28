@@ -71,11 +71,13 @@ EM_BOOL EmscriptenInputSystem::MouseClickCallback(int eventType, const Emscripte
 	if ((mouseEvent->buttons & 2) == 2)
 	{
 		io.MouseDown[2] = true;
+		current.mouseButtons[MouseButton::Right] = true;
 		emscripten_request_pointerlock("canvas.emscripten", true);
 	}
 	if ((mouseEvent->button) == 0)
 	{
 		io.MouseDown[0] = true;
+		current.mouseButtons[MouseButton::Left] = true;
 	}
 	return false;
 }
