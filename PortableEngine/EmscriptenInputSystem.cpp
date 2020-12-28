@@ -38,11 +38,11 @@ bool EmscriptenInputSystem::WasMouseButtonPressed(MouseButton mb)
 
 glm::vec2 EmscriptenInputSystem::GetCursorPosition()
 {
-	return cursorPos;
+	return current.cursorPos;
 }
 glm::vec2 EmscriptenInputSystem::GetPreviousCursorPosition()
 {
-	return prevCursorPos;
+	return previous.cursorPos;
 }
 EM_BOOL EmscriptenInputSystem::MouseCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
 {
