@@ -1,3 +1,4 @@
+#ifdef _WIN64
 #pragma once
 #include "DirectXRenderer.h"
 #include "Mesh.h"
@@ -20,3 +21,4 @@ private:
 	ID3D11DeviceContext* context;
 };
 //void DrawGizmo(Camera camera);
+#endif

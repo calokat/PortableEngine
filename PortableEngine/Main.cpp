@@ -372,11 +372,13 @@ void Loop()
 		{
 			ComponentGUI(*glr);
 		}
+		#ifdef _WIN64
 		DirectXRenderer* r = registry.try_get<DirectXRenderer>(selected);
 		if (r)
 		{
 			ComponentGUI(*r);
 		}
+		#endif
 		//Rotator* rot = registry.try_get<Rotator>(selected);
 		//if (rot)
 		//{
@@ -408,11 +410,13 @@ void Loop()
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camEntityView[0]);
 	TransformSystem::CalculateWorldMatrix(&camTransform);
 	CameraSystem::CalculateViewMatrixLH(camera, camTransform);
+	#ifdef _WIN64
 	if (options.graphicsAPI == GraphicsAPI::DirectX11)
 	{
 		DrawIteration<DirectXRenderer>(camera, selected);
 	}
-	else if (options.graphicsAPI == GraphicsAPI::OpenGL)
+	#endif
+	if (options.graphicsAPI == GraphicsAPI::OpenGL)
 	{
 		DrawIteration<GLRenderer>(camera, selected);
 	}

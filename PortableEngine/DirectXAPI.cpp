@@ -1,3 +1,4 @@
+#ifdef _WIN64
 #include "DirectXAPI.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "Vertex.h"
@@ -449,3 +450,4 @@ void DirectXAPI::DrawGui()
 {
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
+#endif

@@ -1,3 +1,4 @@
+#ifdef _WIN64
 #pragma once
 #include "IGraphicsAPI.h"
 #include "WindowsPlatform.h"
@@ -51,3 +52,4 @@ private:
 	//Mesh* testHelix;
 
 };
+#endif

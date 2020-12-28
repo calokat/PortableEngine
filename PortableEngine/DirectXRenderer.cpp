@@ -1,3 +1,4 @@
+#ifdef _WIN64
 #include "DirectXRenderer.h"
 
 DirectXRenderer::DirectXRenderer()
@@ -37,3 +38,4 @@ DirectXRenderer::~DirectXRenderer()
 	delete vertexShader;
 	delete pixelShader;
 }
+#endif

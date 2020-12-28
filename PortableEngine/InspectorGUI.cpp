@@ -35,8 +35,9 @@ void ComponentGUI(Rotator& r)
 	//r.deltaRot.y = glm::radians(r.deltaRot.y);
 	//r.deltaRot.z = glm::radians(r.deltaRot.z);
 }
-
+#ifdef _WIN64
 void ComponentGUI(DirectXRenderer& dxr)
 {
 	ImGui::ColorPicker4("Renderer Color", glm::value_ptr(dxr.vertexColor));
 }
+#endif

@@ -1,3 +1,4 @@
+#ifdef _WIN64
 #pragma once
 #include <string>
 #include "Vertex.h"
@@ -24,3 +25,4 @@ public:
 	glm::vec4 vertexColor = { 0, 0, 0, 1 };
 	~DirectXRenderer();
 };
+#endif

@@ -1,3 +1,4 @@
+#ifdef _WIN64
 #include "DirectXRenderSystem.h"
 
 
@@ -93,3 +94,4 @@ DirectXRenderSystem::DirectXRenderSystem(ID3D11Device* dev, ID3D11DeviceContext*
 {
 }
 
+#endif
