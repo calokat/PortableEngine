@@ -2,6 +2,8 @@
 #include "EmscriptenInputSystem.h"
 #include <iostream>
 #include <imgui.h>
+InputData EmscriptenInputSystem::current;
+InputData EmscriptenInputSystem::previous;
 EmscriptenInputSystem::EmscriptenInputSystem()
 {
 	emscripten_set_keydown_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::KeyDownCallback);
