@@ -469,8 +469,8 @@ int main(int argc, char* argv[])
 
 	if (argc < 4)
 	{
-		options.platform = Platform::Win32;
-		options.graphicsAPI = GraphicsAPI::DirectX11;
+		options.platform = Platform::Web;
+		options.graphicsAPI = GraphicsAPI::OpenGL;
 	}
 	else
 	{
