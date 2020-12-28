@@ -21,10 +21,12 @@ public:
 	void GetKeyPressed();
 	glm::vec2 GetCursorPosition();
 	glm::vec2 GetPreviousCursorPosition();
-	bool IsKeyPressed(KeyCode kc);
-	bool WasKeyPressed(KeyCode kc);
+	bool IsKeyPressed(KeyboardCode kc);
+	bool WasKeyPressed(KeyboardCode kc);
 	bool IsMouseButtonPressed(MouseButton mb);
 	bool WasMouseButtonPressed(MouseButton mb);
+	InputData current;
+	InputData previous;
 
 private:
 	HWND hwnd;

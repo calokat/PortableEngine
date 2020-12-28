@@ -258,6 +258,7 @@ void DrawIteration(Camera& camera, entt::entity selected)
 		T& renderer = registry.get<T>(renderable);
 		Mesh& mesh = registry.get<Mesh>(renderable);
 		Transform& meshTransform = registry.get<Transform>(renderable);
+		renderSystem->LoadMesh(&renderer, mesh);
 		renderSystem->UpdateRenderer(&renderer, meshTransform, camera);
 		renderSystem->Draw(&renderer);
 	}
@@ -265,6 +266,7 @@ void DrawIteration(Camera& camera, entt::entity selected)
 	{
 		Mesh& selectedMesh = registry.get<Mesh>(selected);
 		T& r = renderableView.template get<T>(selected);
+		renderSystem->LoadMesh(&r, selectedMesh);
 		renderSystem->DrawWireframe(&r);
 	}
 }

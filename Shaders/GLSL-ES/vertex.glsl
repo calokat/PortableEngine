@@ -1,5 +1,5 @@
 attribute vec3 in_position;
-attribute vec4 in_color;
+uniform vec4 in_color;
 // layout (location=2) in vec2 aTexCoord;
 // layout (location=2) in vec3 in_color;
 uniform mat4 model;
