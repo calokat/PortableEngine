@@ -63,7 +63,6 @@ EM_BOOL EmscriptenInputSystem::MouseCallback(int eventType, const EmscriptenMous
 	// previous = current;
 	current.cursorPos = glm::vec2(mouseEvent->targetX, mouseEvent->targetY);
 	deltaCursorPos = glm::vec2(mouseEvent->movementX, mouseEvent->movementY);
-	printf("Is RMB Down? %i\n", current.mouseButtons[MouseButton::Right]);
 	return false;
 }
 EM_BOOL EmscriptenInputSystem::MouseClickCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
