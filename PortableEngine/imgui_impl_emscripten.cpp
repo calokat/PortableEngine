@@ -3,7 +3,7 @@
 #include <imgui.h>
 #include <emscripten.h>
 double g_Time;
-GameWindow* window;
+GameWindow* gameWindow;
 IInputSystem* input;
 
 void ImGui_ImplEmscripten_UpdateMousePos()
@@ -19,7 +19,7 @@ bool ImGui_ImplEmscripten_Init(GameWindow* win, IInputSystem* in)
 	ImGuiIO& io = ImGui::GetIO();
 	io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;         // We can honor GetMouseCursor() values (optional)
 	io.BackendPlatformName = "imgui_impl_emscripten";
-	window = win;
+	gameWindow = win;
 	input = in;
 
 	return true;
@@ -37,7 +37,7 @@ void ImGui_ImplEmscripten_NewFrame()
 	io.DeltaTime = now - g_Time;
 	g_Time = now;
 
-	io.DisplaySize = ImVec2((float)(window->width), (float)(window->height));
+	io.DisplaySize = ImVec2((float)(gameWindow->width), (float)(gameWindow->height));
 
 	ImGui_ImplEmscripten_UpdateMousePos();
 }
