@@ -20,5 +20,8 @@ private:
 	static EM_BOOL MouseClickCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData);
 	static EM_BOOL MouseUpCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData);
 	static EM_BOOL KeyDownCallback(int eventType, const EmscriptenKeyboardEvent* kbEvent, void* userData);
+	static EM_BOOL KeyUpCallback(int eventType, const EmscriptenKeyboardEvent* kbEvent, void* userData);
+	static InputData current;
+	static InputData previous;
 };
 #endif
