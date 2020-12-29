@@ -22,6 +22,7 @@ public:
 	virtual bool WasKeyPressed(KeyboardCode kc) = 0;
 	virtual bool IsMouseButtonPressed(MouseButton mb) = 0;
 	virtual bool WasMouseButtonPressed(MouseButton mb) = 0;
+	virtual bool WasMouseButtonClicked(MouseButton mb) = 0;
 	virtual ~IInputSystem() {};
 protected:
 	// InputData current;
