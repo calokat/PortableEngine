@@ -39,7 +39,7 @@ int OpenGLESContext::GetContext(GameWindow* window)
 	EGLContext context;
 	EGLSurface surface;
 	EGLConfig config;
-	EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE, EGL_NONE };
+	EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE, EGL_NONE };
 
 	// Get Display
 	display = eglGetDisplay((EGLNativeDisplayType)platform->GetDeviceContext());
