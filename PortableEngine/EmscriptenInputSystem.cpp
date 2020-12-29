@@ -104,6 +104,13 @@ EM_BOOL EmscriptenInputSystem::MouseUpCallback(int eventType, const EmscriptenMo
 }
 EM_BOOL EmscriptenInputSystem::KeyDownCallback(int eventType, const EmscriptenKeyboardEvent* kbEvent, void* userData)
 {
+	ImGuiIO& io = ImGui::GetIO();
+	// for now, only add input characters if they are printable(i.e. not whitespace or special characters)
+	// special characters have key strings of more than one character
+	if (strlen(kbEvent->key) == 1)
+	{
+		io.AddInputCharacterUTF16((unsigned short)kbEvent->key[0]);
+	}
 	current.keys[KeyboardCode::A] = strcmp(kbEvent->key, "a") == 0;
 	current.keys[KeyboardCode::B] = strcmp(kbEvent->key, "b") == 0;
 	current.keys[KeyboardCode::C] = strcmp(kbEvent->key, "c") == 0;
