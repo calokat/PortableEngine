@@ -11,7 +11,7 @@ EmscriptenInputSystem::EmscriptenInputSystem()
 	emscripten_set_keydown_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::KeyDownCallback);
 	emscripten_set_keyup_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::KeyUpCallback);
 	emscripten_set_mousemove_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseCallback);
-	emscripten_set_mousedown_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseClickCallback);
+	emscripten_set_mousedown_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseDownCallback);
 	emscripten_set_mouseup_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseUpCallback);
 }
 
@@ -65,7 +65,7 @@ EM_BOOL EmscriptenInputSystem::MouseCallback(int eventType, const EmscriptenMous
 	deltaCursorPos = glm::vec2(mouseEvent->movementX, mouseEvent->movementY);
 	return false;
 }
-EM_BOOL EmscriptenInputSystem::MouseClickCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
+EM_BOOL EmscriptenInputSystem::MouseDownCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
 {
 	ImGuiIO& io = ImGui::GetIO();
 	if ((mouseEvent->buttons & 2) == 2)
