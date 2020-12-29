@@ -26,6 +26,7 @@ public:
 	bool WasKeyPressed(KeyboardCode kc);
 	bool IsMouseButtonPressed(MouseButton mb);
 	bool WasMouseButtonPressed(MouseButton mb);
+	bool WasMouseButtonClicked(MouseButton mb);
 	InputData current;
 	InputData previous;
 

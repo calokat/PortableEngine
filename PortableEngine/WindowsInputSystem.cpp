@@ -92,4 +92,8 @@ bool WindowsInputSystem::WasMouseButtonPressed(MouseButton mb)
 {
 	return previous.mouseButtons[mb];
 }
+bool WindowsInputSystem::WasMouseButtonClicked(MouseButton mb)
+{
+	return current.mouseButtons[MouseButton::Left] && !previous.mouseButtons[MouseButton::Left];
+}
 #endif
