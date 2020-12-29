@@ -341,6 +341,12 @@ void Loop()
 	}
 	ImGui::EndMainMenuBar();
 
+	// TODO: Put the picking code in its own system
+	if (plat->GetInputSystem()->WasMouseButtonClicked(MouseButton::Left))
+	{
+		MakeRayFromCamera();
+	}
+
 	plat->GetInputSystem()->GetKeyPressed();
 	auto entityView = registry.view<Transform, Name>();
 	ImGui::Begin("Entity List");
@@ -428,11 +434,6 @@ void Loop()
 
 	EngineCameraControllerSystem::ControlCamera(plat->GetInputSystem(), camTransform);
 	
-	// TODO: Put the picking code in its own system
-	if (plat->GetInputSystem()->IsMouseButtonPressed(MouseButton::Left) && !plat->GetInputSystem()->WasMouseButtonPressed(MouseButton::Left))
-	{
-		MakeRayFromCamera();
-	}
 	if (plat->GetInputSystem()->IsKeyPressed(KeyboardCode::Esc))
 	{
 		GizmoSystem::DeselectAll();
