@@ -16,6 +16,7 @@ public:
 	bool WasKeyPressed(KeyboardCode kc);
 	bool IsMouseButtonPressed(MouseButton mb);
 	bool WasMouseButtonPressed(MouseButton mb);
+	bool WasMouseButtonClicked(MouseButton mb);
 private:
 	static EM_BOOL MouseCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData);
 	static EM_BOOL MouseDownCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData);
