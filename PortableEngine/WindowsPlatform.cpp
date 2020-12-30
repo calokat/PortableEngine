@@ -80,6 +80,7 @@ int WindowsPlatform::InitWindow()
 
 	ImGui_ImplWin32_Init(hwnd);
 
+	inputSystem = new WindowsInputSystem(hwnd);
 	// Return an "everything is ok" HRESULT value
 	return S_OK;
 
@@ -166,7 +167,6 @@ WindowsPlatform::WindowsPlatform(GameWindow* win)
 {
 	staticThis = this;
 	window = win;
-	inputSystem = new WindowsInputSystem(hwnd);
 	//hInstance = hinst;
 	/*windowWidth = winWidth;
 	windowHeight = winHeight;*/
