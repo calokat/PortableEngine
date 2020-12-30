@@ -266,6 +266,7 @@ void DrawIteration(Camera& camera, entt::entity selected)
 	{
 		Mesh& selectedMesh = registry.get<Mesh>(selected);
 		T& r = renderableView.template get<T>(selected);
+		renderSystem->LoadMesh(&r, selectedMesh);
 		renderSystem->DrawWireframe(&r);
 	}
 }
