@@ -3,6 +3,7 @@
 #include <ctype.h>
 WindowsInputSystem::WindowsInputSystem(HWND h) : hwnd(h)
 {
+	cursor = GetCursor();
 }
 void WindowsInputSystem::GetKeyPressed()
 {
