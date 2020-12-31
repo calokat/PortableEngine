@@ -98,6 +98,7 @@
     <ClInclude Include="WindowsPlatform.h" />
     <ClInclude Include="WinOpenGLContext.h" />
     <ClInclude Include="IRenderSystem.h" />
+    <ClInclude Include="PEImage.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -235,6 +235,7 @@
     <ClInclude Include="misc_components.h" />
     <ClInclude Include="OpenGLAPI.h" />
     <ClInclude Include="OpenGLESContext.h" />
+    <ClInclude Include="PEImage.h" />
     <ClInclude Include="PortableGame.h" />
     <ClInclude Include="Relationship.h" />
     <ClInclude Include="GLRenderer.h" />
