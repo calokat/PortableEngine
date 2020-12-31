@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include <entt.hpp>
+#include "PEImage.h"
 class IRenderSystem
 {
 public:
@@ -12,5 +13,6 @@ public:
 	virtual void Draw(IRenderer* renderer/*, ID3D11DeviceContext* context*/) = 0;
 	virtual void DrawWireframe(IRenderer* renderer/*, ID3D11DeviceContext* context*/) = 0;
 	virtual void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera) = 0;
+	virtual void CreateTexture(PEImage& img) = 0;
 	virtual ~IRenderSystem() {};
 };
