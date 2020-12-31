@@ -531,10 +531,10 @@ int main(int argc, char* argv[])
 	graph->Init();
 
 #ifdef _WIN64
-	if (options.graphicsAPI == GraphicsAPI::DirectX11)
-	{
-		renderSystem = new DirectXRenderSystem(((DirectXAPI*)(graph))->device.Get(), ((DirectXAPI*)(graph))->context.Get());
-	}
+	//if (options.graphicsAPI == GraphicsAPI::DirectX11)
+	//{
+	//	renderSystem = new DirectXRenderSystem(((DirectXAPI*)(graph))->device.Get(), ((DirectXAPI*)(graph))->context.Get());
+	//}
 #endif
 	if (options.graphicsAPI == GraphicsAPI::OpenGL)
 	{
