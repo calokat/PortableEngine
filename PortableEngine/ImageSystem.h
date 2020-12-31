@@ -1,8 +1,7 @@
 #pragma once
 #include "PEImage.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-class ImageSystem
+namespace ImageSystem
 {
-	bool LoadImage(const char* path, PEImage& img);
+	bool CreateImage(const char* path, PEImage& img);
+	void DestroyImage(PEImage& img);
 };
