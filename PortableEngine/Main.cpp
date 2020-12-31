@@ -35,6 +35,7 @@
 #include "AABB.h"
 #include "AABBSystem.h"
 #include "EngineCameraControllerSystem.h"
+#include "ImageSystem.h"
 enum Platform {Win32, Web, Android};
 enum GraphicsAPI {OpenGL, DirectX11};
 struct Options
@@ -541,7 +542,9 @@ int main(int argc, char* argv[])
 		renderSystem = new GLRenderSystem(plat);
 	}
 	MakeMesh(plat->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0), "Cone");
-
+	PEImage img;
+	ImageSystem::CreateImage(plat->GetAssetPath("../../Assets/Images/rock.png").c_str(), img);
+	renderSystem->CreateTexture(img);
 #ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop(Loop, 0, 1);
 #else
@@ -555,5 +558,6 @@ int main(int argc, char* argv[])
 	delete graph;
 	delete renderSystem;
 	ImGui::DestroyContext();
+	ImageSystem::DestroyImage(img);
 	return 0;
 }
