@@ -64,6 +64,7 @@ void WindowsInputSystem::GetKeyPressed()
 	current.mouseButtons[MouseButton::Right] = GetAsyncKeyState(VK_RBUTTON) & 0x8000;
 	if (current.mouseButtons[MouseButton::Right])
 	{
+		SetCursor(NULL);
 		RECT winRect;
 		GetWindowRect(hwnd, &winRect);
 
@@ -93,8 +94,9 @@ void WindowsInputSystem::GetKeyPressed()
 		}
 
 	}
-	else
+	else if (previous.mouseButtons[MouseButton::Right])
 	{
+		SetCursor(cursor);
 	}
 }
 
