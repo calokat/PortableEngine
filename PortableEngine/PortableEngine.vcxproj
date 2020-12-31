@@ -177,6 +177,7 @@
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="GizmoSystem.cpp" />
     <ClCompile Include="GLCore.cpp" />
+    <ClCompile Include="ImageSystem.cpp" />
     <ClCompile Include="imgui_impl_emscripten.cpp" />
     <ClCompile Include="InspectorGUI.cpp" />
     <ClCompile Include="IOpenGLContext.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="GLCore.h" />
     <ClInclude Include="IGraphicsAPI.h" />
     <ClInclude Include="IInputSystem.h" />
+    <ClInclude Include="ImageSystem.h" />
     <ClInclude Include="imgui_impl_emscripten.h" />
     <ClInclude Include="InspectorGUI.h" />
     <ClInclude Include="IOpenGLContext.h" />

@@ -48,6 +48,7 @@
     <ClCompile Include="WindowsPlatform.cpp" />
     <ClCompile Include="WinOpenGLContext.cpp" />
     <ClCompile Include="IRenderSystem.cpp" />
+    <ClCompile Include="ImageSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
@@ -99,6 +100,7 @@
     <ClInclude Include="WinOpenGLContext.h" />
     <ClInclude Include="IRenderSystem.h" />
     <ClInclude Include="PEImage.h" />
+    <ClInclude Include="ImageSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
