@@ -32,5 +32,6 @@ public:
 
 private:
 	HWND hwnd;
+	HCURSOR cursor;
 };
 #endif
