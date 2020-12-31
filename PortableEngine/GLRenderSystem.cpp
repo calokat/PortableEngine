@@ -47,6 +47,11 @@ void GLRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
 	GLint posAttrib = glGetAttribLocation(glRenderer->program, "in_position");
 	glEnableVertexAttribArray(posAttrib);
 	SetupAttribute(posAttrib, 3, GL_FLOAT, Vertex, Position);
+
+	GLint uvAttrib = glGetAttribLocation(glRenderer->program, "aTexCoord");
+	glEnableVertexAttribArray(uvAttrib);
+	SetupAttribute(uvAttrib, 2, GL_FLOAT, Vertex, UV);
+
 	//GLint vertColorAttrib = glGetAttribLocation(glRenderer->program, "in_color");
 	GLint vertColorAttrib = glGetUniformLocation(glRenderer->program, "in_color");
 	//glEnableVertexAttribArray(vertColorAttrib);
