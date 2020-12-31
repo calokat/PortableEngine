@@ -18,6 +18,7 @@ public:
 	void DrawWireframe(IRenderer* renderer);
 	void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera);
 	void DrawGizmo(Camera camera);
+	void CreateTexture(PEImage& img);
 	GLRenderSystem(IPlatform* plat);
 private:
 	IPlatform* platform;
