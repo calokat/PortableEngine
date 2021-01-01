@@ -35,5 +35,5 @@ public:
 	// Move constructor
 	GLRenderer (GLRenderer&& other) noexcept;
 	GLRenderer(GLRenderer& other);
-	glm::vec4 vertexColor = { 0, 0, 0, 1 };
+	glm::vec4 vertexColor = { 1, 1, 1, 1 };
 };
