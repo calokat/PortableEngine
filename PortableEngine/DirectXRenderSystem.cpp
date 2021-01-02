@@ -1,6 +1,7 @@
 #ifdef _WIN64
 #include "DirectXRenderSystem.h"
-
+#include "DirectX11ImageGraphicsData.h"
+#include "ImageSystem.h"
 
 IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity& e)
 {
@@ -92,6 +93,15 @@ void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTran
 
 DirectXRenderSystem::DirectXRenderSystem(ID3D11Device* dev, ID3D11DeviceContext* ctx) : device(dev), context(ctx)
 {
+}
+
+void DirectXRenderSystem::LoadTexture(IRenderer* renderer, PEImage& img)
+{
+	DirectX11ImageGraphicsData* dx11ImageGraphicsData = (DirectX11ImageGraphicsData*)img.imageGraphicsData;
+	DirectXRenderer* dx11Renderer = (DirectXRenderer*)renderer;
+
+	dx11Renderer->pixelShader->SetShaderResourceView("diffuseTexture", dx11ImageGraphicsData->srv);
+	dx11Renderer->pixelShader->CopyAllBufferData();
 }
 
 #endif

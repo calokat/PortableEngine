@@ -16,6 +16,7 @@ public:
 	void DrawWireframe(IRenderer* DirectXRenderer);
 	void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera);
 	DirectXRenderSystem(ID3D11Device* dev, ID3D11DeviceContext* ctx);
+	void LoadTexture(IRenderer* renderer, PEImage& img);
 private:
 	ID3D11Device* device;
 	ID3D11DeviceContext* context;
