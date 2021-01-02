@@ -4,9 +4,9 @@
 
 namespace ImageSystem
 {
-	bool ImageSystem::CreateImage(const char* path, PEImage& img)
+	bool ImageSystem::CreateImage(PEImage& img)
 	{
-		img.data = stbi_load(path, &img.width, &img.height, &img.numChannels, 0);
+		img.data = stbi_load(img.path.c_str(), &img.width, &img.height, &img.numChannels, 0);
 		return img.data != nullptr;
 	}
 
