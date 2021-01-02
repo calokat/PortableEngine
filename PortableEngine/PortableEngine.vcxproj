@@ -208,6 +208,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraSystem.h" />
     <ClInclude Include="Core.h" />
+    <ClInclude Include="DirectX11ImageGraphicsData.h" />
     <ClInclude Include="DirectXAPI.h" />
     <ClInclude Include="DirectXRenderer.h" />
     <ClInclude Include="DirectXRenderSystem.h" />
@@ -222,6 +223,7 @@
     <ClInclude Include="GizmoSystem.h" />
     <ClInclude Include="GLCore.h" />
     <ClInclude Include="IGraphicsAPI.h" />
+    <ClInclude Include="IImageGraphicsData.h" />
     <ClInclude Include="IInputSystem.h" />
     <ClInclude Include="ImageSystem.h" />
     <ClInclude Include="imgui_impl_emscripten.h" />
@@ -237,6 +239,7 @@
     <ClInclude Include="misc_components.h" />
     <ClInclude Include="OpenGLAPI.h" />
     <ClInclude Include="OpenGLESContext.h" />
+    <ClInclude Include="OpenGLImageGraphicsData.h" />
     <ClInclude Include="PEImage.h" />
     <ClInclude Include="PortableGame.h" />
     <ClInclude Include="Relationship.h" />

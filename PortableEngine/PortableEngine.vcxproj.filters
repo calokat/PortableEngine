@@ -101,6 +101,9 @@
     <ClInclude Include="IRenderSystem.h" />
     <ClInclude Include="PEImage.h" />
     <ClInclude Include="ImageSystem.h" />
+    <ClInclude Include="IImageGraphicsData.h" />
+    <ClInclude Include="OpenGLImageGraphicsData.h" />
+    <ClInclude Include="DirectX11ImageGraphicsData.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
