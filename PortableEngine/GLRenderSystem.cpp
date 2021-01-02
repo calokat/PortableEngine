@@ -2,6 +2,8 @@
 #include <imgui.h>
 #include <ImGuizmo.h>
 #include "CameraSystem.h"
+#include "OpenGLImageGraphicsData.h"
+#include "ImageSystem.h"
 
 static glm::mat4 newView(1.0f);
 
@@ -103,9 +105,12 @@ void GLRenderSystem::DrawGizmo(Camera camera)
 
 void GLRenderSystem::CreateTexture(PEImage& img)
 {
-	GLuint texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	OpenGLImageGraphicsData* glImageGraphicsData = new OpenGLImageGraphicsData();
+	img.imageGraphicsData = glImageGraphicsData;
+	glGenTextures(1, &glImageGraphicsData->texture);
+	
+}
+
 void GLRenderSystem::LoadTexture(IRenderer* renderer, PEImage& img)
 {
 	OpenGLImageGraphicsData* glImageGraphicsData = (OpenGLImageGraphicsData*)img.imageGraphicsData;
@@ -120,7 +125,7 @@ void GLRenderSystem::LoadTexture(IRenderer* renderer, PEImage& img)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img.width, img.height, 0, GL_RGB, GL_UNSIGNED_BYTE, img.data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	
+	ImageSystem::DestroyImage(img);
 }
 
 GLRenderSystem::GLRenderSystem(IPlatform* plat) : platform(plat)
