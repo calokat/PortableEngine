@@ -188,6 +188,7 @@
     <ClCompile Include="MeshLoaderSystem.cpp" />
     <ClCompile Include="OpenGLAPI.cpp" />
     <ClCompile Include="OpenGLESContext.cpp" />
+    <ClCompile Include="PEImage.cpp" />
     <ClCompile Include="PortableGame.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
     <ClCompile Include="GLRenderSystem.cpp" />

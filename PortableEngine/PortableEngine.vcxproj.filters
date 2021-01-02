@@ -49,6 +49,7 @@
     <ClCompile Include="WinOpenGLContext.cpp" />
     <ClCompile Include="IRenderSystem.cpp" />
     <ClCompile Include="ImageSystem.cpp" />
+    <ClCompile Include="PEImage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
