@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "DirectXAPI.h"
 #include "IRenderSystem.h"
+#include "PEImage.h"
 
 class DirectXRenderSystem : public IRenderSystem
 {
@@ -16,6 +17,7 @@ public:
 	void DrawWireframe(IRenderer* DirectXRenderer);
 	void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera);
 	DirectXRenderSystem(ID3D11Device* dev, ID3D11DeviceContext* ctx);
+	void CreateTexture(PEImage& img);
 	void LoadTexture(IRenderer* renderer, PEImage& img);
 private:
 	ID3D11Device* device;
