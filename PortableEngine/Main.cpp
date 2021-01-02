@@ -170,6 +170,11 @@ void MakeMesh(const char* path, const char* name = "GameObject") {
 	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
 	renderSystem->Load(&newMeshRenderer, camera);
 	renderSystem->LoadMesh(&newMeshRenderer, newMesh);
+	newMeshRenderer.diffuseTexture = PEImage(plat->GetAssetPath("../../Assets/Images/cushion.png"));
+	ImageSystem::CreateImage(newMeshRenderer.diffuseTexture);
+	renderSystem->CreateTexture(newMeshRenderer.diffuseTexture);
+	renderSystem->LoadTexture(&newMeshRenderer, newMeshRenderer.diffuseTexture);
+	//ImageSystem::DestroyImage(newMeshRenderer.diffuseTexture);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
 	AABB& aabb = registry.emplace<AABB>(newMeshEntity);
@@ -188,6 +193,11 @@ void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") 
 	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
 	renderSystem->Load(&newMeshRenderer, camera);
 	renderSystem->LoadMesh(&newMeshRenderer, newMesh);
+	newMeshRenderer.diffuseTexture = PEImage(plat->GetAssetPath("../../Assets/Images/rock.png"));
+	ImageSystem::CreateImage(newMeshRenderer.diffuseTexture);
+	renderSystem->CreateTexture(newMeshRenderer.diffuseTexture);
+	renderSystem->LoadTexture(&newMeshRenderer, newMeshRenderer.diffuseTexture);
+	//ImageSystem::DestroyImage(newMeshRenderer.diffuseTexture);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
 	AABB& aabb = registry.emplace<AABB>(newMeshEntity);
