@@ -1,4 +1,5 @@
 #pragma once
+#include "IImageGraphicsData.h"
 struct PEImage
 {
 	int width;
@@ -6,4 +7,5 @@ struct PEImage
 	int numChannels;
 	const char* path;
 	unsigned char* data;
+	IImageGraphicsData* imageGraphicsData;
 };
