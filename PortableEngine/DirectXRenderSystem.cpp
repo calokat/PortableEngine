@@ -18,6 +18,16 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	dxRenderer->vertexShader->SetMatrix4x4("projectionMatrix", camera.projection);
 	dxRenderer->vertexShader->SetMatrix4x4("worldMatrix", glm::mat4(1.0f));
 	dxRenderer->vertexShader->CopyAllBufferData();
+
+	D3D11_SAMPLER_DESC samplerDesc = {};
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
+	samplerDesc.MaxAnisotropy = 16;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+	device->CreateSamplerState(&samplerDesc, &dxRenderer->samplerState);
+	dxRenderer->pixelShader->SetSamplerState("samplerOptions", dxRenderer->samplerState);
 }
 
 void DirectXRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
