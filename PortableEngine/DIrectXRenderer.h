@@ -17,6 +17,7 @@ public:
 	std::string vertexShaderPath;
 	std::string fragmentShaderPath;
 	SimpleVertexShader* vertexShader;
+	ID3D11SamplerState* samplerState;
 	SimplePixelShader* pixelShader;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
