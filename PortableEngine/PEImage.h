@@ -11,5 +11,7 @@ struct PEImage
 	IImageGraphicsData* imageGraphicsData;
 	PEImage();
 	PEImage(std::string p);
+	PEImage(PEImage&& other);
+	PEImage& operator=(PEImage&& other);
 	~PEImage();
 };
