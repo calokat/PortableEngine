@@ -24,6 +24,7 @@ DirectXRenderer& DirectXRenderer::operator=(DirectXRenderer&& other) noexcept
 	this->indexBuffer.Swap(other.indexBuffer);
 	this->numIndices = other.numIndices;
 	this->numVertices = other.numVertices;
+	this->diffuseTexture = std::move(other.diffuseTexture);
 	return *this;
 }
 
