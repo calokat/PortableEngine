@@ -68,6 +68,7 @@ void DirectXRenderSystem::Draw(IRenderer* renderer)
 	UINT offset = 0;
 
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
+	LoadTexture(dxRenderer, dxRenderer->diffuseTexture);
 	context->IASetVertexBuffers(0, 1, dxRenderer->vertexBuffer.GetAddressOf(), &stride, &offset);
 	context->IASetIndexBuffer(dxRenderer->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	dxRenderer->vertexShader->SetShader();
