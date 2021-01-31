@@ -92,6 +92,7 @@ GLRenderer& GLRenderer::operator=(GLRenderer&& other)
 		this->vertexShaderPath = other.vertexShaderPath;
 		this->fragmentShaderPath = other.fragmentShaderPath;
 		this->vertexColor = other.vertexColor;
+		this->diffuseTexture = std::move(other.diffuseTexture);
 	}
 	return *this;
 }

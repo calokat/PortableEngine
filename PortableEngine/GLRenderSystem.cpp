@@ -67,6 +67,7 @@ void GLRenderSystem::Draw(IRenderer* renderer)
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
 	glBindVertexArray(glRenderer->vao);
+	BindTexture(*glRenderer);
 	if (glRenderer->numVertices == 2)
 	{
 		glDrawArrays(GL_LINES, 0, glRenderer->numVertices);
@@ -130,4 +131,10 @@ void GLRenderSystem::LoadTexture(IRenderer* renderer, PEImage& img)
 
 GLRenderSystem::GLRenderSystem(IPlatform* plat) : platform(plat)
 {
+}
+
+void GLRenderSystem::BindTexture(GLRenderer& renderer)
+{
+	OpenGLImageGraphicsData* glImageData = (OpenGLImageGraphicsData*)renderer.diffuseTexture.imageGraphicsData;
+	glBindTexture(GL_TEXTURE_2D, glImageData->texture);
 }

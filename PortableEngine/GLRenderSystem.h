@@ -23,4 +23,5 @@ public:
 	GLRenderSystem(IPlatform* plat);
 private:
 	IPlatform* platform;
+	void BindTexture(GLRenderer& renderer);
 };
