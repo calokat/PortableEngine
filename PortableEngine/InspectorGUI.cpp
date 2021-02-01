@@ -30,7 +30,7 @@ void ComponentGUI(Transform& t)
 void ComponentGUI(GLRenderer& r)
 {
 	ImGui::ColorPicker4("Renderer Color", glm::value_ptr(r.vertexColor));
-	ImGui::Image((void*)((OpenGLImageGraphicsData*)(r.diffuseTexture.imageGraphicsData))->texture, ImVec2(r.diffuseTexture.width * .05f, r.diffuseTexture.height * .05f));
+	ImGui::Image((void*)((OpenGLImageGraphicsData*)(r.diffuseTexture.imageGraphicsData))->texture, ImVec2(100, 100));
 }
 
 void ComponentGUI(Rotator& r)
@@ -44,6 +44,6 @@ void ComponentGUI(Rotator& r)
 void ComponentGUI(DirectXRenderer& dxr)
 {
 	ImGui::ColorPicker4("Renderer Color", glm::value_ptr(dxr.vertexColor));
-	ImGui::Image((void*)((DirectX11ImageGraphicsData*)(dxr.diffuseTexture.imageGraphicsData))->srv, ImVec2(dxr.diffuseTexture.width * .05f, dxr.diffuseTexture.height * .05f));
+	ImGui::Image((void*)((DirectX11ImageGraphicsData*)(dxr.diffuseTexture.imageGraphicsData))->srv, ImVec2(100, 100));
 }
 #endif
