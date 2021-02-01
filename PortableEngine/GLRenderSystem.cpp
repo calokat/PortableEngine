@@ -158,7 +158,8 @@ void GLRenderSystem::LoadTexture(IRenderer* renderer, PEImage& img)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 #endif
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img.width, img.height, 0, GL_RGB, GL_UNSIGNED_BYTE, img.data);
+	int imgFormat = (img.numChannels > 3) ? GL_RGBA : GL_RGB;
+	glTexImage2D(GL_TEXTURE_2D, 0, imgFormat, img.width, img.height, 0, imgFormat, GL_UNSIGNED_BYTE, img.data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	ImageSystem::DestroyImage(img);
