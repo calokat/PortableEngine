@@ -1,6 +1,10 @@
 #include "InspectorGUI.h"
 #include <imgui.h>
 #include "TransformSystem.h"
+#include "OpenGLImageGraphicsData.h"
+#ifdef _WIN64
+#include "DirectX11ImageGraphicsData.h"
+#endif
 void ComponentGUI(Transform& t)
 {
 	TransformSystem::CalculatePosition(t);
@@ -26,6 +30,7 @@ void ComponentGUI(Transform& t)
 void ComponentGUI(GLRenderer& r)
 {
 	ImGui::ColorPicker4("Renderer Color", glm::value_ptr(r.vertexColor));
+	ImGui::Image((void*)((OpenGLImageGraphicsData*)(r.diffuseTexture.imageGraphicsData))->texture, ImVec2(r.diffuseTexture.width * .05f, r.diffuseTexture.height * .05f));
 }
 
 void ComponentGUI(Rotator& r)
@@ -39,5 +44,6 @@ void ComponentGUI(Rotator& r)
 void ComponentGUI(DirectXRenderer& dxr)
 {
 	ImGui::ColorPicker4("Renderer Color", glm::value_ptr(dxr.vertexColor));
+	ImGui::Image((void*)((DirectX11ImageGraphicsData*)(dxr.diffuseTexture.imageGraphicsData))->srv, ImVec2(dxr.diffuseTexture.width * .05f, dxr.diffuseTexture.height * .05f));
 }
 #endif
