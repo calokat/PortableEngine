@@ -30,6 +30,12 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	dxRenderer->pixelShader->SetSamplerState("samplerOptions", dxRenderer->samplerState);
 }
 
+// This method implementation is empty because it is not actually needed for DirectX, 
+// but IRenderSystem needs it implemented. It is needed for OpenGL, specifically WebGL
+void DirectXRenderSystem::BindRenderer(IRenderer* renderer)
+{
+}
+
 void DirectXRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
 {
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;

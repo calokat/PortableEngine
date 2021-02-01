@@ -12,6 +12,7 @@ class DirectXRenderSystem : public IRenderSystem
 public:
 	IRenderer& CreateRenderer(entt::registry& reg, entt::entity& e);
 	void Load(IRenderer* renderer, Camera& camera);
+	void BindRenderer(IRenderer* renderer);
 	void LoadMesh(IRenderer* renderer, Mesh& mesh);
 	void Draw(IRenderer* DirectXRenderer);
 	void DrawWireframe(IRenderer* DirectXRenderer);

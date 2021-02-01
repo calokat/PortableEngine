@@ -41,6 +41,27 @@ void GLRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	glUniform4f(glRenderer->colorLoc, glRenderer->vertexColor.x, glRenderer->vertexColor.y, glRenderer->vertexColor.z, glRenderer->vertexColor.w);
 }
 
+void GLRenderSystem::BindRenderer(IRenderer* renderer)
+{
+	GLRenderer* glRenderer = (GLRenderer*)renderer;
+	glBindVertexArray(glRenderer->vao);
+	glBindBuffer(GL_ARRAY_BUFFER, glRenderer->vbo);
+	GLint posAttrib = glGetAttribLocation(glRenderer->program, "in_position");
+	glEnableVertexAttribArray(posAttrib);
+	SetupAttribute(posAttrib, 3, GL_FLOAT, Vertex, Position);
+
+	GLint uvAttrib = glGetAttribLocation(glRenderer->program, "aTexCoord");
+	glEnableVertexAttribArray(uvAttrib);
+	SetupAttribute(uvAttrib, 2, GL_FLOAT, Vertex, UV);
+
+	//GLint vertColorAttrib = glGetAttribLocation(glRenderer->program, "in_color");
+	GLint vertColorAttrib = glGetUniformLocation(glRenderer->program, "in_color");
+	//glEnableVertexAttribArray(vertColorAttrib);
+
+	//SetupAttribute(vertColorAttrib, 3, GL_FLOAT, Vertex, Color);
+	//glVertexAttribPointer(vertColorAttrib, 3, GL_FLOAT, 0, sizeof(Vertex), (void*)offsetof(structure, element));
+}
+
 void GLRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
