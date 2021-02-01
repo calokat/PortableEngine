@@ -419,6 +419,10 @@ void Loop()
 	}
 	ImGui::End();
 
+	ImGui::Begin("Asset Browser");
+	ImGui::SetWindowPos({ 200, 400 });
+	ImGui::SetWindowSize({ 400, 200 });
+	ImGui::End();
 	auto rotatorView = registry.view<Transform, Rotator>();
 	for (auto rotEntity : rotatorView)
 	{
