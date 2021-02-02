@@ -2,6 +2,7 @@
 #include <string>
 #include "IInputSystem.h"
 #include <glm/glm.hpp>
+#include "IAssetManager.h"
 class IPlatform
 {
 public:
@@ -13,6 +14,7 @@ public:
 	virtual void* GetDeviceContext() = 0;
 	virtual IInputSystem* GetInputSystem() = 0;
 	virtual void NewGuiFrame() = 0;
+	virtual IAssetManager* GetAssetManager() = 0;
 	virtual ~IPlatform() {};
 };
 
