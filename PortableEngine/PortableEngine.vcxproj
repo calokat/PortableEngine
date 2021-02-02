@@ -181,6 +181,7 @@
     <ClCompile Include="ImageSystem.cpp" />
     <ClCompile Include="imgui_impl_emscripten.cpp" />
     <ClCompile Include="InspectorGUI.cpp" />
+    <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="IOpenGLContext.cpp" />
     <ClCompile Include="IRenderSystem.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -231,6 +232,7 @@
     <ClInclude Include="ImageSystem.h" />
     <ClInclude Include="imgui_impl_emscripten.h" />
     <ClInclude Include="InspectorGUI.h" />
+    <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="IOpenGLContext.h" />
     <ClInclude Include="IPlatform.h" />
     <ClInclude Include="IRenderer.h" />
