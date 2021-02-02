@@ -161,6 +161,7 @@
     <ClCompile Include="..\..\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\..\imgui\imgui_widgets.cpp" />
     <ClCompile Include="AABBSystem.cpp" />
+    <ClCompile Include="AssetBrowserWindow.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraSystem.cpp" />
     <ClCompile Include="Core.cpp" />
@@ -207,6 +208,7 @@
   <ItemGroup>
     <ClInclude Include="AABB.h" />
     <ClInclude Include="AABBSystem.h" />
+    <ClInclude Include="AssetBrowserWindow.h" />
     <ClInclude Include="BufferStructs.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraSystem.h" />

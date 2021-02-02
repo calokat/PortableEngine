@@ -52,6 +52,7 @@
     <ClCompile Include="PEImage.cpp" />
     <ClCompile Include="EntityListWindow.cpp" />
     <ClCompile Include="InspectorWindow.cpp" />
+    <ClCompile Include="AssetBrowserWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
@@ -109,6 +110,7 @@
     <ClInclude Include="DirectX11ImageGraphicsData.h" />
     <ClInclude Include="EntityListWindow.h" />
     <ClInclude Include="InspectorWindow.h" />
+    <ClInclude Include="AssetBrowserWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
