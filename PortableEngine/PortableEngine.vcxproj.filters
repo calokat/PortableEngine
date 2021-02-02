@@ -111,6 +111,7 @@
     <ClInclude Include="EntityListWindow.h" />
     <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="AssetBrowserWindow.h" />
+    <ClInclude Include="IAssetManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

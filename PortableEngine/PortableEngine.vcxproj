@@ -228,6 +228,7 @@
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="GizmoSystem.h" />
     <ClInclude Include="GLCore.h" />
+    <ClInclude Include="IAssetManager.h" />
     <ClInclude Include="IGraphicsAPI.h" />
     <ClInclude Include="IImageGraphicsData.h" />
     <ClInclude Include="IInputSystem.h" />
