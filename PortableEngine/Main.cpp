@@ -4,6 +4,7 @@
 #include "DirectXAPI.h"
 #include "DirectXRenderer.h"
 #include "DirectXRenderSystem.h"
+#include <fileapi.h>
 #endif
 #ifdef __EMSCRIPTEN__
 #include "EmscriptenPlatform.h"
@@ -36,6 +37,7 @@
 #include "AABBSystem.h"
 #include "EngineCameraControllerSystem.h"
 #include "ImageSystem.h"
+#include "OpenGLImageGraphicsData.h"
 enum Platform {Win32, Web, Android};
 enum GraphicsAPI {OpenGL, DirectX11};
 struct Options
@@ -53,6 +55,15 @@ entt::registry registry;
 
 bool show_demo_window = true;
 
+const char* projectPath = "C:/Users/Caleb/Documents/Github/PE_Projects/demo/*";
+
+struct Thumbnail
+{
+	PEImage assetImage;
+	IRenderer assetImageRenderer;
+};
+
+Thumbnail assetThumbnail;
 //template<class T>
 //void TrySerializeComponent(json& master)
 //{
@@ -422,6 +433,17 @@ void Loop()
 	ImGui::Begin("Asset Browser");
 	ImGui::SetWindowPos({ 200, 400 });
 	ImGui::SetWindowSize({ 400, 200 });
+	WIN32_FIND_DATA findResult;
+	HANDLE fileHandle = FindFirstFile(projectPath, &findResult);
+	FindNextFile(fileHandle, &findResult);
+	while (FindNextFile(fileHandle, &findResult))
+	{
+		ImGui::BeginGroup();
+		ImGui::Image((void*)((OpenGLImageGraphicsData*)(assetThumbnail.assetImage.imageGraphicsData))->texture, ImVec2(50, 50));
+		ImGui::Text("%s", findResult.cFileName);
+		ImGui::EndGroup();
+		ImGui::SameLine();
+	}
 	ImGui::End();
 	auto rotatorView = registry.view<Transform, Rotator>();
 	for (auto rotEntity : rotatorView)
@@ -557,6 +579,12 @@ int main(int argc, char* argv[])
 	{
 		renderSystem = new GLRenderSystem(plat);
 	}
+	entt::entity assetImageEntity = registry.create();
+	assetThumbnail.assetImageRenderer = std::move(renderSystem->CreateRenderer(registry, assetImageEntity));
+	assetThumbnail.assetImage = PEImage(plat->GetAssetPath("../../Assets/Images/directory.png"));
+	ImageSystem::CreateImage(assetThumbnail.assetImage);
+	renderSystem->CreateTexture(assetThumbnail.assetImage);
+	renderSystem->LoadTexture(&assetThumbnail.assetImageRenderer, assetThumbnail.assetImage);
 	MakeMesh(plat->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0), "Cone");
 #ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop(Loop, 0, 1);
