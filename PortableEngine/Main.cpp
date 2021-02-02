@@ -4,7 +4,6 @@
 #include "DirectXAPI.h"
 #include "DirectXRenderer.h"
 #include "DirectXRenderSystem.h"
-#include <fileapi.h>
 #endif
 #ifdef __EMSCRIPTEN__
 #include "EmscriptenPlatform.h"
@@ -38,6 +37,10 @@
 #include "EngineCameraControllerSystem.h"
 #include "ImageSystem.h"
 #include "OpenGLImageGraphicsData.h"
+#include "EntityListWindow.h"
+#include "InspectorWindow.h"
+#include "AssetBrowserWindow.h"
+
 enum Platform {Win32, Web, Android};
 enum GraphicsAPI {OpenGL, DirectX11};
 struct Options
@@ -58,6 +61,10 @@ bool show_demo_window = true;
 const char* projectPath = "C:/Users/Caleb/Documents/Github/PE_Projects/demo/*";
 
 Thumbnail assetThumbnail;
+
+EntityListWindow entityListWindow;
+InspectorWindow inspectorWindow;
+AssetBrowserWindow assetWindow;
 //template<class T>
 //void TrySerializeComponent(json& master)
 //{
@@ -366,91 +373,19 @@ void Loop()
 	}
 
 	plat->GetInputSystem()->GetKeyPressed();
-	auto entityView = registry.view<Transform, Name>();
-	ImGui::Begin("Entity List");
-	ImGui::SetWindowPos({ 0, 20 });
-	ImGui::SetWindowSize({ 200, 780 });
-	for (auto entity : entityView)
-	{
-		Name name = entityView.get<Name>(entity);
-		if (ImGui::MenuItem(name.nameString.c_str()))
-		{
-			GizmoSystem::DeselectAll();
-			Transform& newSelected = entityView.get<Transform>(entity);
-			GizmoSystem::Select(entity);
-		}
-	}
-	ImGui::End();
+	auto entityView = registry.view<Name, Transform>();
+	entityListWindow.Render(entityView);
 
-	ImGui::Begin("Inspector");
-	ImGui::SetWindowPos({ 600, 20 });
-	ImGui::SetWindowSize({ 200, 780 });
-	entt::entity selected = GizmoSystem::GetSelectedEntity();
-	if (selected != entt::null)
-	{
-		Transform* t = registry.try_get<Transform>(selected);
-		if (t)
-		{
-			ComponentGUI(*t);
-		}
-		GLRenderer* glr = registry.try_get<GLRenderer>(selected);
-		if (glr)
-		{
-			ComponentGUI(*glr);
-		}
-		#ifdef _WIN64
-		DirectXRenderer* r = registry.try_get<DirectXRenderer>(selected);
-		if (r)
-		{
-			ComponentGUI(*r);
-		}
-		#endif
-		//Rotator* rot = registry.try_get<Rotator>(selected);
-		//if (rot)
-		//{
-		//	ComponentGUI(*rot);
-		//}
-		//if (ImGui::BeginMenu("+"))
-		//{
-		//	if (ImGui::MenuItem("Rotator"))
-		//	{
-		//		if (!registry.has<Rotator>(selected))
-		//		{
-		//			registry.emplace_or_replace<Rotator>(selected);
-		//		}
-		//	}
-		//	ImGui::EndMenu();
-		//}
-	}
-	ImGui::End();
+	inspectorWindow.Render(registry);
 
-	ImGui::Begin("Asset Browser");
-	ImGui::SetWindowPos({ 200, 400 });
-	ImGui::SetWindowSize({ 400, 200 });
-	WIN32_FIND_DATA findResult;
-	HANDLE fileHandle = FindFirstFile(projectPath, &findResult);
-	FindNextFile(fileHandle, &findResult);
-	while (FindNextFile(fileHandle, &findResult))
-	{
-		ImGui::BeginGroup();
-		ImGui::Image((void*)((OpenGLImageGraphicsData*)(assetThumbnail.assetImage.imageGraphicsData))->texture, ImVec2(50, 50));
-		ImGui::Text("%s", findResult.cFileName);
-		ImGui::EndGroup();
-		ImGui::SameLine();
-	}
-	ImGui::End();
-	auto rotatorView = registry.view<Transform, Rotator>();
-	for (auto rotEntity : rotatorView)
-	{
-		auto [transform, rot] = rotatorView.get<Transform, Rotator>(rotEntity);
-		TransformSystem::Rotate(rot.deltaRot, &transform);
-	}
+	assetWindow.Render(assetThumbnail);
 
 	graph->ClearScreen();
 	auto camEntityView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camEntityView[0]);
 	TransformSystem::CalculateWorldMatrix(&camTransform);
 	CameraSystem::CalculateViewMatrixLH(camera, camTransform);
+	entt::entity selected = GizmoSystem::GetSelectedEntity();
 	#ifdef _WIN64
 	if (options.graphicsAPI == GraphicsAPI::DirectX11)
 	{
