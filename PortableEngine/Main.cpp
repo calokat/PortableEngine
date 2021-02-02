@@ -57,12 +57,6 @@ bool show_demo_window = true;
 
 const char* projectPath = "C:/Users/Caleb/Documents/Github/PE_Projects/demo/*";
 
-struct Thumbnail
-{
-	PEImage assetImage;
-	IRenderer assetImageRenderer;
-};
-
 Thumbnail assetThumbnail;
 //template<class T>
 //void TrySerializeComponent(json& master)
