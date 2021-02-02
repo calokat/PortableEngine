@@ -50,6 +50,7 @@
     <ClCompile Include="IRenderSystem.cpp" />
     <ClCompile Include="ImageSystem.cpp" />
     <ClCompile Include="PEImage.cpp" />
+    <ClCompile Include="EntityListWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
@@ -105,6 +106,7 @@
     <ClInclude Include="IImageGraphicsData.h" />
     <ClInclude Include="OpenGLImageGraphicsData.h" />
     <ClInclude Include="DirectX11ImageGraphicsData.h" />
+    <ClInclude Include="EntityListWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
