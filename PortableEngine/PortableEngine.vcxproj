@@ -201,6 +201,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransformSystem.cpp" />
+    <ClCompile Include="WindowsAssetManager.cpp" />
     <ClCompile Include="WindowsInputSystem.cpp" />
     <ClCompile Include="WindowsPlatform.cpp" />
     <ClCompile Include="WinOpenGLContext.cpp" />
@@ -260,6 +261,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TransformSystem.h" />
     <ClInclude Include="Vertex.h" />
+    <ClInclude Include="WindowsAssetManager.h" />
     <ClInclude Include="WindowsInputSystem.h" />
     <ClInclude Include="WindowsPlatform.h" />
     <ClInclude Include="WinOpenGLContext.h" />

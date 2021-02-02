@@ -53,6 +53,7 @@
     <ClCompile Include="EntityListWindow.cpp" />
     <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="AssetBrowserWindow.cpp" />
+    <ClCompile Include="WindowsAssetManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
@@ -112,6 +113,7 @@
     <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="AssetBrowserWindow.h" />
     <ClInclude Include="IAssetManager.h" />
+    <ClInclude Include="WindowsAssetManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
