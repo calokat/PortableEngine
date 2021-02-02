@@ -21,6 +21,8 @@ public:
 	void* GetDeviceContext();
 	IInputSystem* GetInputSystem();
 	void NewGuiFrame();
+	IAssetManager* GetAssetManager();
+
 private:
 	static WindowsPlatform* staticThis;
 	HINSTANCE hInstance;
@@ -35,6 +37,7 @@ private:
 	HWND hwnd;
 	HDC hdc;
 	IInputSystem* inputSystem;
+	IAssetManager* assetManager;
 
 };
 #endif

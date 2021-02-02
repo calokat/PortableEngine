@@ -3,7 +3,7 @@
 #include "WindowsPlatform.h"
 #include <imgui.h>
 #include <examples/imgui_impl_win32.h>
-
+#include "WindowsAssetManager.h"
 
 WindowsPlatform* WindowsPlatform::staticThis = 0;
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -163,10 +163,16 @@ void WindowsPlatform::NewGuiFrame()
 	ImGui_ImplWin32_NewFrame();
 }
 
+IAssetManager* WindowsPlatform::GetAssetManager()
+{
+	return assetManager;
+}
+
 WindowsPlatform::WindowsPlatform(GameWindow* win)
 {
 	staticThis = this;
 	window = win;
+	assetManager = new WindowsAssetManager();
 	//hInstance = hinst;
 	/*windowWidth = winWidth;
 	windowHeight = winHeight;*/
@@ -177,6 +183,7 @@ WindowsPlatform::~WindowsPlatform()
 {
 	ImGui_ImplWin32_Shutdown();
 	delete inputSystem;
+	delete assetManager;
 }
 
 LRESULT WindowsPlatform::WindowsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
