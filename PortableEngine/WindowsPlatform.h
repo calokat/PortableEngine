@@ -15,8 +15,6 @@ public:
 	HWND GetHwnd();
 	GameWindow* window;
 	long Run();
-	std::string GetAssetPath(std::string relativePath);
-	std::wstring GetAssetPath_Wide(std::wstring relativePath);
 	void* GetWindowHandle();
 	void* GetDeviceContext();
 	IInputSystem* GetInputSystem();
@@ -32,8 +30,6 @@ private:
 	static LRESULT CALLBACK WindowsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	LRESULT ProcessMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	bool hasFocus;
-	std::string GetExePath();
-	std::wstring GetExePath_Wide();
 	HWND hwnd;
 	HDC hdc;
 	IInputSystem* inputSystem;

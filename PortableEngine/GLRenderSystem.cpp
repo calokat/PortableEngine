@@ -10,9 +10,9 @@ static glm::mat4 newView(1.0f);
 IRenderer& GLRenderSystem::CreateRenderer(entt::registry& reg, entt::entity& e)
 {
 	#ifdef __EMSCRIPTEN__
-	IRenderer& rendererRef = reg.emplace<GLRenderer>(e, platform->GetAssetPath("../../Shaders/GLSL-ES/vertex.glsl"), platform->GetAssetPath("../../Shaders/GLSL-ES/fragment.glsl"));
+	IRenderer& rendererRef = reg.emplace<GLRenderer>(e, platform->GetAssetManager()->("../../Shaders/GLSL-ES/vertex.glsl"), platform->GetAssetManager()->GetAssetPath("../../Shaders/GLSL-ES/fragment.glsl"));
 	#else
-	IRenderer& rendererRef = reg.emplace<GLRenderer>(e, platform->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), platform->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
+	IRenderer& rendererRef = reg.emplace<GLRenderer>(e, platform->GetAssetManager()->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), platform->GetAssetManager()->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
 	#endif
 	return rendererRef;
 }

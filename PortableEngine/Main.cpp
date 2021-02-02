@@ -182,7 +182,7 @@ void MakeMesh(const char* path, const char* name = "GameObject") {
 	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
 	renderSystem->Load(&newMeshRenderer, camera);
 	renderSystem->LoadMesh(&newMeshRenderer, newMesh);
-	newMeshRenderer.diffuseTexture = PEImage(plat->GetAssetPath("../../Assets/Images/cushion.png"));
+	newMeshRenderer.diffuseTexture = PEImage(plat->GetAssetManager()->GetAssetPath("../../Assets/Images/cushion.png"));
 	ImageSystem::CreateImage(newMeshRenderer.diffuseTexture);
 	renderSystem->CreateTexture(newMeshRenderer.diffuseTexture);
 	renderSystem->LoadTexture(&newMeshRenderer, newMeshRenderer.diffuseTexture);
@@ -205,7 +205,7 @@ void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") 
 	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
 	renderSystem->Load(&newMeshRenderer, camera);
 	renderSystem->LoadMesh(&newMeshRenderer, newMesh);
-	newMeshRenderer.diffuseTexture = PEImage(plat->GetAssetPath("../../Assets/Images/rock.png"));
+	newMeshRenderer.diffuseTexture = PEImage(plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png"));
 	ImageSystem::CreateImage(newMeshRenderer.diffuseTexture);
 	renderSystem->CreateTexture(newMeshRenderer.diffuseTexture);
 	renderSystem->LoadTexture(&newMeshRenderer, newMeshRenderer.diffuseTexture);
@@ -312,27 +312,27 @@ void Loop()
 		{
 			if (ImGui::MenuItem("Cube"))
 			{
-				MakeMesh(plat->GetAssetPath("../../Assets/Models/cube.obj").c_str(), "Cube");
+				MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cube.obj").c_str(), "Cube");
 			}
 			if (ImGui::MenuItem("Helix"))
 			{
-				MakeMesh(plat->GetAssetPath("../../Assets/Models/helix.obj").c_str(), "Helix");
+				MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/helix.obj").c_str(), "Helix");
 			}
 			if (ImGui::MenuItem("Cone"))
 			{
-				MakeMesh(plat->GetAssetPath("../../Assets/Models/cone.obj").c_str(), "Cone");
+				MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cone.obj").c_str(), "Cone");
 			}
 			if (ImGui::MenuItem("Cylinder"))
 			{
-				MakeMesh(plat->GetAssetPath("../../Assets/Models/cylinder.obj").c_str(), "Cylinder");
+				MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cylinder.obj").c_str(), "Cylinder");
 			}
 			if (ImGui::MenuItem("Sphere"))
 			{
-				MakeMesh(plat->GetAssetPath("../../Assets/Models/sphere.obj").c_str(), "Sphere");
+				MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/sphere.obj").c_str(), "Sphere");
 			}
 			if (ImGui::MenuItem("Torus"))
 			{
-				MakeMesh(plat->GetAssetPath("../../Assets/Models/torus.obj").c_str(), "Torus");
+				MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/torus.obj").c_str(), "Torus");
 			}
 			ImGui::EndMenu();
 		}
@@ -510,11 +510,11 @@ int main(int argc, char* argv[])
 	}
 	entt::entity assetImageEntity = registry.create();
 	assetThumbnail.assetImageRenderer = std::move(renderSystem->CreateRenderer(registry, assetImageEntity));
-	assetThumbnail.assetImage = PEImage(plat->GetAssetPath("../../Assets/Images/directory.png"));
+	assetThumbnail.assetImage = PEImage(plat->GetAssetManager()->GetAssetPath("../../Assets/Images/directory.png"));
 	ImageSystem::CreateImage(assetThumbnail.assetImage);
 	renderSystem->CreateTexture(assetThumbnail.assetImage);
 	renderSystem->LoadTexture(&assetThumbnail.assetImageRenderer, assetThumbnail.assetImage);
-	MakeMesh(plat->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0), "Cone");
+	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0), "Cone");
 #ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop(Loop, 0, 1);
 #else
