@@ -14,7 +14,7 @@ void AssetBrowserWindow::Render(IAssetManager* assetManager)
 	while (FindNextFile(fileHandle, &findResult))
 	{
 		ImGui::BeginGroup();
-		ImGui::Image((void*)((OpenGLImageGraphicsData*)(assetManager->GetDefaultAssetImage().imageGraphicsData))->texture, ImVec2(50, 50));
+		ImGui::Image(assetManager->GetDirectoryImage().imageGraphicsData->GetData(), ImVec2(50, 50));
 		ImGui::Text("%s", findResult.cFileName);
 		ImGui::EndGroup();
 		ImGui::SameLine();

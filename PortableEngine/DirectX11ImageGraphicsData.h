@@ -5,5 +5,9 @@
 struct DirectX11ImageGraphicsData : public IImageGraphicsData
 {
 	ID3D11ShaderResourceView* srv;
+	void* GetData()
+	{
+		return srv;
+	}
 };
 #endif
