@@ -179,6 +179,7 @@
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="GizmoSystem.cpp" />
     <ClCompile Include="GLCore.cpp" />
+    <ClCompile Include="IAssetManager.cpp" />
     <ClCompile Include="ImageSystem.cpp" />
     <ClCompile Include="imgui_impl_emscripten.cpp" />
     <ClCompile Include="InspectorGUI.cpp" />

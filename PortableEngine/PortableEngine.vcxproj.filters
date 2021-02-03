@@ -54,6 +54,7 @@
     <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="AssetBrowserWindow.cpp" />
     <ClCompile Include="WindowsAssetManager.cpp" />
+    <ClCompile Include="IAssetManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
