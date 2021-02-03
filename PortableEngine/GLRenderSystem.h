@@ -20,7 +20,8 @@ public:
 	void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera);
 	void DrawGizmo(Camera camera);
 	void CreateTexture(PEImage& img);
-	void LoadTexture(IRenderer* renderer, PEImage& img);
+	void LoadTexture(IRenderer* renderer, std::string imagePath);
+	virtual void LoadTexture(PEImage& img);
 	GLRenderSystem(IPlatform* plat);
 private:
 	IPlatform* platform;

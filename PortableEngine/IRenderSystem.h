@@ -15,6 +15,7 @@ public:
 	virtual void DrawWireframe(IRenderer* renderer/*, ID3D11DeviceContext* context*/) = 0;
 	virtual void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera) = 0;
 	virtual void CreateTexture(PEImage& img) = 0;
-	virtual void LoadTexture(IRenderer* renderer, PEImage& img) = 0;
+	virtual void LoadTexture(IRenderer* renderer, std::string imagePath) = 0;
+	virtual void LoadTexture(PEImage& img) = 0;
 	virtual ~IRenderSystem() {};
 };

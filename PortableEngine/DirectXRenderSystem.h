@@ -19,10 +19,12 @@ public:
 	void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera);
 	DirectXRenderSystem(ID3D11Device* dev, ID3D11DeviceContext* ctx);
 	void CreateTexture(PEImage& img);
-	void LoadTexture(IRenderer* renderer, PEImage& img);
+	void LoadTexture(IRenderer* renderer, std::string imagePath);
+	void LoadTexture(PEImage& img);
 private:
 	ID3D11Device* device;
 	ID3D11DeviceContext* context;
+	void BindTexture(DirectXRenderer* renderer);
 };
 //void DrawGizmo(Camera camera);
 #endif

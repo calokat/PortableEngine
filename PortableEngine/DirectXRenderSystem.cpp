@@ -74,7 +74,7 @@ void DirectXRenderSystem::Draw(IRenderer* renderer)
 	UINT offset = 0;
 
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
-	LoadTexture(dxRenderer, dxRenderer->diffuseTexture);
+	BindTexture(dxRenderer);
 	context->IASetVertexBuffers(0, 1, dxRenderer->vertexBuffer.GetAddressOf(), &stride, &offset);
 	context->IASetIndexBuffer(dxRenderer->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	dxRenderer->vertexShader->SetShader();
@@ -151,13 +151,33 @@ void DirectXRenderSystem::CreateTexture(PEImage& img)
 	ImageSystem::DestroyImage(img);
 }
 
-void DirectXRenderSystem::LoadTexture(IRenderer* renderer, PEImage& img)
+void DirectXRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath)
 {
-	DirectX11ImageGraphicsData* dx11ImageGraphicsData = (DirectX11ImageGraphicsData*)img.imageGraphicsData;
-	DirectXRenderer* dx11Renderer = (DirectXRenderer*)renderer;
+	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
+	dxRenderer->diffuseTexture = PEImage(imagePath);
+	ImageSystem::CreateImage(dxRenderer->diffuseTexture);
+	CreateTexture(dxRenderer->diffuseTexture);
 
-	dx11Renderer->pixelShader->SetShaderResourceView("diffuseTexture", dx11ImageGraphicsData->srv);
-	dx11Renderer->pixelShader->CopyAllBufferData();
+	DirectX11ImageGraphicsData* dx11ImageGraphicsData = (DirectX11ImageGraphicsData*)dxRenderer->diffuseTexture.imageGraphicsData;
+	//DirectXRenderer* dx11Renderer = (DirectXRenderer*)renderer;
+
+	dxRenderer->pixelShader->SetShaderResourceView("diffuseTexture", dx11ImageGraphicsData->srv);
+	dxRenderer->pixelShader->CopyAllBufferData();
+}
+
+void DirectXRenderSystem::LoadTexture(PEImage& img)
+{
+	CreateTexture(img);
+}
+
+void DirectXRenderSystem::BindTexture(DirectXRenderer* renderer)
+{
+	DirectX11ImageGraphicsData* dx11ImageGraphicsData = (DirectX11ImageGraphicsData*)renderer->diffuseTexture.imageGraphicsData;
+	//DirectXRenderer* dx11Renderer = (DirectXRenderer*)renderer;
+
+	renderer->pixelShader->SetShaderResourceView("diffuseTexture", dx11ImageGraphicsData->srv);
+	renderer->pixelShader->CopyAllBufferData();
+
 }
 
 #endif
