@@ -24,6 +24,7 @@ public:
 	int numVertices;
 	int numIndices;
 	glm::vec4 vertexColor = { 0, 0, 0, 1 };
+	PEImage diffuseTexture;
 	~DirectXRenderer();
 };
 #endif

@@ -36,4 +36,5 @@ public:
 	GLRenderer (GLRenderer&& other) noexcept;
 	GLRenderer(GLRenderer& other);
 	glm::vec4 vertexColor = { 1, 1, 1, 1 };
+	PEImage diffuseTexture;
 };
