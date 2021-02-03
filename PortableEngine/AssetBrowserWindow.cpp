@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include "OpenGLImageGraphicsData.h"
 #include <imgui.h>
-void AssetBrowserWindow::Render(Thumbnail& assetThumbnail)
+void AssetBrowserWindow::Render(IAssetManager* assetManager)
 {
 	const char* projectPath = "C:/Users/Caleb/Documents/Github/PE_Projects/demo/*";
 	ImGui::Begin("Asset Browser");
@@ -14,7 +14,7 @@ void AssetBrowserWindow::Render(Thumbnail& assetThumbnail)
 	while (FindNextFile(fileHandle, &findResult))
 	{
 		ImGui::BeginGroup();
-		ImGui::Image((void*)((OpenGLImageGraphicsData*)(assetThumbnail.assetImage.imageGraphicsData))->texture, ImVec2(50, 50));
+		ImGui::Image((void*)((OpenGLImageGraphicsData*)(assetManager->GetDefaultAssetImage().imageGraphicsData))->texture, ImVec2(50, 50));
 		ImGui::Text("%s", findResult.cFileName);
 		ImGui::EndGroup();
 		ImGui::SameLine();

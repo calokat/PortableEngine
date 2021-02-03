@@ -378,7 +378,7 @@ void Loop()
 
 	inspectorWindow.Render(registry);
 
-	assetWindow.Render(assetThumbnail);
+	assetWindow.Render(plat->GetAssetManager());
 
 	graph->ClearScreen();
 	auto camEntityView = registry.view<Camera>();
@@ -508,12 +508,13 @@ int main(int argc, char* argv[])
 	{
 		renderSystem = new GLRenderSystem(plat);
 	}
-	entt::entity assetImageEntity = registry.create();
-	assetThumbnail.assetImageRenderer = std::move(renderSystem->CreateRenderer(registry, assetImageEntity));
-	assetThumbnail.assetImage = PEImage(plat->GetAssetManager()->GetAssetPath("../../Assets/Images/directory.png"));
-	ImageSystem::CreateImage(assetThumbnail.assetImage);
-	renderSystem->CreateTexture(assetThumbnail.assetImage);
-	renderSystem->LoadTexture(&assetThumbnail.assetImageRenderer, assetThumbnail.assetImage);
+	plat->GetAssetManager()->LoadDefaultThumbnails(renderSystem);
+	//entt::entity assetImageEntity = registry.create();
+	//assetThumbnail.assetImageRenderer = renderSystem->CreateRenderer(registry, assetImageEntity);
+	//assetThumbnail.assetImage = PEImage(plat->GetAssetManager()->GetAssetPath("../../Assets/Images/directory.png"));
+	//ImageSystem::CreateImage(assetThumbnail.assetImage);
+	//renderSystem->CreateTexture(assetThumbnail.assetImage);
+	//renderSystem->LoadTexture(&assetThumbnail.assetImageRenderer, assetThumbnail.assetImage);
 	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0), "Cone");
 #ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop(Loop, 0, 1);
