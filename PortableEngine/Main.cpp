@@ -509,6 +509,7 @@ int main(int argc, char* argv[])
 		renderSystem = new GLRenderSystem(plat);
 	}
 	plat->GetAssetManager()->LoadDefaultThumbnails(renderSystem);
+	plat->GetAssetManager()->LoadAssetsFromCurrentDirectory("", renderSystem);
 	//entt::entity assetImageEntity = registry.create();
 	//assetThumbnail.assetImageRenderer = renderSystem->CreateRenderer(registry, assetImageEntity);
 	//assetThumbnail.assetImage = PEImage(plat->GetAssetManager()->GetAssetPath("../../Assets/Images/directory.png"));
