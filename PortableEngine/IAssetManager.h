@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
 #include "IRenderSystem.h"
-
+#include "PEAsset.h"
+#include <vector>
 class IAssetManager
 {
 public:
@@ -10,6 +11,9 @@ public:
 	void LoadDefaultThumbnails(IRenderSystem* renderSystem);
 	const PEImage& GetDefaultAssetImage();
 	const PEImage& GetDirectoryImage();
+	virtual void LoadAssetsFromCurrentDirectory(std::string dirPath, IRenderSystem* renderSystem) = 0;
+	const char* currentAssetPath = "C:/Users/Caleb/Documents/Github/PE_Projects/demo/*";
+	std::vector<PEAsset*> assets;
 protected:
 	PEImage assetThumbnail;
 	PEImage directoryThumbnail;
