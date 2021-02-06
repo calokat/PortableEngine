@@ -1,5 +1,7 @@
 #include "WindowsAssetManager.h"
 #include <Windows.h>
+#include <filesystem>
+#include "ImageSystem.h"
 
 std::string WindowsAssetManager::GetAssetPath(std::string relativePath)
 {
@@ -9,6 +11,67 @@ std::string WindowsAssetManager::GetAssetPath(std::string relativePath)
 std::wstring WindowsAssetManager::GetAssetPath_Wide(std::wstring relativePath)
 {
 	return GetExePath_Wide() + L"\\" + relativePath;
+}
+
+void WindowsAssetManager::LoadAssetsFromCurrentDirectory(std::string dirPath, IRenderSystem* renderSystem)
+{
+	std::string realPath = currentAssetPath;
+	assets.clear();
+	WIN32_FIND_DATA findResult;
+	HANDLE fileHandle = FindFirstFile(realPath.c_str(), &findResult);
+	FindNextFile(fileHandle, &findResult);
+	while (FindNextFile(fileHandle, &findResult))
+	{
+		std::filesystem::path assetPath = realPath.substr(0, realPath.length() - 1).append(findResult.cFileName);
+		PEImage assetThumbnail;
+		if (assetPath.has_extension())
+		{
+			if (assetPath.extension() == ".png")
+			{
+				assetThumbnail = PEImage(assetPath.string());
+				ImageSystem::CreateImage(assetThumbnail);
+				renderSystem->LoadTexture(assetThumbnail);
+				PEAsset* asset = new PEAsset;
+				asset->assetType = AssetType::Image;
+				asset->name = findResult.cFileName;
+				asset->path = assetPath.string();
+				asset->thumbnail = new PEImage(std::move(assetThumbnail));
+				//PEAsset asset = { assetThumbnail, assetPath.string(), AssetType::Image, findResult.cFileName };
+				assets.push_back(asset);
+			}
+			else
+			{
+				PEAsset* asset = new PEAsset;
+				asset->assetType = AssetType::File;
+				asset->name = std::string(findResult.cFileName);
+				asset->path = assetPath.string();
+				asset->thumbnail = new PEImage(this->assetThumbnail.path);
+				ImageSystem::CreateImage(*asset->thumbnail);
+				renderSystem->LoadTexture(*asset->thumbnail);
+				//PEAsset asset = { this->assetThumbnail, assetPath.string(), AssetType::File, findResult.cFileName };
+				assets.push_back(asset);
+			}
+		}
+		else
+		{
+			PEAsset* asset = new PEAsset;
+			asset->assetType = AssetType::Directory;
+			asset->name = std::string(findResult.cFileName);
+			asset->path = assetPath.string();
+			asset->thumbnail = new PEImage(this->directoryThumbnail.path);
+			ImageSystem::CreateImage(*asset->thumbnail);
+			renderSystem->LoadTexture(*asset->thumbnail);
+			//PEAsset asset = { this->assetThumbnail, assetPath.string(), AssetType::File, findResult.cFileName };
+			assets.push_back(asset);
+		}
+
+		//ImGui::BeginGroup();
+		//ImGui::Image(assetManager->GetDirectoryImage().imageGraphicsData->GetData(), ImVec2(50, 50));
+		//ImGui::Text("%s", findResult.cFileName);
+		//ImGui::EndGroup();
+		//ImGui::SameLine();
+
+	}
 }
 
 std::string WindowsAssetManager::GetExePath()
