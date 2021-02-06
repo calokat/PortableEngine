@@ -8,16 +8,16 @@ void AssetBrowserWindow::Render(IAssetManager* assetManager)
 	ImGui::Begin("Asset Browser");
 	ImGui::SetWindowPos({ 200, 400 });
 	ImGui::SetWindowSize({ 400, 200 });
-	WIN32_FIND_DATA findResult;
-	HANDLE fileHandle = FindFirstFile(projectPath, &findResult);
-	FindNextFile(fileHandle, &findResult);
-	while (FindNextFile(fileHandle, &findResult))
+
+	for (auto it = assetManager->assets.begin(); it != assetManager->assets.end(); ++it)
 	{
+		PEAsset* asset = (*it);
 		ImGui::BeginGroup();
-		ImGui::Image(assetManager->GetDirectoryImage().imageGraphicsData->GetData(), ImVec2(50, 50));
-		ImGui::Text("%s", findResult.cFileName);
+		ImGui::Image(asset->thumbnail->imageGraphicsData->GetData(), ImVec2(50, 50));
+		ImGui::Text("%s", asset->name.c_str());
 		ImGui::EndGroup();
 		ImGui::SameLine();
+
 	}
 	ImGui::End();
 }
