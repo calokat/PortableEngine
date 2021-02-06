@@ -20,3 +20,11 @@ const PEImage& IAssetManager::GetDirectoryImage()
 {
 	return directoryThumbnail;
 }
+
+IAssetManager::~IAssetManager()
+{
+	for (auto it = assets.begin(); it != assets.end(); ++it)
+	{
+		delete* it;
+	}
+}
