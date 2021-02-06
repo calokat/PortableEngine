@@ -13,7 +13,21 @@ void AssetBrowserWindow::Render(IAssetManager* assetManager)
 	{
 		PEAsset* asset = (*it);
 		ImGui::BeginGroup();
-		ImGui::Image(asset->thumbnail->imageGraphicsData->GetData(), ImVec2(50, 50));
+		if (asset->thumbnail == nullptr)
+		{
+			if (asset->assetType == AssetType::File)
+			{
+				ImGui::Image(assetManager->GetDefaultAssetImage().imageGraphicsData->GetData(), ImVec2(50, 50));
+			}
+			else if (asset->assetType == AssetType::Directory)
+			{
+				ImGui::Image(assetManager->GetDirectoryImage().imageGraphicsData->GetData(), ImVec2(50, 50));
+			}
+		}
+		else
+		{
+			ImGui::Image(asset->thumbnail->imageGraphicsData->GetData(), ImVec2(50, 50));
+		}
 		ImGui::Text("%s", asset->name.c_str());
 		ImGui::EndGroup();
 		ImGui::SameLine();

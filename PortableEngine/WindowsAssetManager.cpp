@@ -45,9 +45,9 @@ void WindowsAssetManager::LoadAssetsFromCurrentDirectory(IRenderSystem* renderSy
 				asset->assetType = AssetType::File;
 				asset->name = std::string(findResult.cFileName);
 				asset->path = assetPath.string();
-				asset->thumbnail = new PEImage(this->assetThumbnail.path);
-				ImageSystem::CreateImage(*asset->thumbnail);
-				renderSystem->LoadTexture(*asset->thumbnail);
+				//asset->thumbnail = new PEImage(this->assetThumbnail.path);
+				//ImageSystem::CreateImage(*asset->thumbnail);
+				//renderSystem->LoadTexture(*asset->thumbnail);
 				//PEAsset asset = { this->assetThumbnail, assetPath.string(), AssetType::File, findResult.cFileName };
 				assets.push_back(asset);
 			}
@@ -58,9 +58,9 @@ void WindowsAssetManager::LoadAssetsFromCurrentDirectory(IRenderSystem* renderSy
 			asset->assetType = AssetType::Directory;
 			asset->name = std::string(findResult.cFileName);
 			asset->path = assetPath.string();
-			asset->thumbnail = new PEImage(this->directoryThumbnail.path);
-			ImageSystem::CreateImage(*asset->thumbnail);
-			renderSystem->LoadTexture(*asset->thumbnail);
+			//asset->thumbnail = new PEImage(this->directoryThumbnail.path);
+			//ImageSystem::CreateImage(*asset->thumbnail);
+			//renderSystem->LoadTexture(*asset->thumbnail);
 			//PEAsset asset = { this->assetThumbnail, assetPath.string(), AssetType::File, findResult.cFileName };
 			assets.push_back(asset);
 		}
