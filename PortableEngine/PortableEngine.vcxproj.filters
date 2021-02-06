@@ -115,6 +115,7 @@
     <ClInclude Include="AssetBrowserWindow.h" />
     <ClInclude Include="IAssetManager.h" />
     <ClInclude Include="WindowsAssetManager.h" />
+    <ClInclude Include="PEAsset.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

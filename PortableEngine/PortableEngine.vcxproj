@@ -250,6 +250,7 @@
     <ClInclude Include="OpenGLAPI.h" />
     <ClInclude Include="OpenGLESContext.h" />
     <ClInclude Include="OpenGLImageGraphicsData.h" />
+    <ClInclude Include="PEAsset.h" />
     <ClInclude Include="PEImage.h" />
     <ClInclude Include="PortableGame.h" />
     <ClInclude Include="Relationship.h" />
