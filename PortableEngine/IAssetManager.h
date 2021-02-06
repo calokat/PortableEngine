@@ -11,7 +11,7 @@ public:
 	void LoadDefaultThumbnails(IRenderSystem* renderSystem);
 	const PEImage& GetDefaultAssetImage();
 	const PEImage& GetDirectoryImage();
-	virtual void LoadAssetsFromCurrentDirectory(std::string dirPath, IRenderSystem* renderSystem) = 0;
+	virtual void LoadAssetsFromCurrentDirectory(IRenderSystem* renderSystem) = 0;
 	const char* currentAssetPath = "C:/Users/Caleb/Documents/Github/PE_Projects/demo/*";
 	std::vector<PEAsset*> assets;
 	virtual ~IAssetManager();

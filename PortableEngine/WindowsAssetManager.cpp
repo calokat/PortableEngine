@@ -13,7 +13,7 @@ std::wstring WindowsAssetManager::GetAssetPath_Wide(std::wstring relativePath)
 	return GetExePath_Wide() + L"\\" + relativePath;
 }
 
-void WindowsAssetManager::LoadAssetsFromCurrentDirectory(std::string dirPath, IRenderSystem* renderSystem)
+void WindowsAssetManager::LoadAssetsFromCurrentDirectory(IRenderSystem* renderSystem)
 {
 	std::string realPath = currentAssetPath;
 	assets.clear();
