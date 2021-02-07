@@ -114,7 +114,7 @@ DirectXRenderSystem::DirectXRenderSystem(ID3D11Device* dev, ID3D11DeviceContext*
 
 void DirectXRenderSystem::CreateTexture(PEImage& img)
 {
-	DirectX11ImageGraphicsData* dx11ImageGraphicsData = new DirectX11ImageGraphicsData();
+	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::make_shared<DirectX11ImageGraphicsData>();
 	img.imageGraphicsData = dx11ImageGraphicsData;
 	// stolen from https://github.com/ocornut/imgui/wiki/Image-Loading-and-Displaying-Examples#Example-for-DirectX11-users
 	
@@ -158,7 +158,7 @@ void DirectXRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath
 	ImageSystem::CreateImage(dxRenderer->diffuseTexture);
 	CreateTexture(dxRenderer->diffuseTexture);
 
-	DirectX11ImageGraphicsData* dx11ImageGraphicsData = (DirectX11ImageGraphicsData*)dxRenderer->diffuseTexture.imageGraphicsData;
+	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(dxRenderer->diffuseTexture.imageGraphicsData);
 	//DirectXRenderer* dx11Renderer = (DirectXRenderer*)renderer;
 
 	dxRenderer->pixelShader->SetShaderResourceView("diffuseTexture", dx11ImageGraphicsData->srv);
@@ -172,7 +172,7 @@ void DirectXRenderSystem::LoadTexture(PEImage& img)
 
 void DirectXRenderSystem::BindTexture(DirectXRenderer* renderer)
 {
-	DirectX11ImageGraphicsData* dx11ImageGraphicsData = (DirectX11ImageGraphicsData*)renderer->diffuseTexture.imageGraphicsData;
+	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(renderer->diffuseTexture.imageGraphicsData);
 	//DirectXRenderer* dx11Renderer = (DirectXRenderer*)renderer;
 
 	renderer->pixelShader->SetShaderResourceView("diffuseTexture", dx11ImageGraphicsData->srv);

@@ -2,23 +2,23 @@
 #include "ImageSystem.h"
 void IAssetManager::LoadDefaultThumbnails(IRenderSystem* renderSystem)
 {
-	assetThumbnail = PEImage(GetAssetPath("../../Assets/Images/asset.png"));
-	ImageSystem::CreateImage(assetThumbnail);
-	renderSystem->LoadTexture(assetThumbnail);
+	assetThumbnail = std::make_shared<PEImage>(GetAssetPath("../../Assets/Images/asset.png"));
+	ImageSystem::CreateImage(*assetThumbnail);
+	renderSystem->LoadTexture(*assetThumbnail);
 
-	directoryThumbnail = PEImage(GetAssetPath("../../Assets/Images/directory.png"));
-	ImageSystem::CreateImage(directoryThumbnail);
-	renderSystem->LoadTexture(directoryThumbnail);
+	directoryThumbnail = std::make_shared<PEImage>(GetAssetPath("../../Assets/Images/directory.png"));
+	ImageSystem::CreateImage(*directoryThumbnail);
+	renderSystem->LoadTexture(*directoryThumbnail);
 }
 
 const PEImage& IAssetManager::GetDefaultAssetImage()
 {
-	return assetThumbnail;
+	return *assetThumbnail;
 }
 
 const PEImage& IAssetManager::GetDirectoryImage()
 {
-	return directoryThumbnail;
+	return *directoryThumbnail;
 }
 
 IAssetManager::~IAssetManager()

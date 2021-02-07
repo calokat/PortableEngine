@@ -3,6 +3,7 @@
 #include "IRenderSystem.h"
 #include "PEAsset.h"
 #include <vector>
+#include <memory>
 class IAssetManager
 {
 public:
@@ -16,6 +17,6 @@ public:
 	std::vector<PEAsset*> assets;
 	virtual ~IAssetManager();
 protected:
-	PEImage assetThumbnail;
-	PEImage directoryThumbnail;
+	std::shared_ptr<PEImage> assetThumbnail;
+	std::shared_ptr<PEImage> directoryThumbnail;
 };

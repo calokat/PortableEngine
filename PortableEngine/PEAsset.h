@@ -5,12 +5,12 @@ enum AssetType { File, Image, Model, Directory };
 class PEAsset
 {
 public:
-	PEImage* thumbnail;
+	std::shared_ptr<PEImage> thumbnail;
 	std::string path;
 	AssetType assetType;
 	std::string name;
-	~PEAsset()
-	{
-		delete thumbnail;
-	}
+	//~PEAsset()
+	//{
+	//	delete thumbnail;
+	//}
 };

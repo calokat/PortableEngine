@@ -127,7 +127,7 @@ void GLRenderSystem::DrawGizmo(Camera camera)
 
 void GLRenderSystem::CreateTexture(PEImage& img)
 {
-	OpenGLImageGraphicsData* glImageGraphicsData = new OpenGLImageGraphicsData();
+	std::shared_ptr<OpenGLImageGraphicsData> glImageGraphicsData = std::make_shared<OpenGLImageGraphicsData>();
 	img.imageGraphicsData = glImageGraphicsData;
 	glGenTextures(1, &glImageGraphicsData->texture);
 	
@@ -139,7 +139,7 @@ void GLRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath)
 	glRenderer->diffuseTexture = PEImage(imagePath);
 	ImageSystem::CreateImage(glRenderer->diffuseTexture);
 	CreateTexture(glRenderer->diffuseTexture);
-	OpenGLImageGraphicsData* glImageGraphicsData = (OpenGLImageGraphicsData*)glRenderer->diffuseTexture.imageGraphicsData;
+	std::shared_ptr<OpenGLImageGraphicsData> glImageGraphicsData = std::dynamic_pointer_cast<OpenGLImageGraphicsData>(glRenderer->diffuseTexture.imageGraphicsData);
 	glBindTexture(GL_TEXTURE_2D, glImageGraphicsData->texture);
 
 
@@ -172,7 +172,7 @@ void GLRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath)
 void GLRenderSystem::LoadTexture(PEImage& img)
 {
 	CreateTexture(img);
-	OpenGLImageGraphicsData* glImageGraphicsData = (OpenGLImageGraphicsData*)img.imageGraphicsData;
+	std::shared_ptr<OpenGLImageGraphicsData> glImageGraphicsData = std::dynamic_pointer_cast<OpenGLImageGraphicsData>(img.imageGraphicsData);
 	glBindTexture(GL_TEXTURE_2D, glImageGraphicsData->texture);
 
 
@@ -208,6 +208,6 @@ GLRenderSystem::GLRenderSystem(IPlatform* plat) : platform(plat)
 
 void GLRenderSystem::BindTexture(GLRenderer& renderer)
 {
-	OpenGLImageGraphicsData* glImageData = (OpenGLImageGraphicsData*)renderer.diffuseTexture.imageGraphicsData;
+	std::shared_ptr<OpenGLImageGraphicsData> glImageData = std::dynamic_pointer_cast<OpenGLImageGraphicsData>(renderer.diffuseTexture.imageGraphicsData);
 	glBindTexture(GL_TEXTURE_2D, glImageData->texture);
 }

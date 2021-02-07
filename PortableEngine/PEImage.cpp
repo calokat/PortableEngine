@@ -8,6 +8,24 @@ PEImage::PEImage(std::string p) : width(-1), height(-1), numChannels(-1), path(p
 {
 }
 
+PEImage::PEImage(PEImage& other)
+{
+	*this = other;
+}
+
+PEImage& PEImage::operator=(PEImage& other)
+{
+	if (this != &other)
+	{
+		this->width = other.width;
+		this->height = other.height;
+		this->numChannels = other.numChannels;
+		this->path = other.path;
+		this->imageGraphicsData = other.imageGraphicsData;
+	}
+	return *this;
+}
+
 PEImage::PEImage(PEImage&& other)
 {
 	*this = std::move(other);
@@ -26,7 +44,7 @@ PEImage& PEImage::operator=(PEImage&& other)
 	return *this;
 }
 
-PEImage::~PEImage()
-{
-	delete imageGraphicsData;
-}
+//PEImage::~PEImage()
+//{
+//	delete imageGraphicsData;
+//}
