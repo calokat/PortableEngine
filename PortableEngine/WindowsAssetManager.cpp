@@ -16,6 +16,7 @@ std::wstring WindowsAssetManager::GetAssetPath_Wide(std::wstring relativePath)
 void WindowsAssetManager::LoadAssetsFromCurrentDirectory(IRenderSystem* renderSystem)
 {
 	std::string realPath = currentAssetPath;
+	UnloadAssets();
 	assets.clear();
 	WIN32_FIND_DATA findResult;
 	HANDLE fileHandle = FindFirstFile(realPath.c_str(), &findResult);
@@ -24,7 +25,7 @@ void WindowsAssetManager::LoadAssetsFromCurrentDirectory(IRenderSystem* renderSy
 	{
 		std::filesystem::path assetPath = realPath.substr(0, realPath.length() - 1).append(findResult.cFileName);
 		PEImage assetThumbnail;
-		if (assetPath.has_extension())
+		if (!std::filesystem::is_directory(assetPath))
 		{
 			if (assetPath.extension() == ".png")
 			{

@@ -23,6 +23,11 @@ const PEImage& IAssetManager::GetDirectoryImage()
 
 IAssetManager::~IAssetManager()
 {
+	UnloadAssets();
+}
+
+void IAssetManager::UnloadAssets()
+{
 	for (auto it = assets.begin(); it != assets.end(); ++it)
 	{
 		delete* it;

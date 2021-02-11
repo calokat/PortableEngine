@@ -378,7 +378,7 @@ void Loop()
 
 	inspectorWindow.Render(registry);
 
-	assetWindow.Render(plat->GetAssetManager());
+	assetWindow.Render(plat->GetAssetManager(), renderSystem);
 
 	graph->ClearScreen();
 	auto camEntityView = registry.view<Camera>();
