@@ -1,3 +1,4 @@
+#ifdef _WIN64
 #pragma once
 #include "IAssetManager.h"
 #include <unordered_map>
@@ -20,3 +21,4 @@ private:
 	HANDLE dwChangeHandles[2];
 };
 
+#endif

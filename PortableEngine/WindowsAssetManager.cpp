@@ -1,3 +1,4 @@
+#ifdef _WIN64
 #include "WindowsAssetManager.h"
 #include "ImageSystem.h"
 
@@ -146,3 +147,4 @@ std::wstring WindowsAssetManager::GetExePath_Wide()
 	// Create a wstring for it and return
 	return std::wstring(widePath);
 }
+#endif
