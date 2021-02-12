@@ -10,7 +10,7 @@ static glm::mat4 newView(1.0f);
 IRenderer& GLRenderSystem::CreateRenderer(entt::registry& reg, entt::entity& e)
 {
 	#ifdef __EMSCRIPTEN__
-	IRenderer& rendererRef = reg.emplace<GLRenderer>(e, platform->GetAssetManager()->("../../Shaders/GLSL-ES/vertex.glsl"), platform->GetAssetManager()->GetAssetPath("../../Shaders/GLSL-ES/fragment.glsl"));
+	IRenderer& rendererRef = reg.emplace<GLRenderer>(e, platform->GetAssetManager()->GetAssetPath("../../Shaders/GLSL-ES/vertex.glsl"), platform->GetAssetManager()->GetAssetPath("../../Shaders/GLSL-ES/fragment.glsl"));
 	#else
 	IRenderer& rendererRef = reg.emplace<GLRenderer>(e, platform->GetAssetManager()->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), platform->GetAssetManager()->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
 	#endif
@@ -147,7 +147,7 @@ void GLRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 #ifdef __EMSCRIPTEN__
 	// Power of two check source: https://www.geeksforgeeks.org/cpp-program-to-find-whether-a-no-is-power-of-two/
-	if (ceil(log2(img.width)) == floor(log2(img.width)) && ceil(log2(img.height)) == floor(log2(img.height)))
+	if (ceil(log2(glRenderer->diffuseTexture.width)) == floor(log2(glRenderer->diffuseTexture.width)) && ceil(log2(glRenderer->diffuseTexture.height)) == floor(log2(glRenderer->diffuseTexture.height)))
 	{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // This is required on WebGL for non power-of-two textures
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); // Same
