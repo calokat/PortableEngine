@@ -14,7 +14,6 @@ std::wstring WindowsAssetManager::GetAssetPath_Wide(std::wstring relativePath)
 void WindowsAssetManager::LoadAssetsFromCurrentDirectory(IRenderSystem* renderSystem)
 {
 	std::string fakePath = currentAssetPath;
-	fakePath.pop_back();
 	dwChangeHandles[0] = FindFirstChangeNotification(
 		fakePath.c_str(),              // directory to watch 
 		FALSE,                         // do not watch subtree 
@@ -26,15 +25,17 @@ void WindowsAssetManager::LoadAssetsFromCurrentDirectory(IRenderSystem* renderSy
 		FILE_NOTIFY_CHANGE_DIR_NAME);  // watch dir name changes 
 
 	//pathToLastWrite[currentAssetPath] = std::filesystem::last_write_time(currentAssetPath);
-	std::string realPath = currentAssetPath;
+	std::string realPath = currentAssetPath + "/*";
 	UnloadAssets();
 	assets.clear();
 	WIN32_FIND_DATA findResult;
-	HANDLE fileHandle = FindFirstFile(realPath.c_str(), &findResult);
+	HANDLE fileHandle = FindFirstFile((realPath).c_str(), &findResult);
 	FindNextFile(fileHandle, &findResult);
+	// get rid of the wildcard at the end
+	realPath.pop_back();
 	while (FindNextFile(fileHandle, &findResult))
 	{
-		std::filesystem::path assetPath = realPath.substr(0, realPath.length() - 1).append(findResult.cFileName);
+		std::filesystem::path assetPath = realPath + findResult.cFileName;
 		PEImage assetThumbnail;
 		if (!std::filesystem::is_directory(assetPath))
 		{

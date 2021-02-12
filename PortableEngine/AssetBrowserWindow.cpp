@@ -20,9 +20,7 @@ void AssetBrowserWindow::Render(IAssetManager* assetManager, IRenderSystem* rend
 		{
 			if (asset->assetType == AssetType::Directory)
 			{
-				assetManager->currentAssetPath = std::filesystem::path(asset->path).string();
-				assetManager->currentAssetPath.push_back('/');
-				assetManager->currentAssetPath.push_back('*');
+				assetManager->currentAssetPath = asset->path;
 				assetManager->LoadAssetsFromCurrentDirectory(renderSystem);
 			}
 			break;
