@@ -1,5 +1,4 @@
 #include "AssetBrowserWindow.h"
-#include <Windows.h>
 #include "OpenGLImageGraphicsData.h"
 #include <imgui.h>
 #include <filesystem>
