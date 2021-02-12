@@ -3,16 +3,19 @@
 #include "EmscriptenInputSystem.h"
 #include <GLES3/gl3.h>
 #include "imgui_impl_emscripten.h"
+#include "EmscriptenAssetManager.h"
 
 EmscriptenPlatform::EmscriptenPlatform(GameWindow* win) : window(win)
 {
 	inputSystem = new EmscriptenInputSystem();
+	assetManager = new EmscriptenAssetManager();
 	ImGui_ImplEmscripten_Init(window, inputSystem);
 }
 
 EmscriptenPlatform::~EmscriptenPlatform()
 {
 	delete inputSystem;
+	delete assetManager;
 }
 
 int EmscriptenPlatform::InitWindow()
@@ -108,5 +111,10 @@ IInputSystem* EmscriptenPlatform::GetInputSystem()
 void EmscriptenPlatform::NewGuiFrame()
 {
 	ImGui_ImplEmscripten_NewFrame();
+}
+
+IAssetManager* EmscriptenPlatform::GetAssetManager()
+{
+	return assetManager;
 }
 #endif

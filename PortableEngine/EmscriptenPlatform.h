@@ -23,9 +23,11 @@ public:
 	void* GetDeviceContext();
 	IInputSystem* GetInputSystem();
 	void NewGuiFrame();
+	IAssetManager* GetAssetManager();
 private:
 	EGLNativeWindowType hWnd;
 	Display *x_display;
 	IInputSystem* inputSystem;
+	IAssetManager* assetManager;
 };
 #endif
