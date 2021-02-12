@@ -1,6 +1,4 @@
 #include "WindowsAssetManager.h"
-#include <Windows.h>
-#include <filesystem>
 #include "ImageSystem.h"
 
 std::string WindowsAssetManager::GetAssetPath(std::string relativePath)
@@ -15,6 +13,19 @@ std::wstring WindowsAssetManager::GetAssetPath_Wide(std::wstring relativePath)
 
 void WindowsAssetManager::LoadAssetsFromCurrentDirectory(IRenderSystem* renderSystem)
 {
+	std::string fakePath = currentAssetPath;
+	fakePath.pop_back();
+	dwChangeHandles[0] = FindFirstChangeNotification(
+		fakePath.c_str(),              // directory to watch 
+		FALSE,                         // do not watch subtree 
+		FILE_NOTIFY_CHANGE_FILE_NAME); // watch file name changes 
+
+	dwChangeHandles[1] = FindFirstChangeNotification(
+		fakePath.c_str(),      // directory to watch 
+		TRUE,                          // watch the subtree 
+		FILE_NOTIFY_CHANGE_DIR_NAME);  // watch dir name changes 
+
+	//pathToLastWrite[currentAssetPath] = std::filesystem::last_write_time(currentAssetPath);
 	std::string realPath = currentAssetPath;
 	UnloadAssets();
 	assets.clear();
@@ -73,7 +84,25 @@ void WindowsAssetManager::LoadAssetsFromCurrentDirectory(IRenderSystem* renderSy
 		//ImGui::Text("%s", findResult.cFileName);
 		//ImGui::EndGroup();
 		//ImGui::SameLine();
+	}
+}
 
+bool WindowsAssetManager::WatchCurrentDirectoryForChanges()
+{
+	dwWaitStatus = WaitForMultipleObjects(2, dwChangeHandles,
+		FALSE, 20);
+
+	switch (dwWaitStatus)
+	{
+		case WAIT_OBJECT_0:
+		case WAIT_OBJECT_0 + 1:
+			FindCloseChangeNotification(dwChangeHandles[0]);
+			FindCloseChangeNotification(dwChangeHandles[1]);
+			return true;
+			break;
+		default:
+			return false;
+			break;
 	}
 }
 

@@ -31,4 +31,9 @@ void AssetBrowserWindow::Render(IAssetManager* assetManager, IRenderSystem* rend
 
 	}
 	ImGui::End();
+
+	if (assetManager->WatchCurrentDirectoryForChanges())
+	{
+		assetManager->LoadAssetsFromCurrentDirectory(renderSystem);
+	}
 }

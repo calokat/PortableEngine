@@ -16,6 +16,7 @@ public:
 	std::string currentAssetPath = "C:/Users/Caleb/Documents/Github/PE_Projects/demo/*";
 	std::vector<PEAsset*> assets;
 	virtual ~IAssetManager();
+	virtual bool WatchCurrentDirectoryForChanges() = 0;
 protected:
 	std::shared_ptr<PEImage> assetThumbnail;
 	std::shared_ptr<PEImage> directoryThumbnail;
