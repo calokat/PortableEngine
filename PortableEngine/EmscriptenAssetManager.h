@@ -1,3 +1,4 @@
+#ifdef __EMSCRIPTEN__
 #pragma once
 #include "IAssetManager.h"
 class EmscriptenAssetManager : public IAssetManager 
@@ -7,3 +8,4 @@ class EmscriptenAssetManager : public IAssetManager
 	void LoadAssetsFromCurrentDirectory(IRenderSystem* renderSystem){};
 	bool WatchCurrentDirectoryForChanges() {return false;};
 };
+#endif
