@@ -298,7 +298,7 @@ void DrawIteration(Camera& camera, entt::entity selected)
 
 void Loop()
 {
-	
+	plat->GetInputSystem()->GetKeyPressed();
 	graph->NewGuiFrame();
 	plat->NewGuiFrame();
 	ImGui::NewFrame();
@@ -372,7 +372,6 @@ void Loop()
 		MakeRayFromCamera();
 	}
 
-	plat->GetInputSystem()->GetKeyPressed();
 	auto entityView = registry.view<Name, Transform>();
 	entityListWindow.Render(entityView);
 
