@@ -2,22 +2,184 @@
 #include "EmscriptenInputSystem.h"
 #include <iostream>
 #include <imgui.h>
+#include <SDL/SDL.h>
+#include <examples/imgui_impl_sdl.h>
+
 InputData EmscriptenInputSystem::current;
 InputData EmscriptenInputSystem::previous;
 glm::vec2 EmscriptenInputSystem::deltaCursorPos;
 
 EmscriptenInputSystem::EmscriptenInputSystem()
 {
-	emscripten_set_keydown_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::KeyDownCallback);
-	emscripten_set_keyup_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::KeyUpCallback);
-	emscripten_set_mousemove_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseCallback);
-	emscripten_set_mousedown_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseDownCallback);
-	emscripten_set_mouseup_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseUpCallback);
+	// emscripten_set_keydown_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::KeyDownCallback);
+	// emscripten_set_keyup_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::KeyUpCallback);
+	// emscripten_set_mousemove_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseCallback);
+	// emscripten_set_mousedown_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseDownCallback);
+	// emscripten_set_mouseup_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseUpCallback);
+	//sdlKeyMap.emplace<int, int>(97, KeyboardCode::A);
+	//sdlKeyMap.emplace<int, int>(98, KeyboardCode::B);
+	//sdlKeyMap.emplace<int, int>(99, KeyboardCode::C);
+	//sdlKeyMap.emplace<int, int>(100, KeyboardCode::D);
+	//sdlKeyMap.emplace<int, int>(101, KeyboardCode::E);
+	//sdlKeyMap.emplace<int, int>(102, KeyboardCode::F);
+	//sdlKeyMap.emplace<int, int>(103, KeyboardCode::G);
+	//sdlKeyMap.emplace<int, int>(104, KeyboardCode::H);
+	//sdlKeyMap.emplace<int, int>(105, KeyboardCode::I);
+	//sdlKeyMap.emplace<int, int>(106, KeyboardCode::J);
+	//sdlKeyMap.emplace<int, int>(107, KeyboardCode::K);
+	//sdlKeyMap.emplace<int, int>(108, KeyboardCode::L);
+	//sdlKeyMap.emplace<int, int>(109, KeyboardCode::M);
+	//sdlKeyMap.emplace<int, int>(110, KeyboardCode::N);
+	//sdlKeyMap.emplace<int, int>(111, KeyboardCode::O);
+	//sdlKeyMap.emplace<int, int>(112, KeyboardCode::P);
+	//sdlKeyMap.emplace<int, int>(113, KeyboardCode::Q);
+	//sdlKeyMap.emplace<int, int>(114, KeyboardCode::R);
+	//sdlKeyMap.emplace<int, int>(115, KeyboardCode::S);
+	//sdlKeyMap.emplace<int, int>(116, KeyboardCode::T);
+	//sdlKeyMap.emplace<int, int>(117, KeyboardCode::U);
+	//sdlKeyMap.emplace<int, int>(118, KeyboardCode::V);
+	//sdlKeyMap.emplace<int, int>(119, KeyboardCode::W);
+	//sdlKeyMap.emplace<int, int>(120, KeyboardCode::X);
+	//sdlKeyMap.emplace<int, int>(121, KeyboardCode::Y);
+	//sdlKeyMap.emplace<int, int>(122, KeyboardCode::Z);
 }
 
 void EmscriptenInputSystem::GetKeyPressed()
 {
 	previous = current;
+	SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+        ImGui_ImplSDL2_ProcessEvent(&event);
+        // Capture events here, based on io.WantCaptureMouse and io.WantCaptureKeyboard
+		//printf("Key is %i and KeyCode is %i\n", event.key.keysym.scancode, sdlKeyMap[event.key.keysym.scancode]);
+		//current.keys[sdlKeyMap[event.key.keysym.scancode]] = (event.type == SDL_KEYDOWN);
+
+		KeyboardCode keyCode;
+		switch (event.key.keysym.sym)
+		{
+		case SDL_SCANCODE_0:
+			keyCode = KeyboardCode::Num0;
+			break;
+		case SDL_SCANCODE_1:
+			keyCode = KeyboardCode::Num1;
+			break;
+		case SDL_SCANCODE_2:
+			keyCode = KeyboardCode::Num2;
+			break;
+		case SDL_SCANCODE_3:
+			keyCode = KeyboardCode::Num3;
+			break;
+		case SDL_SCANCODE_4:
+			keyCode = KeyboardCode::Num4;
+			break;
+		case SDL_SCANCODE_5:
+			keyCode = KeyboardCode::Num5;
+			break;
+		case SDL_SCANCODE_6:
+			keyCode = KeyboardCode::Num6;
+			break;
+		case SDL_SCANCODE_7:
+			keyCode = KeyboardCode::Num7;
+			break;
+		case SDL_SCANCODE_8:
+			keyCode = KeyboardCode::Num8;
+			break;
+		case SDL_SCANCODE_9:
+			keyCode = KeyboardCode::Num9;
+			break;
+		case SDL_SCANCODE_A:
+			keyCode = KeyboardCode::A;
+			break;
+		case SDL_SCANCODE_B:
+			keyCode = KeyboardCode::B;
+			break;
+		case SDL_SCANCODE_C:
+			keyCode = KeyboardCode::C;
+			break;
+		case SDL_SCANCODE_D:
+			keyCode = KeyboardCode::D;
+			break;
+		case SDL_SCANCODE_E:
+			keyCode = KeyboardCode::E;
+			break;
+		case SDL_SCANCODE_F:
+			keyCode = KeyboardCode::F;
+			break;
+		case SDL_SCANCODE_G:
+			keyCode = KeyboardCode::G;
+			break;
+		case SDL_SCANCODE_H:
+			keyCode = KeyboardCode::H;
+			break;
+		case SDL_SCANCODE_I:
+			keyCode = KeyboardCode::I;
+			break;
+		case SDL_SCANCODE_J:
+			keyCode = KeyboardCode::J;
+			break;
+		case SDL_SCANCODE_K:
+			keyCode = KeyboardCode::K;
+			break;
+		case SDL_SCANCODE_L:
+			keyCode = KeyboardCode::L;
+			break;
+		case SDL_SCANCODE_M:
+			keyCode = KeyboardCode::M;
+			break;
+		case SDL_SCANCODE_N:
+			keyCode = KeyboardCode::N;
+			break;
+		case SDL_SCANCODE_O:
+			keyCode = KeyboardCode::O;
+			break;
+		case SDL_SCANCODE_P:
+			keyCode = KeyboardCode::P;
+			break;
+		case SDL_SCANCODE_Q:
+			keyCode = KeyboardCode::Q;
+			break;
+		case SDL_SCANCODE_R:
+			keyCode = KeyboardCode::R;
+			break;
+		case SDL_SCANCODE_S:
+			keyCode = KeyboardCode::S;
+			break;
+		case SDL_SCANCODE_T:
+			keyCode = KeyboardCode::T;
+			break;
+		case SDL_SCANCODE_U:
+			keyCode = KeyboardCode::U;
+			break;
+		case SDL_SCANCODE_V:
+			keyCode = KeyboardCode::V;
+			break;
+		case SDL_SCANCODE_W:
+			keyCode = KeyboardCode::W;
+			break;
+		case SDL_SCANCODE_X:
+			keyCode = KeyboardCode::X;
+			break;
+		case SDL_SCANCODE_Y:
+			keyCode = KeyboardCode::Y;
+			break;
+		case SDL_SCANCODE_Z:
+			keyCode = KeyboardCode::Z;
+			break;
+		default:
+			keyCode = KeyboardCode::N;
+		}
+		current.keys[keyCode] = event.type == SDL_KEYDOWN;
+    }
+	ImGuiIO& io = ImGui::GetIO();
+	current.mouseButtons[MouseButton::Left] = io.MouseDown[0];
+	current.mouseButtons[MouseButton::Right] = io.MouseDown[1];
+	current.cursorPos = {io.MousePos.x, io.MousePos.y};
+	// int mx, my;
+	// SDL_GetMouseState(&mx, &my);
+	// current.cursorPos.x = (float)mx; current.cursorPos.y = (float)my;
+	//current.keys[KeyboardCode::W] = true;
+
 }
 bool EmscriptenInputSystem::IsKeyPressed(KeyboardCode kc)
 {
@@ -59,9 +221,9 @@ glm::vec2 EmscriptenInputSystem::GetDeltaCursorPosition()
 	// so deltaCursorPos is not assigned (0, 0) and it retains its non-zero value from the previous frame. This hack ensures that 
 	// deltaCursorPos is (0, 0) when the mouse is not moving by manually zeroing it and letting that value be overridden in MouseCallback
 	// when called.
-	glm::vec2 returnValue = deltaCursorPos;
-	deltaCursorPos = glm::vec2(0, 0);
-	return returnValue;
+	// glm::vec2 returnValue = deltaCursorPos;
+	// deltaCursorPos = glm::vec2(0, 0);
+	return current.cursorPos - previous.cursorPos;
 }
 EM_BOOL EmscriptenInputSystem::MouseCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
 {
