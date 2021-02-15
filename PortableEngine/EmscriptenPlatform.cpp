@@ -21,6 +21,7 @@ EmscriptenPlatform::EmscriptenPlatform(GameWindow* win) : window(win)
 
 EmscriptenPlatform::~EmscriptenPlatform()
 {
+	ImGui_ImplSDL2_Shutdown();
 	delete inputSystem;
 	delete assetManager;
 }
