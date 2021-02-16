@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <examples/imgui_impl_opengl3.h>
+#include <backends/imgui_impl_opengl3.h>
 
 //float vertices[] = {
 //-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,

@@ -72,12 +72,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>C:\Users\caleb\Documents\GitHub\json\single_include\nlohmann;C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;C:\Users\caleb\Documents\GitHub\stb;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\caleb\Documents\common\glfw\lib\Debug;C:\Users\caleb\Documents\common\glew\lib\Release\x64;$(LibraryPath)</LibraryPath>
-    <SourcePath>C:\Users\caleb\Documents\GitHub\imgui\examples;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
+    <SourcePath>C:\Users\caleb\Documents\GitHub\imgui\backends;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\Users\caleb\Documents\GitHub\json\single_include\nlohmann;C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;C:\Users\caleb\Documents\GitHub\stb;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\caleb\Documents\common\glfw\lib\Debug;C:\Users\caleb\Documents\common\glew\lib\Release\x64;$(LibraryPath)</LibraryPath>
-    <SourcePath>C:\Users\caleb\Documents\GitHub\imgui\examples;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
+    <SourcePath>C:\Users\caleb\Documents\GitHub\imgui\backends;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>C:\Users\caleb\Documents\common\glew\lib\Release\x64;C:\Users\caleb\Documents\common\glfw\lib\Release;$(LibraryPath)</LibraryPath>
@@ -153,12 +153,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ImGuizmo\ImGuizmo.cpp" />
-    <ClCompile Include="..\..\imgui\examples\imgui_impl_dx11.cpp" />
-    <ClCompile Include="..\..\imgui\examples\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="..\..\imgui\examples\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\..\imgui\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\..\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\..\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="..\..\imgui\imgui.cpp" />
     <ClCompile Include="..\..\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\..\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\..\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\imgui\imgui_widgets.cpp" />
     <ClCompile Include="AABBSystem.cpp" />
     <ClCompile Include="AssetBrowserWindow.cpp" />

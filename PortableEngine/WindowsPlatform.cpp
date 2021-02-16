@@ -2,7 +2,7 @@
 #include "WindowsInputSystem.h"
 #include "WindowsPlatform.h"
 #include <imgui.h>
-#include <examples/imgui_impl_win32.h>
+#include <backends/imgui_impl_win32.h>
 #include "WindowsAssetManager.h"
 
 WindowsPlatform* WindowsPlatform::staticThis = 0;
