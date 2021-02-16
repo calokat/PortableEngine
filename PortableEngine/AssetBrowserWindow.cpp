@@ -8,24 +8,27 @@ void AssetBrowserWindow::Render(IAssetManager* assetManager, IRenderSystem* rend
 	ImGui::SetWindowPos({ 200, 400 });
 	ImGui::SetWindowSize({ 400, 200 });
 
-	for (auto it = assetManager->assets.begin(); it != assetManager->assets.end(); ++it)
+	if (ImGui::BeginTable("Assets", 5))
 	{
-		PEAsset* asset = (*it);
-		ImGui::BeginGroup();
-		ImGui::Image(asset->thumbnail->imageGraphicsData->GetData(), ImVec2(50, 50));
-		ImGui::Text("%s", asset->name.c_str());
-		ImGui::EndGroup();
-		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
+		for (auto it = assetManager->assets.begin(); it != assetManager->assets.end(); ++it)
 		{
-			if (asset->assetType == AssetType::Directory)
+			ImGui::TableNextColumn();
+			PEAsset* asset = (*it);
+			ImGui::BeginGroup();
+			ImGui::Image(asset->thumbnail->imageGraphicsData->GetData(), ImVec2(50, 50));
+			ImGui::TextWrapped("%s", asset->name.c_str());
+			ImGui::EndGroup();
+			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
 			{
-				assetManager->currentAssetPath = asset->path;
-				assetManager->LoadAssetsFromCurrentDirectory(renderSystem);
+				if (asset->assetType == AssetType::Directory)
+				{
+					assetManager->currentAssetPath = asset->path;
+					assetManager->LoadAssetsFromCurrentDirectory(renderSystem);
+				}
+				break;
 			}
-			break;
 		}
-		ImGui::SameLine();
-
+		ImGui::EndTable();
 	}
 	ImGui::End();
 
