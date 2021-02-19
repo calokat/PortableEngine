@@ -4,7 +4,7 @@
 #include <GLES3/gl3.h>
 //#include "imgui_impl_emscripten.h"
 #include "EmscriptenAssetManager.h"
-#include <examples/imgui_impl_sdl.h>
+#include <backends/imgui_impl_sdl.h>
 #include <SDL/SDL_opengles2.h>
 
 EmscriptenPlatform::EmscriptenPlatform(GameWindow* win) : window(win)
