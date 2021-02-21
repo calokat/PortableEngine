@@ -9,6 +9,19 @@ InputData EmscriptenInputSystem::current;
 InputData EmscriptenInputSystem::previous;
 glm::vec2 EmscriptenInputSystem::deltaCursorPos;
 
+EM_JS(void, browserCopy, (const char* toCopy), {
+		let result = navigator.clipboard.writeText(UTF8ToString(toCopy)).then(() => console.log(UTF8ToString(toCopy)));
+	});
+
+EM_JS(const char*, browserPaste, (), {	
+	  return Asyncify.handleAsync(async () => {
+			let cbText = await navigator.clipboard.readText();
+			let lengthBytes = lengthBytesUTF8(cbText) + 1;
+			let stringOnWasmHeap = _malloc(lengthBytes);
+			stringToUTF8(cbText, stringOnWasmHeap, lengthBytes);
+			return stringOnWasmHeap;
+	  })
+})
 EmscriptenInputSystem::EmscriptenInputSystem()
 {
 	// emscripten_set_keydown_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::KeyDownCallback);
@@ -170,11 +183,24 @@ void EmscriptenInputSystem::GetKeyPressed()
 			keyCode = KeyboardCode::N;
 		}
 		current.keys[keyCode] = event.type == SDL_KEYDOWN;
+		current.keys[KeyboardCode::LCtrl] = current.keys[KeyboardCode::RCtrl] = SDL_GetModState() & KMOD_CTRL;
     }
 	ImGuiIO& io = ImGui::GetIO();
 	current.mouseButtons[MouseButton::Left] = io.MouseDown[0];
 	current.mouseButtons[MouseButton::Right] = io.MouseDown[1];
 	current.cursorPos = {io.MousePos.x, io.MousePos.y};
+
+	if (current.keys[KeyboardCode::C] && current.keys[KeyboardCode::LCtrl])
+	{
+		browserCopy(io.GetClipboardTextFn(NULL));
+	}
+	if (current.keys[KeyboardCode::V] && current.keys[KeyboardCode::LCtrl])
+	{
+		const char* cbText = browserPaste();
+		SDL_SetClipboardText(cbText);
+		printf("%s\n", SDL_GetClipboardText());
+		delete cbText;
+	}
 	// int mx, my;
 	// SDL_GetMouseState(&mx, &my);
 	// current.cursorPos.x = (float)mx; current.cursorPos.y = (float)my;
