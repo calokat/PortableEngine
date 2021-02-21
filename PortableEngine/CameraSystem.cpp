@@ -44,10 +44,10 @@ void CameraSystem::CalculateProjectionMatrixLH(Camera& camera, float aspect, boo
 {
 	if (transpose)
 	{
-		camera.projection = glm::transpose(glm::perspectiveFovLH(camera.fieldOfView, 800.f, 600.f, camera.nearPlaneDistance, camera.farPlaneDistance));
+		camera.projection = glm::transpose(glm::perspectiveLH(camera.fieldOfView, aspect, camera.nearPlaneDistance, camera.farPlaneDistance));
 	}
 	else
 	{
-		camera.projection = glm::perspectiveFovLH(camera.fieldOfView, 800.f, 600.f, camera.nearPlaneDistance, camera.farPlaneDistance);
+		camera.projection = glm::perspectiveLH(camera.fieldOfView, aspect, camera.nearPlaneDistance, camera.farPlaneDistance);
 	}
 }

@@ -253,16 +253,16 @@ void MakeRayFromCamera()
 	ImVec2 mousePos = io.MousePos;
 	// Blessed be this code taken from https://gamedev.stackexchange.com/questions/157674/simple-mouseray-picking-in-opengl
 	glm::vec3 mouse_world_nearplane = glm::unProject(
-		glm::vec3(mousePos.x, 600 - mousePos.y, 0.0f),
+		glm::vec3(mousePos.x, window->height - mousePos.y, 0.0f),
 		camera.view, //view matrix
 		camera.projection,
-		glm::ivec4(0, 0, 800, 600));
+		glm::ivec4(0, 0, window->width, window->height));
 
 	glm::vec3 mouse_world_farplane = glm::unProject(
-		glm::vec3(mousePos.x, 600 - mousePos.y, 1.0f),
+		glm::vec3(mousePos.x, window->height - mousePos.y, 1.0f),
 		camera.view, //view matrix
 		camera.projection,
-		glm::ivec4(0, 0, 800, 600));
+		glm::ivec4(0, 0, window->width, window->height));
 
 	glm::vec3 camray = glm::normalize(mouse_world_farplane - mouse_world_nearplane);
 	camray *= 30;
