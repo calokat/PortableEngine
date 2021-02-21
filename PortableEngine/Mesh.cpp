@@ -1,4 +1,3 @@
-#pragma once
 #include "Mesh.h"
 #include <fstream>
 //#include <DirectXMath.h>
