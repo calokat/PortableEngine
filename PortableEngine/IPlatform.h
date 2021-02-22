@@ -3,6 +3,7 @@
 #include "IInputSystem.h"
 #include <glm/glm.hpp>
 #include "IAssetManager.h"
+#include <entt.hpp>
 class IPlatform
 {
 public:
@@ -13,6 +14,7 @@ public:
 	virtual IInputSystem* GetInputSystem() = 0;
 	virtual void NewGuiFrame() = 0;
 	virtual IAssetManager* GetAssetManager() = 0;
+	virtual void SetWindowResizeCallback(entt::delegate<void()> callback) = 0;
 	virtual ~IPlatform() {};
 };
 
