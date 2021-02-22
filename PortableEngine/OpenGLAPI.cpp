@@ -6,6 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <backends/imgui_impl_opengl3.h>
+#include "CameraSystem.h"
 
 //float vertices[] = {
 //-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -122,7 +123,13 @@ void OpenGLAPI::DrawGui()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-OpenGLAPI::OpenGLAPI(GameWindow* win, IPlatform* plat) : window(win), platform(plat)
+void OpenGLAPI::OnResize()
+{
+	glViewport(window->x, window->y, window->width, window->height);
+	CameraSystem::CalculateProjectionMatrixLH(engineCam, (float)window->width / window->height);
+}
+
+OpenGLAPI::OpenGLAPI(GameWindow* win, IPlatform* plat, Camera& cam) : window(win), platform(plat), engineCam(cam)
 {
 #ifdef _WIN64
 	glContext = new WinOpenGLContext(platform);
