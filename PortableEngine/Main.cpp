@@ -485,15 +485,19 @@ int main(int argc, char* argv[])
 #ifdef _WIN64
 	if (options.graphicsAPI == GraphicsAPI::DirectX11)
 	{
-		graph = new DirectXAPI(window);
+		graph = new DirectXAPI(window, cam);
 	}
 	else
 	{
-		graph = new OpenGLAPI(window, plat);
+		graph = new OpenGLAPI(window, plat, cam);
 	}
 #elif defined __EMSCRIPTEN__
-	graph = new OpenGLAPI(window, plat);
+	graph = new OpenGLAPI(window, plat, cam);
 #endif
+	entt::delegate<void()> onResizeDelegate;
+	onResizeDelegate.connect<&IGraphicsAPI::OnResize>(graph);
+	plat->SetWindowResizeCallback(onResizeDelegate);
+
 	plat->InitWindow();
 	graph->Init();
 
@@ -524,6 +528,7 @@ int main(int argc, char* argv[])
 		Loop();
 	}
 #endif
+	onResizeDelegate.reset();
 	delete window;
 	delete plat;
 	delete graph;
