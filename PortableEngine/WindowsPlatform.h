@@ -20,6 +20,7 @@ public:
 	IInputSystem* GetInputSystem();
 	void NewGuiFrame();
 	IAssetManager* GetAssetManager();
+	void SetWindowResizeCallback(entt::delegate<void()> callback);
 
 private:
 	static WindowsPlatform* staticThis;
@@ -34,6 +35,6 @@ private:
 	HDC hdc;
 	IInputSystem* inputSystem;
 	IAssetManager* assetManager;
-
+	entt::delegate<void()> windowResizeCallback;
 };
 #endif

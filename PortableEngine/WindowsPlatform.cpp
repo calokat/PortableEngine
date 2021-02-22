@@ -158,6 +158,11 @@ IAssetManager* WindowsPlatform::GetAssetManager()
 	return assetManager;
 }
 
+void WindowsPlatform::SetWindowResizeCallback(entt::delegate<void()> callback)
+{
+	windowResizeCallback = callback;
+}
+
 WindowsPlatform::WindowsPlatform(GameWindow* win)
 {
 	staticThis = this;
@@ -219,6 +224,7 @@ LRESULT WindowsPlatform::ProcessMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 
 		//if (device)
 		//	OnResize();
+		windowResizeCallback();
 
 		return 0;
 
