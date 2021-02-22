@@ -4,6 +4,7 @@
 #include "Vertex.h"
 #include <iostream>
 #include <backends/imgui_impl_dx11.h>
+#include "CameraSystem.h"
 // ********** REQUIRED WITHOUT SIMPLE SHADER **********
 // Needed for a helper function to read compiled shader files from the hard drive
 #pragma comment(lib, "d3dcompiler.lib")
@@ -148,7 +149,7 @@ int DirectXAPI::Init()
 
 }
 
-DirectXAPI::DirectXAPI(GameWindow* win) : window(win)
+DirectXAPI::DirectXAPI(GameWindow* win, Camera& cam) : window(win), engineCam(cam)
 {
 	// Initialize fields
 	vertexBuffer = 0;
@@ -449,5 +450,82 @@ void DirectXAPI::NewGuiFrame()
 void DirectXAPI::DrawGui()
 {
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+}
+
+void DirectXAPI::OnResize()
+{
+	if (!device)
+		return;
+	// Release the buffers before resizing the swap chain
+	backBufferRTV.Reset();
+	depthStencilView.Reset();
+
+	// Resize the underlying swap chain buffers
+	swapChain->ResizeBuffers(
+		2,
+		window->width,
+		window->height,
+		DXGI_FORMAT_R8G8B8A8_UNORM,
+		0);
+
+	// Recreate the render target view for the back buffer
+	// texture, then release our local texture reference
+	ID3D11Texture2D* backBufferTexture = 0;
+	swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBufferTexture));
+	if (backBufferTexture != 0)
+	{
+		device->CreateRenderTargetView(
+			backBufferTexture,
+			0,
+			backBufferRTV.ReleaseAndGetAddressOf()); // ReleaseAndGetAddressOf() cleans up the old object before giving us the pointer
+		backBufferTexture->Release();
+	}
+
+	// Set up the description of the texture to use for the depth buffer
+	D3D11_TEXTURE2D_DESC depthStencilDesc;
+	depthStencilDesc.Width = window->width;
+	depthStencilDesc.Height = window->height;
+	depthStencilDesc.MipLevels = 1;
+	depthStencilDesc.ArraySize = 1;
+	depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthStencilDesc.CPUAccessFlags = 0;
+	depthStencilDesc.MiscFlags = 0;
+	depthStencilDesc.SampleDesc.Count = 1;
+	depthStencilDesc.SampleDesc.Quality = 0;
+
+	// Create the depth buffer and its view, then 
+	// release our reference to the texture
+	ID3D11Texture2D* depthBufferTexture = 0;
+	device->CreateTexture2D(&depthStencilDesc, 0, &depthBufferTexture);
+	if (depthBufferTexture != 0)
+	{
+		device->CreateDepthStencilView(
+			depthBufferTexture,
+			0,
+			depthStencilView.ReleaseAndGetAddressOf()); // ReleaseAndGetAddressOf() cleans up the old object before giving us the pointer
+		depthBufferTexture->Release();
+	}
+
+	// Bind the views to the pipeline, so rendering properly 
+	// uses their underlying textures
+	context->OMSetRenderTargets(
+		1,
+		backBufferRTV.GetAddressOf(), // This requires a pointer to a pointer (an array of pointers), so we get the address of the pointer
+		depthStencilView.Get());
+
+	// Lastly, set up a viewport so we render into
+	// to correct portion of the window
+	D3D11_VIEWPORT viewport = {};
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	viewport.Width = (float)window->width;
+	viewport.Height = (float)window->height;
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0f;
+	context->RSSetViewports(1, &viewport);
+
+	CameraSystem::CalculateProjectionMatrixLH(engineCam, (float)window->width / window->height);
 }
 #endif
