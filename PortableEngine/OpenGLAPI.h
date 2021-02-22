@@ -14,10 +14,11 @@ public:
 	int Init();
 	void ClearScreen();
 	void Draw();
-	OpenGLAPI(GameWindow*, IPlatform*);
+	OpenGLAPI(GameWindow*, IPlatform*, Camera&);
 	void _SwapBuffers();
 	void NewGuiFrame();
 	void DrawGui();
+	void OnResize();
 	~OpenGLAPI();
 private:
 	GameWindow* window;
@@ -30,5 +31,6 @@ private:
 	IPlatform* platform;
 	Shader* vertex;
 	Shader* pixel;
+	Camera& engineCam;
 };
 
