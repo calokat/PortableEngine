@@ -13,13 +13,14 @@ class DirectXAPI :
 public:
 	int Init();
 	GameWindow* window;
-	DirectXAPI(GameWindow*);
+	DirectXAPI(GameWindow*, Camera&);
 	void ClearScreen();
 	void Draw();
 	~DirectXAPI();
 	void _SwapBuffers();
 	void NewGuiFrame();
 	void DrawGui();
+	void OnResize();
 	Microsoft::WRL::ComPtr<ID3D11Device>		device;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>	context;
 
@@ -50,6 +51,6 @@ private:
 	glm::mat4 projectionMatrix;
 
 	//Mesh* testHelix;
-
+	Camera& engineCam;
 };
 #endif
