@@ -520,14 +520,10 @@ int main(int argc, char* argv[])
 	//renderSystem->CreateTexture(assetThumbnail.assetImage);
 	//renderSystem->LoadTexture(&assetThumbnail.assetImageRenderer, assetThumbnail.assetImage);
 	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0), "Cone");
-#ifdef __EMSCRIPTEN__
-	emscripten_set_main_loop(Loop, 0, 1);
-#else
 	while (plat->Run() == 0)
 	{
 		Loop();
 	}
-#endif
 	onResizeDelegate.reset();
 	delete window;
 	delete plat;
