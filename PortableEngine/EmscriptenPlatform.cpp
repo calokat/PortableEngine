@@ -7,8 +7,10 @@
 #include <backends/imgui_impl_sdl.h>
 #include <SDL/SDL_opengles2.h>
 
+EmscriptenPlatform* EmscriptenPlatform::staticThis = 0;
 EmscriptenPlatform::EmscriptenPlatform(GameWindow* win) : window(win)
 {
+	staticThis = this;
 	inputSystem = new EmscriptenInputSystem();
 	assetManager = new EmscriptenAssetManager();
 	//ImGui_ImplEmscripten_Init(window, inputSystem);
@@ -17,6 +19,8 @@ EmscriptenPlatform::EmscriptenPlatform(GameWindow* win) : window(win)
 		printf("Error: %s\n", SDL_GetError());
 		return;
 	}
+
+	emscripten_set_resize_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, NULL, false, BrowserWindowResizeCallback);
 }
 
 EmscriptenPlatform::~EmscriptenPlatform()
@@ -131,5 +135,25 @@ void EmscriptenPlatform::NewGuiFrame()
 IAssetManager* EmscriptenPlatform::GetAssetManager()
 {
 	return assetManager;
+}
+
+void EmscriptenPlatform::SetWindowResizeCallback(entt::delegate<void()> callback)
+{
+	windowResizeCallback = callback;
+}
+
+EM_BOOL EmscriptenPlatform::BrowserWindowResizeCallback(int eventType, const EmscriptenUiEvent* uiEvent, void* userData)
+{
+	double canvasWidth;
+	double canvasHeight;
+	emscripten_get_element_css_size("canvas.emscripten", &canvasWidth, &canvasHeight);
+	printf("Window was resized with width %i and height %i\n", (int)canvasWidth, (int)canvasHeight);
+	// printf("Window was resized with width %i and height %i\n", uiEvent->windowInnerWidth, uiEvent->windowInnerHeight);
+	// staticThis->window->width = uiEvent->windowInnerWidth;
+	// staticThis->window->height = uiEvent->windowInnerHeight;
+	staticThis->window->width = canvasWidth;
+	staticThis->window->height = canvasHeight;
+	staticThis->windowResizeCallback();
+	return true;
 }
 #endif

@@ -25,11 +25,15 @@ public:
 	IInputSystem* GetInputSystem();
 	void NewGuiFrame();
 	IAssetManager* GetAssetManager();
+	void SetWindowResizeCallback(entt::delegate<void()> callback);
 private:
+	static EmscriptenPlatform* staticThis;
+	static EM_BOOL BrowserWindowResizeCallback(int eventType, const EmscriptenUiEvent* uiEvent, void* userData);
 	EGLNativeWindowType hWnd;
 	Display *x_display;
 	IInputSystem* inputSystem;
 	IAssetManager* assetManager;
 	SDL_Window* g_Window = NULL;
+	entt::delegate<void()> windowResizeCallback;
 };
 #endif
