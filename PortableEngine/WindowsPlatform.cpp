@@ -222,9 +222,11 @@ LRESULT WindowsPlatform::ProcessMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 		// If DX is initialized, resize 
 		// our required buffers
 
-		//if (device)
+		if (window->deviceContext)
+		{
+			windowResizeCallback();
+		}
 		//	OnResize();
-		windowResizeCallback();
 
 		return 0;
 
