@@ -140,6 +140,16 @@ IAssetManager* EmscriptenPlatform::GetAssetManager()
 void EmscriptenPlatform::SetWindowResizeCallback(entt::delegate<void()> callback)
 {
 	windowResizeCallback = callback;
+	// In the browser, the canvas starts out distorted, since by default
+	// the canvas takes up the entire document body but the camera is expecting
+	// a window that is 800 x 600. So we should call the windowResizeCallback
+	// during initialization.
+	double canvasWidth;
+	double canvasHeight;
+	emscripten_get_element_css_size("canvas.emscripten", &canvasWidth, &canvasHeight);
+	window->width = canvasWidth;
+	window->height = canvasHeight;
+	windowResizeCallback();
 }
 
 EM_BOOL EmscriptenPlatform::BrowserWindowResizeCallback(int eventType, const EmscriptenUiEvent* uiEvent, void* userData)
