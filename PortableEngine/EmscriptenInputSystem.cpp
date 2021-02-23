@@ -188,7 +188,7 @@ void EmscriptenInputSystem::GetKeyPressed()
 	ImGuiIO& io = ImGui::GetIO();
 	current.mouseButtons[MouseButton::Left] = io.MouseDown[0];
 	current.mouseButtons[MouseButton::Right] = io.MouseDown[1];
-	current.cursorPos = {io.MousePos.x, io.MousePos.y};
+	//current.cursorPos = {io.MousePos.x, io.MousePos.y};
 
 	if (current.keys[KeyboardCode::C] && current.keys[KeyboardCode::LCtrl])
 	{
@@ -201,9 +201,9 @@ void EmscriptenInputSystem::GetKeyPressed()
 		printf("%s\n", SDL_GetClipboardText());
 		delete cbText;
 	}
-	// int mx, my;
-	// SDL_GetMouseState(&mx, &my);
-	// current.cursorPos.x = (float)mx; current.cursorPos.y = (float)my;
+	 int mx, my;
+	 SDL_GetMouseState(&mx, &my);
+	 current.cursorPos.x = (float)mx; current.cursorPos.y = (float)my;
 	//current.keys[KeyboardCode::W] = true;
 
 }
