@@ -494,12 +494,13 @@ int main(int argc, char* argv[])
 #elif defined __EMSCRIPTEN__
 	graph = new OpenGLAPI(window, plat, cam);
 #endif
-	entt::delegate<void()> onResizeDelegate;
-	onResizeDelegate.connect<&IGraphicsAPI::OnResize>(graph);
-	plat->SetWindowResizeCallback(onResizeDelegate);
 
 	plat->InitWindow();
 	graph->Init();
+
+	entt::delegate<void()> onResizeDelegate;
+	onResizeDelegate.connect<&IGraphicsAPI::OnResize>(graph);
+	plat->SetWindowResizeCallback(onResizeDelegate);
 
 #ifdef _WIN64
 	if (options.graphicsAPI == GraphicsAPI::DirectX11)
