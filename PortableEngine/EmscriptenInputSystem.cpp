@@ -26,9 +26,9 @@ EmscriptenInputSystem::EmscriptenInputSystem()
 {
 	// emscripten_set_keydown_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::KeyDownCallback);
 	// emscripten_set_keyup_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::KeyUpCallback);
-	// emscripten_set_mousemove_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseCallback);
-	// emscripten_set_mousedown_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseDownCallback);
-	// emscripten_set_mouseup_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseUpCallback);
+	emscripten_set_mousemove_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseCallback);
+	emscripten_set_mousedown_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseDownCallback);
+	emscripten_set_mouseup_callback("canvas.emscripten", nullptr, false, EmscriptenInputSystem::MouseUpCallback);
 	//sdlKeyMap.emplace<int, int>(97, KeyboardCode::A);
 	//sdlKeyMap.emplace<int, int>(98, KeyboardCode::B);
 	//sdlKeyMap.emplace<int, int>(99, KeyboardCode::C);
@@ -249,44 +249,32 @@ glm::vec2 EmscriptenInputSystem::GetDeltaCursorPosition()
 	// when called.
 	// glm::vec2 returnValue = deltaCursorPos;
 	// deltaCursorPos = glm::vec2(0, 0);
-	return current.cursorPos - previous.cursorPos;
+	glm::vec2 returnValue = deltaCursorPos;
+	deltaCursorPos = glm::vec2(0, 0);
+	return returnValue;
+	
 }
 EM_BOOL EmscriptenInputSystem::MouseCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
 {
 	// previous = current;
-	current.cursorPos = glm::vec2(mouseEvent->targetX, mouseEvent->targetY);
+	// current.cursorPos = glm::vec2(mouseEvent->targetX, mouseEvent->targetY);
 	deltaCursorPos = glm::vec2(mouseEvent->movementX, mouseEvent->movementY);
 	return false;
 }
 EM_BOOL EmscriptenInputSystem::MouseDownCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
 {
-	ImGuiIO& io = ImGui::GetIO();
 	if ((mouseEvent->buttons & 2) == 2)
 	{
-		io.MouseDown[2] = true;
-		current.mouseButtons[MouseButton::Right] = true;
 		emscripten_request_pointerlock("canvas.emscripten", true);
-	}
-	if ((mouseEvent->button) == 0)
-	{
-		io.MouseDown[0] = true;
-		current.mouseButtons[MouseButton::Left] = true;
 	}
 	return false;
 }
 EM_BOOL EmscriptenInputSystem::MouseUpCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
 {
-	ImGuiIO& io = ImGui::GetIO();
 	if ((mouseEvent->buttons & 2) != 2)
 	{
-		io.MouseDown[2] = false;
-		current.mouseButtons[MouseButton::Right] = false;
 		emscripten_exit_pointerlock();
-	}
-	if ((mouseEvent->button) == 0)
-	{
-		io.MouseDown[0] = false;
-		current.mouseButtons[MouseButton::Left] = false;
+		deltaCursorPos = glm::vec2(0);
 	}
 	return false;
 }
