@@ -353,4 +353,9 @@ CMakeCache.txt
 # ImGui files
 */imgui.ini
 PortableEngine/*.json
+
+# Custom scene file
 *.pg
+
+# Include the 3D  models
+!Assets/Models/*.obj
