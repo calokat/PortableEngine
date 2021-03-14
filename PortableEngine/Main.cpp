@@ -220,7 +220,7 @@ void RaycastAgainstAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, entt::basic_view<
 {
 	for (auto& ae : aabbView)
 	{
-		AABB& aabb = aabbView.get(ae);
+		AABB& aabb = aabbView.get<AABB>(ae);
 		// Thank you https://gdbooks.gitbooks.io/3dcollisions/content/Chapter3/raycast_aabb.html
 		float t1 = (aabb.min.x - rayOrigin.x) / rayDir.x;
 		float t2 = (aabb.max.x - rayOrigin.x) / rayDir.x;
