@@ -70,14 +70,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\caleb\Documents\GitHub\json\single_include\nlohmann;C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;C:\Users\caleb\Documents\GitHub\stb;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\caleb\Documents\common\glfw\lib\Debug;C:\Users\caleb\Documents\common\glew\lib\Release\x64;$(LibraryPath)</LibraryPath>
-    <SourcePath>C:\Users\caleb\Documents\GitHub\imgui\backends;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
+    <IncludePath>..\..\json\single_include\nlohmann;..\..\..\common\glew\include;..\..\entt\src\entt;..\..\imgui;..\..\stb;..\..\ImGuizmo;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\..\common\glew\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <SourcePath>..\..\GitHub\imgui\backends;..\..\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\caleb\Documents\GitHub\json\single_include\nlohmann;C:\Users\caleb\Documents\common\glew\include;C:\Users\caleb\Documents\common\glfw\include;C:\Users\caleb\Documents\GitHub\entt\src\entt;C:\Users\caleb\Documents\GitHub\imgui;C:\Users\caleb\Documents\GitHub\stb;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\caleb\Documents\common\glfw\lib\Debug;C:\Users\caleb\Documents\common\glew\lib\Release\x64;$(LibraryPath)</LibraryPath>
-    <SourcePath>C:\Users\caleb\Documents\GitHub\imgui\backends;C:\Users\caleb\Documents\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
+    <IncludePath>..\..\json\single_include\nlohmann;..\..\..\common\glew\include;..\..\entt\src\entt;..\..\imgui;..\..\stb;..\..\ImGuizmo;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\..\common\glew\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <SourcePath>..\..\GitHub\imgui\backends;..\..\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>C:\Users\caleb\Documents\common\glew\lib\Release\x64;C:\Users\caleb\Documents\common\glfw\lib\Release;$(LibraryPath)</LibraryPath>
@@ -95,12 +95,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\caleb\Documents\common\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\common\glm</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -109,12 +109,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\caleb\Documents\common\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\common\glm</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
