@@ -209,6 +209,7 @@
     <ClCompile Include="WindowsInputSystem.cpp" />
     <ClCompile Include="WindowsPlatform.cpp" />
     <ClCompile Include="WinOpenGLContext.cpp" />
+    <ClCompile Include="XRAPI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
@@ -270,6 +271,7 @@
     <ClInclude Include="WindowsInputSystem.h" />
     <ClInclude Include="WindowsPlatform.h" />
     <ClInclude Include="WinOpenGLContext.h" />
+    <ClInclude Include="XRAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

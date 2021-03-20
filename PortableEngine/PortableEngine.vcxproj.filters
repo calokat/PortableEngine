@@ -56,6 +56,7 @@
     <ClCompile Include="..\..\imgui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\..\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="..\..\imgui\imgui_tables.cpp" />
+    <ClCompile Include="XRAPI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
@@ -117,6 +118,7 @@
     <ClInclude Include="IAssetManager.h" />
     <ClInclude Include="WindowsAssetManager.h" />
     <ClInclude Include="PEAsset.h" />
+    <ClInclude Include="XRAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
