@@ -125,6 +125,7 @@
     <ClInclude Include="IXRGraphicsPlugin.h" />
     <ClInclude Include="XRGraphicsPlugin_OpenGL.h" />
     <ClInclude Include="XRPlatformPlugin_Win32.h" />
+    <ClInclude Include="xr_defines.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
