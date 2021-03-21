@@ -120,6 +120,7 @@
     <ClInclude Include="PEAsset.h" />
     <ClInclude Include="XRAPI.h" />
     <ClInclude Include="IXRPlatformPlugin.h" />
+    <ClInclude Include="IXRGraphicsPlugin.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

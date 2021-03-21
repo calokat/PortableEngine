@@ -246,6 +246,7 @@
     <ClInclude Include="IPlatform.h" />
     <ClInclude Include="IRenderer.h" />
     <ClInclude Include="IRenderSystem.h" />
+    <ClInclude Include="IXRGraphicsPlugin.h" />
     <ClInclude Include="IXRPlatformPlugin.h" />
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Material.h" />
