@@ -148,3 +148,8 @@ OpenGLAPI::~OpenGLAPI()
 	delete pixel;
 	delete xrGraphics;
 }
+
+IXRGraphicsPlugin* OpenGLAPI::GetXRGraphicsPlugin()
+{
+	return xrGraphics;
+}
