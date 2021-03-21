@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include "IAssetManager.h"
 #include <entt.hpp>
+#include "IXRPlatformPlugin.h"
 class IPlatform
 {
 public:
@@ -15,6 +16,7 @@ public:
 	virtual void NewGuiFrame() = 0;
 	virtual IAssetManager* GetAssetManager() = 0;
 	virtual void SetWindowResizeCallback(entt::delegate<void()> callback) = 0;
+	virtual IXRPlatformPlugin* GetXRPlatformPlugin() = 0;
 	virtual ~IPlatform() {};
 };
 
