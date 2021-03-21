@@ -57,6 +57,7 @@
     <ClCompile Include="..\..\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="..\..\imgui\imgui_tables.cpp" />
     <ClCompile Include="XRAPI.cpp" />
+    <ClCompile Include="XRGraphicsPlugin_OpenGL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
@@ -121,6 +122,7 @@
     <ClInclude Include="XRAPI.h" />
     <ClInclude Include="IXRPlatformPlugin.h" />
     <ClInclude Include="IXRGraphicsPlugin.h" />
+    <ClInclude Include="XRGraphicsPlugin_OpenGL.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
