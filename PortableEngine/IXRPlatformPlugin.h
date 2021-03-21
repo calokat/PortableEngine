@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "xr_defines.h"
 class IXRPlatformPlugin
 {
 public:
