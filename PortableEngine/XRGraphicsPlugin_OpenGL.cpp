@@ -1,6 +1,6 @@
 #include "XRGraphicsPlugin_OpenGL.h"
 
-const char* XRGraphicsPlugin_OpenGL::GetGraphicsExtensionName()
+std::vector<const char*> XRGraphicsPlugin_OpenGL::GetGraphicsExtensions()
 {
-    return "XR_KHR_opengl_enable";
+    return { "XR_KHR_opengl_enable" };
 }

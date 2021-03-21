@@ -1,5 +1,6 @@
 #pragma once
+#include <vector>
 class IXRGraphicsPlugin {
 public:
-	virtual const char* GetGraphicsExtensionName() = 0;
+	virtual std::vector<const char*> GetGraphicsExtensions() = 0;
 };

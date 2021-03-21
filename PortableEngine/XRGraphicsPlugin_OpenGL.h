@@ -3,6 +3,6 @@
 class XRGraphicsPlugin_OpenGL :
     public IXRGraphicsPlugin
 {
-    const char* GetGraphicsExtensionName();
+    std::vector<const char*> GetGraphicsExtensions();
 };
 
