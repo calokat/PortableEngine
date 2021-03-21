@@ -5,6 +5,7 @@ class XRPlatformPlugin_Win32 :
 {
 public:
     std::vector<const char*> GetPlatformExtensions();
+    void* GetInstanceCreateExtension();
 
 };
 
