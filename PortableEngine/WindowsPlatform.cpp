@@ -4,6 +4,7 @@
 #include <imgui.h>
 #include <backends/imgui_impl_win32.h>
 #include "WindowsAssetManager.h"
+#include "XRPlatformPlugin_Win32.h"
 
 WindowsPlatform* WindowsPlatform::staticThis = 0;
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -158,6 +159,11 @@ IAssetManager* WindowsPlatform::GetAssetManager()
 	return assetManager;
 }
 
+IXRPlatformPlugin* WindowsPlatform::GetXRPlatformPlugin()
+{
+	return xrPlatform;
+}
+
 void WindowsPlatform::SetWindowResizeCallback(entt::delegate<void()> callback)
 {
 	windowResizeCallback = callback;
@@ -168,6 +174,7 @@ WindowsPlatform::WindowsPlatform(GameWindow* win)
 	staticThis = this;
 	window = win;
 	assetManager = new WindowsAssetManager();
+	xrPlatform = new XRPlatformPlugin_Win32();
 	//hInstance = hinst;
 	/*windowWidth = winWidth;
 	windowHeight = winHeight;*/
@@ -179,6 +186,7 @@ WindowsPlatform::~WindowsPlatform()
 	ImGui_ImplWin32_Shutdown();
 	delete inputSystem;
 	delete assetManager;
+	delete xrPlatform;
 }
 
 LRESULT WindowsPlatform::WindowsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
