@@ -211,6 +211,7 @@
     <ClCompile Include="WinOpenGLContext.cpp" />
     <ClCompile Include="XRAPI.cpp" />
     <ClCompile Include="XRGraphicsPlugin_OpenGL.cpp" />
+    <ClCompile Include="XRPlatformPlugin_Win32.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
@@ -276,6 +277,7 @@
     <ClInclude Include="WinOpenGLContext.h" />
     <ClInclude Include="XRAPI.h" />
     <ClInclude Include="XRGraphicsPlugin_OpenGL.h" />
+    <ClInclude Include="XRPlatformPlugin_Win32.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
