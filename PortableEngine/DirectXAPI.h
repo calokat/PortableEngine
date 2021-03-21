@@ -23,6 +23,7 @@ public:
 	void OnResize();
 	Microsoft::WRL::ComPtr<ID3D11Device>		device;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>	context;
+	IXRGraphicsPlugin* GetXRGraphicsPlugin();
 
 private:
 	void LoadShaders();

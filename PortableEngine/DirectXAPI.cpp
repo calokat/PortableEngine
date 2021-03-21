@@ -528,4 +528,8 @@ void DirectXAPI::OnResize()
 
 	CameraSystem::CalculateProjectionMatrixLH(engineCam, (float)window->width / window->height);
 }
+IXRGraphicsPlugin* DirectXAPI::GetXRGraphicsPlugin()
+{
+	return nullptr;
+}
 #endif
