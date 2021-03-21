@@ -1,4 +1,5 @@
 #pragma once
+#include "IXRGraphicsPlugin.h"
 class IGraphicsAPI
 {
 public:
@@ -10,4 +11,5 @@ public:
 	virtual void DrawGui() = 0;
 	virtual void OnResize() = 0;
 	virtual ~IGraphicsAPI() {};
+	virtual IXRGraphicsPlugin* GetXRGraphicsPlugin() = 0;
 };
