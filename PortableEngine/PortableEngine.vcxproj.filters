@@ -119,6 +119,7 @@
     <ClInclude Include="WindowsAssetManager.h" />
     <ClInclude Include="PEAsset.h" />
     <ClInclude Include="XRAPI.h" />
+    <ClInclude Include="IXRPlatformPlugin.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
