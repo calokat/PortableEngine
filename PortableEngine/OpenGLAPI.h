@@ -20,6 +20,7 @@ public:
 	void DrawGui();
 	void OnResize();
 	~OpenGLAPI();
+	IXRGraphicsPlugin* GetXRGraphicsPlugin();
 private:
 	GameWindow* window;
 //#ifdef _WIN64
@@ -32,5 +33,6 @@ private:
 	Shader* vertex;
 	Shader* pixel;
 	Camera& engineCam;
+	IXRGraphicsPlugin* xrGraphics;
 };
 

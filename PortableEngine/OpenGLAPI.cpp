@@ -7,6 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <backends/imgui_impl_opengl3.h>
 #include "CameraSystem.h"
+#include "XRGraphicsPlugin_OpenGL.h"
 
 //float vertices[] = {
 //-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -136,6 +137,7 @@ OpenGLAPI::OpenGLAPI(GameWindow* win, IPlatform* plat, Camera& cam) : window(win
 #elif defined(__EMSCRIPTEN__)
 	glContext = new OpenGLESContext(platform);
 #endif
+	xrGraphics = new XRGraphicsPlugin_OpenGL();
 }
 
 OpenGLAPI::~OpenGLAPI()
@@ -144,4 +146,5 @@ OpenGLAPI::~OpenGLAPI()
 	delete glContext;
 	delete vertex;
 	delete pixel;
+	delete xrGraphics;
 }
