@@ -137,7 +137,7 @@ OpenGLAPI::OpenGLAPI(GameWindow* win, IPlatform* plat, Camera& cam) : window(win
 #elif defined(__EMSCRIPTEN__)
 	glContext = new OpenGLESContext(platform);
 #endif
-	xrGraphics = new XRGraphicsPlugin_OpenGL();
+	xrGraphics = new XRGraphicsPlugin_OpenGL(window, glContext);
 }
 
 OpenGLAPI::~OpenGLAPI()
