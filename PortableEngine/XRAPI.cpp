@@ -6,7 +6,7 @@ XRAPI::XRAPI(IPlatform* plat, IGraphicsAPI* graph) : platform(plat), graphics(gr
 	Init();
 	InitializeXRSystem();
 	InitializeXRSession();
-	//CreateSwapchains();
+	CreateSwapchains();
 }
 
 XrResult XRAPI::Init()
@@ -97,12 +97,13 @@ void XRAPI::CreateVisualizedSpaces()
 
 void XRAPI::CreateSwapchains()
 {
+	XrResult res;
 	XrSystemProperties systemProperties{ XR_TYPE_SYSTEM_PROPERTIES };
-	xrGetSystemProperties(m_instance, m_systemId, &systemProperties);
+	res = xrGetSystemProperties(m_instance, m_systemId, &systemProperties);
 	uint32_t viewCount;
-	xrEnumerateViewConfigurationViews(m_instance, m_systemId, m_viewConfigType, 0, &viewCount, nullptr);
+	res = xrEnumerateViewConfigurationViews(m_instance, m_systemId, m_viewConfigType, 0, &viewCount, nullptr);
 	m_configViews.resize(viewCount, { XR_TYPE_VIEW_CONFIGURATION_VIEW });
-	xrEnumerateViewConfigurationViews(m_instance, m_systemId, m_viewConfigType, viewCount, &viewCount,
+	res = xrEnumerateViewConfigurationViews(m_instance, m_systemId, m_viewConfigType, viewCount, &viewCount,
 		m_configViews.data());
 
 	// Create and cache view buffer for xrLocateViews later.
@@ -112,9 +113,9 @@ void XRAPI::CreateSwapchains()
 	if (viewCount > 0) {
 		// Select a swapchain format.
 		uint32_t swapchainFormatCount;
-		xrEnumerateSwapchainFormats(m_session, 0, &swapchainFormatCount, nullptr);
+		res = xrEnumerateSwapchainFormats(m_session, 0, &swapchainFormatCount, nullptr);
 		std::vector<int64_t> swapchainFormats(swapchainFormatCount);
-		xrEnumerateSwapchainFormats(m_session, (uint32_t)swapchainFormats.size(), &swapchainFormatCount,
+		res = xrEnumerateSwapchainFormats(m_session, (uint32_t)swapchainFormats.size(), &swapchainFormatCount,
 			swapchainFormats.data());
 		swapchainFormatCount == swapchainFormats.size();
 		m_colorSwapchainFormat = graphics->GetXRGraphicsPlugin()->SelectColorSwapchainFormat(swapchainFormats);
@@ -158,16 +159,16 @@ void XRAPI::CreateSwapchains()
 			Swapchain swapchain;
 			swapchain.width = swapchainCreateInfo.width;
 			swapchain.height = swapchainCreateInfo.height;
-			xrCreateSwapchain(m_session, &swapchainCreateInfo, &swapchain.handle);
+			res = xrCreateSwapchain(m_session, &swapchainCreateInfo, &swapchain.handle);
 
 			m_swapchains.push_back(swapchain);
 
 			uint32_t imageCount;
-			xrEnumerateSwapchainImages(swapchain.handle, 0, &imageCount, nullptr);
+			res = xrEnumerateSwapchainImages(swapchain.handle, 0, &imageCount, nullptr);
 			// XXX This should really just return XrSwapchainImageBaseHeader*
 			std::vector<XrSwapchainImageBaseHeader*> swapchainImages =
 				graphics->GetXRGraphicsPlugin()->AllocateSwapchainImageStructs(imageCount, swapchainCreateInfo);
-			xrEnumerateSwapchainImages(swapchain.handle, imageCount, &imageCount, swapchainImages[0]);
+			res = xrEnumerateSwapchainImages(swapchain.handle, imageCount, &imageCount, swapchainImages[0]);
 
 			m_swapchainImages.insert(std::make_pair(swapchain.handle, std::move(swapchainImages)));
 		}
