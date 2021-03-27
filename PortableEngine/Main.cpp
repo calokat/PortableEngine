@@ -535,6 +535,7 @@ int main(int argc, char* argv[])
 	delete plat;
 	delete graph;
 	delete renderSystem;
+	delete xr;
 	ImGui::DestroyContext();
 	return 0;
 }
