@@ -5,7 +5,7 @@ XRAPI::XRAPI(IPlatform* plat, IGraphicsAPI* graph) : platform(plat), graphics(gr
 {
 	Init();
 	InitializeXRSystem();
-	//InitializeXRSession();
+	InitializeXRSession();
 	//CreateSwapchains();
 }
 
@@ -77,14 +77,15 @@ void XRAPI::InitializeXRSession()
 	XrSessionCreateInfo createInfo{ XR_TYPE_SESSION_CREATE_INFO };
 	createInfo.next = graphics->GetXRGraphicsPlugin()->GetGraphicsBinding();
 	createInfo.systemId = m_systemId;
-	xrCreateSession(m_instance, &createInfo, &m_session);
+	XrResult res = xrCreateSession(m_instance, &createInfo, &m_session);
 
 
 	XrReferenceSpaceCreateInfo referenceSpaceCreateInfo{ XR_TYPE_REFERENCE_SPACE_CREATE_INFO };
-	XrPosef t;
+	referenceSpaceCreateInfo.referenceSpaceType = XR_REFERENCE_SPACE_TYPE_STAGE;
+	XrPosef t{};
 	t.orientation.w = 1;
 	referenceSpaceCreateInfo.poseInReferenceSpace = t;
-	xrCreateReferenceSpace(m_session, &referenceSpaceCreateInfo, &m_appSpace);
+	res = xrCreateReferenceSpace(m_session, &referenceSpaceCreateInfo, &m_appSpace);
 
 
 }
