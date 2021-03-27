@@ -19,6 +19,7 @@ public:
 	XRAPI(IPlatform* plat, IGraphicsAPI* graph);
     void PollEvents(/*bool* exitRenderLoop, bool* requestRestart*/);
     bool IsSessionRunning();
+    void RenderFrame();
 private:
 	IPlatform* platform;
 	IGraphicsAPI* graphics;
