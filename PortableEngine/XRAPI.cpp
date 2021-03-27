@@ -1,11 +1,12 @@
 #include "XRAPI.h"
 #include <iostream>
+#include <assert.h>
 XRAPI::XRAPI(IPlatform* plat, IGraphicsAPI* graph) : platform(plat), graphics(graph)
 {
 	Init();
-	InitializeXRSystem();
-	InitializeXRSession();
-	CreateSwapchains();
+	//InitializeXRSystem();
+	//InitializeXRSession();
+	//CreateSwapchains();
 }
 
 XrResult XRAPI::Init()
@@ -31,6 +32,7 @@ XrResult XRAPI::Init()
 
 XrResult XRAPI::CreateXRInstance()
 {
+	assert(m_instance == XR_NULL_HANDLE);
 	std::vector<const char*> extensions;
 	const std::vector<const char*> platformExtensions = platform->GetXRPlatformPlugin()->GetPlatformExtensions();
 	std::transform(platformExtensions.begin(), platformExtensions.end(), std::back_inserter(extensions),
@@ -54,6 +56,10 @@ XrResult XRAPI::CreateXRInstance()
 	strcpy_s(createInfo.applicationInfo.applicationName, "Portable Engine");
 	createInfo.applicationInfo.apiVersion = XR_CURRENT_API_VERSION;
 	XrResult createInstanceResult = xrCreateInstance(&createInfo, &m_instance);
+	if (!XR_SUCCEEDED(createInstanceResult))
+	{
+		throw "There is no XR instance";
+	}
 	return createInstanceResult;
 }
 
