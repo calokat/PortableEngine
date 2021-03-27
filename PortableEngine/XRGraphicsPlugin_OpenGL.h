@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <list>
 #include <map>
+#include <GL/glew.h>
 class XRGraphicsPlugin_OpenGL :
     public IXRGraphicsPlugin
 {
