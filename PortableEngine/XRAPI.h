@@ -31,6 +31,8 @@ private:
     const XrEventDataBaseHeader* TryReadNextEvent();
     void HandleSessionStateChangedEvent(const XrEventDataSessionStateChanged& stateChangedEvent/*, bool* exitRenderLoop,
         bool* requestRestart*/);
+    bool RenderLayer(XrTime predictedDisplayTime, std::vector<XrCompositionLayerProjectionView>& projectionLayerViews,
+        XrCompositionLayerProjection& layer);
     XrInstance m_instance{ XR_NULL_HANDLE };
     XrSession m_session{ XR_NULL_HANDLE };
     XrSpace m_appSpace{ XR_NULL_HANDLE };
