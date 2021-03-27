@@ -40,13 +40,17 @@
 #include "EntityListWindow.h"
 #include "InspectorWindow.h"
 #include "AssetBrowserWindow.h"
+#include "XRAPI.h"
 
-enum Platform {Win32, Web, Android};
-enum GraphicsAPI {OpenGL, DirectX11};
+namespace PE
+{
+	enum Platform { Win32, Web, Android };
+	enum GraphicsAPI { OpenGL, DirectX11 };
+}
 struct Options
 {
-	Platform platform;
-	GraphicsAPI graphicsAPI;
+	PE::Platform platform;
+	PE::GraphicsAPI graphicsAPI;
 };
 Options options;
 using json = nlohmann::json;
@@ -386,12 +390,12 @@ void Loop()
 	CameraSystem::CalculateViewMatrixLH(camera, camTransform);
 	entt::entity selected = GizmoSystem::GetSelectedEntity();
 	#ifdef _WIN64
-	if (options.graphicsAPI == GraphicsAPI::DirectX11)
+	if (options.graphicsAPI == PE::GraphicsAPI::DirectX11)
 	{
 		DrawIteration<DirectXRenderer>(camera, selected);
 	}
 	#endif
-	if (options.graphicsAPI == GraphicsAPI::OpenGL)
+	if (options.graphicsAPI == PE::GraphicsAPI::OpenGL)
 	{
 		DrawIteration<GLRenderer>(camera, selected);
 	}
@@ -439,8 +443,8 @@ int main(int argc, char* argv[])
 
 	if (argc < 4)
 	{
-		options.platform = Platform::Web;
-		options.graphicsAPI = GraphicsAPI::OpenGL;
+		options.platform = PE::Platform::Web;
+		options.graphicsAPI = PE::GraphicsAPI::OpenGL;
 	}
 	else
 	{
@@ -450,40 +454,40 @@ int main(int argc, char* argv[])
 			{
 				if (!strcmp(argv[i + 1], "Windows"))
 				{
-					options.platform = Platform::Win32;
+					options.platform = PE::Platform::Win32;
 				}
 				else if (!strcmp(argv[i + 1], "Web"))
 				{
-					options.platform = Platform::Web;
+					options.platform = PE::Platform::Web;
 				}
 			}
 			if (!strcmp(argv[i], "-g"))
 			{
 				if (!strcmp(argv[i + 1], "DX11"))
 				{
-					options.graphicsAPI = GraphicsAPI::DirectX11;
+					options.graphicsAPI = PE::GraphicsAPI::DirectX11;
 				}
 				else if (!strcmp(argv[i + 1], "OpenGL"))
 				{
-					options.graphicsAPI = GraphicsAPI::OpenGL;
+					options.graphicsAPI = PE::GraphicsAPI::OpenGL;
 				}
 			}
 		}
 	}
 
 #ifdef _WIN64
-	if (options.platform == Platform::Win32)
+	if (options.platform == PE::Platform::Win32)
 	{
 		plat = new WindowsPlatform(window);
 	}
 #elif defined __EMSCRIPTEN__
-	if (options.platform == Platform::Web)
+	if (options.platform == PE::Platform::Web)
 	{
 		plat = new EmscriptenPlatform(window);
 	}
 #endif
 #ifdef _WIN64
-	if (options.graphicsAPI == GraphicsAPI::DirectX11)
+	if (options.graphicsAPI == PE::GraphicsAPI::DirectX11)
 	{
 		graph = new DirectXAPI(window, cam);
 	}
@@ -503,15 +507,16 @@ int main(int argc, char* argv[])
 	plat->SetWindowResizeCallback(onResizeDelegate);
 
 #ifdef _WIN64
-	if (options.graphicsAPI == GraphicsAPI::DirectX11)
+	if (options.graphicsAPI == PE::GraphicsAPI::DirectX11)
 	{
 		renderSystem = new DirectXRenderSystem(((DirectXAPI*)(graph))->device.Get(), ((DirectXAPI*)(graph))->context.Get());
 	}
 #endif
-	if (options.graphicsAPI == GraphicsAPI::OpenGL)
+	if (options.graphicsAPI == PE::GraphicsAPI::OpenGL)
 	{
 		renderSystem = new GLRenderSystem(plat);
 	}
+	XRAPI* xr = new XRAPI(plat, graph);
 	plat->GetAssetManager()->LoadDefaultThumbnails(renderSystem);
 	plat->GetAssetManager()->LoadAssetsFromCurrentDirectory(renderSystem);
 	//entt::entity assetImageEntity = registry.create();
