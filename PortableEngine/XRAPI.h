@@ -17,6 +17,7 @@ class XRAPI
 {
 public:
 	XRAPI(IPlatform* plat, IGraphicsAPI* graph);
+    void PollEvents(bool* exitRenderLoop, bool* requestRestart);
 private:
 	IPlatform* platform;
 	IGraphicsAPI* graphics;
@@ -26,6 +27,9 @@ private:
 	void InitializeXRSession();
 	void CreateVisualizedSpaces();
 	void CreateSwapchains();
+    const XrEventDataBaseHeader* TryReadNextEvent();
+    void HandleSessionStateChangedEvent(const XrEventDataSessionStateChanged& stateChangedEvent/*, bool* exitRenderLoop,
+        bool* requestRestart*/);
     XrInstance m_instance{ XR_NULL_HANDLE };
     XrSession m_session{ XR_NULL_HANDLE };
     XrSpace m_appSpace{ XR_NULL_HANDLE };

@@ -173,3 +173,89 @@ void XRAPI::CreateSwapchains()
 			m_swapchainImages.insert(std::make_pair(swapchain.handle, std::move(swapchainImages)));
 		}
 }
+
+const XrEventDataBaseHeader* XRAPI::TryReadNextEvent() {
+	// It is sufficient to clear the just the XrEventDataBuffer header to
+	// XR_TYPE_EVENT_DATA_BUFFER
+	XrEventDataBaseHeader* baseHeader = reinterpret_cast<XrEventDataBaseHeader*>(&m_eventDataBuffer);
+	*baseHeader = { XR_TYPE_EVENT_DATA_BUFFER };
+	const XrResult xr = xrPollEvent(m_instance, &m_eventDataBuffer);
+	if (xr == XR_SUCCESS) {
+		return baseHeader;
+	}
+	if (xr == XR_EVENT_UNAVAILABLE) {
+		return nullptr;
+	}
+	throw "Bad poll event";
+}
+
+void XRAPI::PollEvents(bool* exitRenderLoop, bool* requestRestart) {
+	*exitRenderLoop = *requestRestart = false;
+
+	// Process all pending messages.
+	while (const XrEventDataBaseHeader* event = TryReadNextEvent()) {
+		switch (event->type) {
+		case XR_TYPE_EVENT_DATA_INSTANCE_LOSS_PENDING: {
+			const auto& instanceLossPending = *reinterpret_cast<const XrEventDataInstanceLossPending*>(event);
+			*exitRenderLoop = true;
+			*requestRestart = true;
+			return;
+		}
+		case XR_TYPE_EVENT_DATA_SESSION_STATE_CHANGED: {
+			auto sessionStateChangedEvent = *reinterpret_cast<const XrEventDataSessionStateChanged*>(event);
+			HandleSessionStateChangedEvent(sessionStateChangedEvent/*, exitRenderLoop, requestRestart*/);
+			break;
+		}
+		//case XR_TYPE_EVENT_DATA_REFERENCE_SPACE_CHANGE_PENDING:
+		//default: {
+		//	Log::Write(Log::Level::Verbose, Fmt("Ignoring event type %d", event->type));
+		//	break;
+		//}
+		}
+	}
+}
+
+void XRAPI::HandleSessionStateChangedEvent(const XrEventDataSessionStateChanged& stateChangedEvent/*, bool* exitRenderLoop,
+	bool* requestRestart*/) {
+	const XrSessionState oldState = m_sessionState;
+	m_sessionState = stateChangedEvent.state;
+
+	//Log::Write(Log::Level::Info, Fmt("XrEventDataSessionStateChanged: state %s->%s session=%lld time=%lld", to_string(oldState),
+	//	to_string(m_sessionState), stateChangedEvent.session, stateChangedEvent.time));
+
+	//if ((stateChangedEvent.session != XR_NULL_HANDLE) && (stateChangedEvent.session != m_session)) {
+	//	Log::Write(Log::Level::Error, "XrEventDataSessionStateChanged for unknown session");
+	//	return;
+	//}
+
+	switch (m_sessionState) {
+	case XR_SESSION_STATE_READY: {
+		assert(m_session != XR_NULL_HANDLE);
+		XrSessionBeginInfo sessionBeginInfo{ XR_TYPE_SESSION_BEGIN_INFO };
+		sessionBeginInfo.primaryViewConfigurationType = m_viewConfigType;
+		assert(XR_SUCCEEDED(xrBeginSession(m_session, &sessionBeginInfo)));
+		m_sessionRunning = true;
+		break;
+	}
+	case XR_SESSION_STATE_STOPPING: {
+		assert(m_session != XR_NULL_HANDLE);
+		m_sessionRunning = false;
+		assert(XR_SUCCEEDED(xrEndSession(m_session)));
+			break;
+	}
+	case XR_SESSION_STATE_EXITING: {
+		//*exitRenderLoop = true;
+		// Do not attempt to restart because user closed this session.
+		//*requestRestart = false;
+		break;
+	}
+	case XR_SESSION_STATE_LOSS_PENDING: {
+		//*exitRenderLoop = true;
+		// Poll for a new instance.
+		//*requestRestart = true;
+		break;
+	}
+	default:
+		break;
+	}
+}
