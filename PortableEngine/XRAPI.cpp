@@ -189,16 +189,16 @@ const XrEventDataBaseHeader* XRAPI::TryReadNextEvent() {
 	throw "Bad poll event";
 }
 
-void XRAPI::PollEvents(bool* exitRenderLoop, bool* requestRestart) {
-	*exitRenderLoop = *requestRestart = false;
+void XRAPI::PollEvents(/*bool* exitRenderLoop, bool* requestRestart*/) {
+	//*exitRenderLoop = *requestRestart = false;
 
 	// Process all pending messages.
 	while (const XrEventDataBaseHeader* event = TryReadNextEvent()) {
 		switch (event->type) {
 		case XR_TYPE_EVENT_DATA_INSTANCE_LOSS_PENDING: {
 			const auto& instanceLossPending = *reinterpret_cast<const XrEventDataInstanceLossPending*>(event);
-			*exitRenderLoop = true;
-			*requestRestart = true;
+			//*exitRenderLoop = true;
+			//*requestRestart = true;
 			return;
 		}
 		case XR_TYPE_EVENT_DATA_SESSION_STATE_CHANGED: {
@@ -213,6 +213,11 @@ void XRAPI::PollEvents(bool* exitRenderLoop, bool* requestRestart) {
 		//}
 		}
 	}
+}
+
+bool XRAPI::IsSessionRunning()
+{
+	return m_sessionRunning;
 }
 
 void XRAPI::HandleSessionStateChangedEvent(const XrEventDataSessionStateChanged& stateChangedEvent/*, bool* exitRenderLoop,

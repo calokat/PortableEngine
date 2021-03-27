@@ -529,6 +529,11 @@ int main(int argc, char* argv[])
 	while (plat->Run() == 0)
 	{
 		Loop();
+		xr->PollEvents();
+		if (xr->IsSessionRunning())
+		{
+
+		}
 	}
 	onResizeDelegate.reset();
 	delete window;

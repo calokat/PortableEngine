@@ -17,7 +17,8 @@ class XRAPI
 {
 public:
 	XRAPI(IPlatform* plat, IGraphicsAPI* graph);
-    void PollEvents(bool* exitRenderLoop, bool* requestRestart);
+    void PollEvents(/*bool* exitRenderLoop, bool* requestRestart*/);
+    bool IsSessionRunning();
 private:
 	IPlatform* platform;
 	IGraphicsAPI* graphics;
