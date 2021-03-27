@@ -55,7 +55,7 @@
 
 int OpenGLAPI::Init()
 {
-	int createContextResult = glContext->GetContext(window);
+	glContext->GetContext(window);
 	glEnable(GL_DEPTH_TEST);
 	//GLuint vao, vbo;
 	//glGenVertexArrays(1, &vao);
@@ -88,7 +88,7 @@ int OpenGLAPI::Init()
 	//glEnableVertexAttribArray(posLoc);
 	//glVertexAttribPointer(posLoc, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (GLvoid*)0);
 	ImGui_ImplOpenGL3_Init();
-	return createContextResult;
+	return 0;
 }
 
 void OpenGLAPI::ClearScreen()

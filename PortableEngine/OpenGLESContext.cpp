@@ -7,7 +7,7 @@
 
 	// ESContext esContext;
 
-int OpenGLESContext::GetContext(GameWindow* window)
+void* OpenGLESContext::GetContext(GameWindow* window)
 {
 	//GLuint flags = ES_WINDOW_RGB | ES_WINDOW_DEPTH;
 
@@ -102,7 +102,7 @@ int OpenGLESContext::GetContext(GameWindow* window)
 	SDL_GL_SetSwapInterval(1);
 	glEnable(GL_DEPTH_TEST);
 
-	return 0;
+	return g_GLContext;
 }
 
 void OpenGLESContext::_SwapBuffers(int winHandle)

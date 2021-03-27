@@ -9,7 +9,7 @@ class WinOpenGLContext :
 	public IOpenGLContext
 {
 public:
-	int GetContext(GameWindow*);
+	void* GetContext(GameWindow*);
 	void _SwapBuffers(int windowHandle);
 	WinOpenGLContext(IPlatform* plat);
 private:

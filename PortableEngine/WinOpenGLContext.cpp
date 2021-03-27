@@ -2,8 +2,12 @@
 #include "WinOpenGLContext.h"
 #include <iostream>
 
-int WinOpenGLContext::GetContext(GameWindow* window)
+void* WinOpenGLContext::GetContext(GameWindow* window)
 {
+	if (m_hrc != nullptr)
+	{
+		return m_hrc;
+	}
 	//PIXELFORMATDESCRIPTOR pfd =
 	//{
 	//	sizeof(PIXELFORMATDESCRIPTOR),
@@ -60,9 +64,7 @@ int WinOpenGLContext::GetContext(GameWindow* window)
 
 	int nPixelFormat = ChoosePixelFormat(*(HDC*)platform->GetDeviceContext(), &pfd);
 
-	BOOL bResult = SetPixelFormat(*(HDC*)platform->GetDeviceContext(), nPixelFormat, &pfd);
-
-	if (!bResult) return false;
+	SetPixelFormat(*(HDC*)platform->GetDeviceContext(), nPixelFormat, &pfd);
 
 	HGLRC tempContext = wglCreateContext(*(HDC*)platform->GetDeviceContext());
 	wglMakeCurrent(*(HDC*)platform->GetDeviceContext(), tempContext);
@@ -71,8 +73,7 @@ int WinOpenGLContext::GetContext(GameWindow* window)
 	GLenum  glewStatus = glewInit();
 	if (glewStatus != GLEW_OK)
 	{
-		printf("GLEW initialization failed");
-		return -1;
+		throw "GLEW initialization failed";
 	}
 
 	int attribs[] =
@@ -88,10 +89,10 @@ int WinOpenGLContext::GetContext(GameWindow* window)
 	wglDeleteContext(tempContext);
 	wglMakeCurrent(*(HDC*)platform->GetDeviceContext(), m_hrc);
 
-	if (!m_hrc) return -1;
+	if (!m_hrc) throw "Unable to get a GL context";
 
 
-	return 0;
+	return m_hrc;
 }
 
 void WinOpenGLContext::_SwapBuffers(int winHandle)
@@ -104,5 +105,6 @@ void WinOpenGLContext::_SwapBuffers(int winHandle)
 }
 WinOpenGLContext::WinOpenGLContext(IPlatform* plat) : platform(plat)
 {
+	m_hrc = nullptr;
 }
 #endif
