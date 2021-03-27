@@ -41,6 +41,7 @@
 #include "InspectorWindow.h"
 #include "AssetBrowserWindow.h"
 #include "XRAPI.h"
+#include <thread>
 
 namespace PE
 {
@@ -532,7 +533,12 @@ int main(int argc, char* argv[])
 		xr->PollEvents();
 		if (xr->IsSessionRunning())
 		{
-
+			xr->RenderFrame();
+		}
+		else
+		{
+			// Throttle loop since xrWaitFrame won't be called.
+			std::this_thread::sleep_for(std::chrono::milliseconds(250));
 		}
 	}
 	onResizeDelegate.reset();
