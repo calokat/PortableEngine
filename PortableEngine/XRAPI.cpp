@@ -4,7 +4,7 @@
 XRAPI::XRAPI(IPlatform* plat, IGraphicsAPI* graph) : platform(plat), graphics(graph)
 {
 	Init();
-	//InitializeXRSystem();
+	InitializeXRSystem();
 	//InitializeXRSession();
 	//CreateSwapchains();
 }
@@ -68,7 +68,8 @@ void XRAPI::InitializeXRSystem()
 	XrSystemGetInfo systemInfo{ XR_TYPE_SYSTEM_GET_INFO };
 	systemInfo.formFactor = XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY;
 	m_environmentBlendMode = XR_ENVIRONMENT_BLEND_MODE_OPAQUE;
-	xrGetSystem(m_instance, &systemInfo, &m_systemId);
+	XrResult res = xrGetSystem(m_instance, &systemInfo, &m_systemId);
+	graphics->GetXRGraphicsPlugin()->InitializeDeviceForXR(m_instance, m_systemId);
 }
 
 void XRAPI::InitializeXRSession()
