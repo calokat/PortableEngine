@@ -3,6 +3,9 @@
 XRAPI::XRAPI(IPlatform* plat, IGraphicsAPI* graph) : platform(plat), graphics(graph)
 {
 	Init();
+	InitializeXRSystem();
+	InitializeXRSession();
+	CreateSwapchains();
 }
 
 XrResult XRAPI::Init()
