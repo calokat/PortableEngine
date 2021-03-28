@@ -227,15 +227,6 @@ bool XRAPI::IsSessionRunning()
 
 void XRAPI::RenderFrame()
 {
-	assert(m_session != XR_NULL_HANDLE);
-
-	XrFrameWaitInfo frameWaitInfo{ XR_TYPE_FRAME_WAIT_INFO };
-	XrFrameState frameState{ XR_TYPE_FRAME_STATE };
-	assert(XR_SUCCEEDED(xrWaitFrame(m_session, &frameWaitInfo, &frameState)));
-
-	XrFrameBeginInfo frameBeginInfo{ XR_TYPE_FRAME_BEGIN_INFO };
-	assert(XR_SUCCEEDED(xrBeginFrame(m_session, &frameBeginInfo)));
-
 	std::vector<XrCompositionLayerBaseHeader*> layers;
 	XrCompositionLayerProjection layer{ XR_TYPE_COMPOSITION_LAYER_PROJECTION };
 	std::vector<XrCompositionLayerProjectionView> projectionLayerViews;
@@ -252,6 +243,20 @@ void XRAPI::RenderFrame()
 	frameEndInfo.layers = layers.data();
 	assert(XR_SUCCEEDED(xrEndFrame(m_session, &frameEndInfo)));
 
+}
+
+XrFrameState XRAPI::BeginFrame()
+{
+	assert(m_session != XR_NULL_HANDLE);
+
+	XrFrameWaitInfo frameWaitInfo{ XR_TYPE_FRAME_WAIT_INFO };
+	XrFrameState frameState{ XR_TYPE_FRAME_STATE };
+	assert(XR_SUCCEEDED(xrWaitFrame(m_session, &frameWaitInfo, &frameState)));
+
+	XrFrameBeginInfo frameBeginInfo{ XR_TYPE_FRAME_BEGIN_INFO };
+	assert(XR_SUCCEEDED(xrBeginFrame(m_session, &frameBeginInfo)));
+
+	return frameState;
 }
 
 void XRAPI::HandleSessionStateChangedEvent(const XrEventDataSessionStateChanged& stateChangedEvent/*, bool* exitRenderLoop,

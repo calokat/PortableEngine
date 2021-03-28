@@ -21,6 +21,7 @@ public:
     void PollEvents(/*bool* exitRenderLoop, bool* requestRestart*/);
     bool IsSessionRunning();
     void RenderFrame();
+    XrFrameState BeginFrame();
 private:
 	IPlatform* platform;
 	IGraphicsAPI* graphics;
