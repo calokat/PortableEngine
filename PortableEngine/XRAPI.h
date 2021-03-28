@@ -5,6 +5,7 @@
 #include "openxr/openxr.h"
 #include "openxr/openxr_platform.h"
 #include "openxr/xr_linear.h"
+#include "GameWindow.h"
 
 struct Swapchain {
     XrSwapchain handle;
@@ -17,6 +18,7 @@ class XRAPI
 {
 public:
 	XRAPI(IPlatform* plat, IGraphicsAPI* graph);
+	XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window);
     void PollEvents(/*bool* exitRenderLoop, bool* requestRestart*/);
     bool IsSessionRunning();
     void RenderFrame();
