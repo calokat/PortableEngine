@@ -70,6 +70,7 @@ Thumbnail assetThumbnail;
 EntityListWindow entityListWindow;
 InspectorWindow inspectorWindow;
 AssetBrowserWindow assetWindow;
+XRAPI* xr;
 //template<class T>
 //void TrySerializeComponent(json& master)
 //{
@@ -390,6 +391,15 @@ void Loop()
 	TransformSystem::CalculateWorldMatrix(&camTransform);
 	CameraSystem::CalculateViewMatrixLH(camera, camTransform);
 	entt::entity selected = GizmoSystem::GetSelectedEntity();
+	if (xr->IsSessionRunning())
+	{
+		xr->RenderFrame(xr->BeginFrame(), registry, renderSystem);
+	}
+	else
+	{
+		std::this_thread::sleep_for(std::chrono::milliseconds(250));
+	}
+	xr->PollEvents();
 	#ifdef _WIN64
 	if (options.graphicsAPI == PE::GraphicsAPI::DirectX11)
 	{
@@ -412,7 +422,7 @@ void Loop()
 	}
 	ImGui::Render();
 	graph->DrawGui();
-	graph->_SwapBuffers();
+	//graph->_SwapBuffers();
 }
 
 int main(int argc, char* argv[])
@@ -517,7 +527,7 @@ int main(int argc, char* argv[])
 	{
 		renderSystem = new GLRenderSystem(plat);
 	}
-	XRAPI* xr = new XRAPI(plat, graph);
+	xr = new XRAPI(plat, graph, window);
 	plat->GetAssetManager()->LoadDefaultThumbnails(renderSystem);
 	plat->GetAssetManager()->LoadAssetsFromCurrentDirectory(renderSystem);
 	//entt::entity assetImageEntity = registry.create();
@@ -526,20 +536,10 @@ int main(int argc, char* argv[])
 	//ImageSystem::CreateImage(assetThumbnail.assetImage);
 	//renderSystem->CreateTexture(assetThumbnail.assetImage);
 	//renderSystem->LoadTexture(&assetThumbnail.assetImageRenderer, assetThumbnail.assetImage);
-	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0), "Cone");
+	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0, 3, 0), "Cone");
 	while (plat->Run() == 0)
 	{
 		Loop();
-		xr->PollEvents();
-		if (xr->IsSessionRunning())
-		{
-			xr->RenderFrame();
-		}
-		else
-		{
-			// Throttle loop since xrWaitFrame won't be called.
-			std::this_thread::sleep_for(std::chrono::milliseconds(250));
-		}
 	}
 	onResizeDelegate.reset();
 	delete window;
