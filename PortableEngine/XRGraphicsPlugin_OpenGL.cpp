@@ -2,6 +2,10 @@
 #include <GL/glew.h>
 #include <assert.h>
 #include <openxr/xr_linear.h>
+#include "GLRenderer.h"
+#include "Transform.h"
+#include "GizmoSystem.h"
+
 XRGraphicsPlugin_OpenGL::XRGraphicsPlugin_OpenGL(GameWindow* win, IOpenGLContext* ctx) : window(win), glContext(ctx)
 {
 }
@@ -81,7 +85,7 @@ std::vector<XrSwapchainImageBaseHeader*> XRGraphicsPlugin_OpenGL::AllocateSwapch
 
 }
 
-void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView& layerView, const XrSwapchainImageBaseHeader* swapchainImage, int64_t swapchainFormat)
+void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView& layerView, const XrSwapchainImageBaseHeader* swapchainImage, int64_t swapchainFormat, entt::registry& reg, IRenderSystem* renderSystem)
 {
     assert(layerView.subImage.imageArrayIndex == 0);  // Texture arrays not supported.
     //UNUSED_PARM(swapchainFormat);                    // Not used in this function for now.
@@ -127,6 +131,24 @@ void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView&
     //// Set cube primitive data.
     //glBindVertexArray(m_vao);
 
+    auto camEntityView = reg.view<Camera>();
+    auto [camera, camTransform] = reg.get<Camera, Transform>(camEntityView[0]);
+
+    camera.view = glm::make_mat4(view.m);
+    camera.projection = glm::make_mat4(proj.m);
+
+    auto renderableView = reg.view<GLRenderer, Transform>();
+    for (auto renderable : renderableView)
+    {
+        GLRenderer& renderer = reg.get<GLRenderer>(renderable);
+        Mesh& mesh = reg.get<Mesh>(renderable);
+        Transform& meshTransform = reg.get<Transform>(renderable);
+        //renderSystem->LoadMesh(&renderer, mesh);
+        renderSystem->BindRenderer(&renderer);
+        
+        renderSystem->UpdateRenderer(&renderer, meshTransform, camera);
+        renderSystem->Draw(&renderer);
+    }
     //// Render each cube
     //for (const Cube& cube : cubes) {
     //    // Compute the model-view-projection transform and set it..

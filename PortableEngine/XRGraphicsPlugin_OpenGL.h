@@ -24,7 +24,7 @@ public:
     int64_t SelectColorSwapchainFormat(const std::vector<int64_t>& runtimeFormats) const;
     std::vector<XrSwapchainImageBaseHeader*> AllocateSwapchainImageStructs(uint32_t capacity, const XrSwapchainCreateInfo& /*swapchainCreateInfo*/);
     void RenderView(const XrCompositionLayerProjectionView& layerView, const XrSwapchainImageBaseHeader* swapchainImage,
-        int64_t swapchainFormat);
+        int64_t swapchainFormat, entt::registry& reg, IRenderSystem* renderSystem);
 private:
     uint32_t GetDepthTexture(uint32_t colorTexture);
 #ifdef _WIN32
