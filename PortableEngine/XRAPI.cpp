@@ -225,13 +225,13 @@ bool XRAPI::IsSessionRunning()
 	return m_sessionRunning;
 }
 
-void XRAPI::RenderFrame()
+void XRAPI::RenderFrame(XrFrameState frameState, entt::registry& reg, IRenderSystem* renderSystem)
 {
 	std::vector<XrCompositionLayerBaseHeader*> layers;
 	XrCompositionLayerProjection layer{ XR_TYPE_COMPOSITION_LAYER_PROJECTION };
 	std::vector<XrCompositionLayerProjectionView> projectionLayerViews;
 	if (frameState.shouldRender == XR_TRUE) {
-		if (RenderLayer(frameState.predictedDisplayTime, projectionLayerViews, layer)) {
+		if (RenderLayer(frameState.predictedDisplayTime, projectionLayerViews, layer, reg, renderSystem)) {
 			layers.push_back(reinterpret_cast<XrCompositionLayerBaseHeader*>(&layer));
 		}
 	}
@@ -305,7 +305,7 @@ void XRAPI::HandleSessionStateChangedEvent(const XrEventDataSessionStateChanged&
 }
 
 bool XRAPI::RenderLayer(XrTime predictedDisplayTime, std::vector<XrCompositionLayerProjectionView>& projectionLayerViews,
-	XrCompositionLayerProjection& layer) {
+	XrCompositionLayerProjection& layer, entt::registry& reg, IRenderSystem* renderSystem) {
 	XrResult res;
 
 	XrViewState viewState{ XR_TYPE_VIEW_STATE };
@@ -394,7 +394,7 @@ bool XRAPI::RenderLayer(XrTime predictedDisplayTime, std::vector<XrCompositionLa
 		projectionLayerViews[i].subImage.imageRect.extent = { viewSwapchain.width, viewSwapchain.height };
 
 		const XrSwapchainImageBaseHeader* const swapchainImage = m_swapchainImages[viewSwapchain.handle][swapchainImageIndex];
-		graphics->GetXRGraphicsPlugin()->RenderView(projectionLayerViews[i], swapchainImage, m_colorSwapchainFormat /*cubes*/);
+		graphics->GetXRGraphicsPlugin()->RenderView(projectionLayerViews[i], swapchainImage, m_colorSwapchainFormat, reg, renderSystem /*cubes*/);
 
 		XrSwapchainImageReleaseInfo releaseInfo{ XR_TYPE_SWAPCHAIN_IMAGE_RELEASE_INFO };
 		assert(XR_SUCCEEDED(xrReleaseSwapchainImage(viewSwapchain.handle, &releaseInfo)));

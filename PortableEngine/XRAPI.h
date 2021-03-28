@@ -6,6 +6,8 @@
 #include "openxr/openxr_platform.h"
 #include "openxr/xr_linear.h"
 #include "GameWindow.h"
+#include <entt.hpp>
+#include "IRenderSystem.h"
 
 struct Swapchain {
     XrSwapchain handle;
@@ -20,7 +22,7 @@ public:
 	XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window);
     void PollEvents(/*bool* exitRenderLoop, bool* requestRestart*/);
     bool IsSessionRunning();
-    void RenderFrame();
+    void RenderFrame(XrFrameState frameState, entt::registry& reg, IRenderSystem* renderSystem);
     XrFrameState BeginFrame();
 private:
 	IPlatform* platform;
@@ -35,7 +37,7 @@ private:
     void HandleSessionStateChangedEvent(const XrEventDataSessionStateChanged& stateChangedEvent/*, bool* exitRenderLoop,
         bool* requestRestart*/);
     bool RenderLayer(XrTime predictedDisplayTime, std::vector<XrCompositionLayerProjectionView>& projectionLayerViews,
-        XrCompositionLayerProjection& layer);
+        XrCompositionLayerProjection& layer, entt::registry& reg, IRenderSystem* renderSystem);
     XrInstance m_instance{ XR_NULL_HANDLE };
     XrSession m_session{ XR_NULL_HANDLE };
     XrSpace m_appSpace{ XR_NULL_HANDLE };
