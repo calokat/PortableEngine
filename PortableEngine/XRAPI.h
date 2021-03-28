@@ -17,7 +17,6 @@ struct Swapchain {
 class XRAPI
 {
 public:
-	XRAPI(IPlatform* plat, IGraphicsAPI* graph);
 	XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window);
     void PollEvents(/*bool* exitRenderLoop, bool* requestRestart*/);
     bool IsSessionRunning();
