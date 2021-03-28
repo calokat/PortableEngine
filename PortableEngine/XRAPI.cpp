@@ -1,12 +1,12 @@
 #include "XRAPI.h"
 #include <iostream>
 #include <assert.h>
-XRAPI::XRAPI(IPlatform* plat, IGraphicsAPI* graph) : platform(plat), graphics(graph)
+XRAPI::XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window) : platform(plat), graphics(graph)
 {
 	Init();
 	InitializeXRSystem();
 	InitializeXRSession();
-	CreateSwapchains();
+	CreateSwapchains(window);
 }
 
 XrResult XRAPI::Init()
