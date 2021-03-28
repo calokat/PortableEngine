@@ -2,6 +2,8 @@
 #include <GL/glew.h>
 #include <assert.h>
 #include <openxr/xr_linear.h>
+#include <imgui.h>
+#include <backends/imgui_impl_opengl3.h>
 #include "GLRenderer.h"
 #include "Transform.h"
 #include "GizmoSystem.h"
@@ -149,6 +151,10 @@ void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView&
         renderSystem->UpdateRenderer(&renderer, meshTransform, camera);
         renderSystem->Draw(&renderer);
     }
+
+
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     //// Render each cube
     //for (const Cube& cube : cubes) {
     //    // Compute the model-view-projection transform and set it..
