@@ -28,7 +28,7 @@ private:
 	void InitializeXRSystem();
 	void InitializeXRSession();
 	void CreateVisualizedSpaces();
-	void CreateSwapchains();
+	void CreateSwapchains(GameWindow* window);
     const XrEventDataBaseHeader* TryReadNextEvent();
     void HandleSessionStateChangedEvent(const XrEventDataSessionStateChanged& stateChangedEvent/*, bool* exitRenderLoop,
         bool* requestRestart*/);

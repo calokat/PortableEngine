@@ -95,7 +95,7 @@ void XRAPI::CreateVisualizedSpaces()
 
 }
 
-void XRAPI::CreateSwapchains()
+void XRAPI::CreateSwapchains(GameWindow* window)
 {
 	XrResult res;
 	XrSystemProperties systemProperties{ XR_TYPE_SYSTEM_PROPERTIES };
@@ -171,6 +171,11 @@ void XRAPI::CreateSwapchains()
 			res = xrEnumerateSwapchainImages(swapchain.handle, imageCount, &imageCount, swapchainImages[0]);
 
 			m_swapchainImages.insert(std::make_pair(swapchain.handle, std::move(swapchainImages)));
+
+			// resize the window to match the dimensions of the HMD screens
+			window->width = swapchainCreateInfo.width;
+			window->height = swapchainCreateInfo.height;
+			graphics->OnResize();
 		}
 }
 
