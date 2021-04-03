@@ -210,6 +210,7 @@
     <ClCompile Include="WindowsPlatform.cpp" />
     <ClCompile Include="WinOpenGLContext.cpp" />
     <ClCompile Include="XRAPI.cpp" />
+    <ClCompile Include="XRGraphicsPlugin_DirectX11.cpp" />
     <ClCompile Include="XRGraphicsPlugin_OpenGL.cpp" />
     <ClCompile Include="XRPlatformPlugin_Win32.cpp" />
   </ItemGroup>
@@ -276,6 +277,7 @@
     <ClInclude Include="WindowsPlatform.h" />
     <ClInclude Include="WinOpenGLContext.h" />
     <ClInclude Include="XRAPI.h" />
+    <ClInclude Include="XRGraphicsPlugin_DirectX11.h" />
     <ClInclude Include="XRGraphicsPlugin_OpenGL.h" />
     <ClInclude Include="XRPlatformPlugin_Win32.h" />
     <ClInclude Include="xr_defines.h" />

@@ -59,6 +59,7 @@
     <ClCompile Include="XRAPI.cpp" />
     <ClCompile Include="XRGraphicsPlugin_OpenGL.cpp" />
     <ClCompile Include="XRPlatformPlugin_Win32.cpp" />
+    <ClCompile Include="XRGraphicsPlugin_DirectX11.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
@@ -126,6 +127,7 @@
     <ClInclude Include="XRGraphicsPlugin_OpenGL.h" />
     <ClInclude Include="XRPlatformPlugin_Win32.h" />
     <ClInclude Include="xr_defines.h" />
+    <ClInclude Include="XRGraphicsPlugin_DirectX11.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
