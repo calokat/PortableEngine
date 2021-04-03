@@ -37,6 +37,24 @@ void XRGraphicsPlugin_DirectX11::InitializeDeviceForXR(XrInstance instance, XrSy
     //InitializeResources();
 
     m_graphicsBinding.device = m_device.Get();
+
+    D3D11_RASTERIZER_DESC rasterDesc = {};
+    rasterDesc.AntialiasedLineEnable = false;
+    rasterDesc.CullMode = D3D11_CULL_BACK;
+    rasterDesc.DepthBias = 0;
+    rasterDesc.DepthBiasClamp = 0.0f;
+    rasterDesc.DepthClipEnable = true;
+    rasterDesc.FillMode = D3D11_FILL_SOLID;
+    rasterDesc.FrontCounterClockwise = true;
+    rasterDesc.MultisampleEnable = false;
+    rasterDesc.ScissorEnable = false;
+    rasterDesc.SlopeScaledDepthBias = 0.0f;
+    HRESULT res;
+    ID3D11RasterizerState* rasterState;
+    res =  m_device->CreateRasterizerState(&rasterDesc, &rasterState);
+    m_deviceContext->RSSetState(rasterState);
+
+    rasterState->Release();
 }
 
 const XrBaseInStructure* XRGraphicsPlugin_DirectX11::GetGraphicsBinding()
