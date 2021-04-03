@@ -53,5 +53,7 @@ private:
 
 	//Mesh* testHelix;
 	Camera& engineCam;
+
+	IXRGraphicsPlugin* xrGraphics;
 };
 #endif
