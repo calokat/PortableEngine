@@ -12,4 +12,5 @@ public:
 	virtual void OnResize() = 0;
 	virtual ~IGraphicsAPI() {};
 	virtual IXRGraphicsPlugin* GetXRGraphicsPlugin() = 0;
+	virtual void BindToScreen() = 0;
 };
