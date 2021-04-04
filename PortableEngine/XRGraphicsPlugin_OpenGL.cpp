@@ -7,6 +7,8 @@
 #include "GLRenderer.h"
 #include "Transform.h"
 #include "GizmoSystem.h"
+#include "CameraSystem.h"
+#include "TransformSystem.h"
 
 XRGraphicsPlugin_OpenGL::XRGraphicsPlugin_OpenGL(GameWindow* win, IOpenGLContext* ctx) : window(win), glContext(ctx)
 {
@@ -119,12 +121,18 @@ void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView&
     // Set shaders and uniform variables.
     //glUseProgram(m_program);
 
+    auto camEntityView = reg.view<Camera>();
+    auto [camera, camTransform] = reg.get<Camera, Transform>(camEntityView[0]);
+
     const auto& pose = layerView.pose;
     XrMatrix4x4f proj;
     XrMatrix4x4f_CreateProjectionFov(&proj, GRAPHICS_OPENGL, layerView.fov, 0.05f, 100.0f);
     XrMatrix4x4f toView;
     XrVector3f scale{ 1.f, 1.f, 1.f };
-    XrMatrix4x4f_CreateTranslationRotationScale(&toView, &pose.position, &pose.orientation, &scale);
+    XrVector3f camOriginalPos = { camTransform.position.x, camTransform.position.y, camTransform.position.z };
+    XrVector3f finalPos;
+    XrVector3f_Add(&finalPos, &camOriginalPos, &pose.position);
+    XrMatrix4x4f_CreateTranslationRotationScale(&toView, &finalPos, &pose.orientation, &scale);
     XrMatrix4x4f view;
     XrMatrix4x4f_InvertRigidBody(&view, &toView);
     XrMatrix4x4f vp;
@@ -133,8 +141,6 @@ void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView&
     //// Set cube primitive data.
     //glBindVertexArray(m_vao);
 
-    auto camEntityView = reg.view<Camera>();
-    auto [camera, camTransform] = reg.get<Camera, Transform>(camEntityView[0]);
 
     camera.view = glm::make_mat4(view.m);
     camera.projection = glm::make_mat4(proj.m);
@@ -167,10 +173,6 @@ void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView&
     //    // Draw the cube.
     //    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(ArraySize(Geometry::c_cubeIndices)), GL_UNSIGNED_SHORT, nullptr);
     //}
-
-    glBindVertexArray(0);
-    glUseProgram(0);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // Swap our window every other eye for RenderDoc
     //static int everyOther = 0;
