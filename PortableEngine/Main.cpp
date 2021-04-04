@@ -400,6 +400,7 @@ void Loop()
 		std::this_thread::sleep_for(std::chrono::milliseconds(250));
 	}
 	xr->PollEvents();
+	graph->BindToScreen();
 	#ifdef _WIN64
 	if (options.graphicsAPI == PE::GraphicsAPI::DirectX11)
 	{
@@ -422,7 +423,7 @@ void Loop()
 	}
 	ImGui::Render();
 	graph->DrawGui();
-	//graph->_SwapBuffers();
+	graph->_SwapBuffers();
 }
 
 int main(int argc, char* argv[])
@@ -536,7 +537,10 @@ int main(int argc, char* argv[])
 	//ImageSystem::CreateImage(assetThumbnail.assetImage);
 	//renderSystem->CreateTexture(assetThumbnail.assetImage);
 	//renderSystem->LoadTexture(&assetThumbnail.assetImageRenderer, assetThumbnail.assetImage);
-	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0, 3, 0), "Cone");
+	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0, 0, 3), "Cone");
+	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cube.obj").c_str(), glm::vec3(0, 0, -3), "Cone");
+	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/helix.obj").c_str(), glm::vec3(3, 0, 0), "Cone");
+	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/torus.obj").c_str(), glm::vec3(-3, 0, 0), "Cone");
 	while (plat->Run() == 0)
 	{
 		Loop();
