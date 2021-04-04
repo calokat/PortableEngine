@@ -157,5 +157,6 @@ IXRGraphicsPlugin* OpenGLAPI::GetXRGraphicsPlugin()
 void OpenGLAPI::BindToScreen()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(window->x, window->y, window->width, window->height);
 	//OnResize();
 }
