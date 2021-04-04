@@ -535,4 +535,24 @@ IXRGraphicsPlugin* DirectXAPI::GetXRGraphicsPlugin()
 {
 	return xrGraphics;
 }
+void DirectXAPI::BindToScreen()
+{
+	// Bind the views to the pipeline, so rendering properly 
+	// uses their underlying textures
+	context->OMSetRenderTargets(
+		1,
+		backBufferRTV.GetAddressOf(),
+		depthStencilView.Get());
+
+	// Lastly, set up a viewport so we render into
+	// to correct portion of the window
+	D3D11_VIEWPORT viewport = {};
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	viewport.Width = (float)window->width;
+	viewport.Height = (float)window->height;
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0f;
+	context->RSSetViewports(1, &viewport);
+}
 #endif

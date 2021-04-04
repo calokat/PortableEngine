@@ -24,6 +24,7 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11Device>		device;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>	context;
 	IXRGraphicsPlugin* GetXRGraphicsPlugin();
+	void BindToScreen();
 
 private:
 	void LoadShaders();
