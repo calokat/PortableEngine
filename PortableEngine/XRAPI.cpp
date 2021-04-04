@@ -171,11 +171,6 @@ void XRAPI::CreateSwapchains(GameWindow* window)
 			res = xrEnumerateSwapchainImages(swapchain.handle, imageCount, &imageCount, swapchainImages[0]);
 
 			m_swapchainImages.insert(std::make_pair(swapchain.handle, std::move(swapchainImages)));
-
-			// resize the window to match the dimensions of the HMD screens
-			window->width = swapchainCreateInfo.width;
-			window->height = swapchainCreateInfo.height;
-			graphics->OnResize();
 		}
 }
 
