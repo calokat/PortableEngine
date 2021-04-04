@@ -126,22 +126,26 @@ void XRGraphicsPlugin_DirectX11::RenderView(const XrCompositionLayerProjectionVi
     ID3D11RenderTargetView* renderTargets[] = { renderTargetView.Get() };
     m_deviceContext->OMSetRenderTargets((UINT)std::size(renderTargets), renderTargets, depthStencilView.Get());
 
+    auto camEntityView = reg.view<Camera>();
+    auto [camera, camTransform] = reg.get<Camera, Transform>(camEntityView[0]);
+
     const auto& pose = layerView.pose;
+    XrVector3f finalPos;
+    XrVector3f camOriginalPos = { camTransform.position.x, camTransform.position.y, camTransform.position.z };
+    XrVector3f_Add(&finalPos, &pose.position, &camOriginalPos);
     XrMatrix4x4f proj;
     XrMatrix4x4f_CreateProjectionFov(&proj, GRAPHICS_D3D, layerView.fov, 0.05f, 100.0f);
     XrMatrix4x4f toView;
     XrVector3f scale{ 1.f, 1.f, 1.f };
-    XrMatrix4x4f_CreateTranslationRotationScale(&toView, &pose.position, &pose.orientation, &scale);
+    XrMatrix4x4f_CreateTranslationRotationScale(&toView, &finalPos, &pose.orientation, &scale);
     XrMatrix4x4f view;
     XrMatrix4x4f_InvertRigidBody(&view, &toView);
     XrMatrix4x4f vp;
     XrMatrix4x4f_Multiply(&vp, &proj, &view);
 
-    auto camEntityView = reg.view<Camera>();
-    auto [camera, camTransform] = reg.get<Camera, Transform>(camEntityView[0]);
-
     camera.view = glm::make_mat4(view.m);
     camera.projection = glm::make_mat4(proj.m);
+    camTransform.worldMatrix = glm::make_mat4(toView.m);
 
     auto renderableView = reg.view<DirectXRenderer, Transform>();
     for (auto renderable : renderableView)
