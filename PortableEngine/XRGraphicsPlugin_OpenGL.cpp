@@ -101,9 +101,9 @@ void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView&
         static_cast<GLsizei>(layerView.subImage.imageRect.extent.width),
         static_cast<GLsizei>(layerView.subImage.imageRect.extent.height));
 
-    glFrontFace(GL_CW);
-    glCullFace(GL_BACK);
-    glEnable(GL_CULL_FACE);
+    //glFrontFace(GL_CW);
+    //glCullFace(GL_BACK);
+    //glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 
     const uint32_t depthTexture = GetDepthTexture(colorTexture);
@@ -173,10 +173,10 @@ void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView&
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // Swap our window every other eye for RenderDoc
-    static int everyOther = 0;
-    if ((everyOther++ & 1) != 0) {
-        glContext->_SwapBuffers(-1);
-    }
+    //static int everyOther = 0;
+    //if ((everyOther++ & 1) != 0) {
+    //    glContext->_SwapBuffers(-1);
+    //}
 }
 
 uint32_t XRGraphicsPlugin_OpenGL::GetDepthTexture(uint32_t colorTexture)
