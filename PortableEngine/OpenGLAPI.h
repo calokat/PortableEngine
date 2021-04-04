@@ -21,6 +21,7 @@ public:
 	void OnResize();
 	~OpenGLAPI();
 	IXRGraphicsPlugin* GetXRGraphicsPlugin();
+	void BindToScreen();
 private:
 	GameWindow* window;
 //#ifdef _WIN64

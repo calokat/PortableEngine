@@ -153,3 +153,9 @@ IXRGraphicsPlugin* OpenGLAPI::GetXRGraphicsPlugin()
 {
 	return xrGraphics;
 }
+
+void OpenGLAPI::BindToScreen()
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//OnResize();
+}
