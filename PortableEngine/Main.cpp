@@ -401,6 +401,9 @@ void Loop()
 	}
 	xr->PollEvents();
 	graph->BindToScreen();
+	// Note: I do not know why, but when I use CalculateProjectionMatrixLH the view on screen is backwards, even though
+	// I use CalculateProjectionMatrixLH for almost everything
+	CameraSystem::CalculateProjectionMatrixRH(camera, (float)window->width / window->height);
 	#ifdef _WIN64
 	if (options.graphicsAPI == PE::GraphicsAPI::DirectX11)
 	{
@@ -537,10 +540,10 @@ int main(int argc, char* argv[])
 	//ImageSystem::CreateImage(assetThumbnail.assetImage);
 	//renderSystem->CreateTexture(assetThumbnail.assetImage);
 	//renderSystem->LoadTexture(&assetThumbnail.assetImageRenderer, assetThumbnail.assetImage);
-	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0, 0, 3), "Cone");
+	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0, 0, -9), "Cone");
 	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cube.obj").c_str(), glm::vec3(0, 0, -3), "Cone");
-	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/helix.obj").c_str(), glm::vec3(3, 0, 0), "Cone");
-	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/torus.obj").c_str(), glm::vec3(-3, 0, 0), "Cone");
+	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/helix.obj").c_str(), glm::vec3(3, 0, -6), "Cone");
+	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/torus.obj").c_str(), glm::vec3(-3, 0, -6), "Cone");
 	while (plat->Run() == 0)
 	{
 		Loop();
