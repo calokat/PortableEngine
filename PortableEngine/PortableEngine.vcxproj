@@ -158,18 +158,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui\backends\imgui_impl_win32.cpp" />
-    <ClCompile Include="Core.cpp" />
-    <ClCompile Include="DXCore.cpp" />
     <ClCompile Include="EmscriptenInputSystem.cpp" />
     <ClCompile Include="EmscriptenPlatform.cpp" />
-    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="esUtil.c" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GLCore.cpp" />
     <ClCompile Include="imgui_impl_emscripten.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Material.cpp" />
-    <ClCompile Include="PortableGame.cpp" />
     <ClCompile Include="SerializationSystem.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -180,23 +173,13 @@
     <ClCompile Include="XRPlatformPlugin_Win32.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BufferStructs.h" />
-    <ClInclude Include="Core.h" />
-    <ClInclude Include="DXCore.h" />
     <ClInclude Include="EmscriptenInputSystem.h" />
     <ClInclude Include="EmscriptenPlatform.h" />
-    <ClInclude Include="Entity.h" />
     <ClInclude Include="esUtil.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GLCore.h" />
     <ClInclude Include="imgui_impl_emscripten.h" />
     <ClInclude Include="IXRGraphicsPlugin.h" />
     <ClInclude Include="IXRPlatformPlugin.h" />
-    <ClInclude Include="Lights.h" />
-    <ClInclude Include="Material.h" />
     <ClInclude Include="misc_components.h" />
-    <ClInclude Include="PortableGame.h" />
-    <ClInclude Include="Relationship.h" />
     <ClInclude Include="SerializationSystem.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Timer.h" />
