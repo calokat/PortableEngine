@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{ed1a9bcb-d54f-4ed7-952f-565c2f8b9570}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\GLRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\GLRenderSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\IOpenGLContext.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\OpenGLAPI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\OpenGLESContext.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\WinOpenGLContext.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\XRGraphicsPlugin_OpenGL.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\GLRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\GLRenderSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\IOpenGLContext.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\OpenGLAPI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\OpenGLESContext.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\OpenGLImageGraphicsData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\WinOpenGLContext.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\XRGraphicsPlugin_OpenGL.h" />
+  </ItemGroup>
+</Project>
