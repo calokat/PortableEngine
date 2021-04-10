@@ -55,6 +55,7 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
+    <Import Project="..\PE_Core\PE_Core.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -154,19 +155,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\ImGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="..\..\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="..\..\imgui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\..\imgui\backends\imgui_impl_win32.cpp" />
-    <ClCompile Include="..\..\imgui\imgui.cpp" />
-    <ClCompile Include="..\..\imgui\imgui_demo.cpp" />
-    <ClCompile Include="..\..\imgui\imgui_draw.cpp" />
-    <ClCompile Include="..\..\imgui\imgui_tables.cpp" />
-    <ClCompile Include="..\..\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="AABBSystem.cpp" />
-    <ClCompile Include="AssetBrowserWindow.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CameraSystem.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="DirectXAPI.cpp" />
     <ClCompile Include="DirectXRenderer.cpp" />
@@ -174,28 +165,16 @@
     <ClCompile Include="DXCore.cpp" />
     <ClCompile Include="EmscriptenInputSystem.cpp" />
     <ClCompile Include="EmscriptenPlatform.cpp" />
-    <ClCompile Include="EngineCameraControllerSystem.cpp" />
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="EntityListWindow.cpp" />
     <ClCompile Include="esUtil.c" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameWindow.cpp" />
-    <ClCompile Include="GizmoSystem.cpp" />
     <ClCompile Include="GLCore.cpp" />
-    <ClCompile Include="IAssetManager.cpp" />
-    <ClCompile Include="ImageSystem.cpp" />
     <ClCompile Include="imgui_impl_emscripten.cpp" />
-    <ClCompile Include="InspectorGUI.cpp" />
-    <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="IOpenGLContext.cpp" />
-    <ClCompile Include="IRenderSystem.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Material.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="MeshLoaderSystem.cpp" />
     <ClCompile Include="OpenGLAPI.cpp" />
     <ClCompile Include="OpenGLESContext.cpp" />
-    <ClCompile Include="PEImage.cpp" />
     <ClCompile Include="PortableGame.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
     <ClCompile Include="GLRenderSystem.cpp" />
@@ -203,8 +182,6 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleShader.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="TransformSystem.cpp" />
     <ClCompile Include="WindowsAssetManager.cpp" />
     <ClCompile Include="WindowsInputSystem.cpp" />
     <ClCompile Include="WindowsPlatform.cpp" />
@@ -215,12 +192,7 @@
     <ClCompile Include="XRPlatformPlugin_Win32.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AABB.h" />
-    <ClInclude Include="AABBSystem.h" />
-    <ClInclude Include="AssetBrowserWindow.h" />
     <ClInclude Include="BufferStructs.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="CameraSystem.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="DirectX11ImageGraphicsData.h" />
     <ClInclude Include="DirectXAPI.h" />
@@ -229,38 +201,20 @@
     <ClInclude Include="DXCore.h" />
     <ClInclude Include="EmscriptenInputSystem.h" />
     <ClInclude Include="EmscriptenPlatform.h" />
-    <ClInclude Include="EngineCameraControllerSystem.h" />
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntityListWindow.h" />
     <ClInclude Include="esUtil.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameWindow.h" />
-    <ClInclude Include="GizmoSystem.h" />
     <ClInclude Include="GLCore.h" />
-    <ClInclude Include="IAssetManager.h" />
-    <ClInclude Include="IGraphicsAPI.h" />
-    <ClInclude Include="IImageGraphicsData.h" />
-    <ClInclude Include="IInputSystem.h" />
-    <ClInclude Include="ImageSystem.h" />
     <ClInclude Include="imgui_impl_emscripten.h" />
-    <ClInclude Include="InspectorGUI.h" />
-    <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="IOpenGLContext.h" />
-    <ClInclude Include="IPlatform.h" />
-    <ClInclude Include="IRenderer.h" />
-    <ClInclude Include="IRenderSystem.h" />
     <ClInclude Include="IXRGraphicsPlugin.h" />
     <ClInclude Include="IXRPlatformPlugin.h" />
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Material.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="MeshLoaderSystem.h" />
     <ClInclude Include="misc_components.h" />
     <ClInclude Include="OpenGLAPI.h" />
     <ClInclude Include="OpenGLESContext.h" />
     <ClInclude Include="OpenGLImageGraphicsData.h" />
-    <ClInclude Include="PEAsset.h" />
-    <ClInclude Include="PEImage.h" />
     <ClInclude Include="PortableGame.h" />
     <ClInclude Include="Relationship.h" />
     <ClInclude Include="GLRenderer.h" />
@@ -269,9 +223,6 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleShader.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="TransformSystem.h" />
-    <ClInclude Include="Vertex.h" />
     <ClInclude Include="WindowsAssetManager.h" />
     <ClInclude Include="WindowsInputSystem.h" />
     <ClInclude Include="WindowsPlatform.h" />

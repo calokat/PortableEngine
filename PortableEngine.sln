@@ -5,7 +5,13 @@ VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PortableEngine", "PortableEngine\PortableEngine.vcxproj", "{D6A26970-43BD-4D88-ADE2-FF6F2BE93969}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PE_Core", "PE_Core\PE_Core.vcxitems", "{5E3CEA80-D158-4458-BA39-B95389519434}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		PE_Core\PE_Core.vcxitems*{5e3cea80-d158-4458-ba39-b95389519434}*SharedItemsImports = 9
+		PE_Core\PE_Core.vcxitems*{d6a26970-43bd-4d88-ade2-ff6f2be93969}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86

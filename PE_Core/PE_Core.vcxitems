@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{5e3cea80-d158-4458-ba39-b95389519434}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\AABB.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\AABBSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\AssetBrowserWindow.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\Camera.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\CameraSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\EngineCameraControllerSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\EntityListWindow.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\GameWindow.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\GizmoSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\IAssetManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\IGraphicsAPI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\IImageGraphicsData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\IInputSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\ImageSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\InspectorGUI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\InspectorWindow.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\IPlatform.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\IRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\IRenderSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\Mesh.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\MeshLoaderSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\PEAsset.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\PEImage.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\Transform.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\TransformSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\Vertex.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\imgui\imgui.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\imgui\imgui_demo.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\imgui\imgui_draw.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\imgui\imgui_tables.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\AABBSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\AssetBrowserWindow.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\Camera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\CameraSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\EngineCameraControllerSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\EntityListWindow.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\GameWindow.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\GizmoSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\IAssetManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\ImageSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\InspectorGUI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\InspectorWindow.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\IRenderSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\Mesh.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\MeshLoaderSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\PEImage.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\Transform.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\TransformSystem.cpp" />
+  </ItemGroup>
+</Project>
