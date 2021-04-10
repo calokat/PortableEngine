@@ -2,9 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Core.cpp" />
-    <ClCompile Include="DirectXAPI.cpp" />
-    <ClCompile Include="DirectXRenderer.cpp" />
-    <ClCompile Include="DirectXRenderSystem.cpp" />
     <ClCompile Include="DXCore.cpp" />
     <ClCompile Include="EmscriptenInputSystem.cpp" />
     <ClCompile Include="EmscriptenPlatform.cpp" />
@@ -18,23 +15,17 @@
     <ClCompile Include="PortableGame.cpp" />
     <ClCompile Include="SerializationSystem.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="SimpleShader.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="WindowsInputSystem.cpp" />
     <ClCompile Include="WindowsPlatform.cpp" />
     <ClCompile Include="WindowsAssetManager.cpp" />
-    <ClCompile Include="..\..\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="..\..\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="XRAPI.cpp" />
     <ClCompile Include="XRPlatformPlugin_Win32.cpp" />
-    <ClCompile Include="XRGraphicsPlugin_DirectX11.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BufferStructs.h" />
     <ClInclude Include="Core.h" />
-    <ClInclude Include="DirectXAPI.h" />
-    <ClInclude Include="DirectXRenderer.h" />
-    <ClInclude Include="DirectXRenderSystem.h" />
     <ClInclude Include="DXCore.h" />
     <ClInclude Include="EmscriptenInputSystem.h" />
     <ClInclude Include="EmscriptenPlatform.h" />
@@ -50,18 +41,15 @@
     <ClInclude Include="Relationship.h" />
     <ClInclude Include="SerializationSystem.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="SimpleShader.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="WindowsInputSystem.h" />
     <ClInclude Include="WindowsPlatform.h" />
-    <ClInclude Include="DirectX11ImageGraphicsData.h" />
     <ClInclude Include="WindowsAssetManager.h" />
     <ClInclude Include="XRAPI.h" />
     <ClInclude Include="IXRPlatformPlugin.h" />
     <ClInclude Include="IXRGraphicsPlugin.h" />
     <ClInclude Include="XRPlatformPlugin_Win32.h" />
     <ClInclude Include="xr_defines.h" />
-    <ClInclude Include="XRGraphicsPlugin_DirectX11.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

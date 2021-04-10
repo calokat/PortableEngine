@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{546c62a3-45b2-4453-aa32-27ac768f223f}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\DirectX11ImageGraphicsData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\DirectXAPI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\DirectXRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\DirectXRenderSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\SimpleShader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\XRGraphicsPlugin_DirectX11.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\imgui\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\DirectXAPI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\DirectXRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\DirectXRenderSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\SimpleShader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\XRGraphicsPlugin_DirectX11.cpp" />
+  </ItemGroup>
+</Project>
