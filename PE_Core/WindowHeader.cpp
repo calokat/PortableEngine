@@ -42,7 +42,7 @@ void WindowHeader::Render(entt::registry& registry, IAssetManager* assetManager,
 	ImGui::EndMainMenuBar();
 }
 
-void WindowHeader::MakeMesh(const char* path, entt::registry& registry, IAssetManager* assetManager, IRenderSystem* renderSystem, const char* name = "GameObject") {
+void WindowHeader::MakeMesh(const char* path, entt::registry& registry, IAssetManager* assetManager, IRenderSystem* renderSystem, const char* name) {
 	auto camView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
 	glm::vec3 newMeshPos = camTransform.position + TransformSystem::CalculateForward(&camTransform);
