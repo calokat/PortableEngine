@@ -55,15 +55,7 @@ struct Options
 	PE::Platform platform;
 	PE::GraphicsAPI graphicsAPI;
 };
-Options options;
-using json = nlohmann::json;
-IPlatform* plat;
-IGraphicsAPI* graph;
-GameWindow* window;
-IRenderSystem* renderSystem;
-entt::registry registry;
 
-IXRAPI* xr;
 //template<class T>
 //void TrySerializeComponent(json& master)
 //{
@@ -168,31 +160,31 @@ IXRAPI* xr;
 //	//GizmoSystem::Select(*meshView.begin());
 //}
 
-void MakeMesh(const char* path, const char* name = "GameObject") {
-	auto camView = registry.view<Camera>();
-	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
-	glm::vec3 newMeshPos = camTransform.position + TransformSystem::CalculateForward(&camTransform);
-	auto newMeshEntity = registry.create();
-	Mesh& newMesh = registry.emplace<Mesh>(newMeshEntity, path);
-	MeshLoaderSystem::LoadMesh(newMesh.path.c_str(), newMesh);
-	Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
-	meshTransform.position = newMeshPos;
-	TransformSystem::CalculateWorldMatrix(&meshTransform);
-	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
-	renderSystem->Load(&newMeshRenderer, camera);
-	renderSystem->LoadMesh(&newMeshRenderer, newMesh);
-	//newMeshRenderer.diffuseTexture = PEImage(plat->GetAssetManager()->GetAssetPath("../../Assets/Images/cushion.png"));
-	//ImageSystem::CreateImage(newMeshRenderer.diffuseTexture);
-	//renderSystem->CreateTexture(newMeshRenderer.diffuseTexture);
-	renderSystem->LoadTexture(&newMeshRenderer, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/cushion.png")/*newMeshRenderer.diffuseTexture*/);
-	//ImageSystem::DestroyImage(newMeshRenderer.diffuseTexture);
-	Name& nameComp = registry.emplace<Name>(newMeshEntity);
-	nameComp = { name };
-	AABB& aabb = registry.emplace<AABB>(newMeshEntity);
-	AABBSystem::UpdateAABB(aabb, newMesh, meshTransform);
-}
-
-void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") {
+//void MakeMesh(const char* path, const char* name = "GameObject") {
+//	auto camView = registry.view<Camera>();
+//	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
+//	glm::vec3 newMeshPos = camTransform.position + TransformSystem::CalculateForward(&camTransform);
+//	auto newMeshEntity = registry.create();
+//	Mesh& newMesh = registry.emplace<Mesh>(newMeshEntity, path);
+//	MeshLoaderSystem::LoadMesh(newMesh.path.c_str(), newMesh);
+//	Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
+//	meshTransform.position = newMeshPos;
+//	TransformSystem::CalculateWorldMatrix(&meshTransform);
+//	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
+//	renderSystem->Load(&newMeshRenderer, camera);
+//	renderSystem->LoadMesh(&newMeshRenderer, newMesh);
+//	//newMeshRenderer.diffuseTexture = PEImage(plat->GetAssetManager()->GetAssetPath("../../Assets/Images/cushion.png"));
+//	//ImageSystem::CreateImage(newMeshRenderer.diffuseTexture);
+//	//renderSystem->CreateTexture(newMeshRenderer.diffuseTexture);
+//	renderSystem->LoadTexture(&newMeshRenderer, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/cushion.png")/*newMeshRenderer.diffuseTexture*/);
+//	//ImageSystem::DestroyImage(newMeshRenderer.diffuseTexture);
+//	Name& nameComp = registry.emplace<Name>(newMeshEntity);
+//	nameComp = { name };
+//	AABB& aabb = registry.emplace<AABB>(newMeshEntity);
+//	AABBSystem::UpdateAABB(aabb, newMesh, meshTransform);
+//}
+//
+void MakeMesh(const char* path, glm::vec3 pos, entt::registry& registry, IRenderSystem* renderSystem, IAssetManager* assetManager, const char* name = "GameObject") {
 	auto camView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
 	auto newMeshEntity = registry.create();
@@ -207,7 +199,7 @@ void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") 
 	//newMeshRenderer.diffuseTexture = PEImage(plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png"));
 	//ImageSystem::CreateImage(newMeshRenderer.diffuseTexture);
 	//renderSystem->CreateTexture(newMeshRenderer.diffuseTexture);
-	renderSystem->LoadTexture(&newMeshRenderer, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png")/*newMeshRenderer.diffuseTexture*/);
+	renderSystem->LoadTexture(&newMeshRenderer, assetManager->GetAssetPath("../../Assets/Images/rock.png")/*newMeshRenderer.diffuseTexture*/);
 	//ImageSystem::DestroyImage(newMeshRenderer.diffuseTexture);
 	Name& nameComp = registry.emplace<Name>(newMeshEntity);
 	nameComp = { name };
@@ -243,7 +235,7 @@ void MakeMesh(const char* path, glm::vec3 pos, const char* name = "GameObject") 
 //}
 
 template<class T>
-void DrawIteration(Camera& camera, entt::entity selected)
+void DrawIteration(Camera& camera, entt::entity selected, entt::registry& registry, IRenderSystem* renderSystem)
 {
 	auto renderableView = registry.view<T, Transform>();
 	for (auto renderable : renderableView)
@@ -266,7 +258,7 @@ void DrawIteration(Camera& camera, entt::entity selected)
 	}
 }
 
-void Loop()
+void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXRAPI* xr, GameWindow* window, entt::registry& registry, Options options)
 {
 	plat->GetInputSystem()->GetKeyPressed();
 	graph->NewGuiFrame();
@@ -375,12 +367,12 @@ void Loop()
 	#ifdef _WIN64
 	if (options.graphicsAPI == PE::GraphicsAPI::DirectX11)
 	{
-		DrawIteration<DirectXRenderer>(camera, selected);
+		DrawIteration<DirectXRenderer>(camera, selected, registry, renderSystem);
 	}
 	#endif
 	if (options.graphicsAPI == PE::GraphicsAPI::OpenGL)
 	{
-		DrawIteration<GLRenderer>(camera, selected);
+		DrawIteration<GLRenderer>(camera, selected, registry, renderSystem);
 	}
 	auto transformView = registry.view<Transform>();
 	GizmoSystem::UpdateGizmo(plat->GetInputSystem());
@@ -405,6 +397,16 @@ int main(int argc, char* argv[])
 	//  - You may want to use something more advanced, like Visual Leak Detector
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
+
+	Options options;
+	//using json = nlohmann::json;
+	IPlatform* plat = nullptr;
+	IGraphicsAPI* graph = nullptr;
+	GameWindow* window = nullptr;
+	IRenderSystem* renderSystem = nullptr;
+	entt::registry registry;
+
+
 	window = new GameWindow(0, 0, 800, 600);
 	auto entity = registry.create();
 	auto cameraEntity = registry.create();
@@ -500,6 +502,7 @@ int main(int argc, char* argv[])
 		renderSystem = new GLRenderSystem(plat);
 	}
 	//xr = new XRAPI(plat, graph, window);
+	IXRAPI* xr = nullptr;
 	xr = new MockXRAPI();
 	plat->GetAssetManager()->LoadDefaultThumbnails(renderSystem);
 	plat->GetAssetManager()->LoadAssetsFromCurrentDirectory(renderSystem);
@@ -509,13 +512,13 @@ int main(int argc, char* argv[])
 	//ImageSystem::CreateImage(assetThumbnail.assetImage);
 	//renderSystem->CreateTexture(assetThumbnail.assetImage);
 	//renderSystem->LoadTexture(&assetThumbnail.assetImageRenderer, assetThumbnail.assetImage);
-	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0, 0, -9), "Cone");
-	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cube.obj").c_str(), glm::vec3(0, 0, -3), "Cone");
-	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/helix.obj").c_str(), glm::vec3(3, 0, -6), "Cone");
-	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/torus.obj").c_str(), glm::vec3(-3, 0, -6), "Cone");
+	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0, 0, -9), registry, renderSystem, plat->GetAssetManager(), "Cone");
+	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cube.obj").c_str(), glm::vec3(0, 0, -3), registry, renderSystem, plat->GetAssetManager(), "Cube");
+	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/helix.obj").c_str(), glm::vec3(3, 0, -6), registry, renderSystem, plat->GetAssetManager(), "Helix");
+	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/torus.obj").c_str(), glm::vec3(-3, 0, -6), registry, renderSystem, plat->GetAssetManager(), "Torus");
 	while (plat->Run() == 0)
 	{
-		Loop();
+		Loop(plat, graph, renderSystem, xr, window, registry, options);
 	}
 	onResizeDelegate.reset();
 	delete window;
