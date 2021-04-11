@@ -1,4 +1,5 @@
 #pragma once
+#include "IXRAPI.h"
 #include "IPlatform.h"
 #include "IGraphicsAPI.h"
 #include "xr_defines.h"
@@ -17,16 +18,17 @@ struct Swapchain {
 
 
 class XRAPI
+    : IXRAPI
 {
 public:
 	XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window);
     void PollEvents(/*bool* exitRenderLoop, bool* requestRestart*/);
     bool IsSessionRunning();
-    void RenderFrame(XrFrameState frameState, entt::registry& reg, IRenderSystem* renderSystem);
-    XrFrameState BeginFrame();
+    void RenderFrame(entt::registry& reg, IRenderSystem* renderSystem);
 private:
 	IPlatform* platform;
 	IGraphicsAPI* graphics;
+    XrFrameState BeginFrame();
 	XrResult Init();
 	XrResult CreateXRInstance();
 	void InitializeXRSystem();

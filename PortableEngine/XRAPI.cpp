@@ -220,8 +220,9 @@ bool XRAPI::IsSessionRunning()
 	return m_sessionRunning;
 }
 
-void XRAPI::RenderFrame(XrFrameState frameState, entt::registry& reg, IRenderSystem* renderSystem)
+void XRAPI::RenderFrame(entt::registry& reg, IRenderSystem* renderSystem)
 {
+	XrFrameState frameState = BeginFrame();
 	std::vector<XrCompositionLayerBaseHeader*> layers;
 	XrCompositionLayerProjection layer{ XR_TYPE_COMPOSITION_LAYER_PROJECTION };
 	std::vector<XrCompositionLayerProjectionView> projectionLayerViews;

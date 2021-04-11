@@ -33,8 +33,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)InspectorGUI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)InspectorWindow.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)IRenderSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)IXRAPI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mesh.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MeshLoaderSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MockXRAPI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PEImage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Timer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transform.cpp" />
@@ -60,11 +62,13 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)IPlatform.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IRenderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IRenderSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IXRAPI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IXRGraphicsPlugin.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IXRPlatformPlugin.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mesh.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MeshLoaderSystem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)misc_components.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MockXRAPI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PEAsset.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PEImage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Timer.h" />
