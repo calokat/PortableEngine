@@ -1,7 +1,7 @@
 #ifdef _WIN64
 #pragma once
 #include "IGraphicsAPI.h"
-#include "WindowsPlatform.h"
+//#include "WindowsPlatform.h"
 #include "GameWindow.h"
 #include <d3d11.h>
 #include "glm/glm.hpp"

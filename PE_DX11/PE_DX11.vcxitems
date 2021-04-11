@@ -14,19 +14,19 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\DirectX11ImageGraphicsData.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\DirectXAPI.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\DirectXRenderer.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\DirectXRenderSystem.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\SimpleShader.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\PortableEngine\XRGraphicsPlugin_DirectX11.h" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\imgui\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DirectXAPI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DirectXRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DirectXRenderSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SimpleShader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)XRGraphicsPlugin_DirectX11.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\imgui\backends\imgui_impl_dx11.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\DirectXAPI.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\DirectXRenderer.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\DirectXRenderSystem.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\SimpleShader.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\PortableEngine\XRGraphicsPlugin_DirectX11.cpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DirectX11ImageGraphicsData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DirectXAPI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DIrectXRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DirectXRenderSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SimpleShader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)XRGraphicsPlugin_DirectX11.h" />
   </ItemGroup>
 </Project>
