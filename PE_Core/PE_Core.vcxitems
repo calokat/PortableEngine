@@ -41,6 +41,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Timer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transform.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TransformSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)WindowHeader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AABB.h" />
@@ -75,6 +76,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Transform.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TransformSystem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Vertex.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)WindowHeader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)xr_defines.h" />
   </ItemGroup>
 </Project>
