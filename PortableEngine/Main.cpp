@@ -60,12 +60,6 @@ GameWindow* window;
 IRenderSystem* renderSystem;
 entt::registry registry;
 
-bool show_demo_window = true;
-
-const char* projectPath = "C:/Users/Caleb/Documents/Github/PE_Projects/demo/*";
-
-Thumbnail assetThumbnail;
-
 EntityListWindow entityListWindow;
 InspectorWindow inspectorWindow;
 AssetBrowserWindow assetWindow;
