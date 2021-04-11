@@ -19,3 +19,14 @@ struct Thumbnail
 	PEImage assetImage;
 	IRenderer assetImageRenderer;
 };
+
+namespace PE
+{
+	enum Platform { Win32, Web, Android };
+	enum GraphicsAPI { OpenGL, DirectX11 };
+}
+struct Options
+{
+	PE::Platform platform;
+	PE::GraphicsAPI graphicsAPI;
+};

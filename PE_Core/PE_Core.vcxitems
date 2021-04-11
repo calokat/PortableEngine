@@ -34,6 +34,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)InspectorWindow.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)IRenderSystem.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)IXRAPI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)loop.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mesh.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MeshLoaderSystem.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MockXRAPI.cpp" />
@@ -67,6 +68,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)IXRAPI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IXRGraphicsPlugin.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IXRPlatformPlugin.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)loop.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mesh.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MeshLoaderSystem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)misc_components.h" />
