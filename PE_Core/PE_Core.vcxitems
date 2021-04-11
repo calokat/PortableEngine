@@ -71,5 +71,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Transform.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TransformSystem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Vertex.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)xr_defines.h" />
   </ItemGroup>
 </Project>

@@ -7,8 +7,6 @@
     <ClCompile Include="imgui_impl_emscripten.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="SerializationSystem.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="WindowsInputSystem.cpp" />
     <ClCompile Include="WindowsPlatform.cpp" />
     <ClCompile Include="WindowsAssetManager.cpp" />
@@ -23,8 +21,6 @@
     <ClInclude Include="imgui_impl_emscripten.h" />
     <ClInclude Include="misc_components.h" />
     <ClInclude Include="SerializationSystem.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="Timer.h" />
     <ClInclude Include="WindowsInputSystem.h" />
     <ClInclude Include="WindowsPlatform.h" />
     <ClInclude Include="WindowsAssetManager.h" />
@@ -32,7 +28,6 @@
     <ClInclude Include="IXRPlatformPlugin.h" />
     <ClInclude Include="IXRGraphicsPlugin.h" />
     <ClInclude Include="XRPlatformPlugin_Win32.h" />
-    <ClInclude Include="xr_defines.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
