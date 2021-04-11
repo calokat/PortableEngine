@@ -40,6 +40,7 @@
 #include "InspectorWindow.h"
 #include "AssetBrowserWindow.h"
 #include "XRAPI.h"
+#include "MockXRAPI.h"
 #include <thread>
 
 namespace PE
@@ -63,7 +64,7 @@ entt::registry registry;
 EntityListWindow entityListWindow;
 InspectorWindow inspectorWindow;
 AssetBrowserWindow assetWindow;
-XRAPI* xr;
+IXRAPI* xr;
 //template<class T>
 //void TrySerializeComponent(json& master)
 //{
@@ -386,7 +387,7 @@ void Loop()
 	entt::entity selected = GizmoSystem::GetSelectedEntity();
 	if (xr->IsSessionRunning())
 	{
-		xr->RenderFrame(xr->BeginFrame(), registry, renderSystem);
+		xr->RenderFrame(registry, renderSystem);
 	}
 	else
 	{
@@ -396,7 +397,7 @@ void Loop()
 	graph->BindToScreen();
 	// Note: I do not know why, but when I use CalculateProjectionMatrixLH the view on screen is backwards, even though
 	// I use CalculateProjectionMatrixLH for almost everything
-	CameraSystem::CalculateProjectionMatrixRH(camera, (float)window->width / window->height);
+	//CameraSystem::CalculateProjectionMatrixRH(camera, (float)window->width / window->height);
 	#ifdef _WIN64
 	if (options.graphicsAPI == PE::GraphicsAPI::DirectX11)
 	{
@@ -524,7 +525,8 @@ int main(int argc, char* argv[])
 	{
 		renderSystem = new GLRenderSystem(plat);
 	}
-	xr = new XRAPI(plat, graph, window);
+	//xr = new XRAPI(plat, graph, window);
+	xr = new MockXRAPI();
 	plat->GetAssetManager()->LoadDefaultThumbnails(renderSystem);
 	plat->GetAssetManager()->LoadAssetsFromCurrentDirectory(renderSystem);
 	//entt::entity assetImageEntity = registry.create();
