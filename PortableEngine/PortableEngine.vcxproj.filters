@@ -3,7 +3,6 @@
   <ItemGroup>
     <ClCompile Include="EmscriptenInputSystem.cpp" />
     <ClCompile Include="EmscriptenPlatform.cpp" />
-    <ClCompile Include="esUtil.c" />
     <ClCompile Include="imgui_impl_emscripten.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="SerializationSystem.cpp" />
@@ -17,7 +16,6 @@
   <ItemGroup>
     <ClInclude Include="EmscriptenInputSystem.h" />
     <ClInclude Include="EmscriptenPlatform.h" />
-    <ClInclude Include="esUtil.h" />
     <ClInclude Include="imgui_impl_emscripten.h" />
     <ClInclude Include="misc_components.h" />
     <ClInclude Include="SerializationSystem.h" />
