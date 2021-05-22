@@ -16,15 +16,25 @@ public:
 	//DirectXRenderer(DirectXAPI* dxApi);
 	std::string vertexShaderPath;
 	std::string fragmentShaderPath;
-	SimpleVertexShader* vertexShader;
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertexShader;
 	ID3D11SamplerState* samplerState;
-	SimplePixelShader* pixelShader;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
 	int numVertices;
 	int numIndices;
 	glm::vec4 vertexColor = { 0, 0, 0, 1 };
 	PEImage diffuseTexture;
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer;
 	~DirectXRenderer();
+};
+
+struct MatrixConstantBuffer
+{
+	glm::vec4 colorTint;
+	glm::mat4 view;
+	glm::mat4 world;
+	glm::mat4 projection;
 };
 #endif
