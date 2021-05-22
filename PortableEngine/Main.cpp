@@ -403,7 +403,7 @@ int main(int argc, char* argv[])
 
 	Transform& camTransform = registry.emplace<Transform>(cameraEntity);
 	Camera& cam = registry.emplace<Camera>(cameraEntity, (float)window->width / window->height);
-	camTransform.position += glm::vec3(0, 0, -3);
+	camTransform.position += glm::vec3(0, 0, -15);
 	TransformSystem::CalculateWorldMatrix(&camTransform);
 	CameraSystem::CalculateProjectionMatrixLH(cam, (float)window->width / window->height);
 	float camMoveSpeed = .05f;
