@@ -12,8 +12,8 @@ IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity
 void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 {
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
-	dxRenderer->vertexShader = new SimpleVertexShader(device, context, L"VertexShader.cso");
-	dxRenderer->pixelShader = new SimplePixelShader(device, context, L"PixelShader.cso");
+	dxRenderer->vertexShader = new SimpleVertexShader(device, context, L"../x64/Debug/VertexShader.cso");
+	dxRenderer->pixelShader = new SimplePixelShader(device, context, L"../x64/Debug/PixelShader.cso");
 	dxRenderer->vertexShader->SetMatrix4x4("viewMatrix", camera.view);
 	dxRenderer->vertexShader->SetMatrix4x4("projectionMatrix", camera.projection);
 	dxRenderer->vertexShader->SetMatrix4x4("worldMatrix", glm::mat4(1.0f));
