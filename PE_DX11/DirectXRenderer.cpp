@@ -25,6 +25,10 @@ DirectXRenderer& DirectXRenderer::operator=(DirectXRenderer&& other) noexcept
 	this->numIndices = other.numIndices;
 	this->numVertices = other.numVertices;
 	this->diffuseTexture = std::move(other.diffuseTexture);
+	this->inputLayout = other.inputLayout;
+	other.inputLayout = nullptr;
+	this->constantBuffer = other.constantBuffer;
+	other.constantBuffer = nullptr;
 	return *this;
 }
 
@@ -36,7 +40,7 @@ DirectXRenderer& DirectXRenderer::operator=(DirectXRenderer&& other) noexcept
 
 DirectXRenderer::~DirectXRenderer()
 {
-	delete vertexShader;
-	delete pixelShader;
+	//delete vertexShader;
+	//delete pixelShader;
 }
 #endif
