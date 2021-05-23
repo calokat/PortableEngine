@@ -13,7 +13,7 @@
 class OpenGLESContext : public IOpenGLContext
 {
 public:
-	int GetContext(GameWindow* window);
+	void* GetContext(GameWindow* window);
 	void _SwapBuffers(int winHandle);
 	OpenGLESContext(IPlatform* plat);
 private:

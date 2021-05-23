@@ -96,7 +96,7 @@ void* OpenGLESContext::GetContext(GameWindow* window)
 	if (!g_GLContext)
 	{
 		fprintf(stderr, "Failed to initialize WebGL context!\n");
-		return 1;
+		return nullptr;
 	}
 	ImGui_ImplSDL2_InitForOpenGL((SDL_Window*)platform->GetWindowHandle(), g_GLContext);
 	SDL_GL_SetSwapInterval(1);
