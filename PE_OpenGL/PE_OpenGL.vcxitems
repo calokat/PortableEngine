@@ -23,7 +23,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)OpenGLESContext.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Shader.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinOpenGLContext.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)XRGraphicsPlugin_OpenGL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)esUtil.h" />
@@ -35,6 +34,5 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)OpenGLImageGraphicsData.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Shader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)WinOpenGLContext.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)XRGraphicsPlugin_OpenGL.h" />
   </ItemGroup>
 </Project>

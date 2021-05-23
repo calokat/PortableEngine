@@ -11,13 +11,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PE_OpenGL", "PE_OpenGL\PE_O
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PE_DX11", "PE_DX11\PE_DX11.vcxitems", "{546C62A3-45B2-4453-AA32-27AC768F223F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PE_XR", "PE_XR\PE_XR.vcxitems", "{6873A98B-FBC2-43F4-8298-F09AE698A335}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		PE_DX11\PE_DX11.vcxitems*{546c62a3-45b2-4453-aa32-27ac768f223f}*SharedItemsImports = 9
 		PE_Core\PE_Core.vcxitems*{5e3cea80-d158-4458-ba39-b95389519434}*SharedItemsImports = 9
+		PE_XR\PE_XR.vcxitems*{6873a98b-fbc2-43f4-8298-f09ae698a335}*SharedItemsImports = 9
 		PE_Core\PE_Core.vcxitems*{d6a26970-43bd-4d88-ade2-ff6f2be93969}*SharedItemsImports = 4
 		PE_DX11\PE_DX11.vcxitems*{d6a26970-43bd-4d88-ade2-ff6f2be93969}*SharedItemsImports = 4
 		PE_OpenGL\PE_OpenGL.vcxitems*{d6a26970-43bd-4d88-ade2-ff6f2be93969}*SharedItemsImports = 4
+		PE_XR\PE_XR.vcxitems*{d6a26970-43bd-4d88-ade2-ff6f2be93969}*SharedItemsImports = 4
 		PE_OpenGL\PE_OpenGL.vcxitems*{ed1a9bcb-d54f-4ed7-952f-565c2f8b9570}*SharedItemsImports = 9
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

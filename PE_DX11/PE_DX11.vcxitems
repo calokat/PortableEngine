@@ -19,7 +19,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)DirectXRenderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DirectXRenderSystem.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SimpleShader.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)XRGraphicsPlugin_DirectX11.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)DirectX11ImageGraphicsData.h" />
@@ -27,6 +26,5 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DIrectXRenderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DirectXRenderSystem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SimpleShader.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)XRGraphicsPlugin_DirectX11.h" />
   </ItemGroup>
 </Project>

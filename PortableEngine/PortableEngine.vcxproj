@@ -58,6 +58,7 @@
     <Import Project="..\PE_Core\PE_Core.vcxitems" Label="Shared" />
     <Import Project="..\PE_DX11\PE_DX11.vcxitems" Label="Shared" />
     <Import Project="..\PE_OpenGL\PE_OpenGL.vcxitems" Label="Shared" />
+    <Import Project="..\PE_XR\PE_XR.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -166,22 +167,16 @@
     <ClCompile Include="WindowsAssetManager.cpp" />
     <ClCompile Include="WindowsInputSystem.cpp" />
     <ClCompile Include="WindowsPlatform.cpp" />
-    <ClCompile Include="XRAPI.cpp" />
-    <ClCompile Include="XRPlatformPlugin_Win32.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EmscriptenInputSystem.h" />
     <ClInclude Include="EmscriptenPlatform.h" />
     <ClInclude Include="imgui_impl_emscripten.h" />
-    <ClInclude Include="IXRGraphicsPlugin.h" />
-    <ClInclude Include="IXRPlatformPlugin.h" />
     <ClInclude Include="misc_components.h" />
     <ClInclude Include="SerializationSystem.h" />
     <ClInclude Include="WindowsAssetManager.h" />
     <ClInclude Include="WindowsInputSystem.h" />
     <ClInclude Include="WindowsPlatform.h" />
-    <ClInclude Include="XRAPI.h" />
-    <ClInclude Include="XRPlatformPlugin_Win32.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Platform_Plugins">
+      <UniqueIdentifier>{3534209e-8591-4b46-aa71-ae8e369cceb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_Plugins\Win32">
+      <UniqueIdentifier>{b2d285f1-fa58-4ef7-815c-0c7d091eae08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics_Plugins">
+      <UniqueIdentifier>{2c2e5262-c8b8-4351-895d-b5614026120f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics_Plugins\OpenGL">
+      <UniqueIdentifier>{3feb2a1a-5a07-45a6-9668-ec9e42aa01bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics_Plugins\DirectX11">
+      <UniqueIdentifier>{7e4ff791-03c5-4a6b-9471-c0d26077e3ab}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Platform_Plugins\Win32\XRPlatformPlugin_Win32.cpp">
+      <Filter>Platform_Plugins\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)IXRAPI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics_Plugins\OpenGL\XRGraphicsPlugin_OpenGL.cpp">
+      <Filter>Graphics_Plugins\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics_Plugins\DirectX11\XRGraphicsPlugin_DirectX11.cpp">
+      <Filter>Graphics_Plugins\DirectX11</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)XRAPI.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Platform_Plugins\Win32\XRPlatformPlugin_Win32.h">
+      <Filter>Platform_Plugins\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)IXRAPI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IXRGraphicsPlugin.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IXRPlatformPlugin.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MockXRAPI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)xr_defines.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics_Plugins\OpenGL\XRGraphicsPlugin_OpenGL.h">
+      <Filter>Graphics_Plugins\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics_Plugins\DirectX11\XRGraphicsPlugin_DirectX11.h">
+      <Filter>Graphics_Plugins\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)XRAPI.h" />
+  </ItemGroup>
+</Project>

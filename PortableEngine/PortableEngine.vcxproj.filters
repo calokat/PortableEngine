@@ -10,8 +10,6 @@
     <ClCompile Include="WindowsPlatform.cpp" />
     <ClCompile Include="WindowsAssetManager.cpp" />
     <ClCompile Include="..\..\imgui\backends\imgui_impl_win32.cpp" />
-    <ClCompile Include="XRAPI.cpp" />
-    <ClCompile Include="XRPlatformPlugin_Win32.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EmscriptenInputSystem.h" />
@@ -22,10 +20,6 @@
     <ClInclude Include="WindowsInputSystem.h" />
     <ClInclude Include="WindowsPlatform.h" />
     <ClInclude Include="WindowsAssetManager.h" />
-    <ClInclude Include="XRAPI.h" />
-    <ClInclude Include="IXRPlatformPlugin.h" />
-    <ClInclude Include="IXRGraphicsPlugin.h" />
-    <ClInclude Include="XRPlatformPlugin_Win32.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

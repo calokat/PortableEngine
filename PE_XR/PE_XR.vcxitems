@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{6873a98b-fbc2-43f4-8298-f09ae698a335}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics_Plugins\DirectX11\XRGraphicsPlugin_DirectX11.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics_Plugins\OpenGL\XRGraphicsPlugin_OpenGL.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)IXRAPI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Platform_Plugins\Win32\XRPlatformPlugin_Win32.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)XRAPI.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics_Plugins\DirectX11\XRGraphicsPlugin_DirectX11.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics_Plugins\OpenGL\XRGraphicsPlugin_OpenGL.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IXRAPI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IXRGraphicsPlugin.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IXRPlatformPlugin.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MockXRAPI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Platform_Plugins\Win32\XRPlatformPlugin_Win32.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)XRAPI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)xr_defines.h" />
+  </ItemGroup>
+</Project>
