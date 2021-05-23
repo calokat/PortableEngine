@@ -12,13 +12,95 @@ IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity
 void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 {
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
-	dxRenderer->vertexShader = new SimpleVertexShader(device, context, L"../x64/Debug/VertexShader.cso");
-	dxRenderer->pixelShader = new SimplePixelShader(device, context, L"../x64/Debug/PixelShader.cso");
-	dxRenderer->vertexShader->SetMatrix4x4("viewMatrix", camera.view);
-	dxRenderer->vertexShader->SetMatrix4x4("projectionMatrix", camera.projection);
-	dxRenderer->vertexShader->SetMatrix4x4("worldMatrix", glm::mat4(1.0f));
-	dxRenderer->vertexShader->CopyAllBufferData();
+	//dxRenderer->vertexShader = new SimpleVertexShader(device, context, L"../x64/Debug/VertexShader.cso");
+	//dxRenderer->pixelShader = new SimplePixelShader(device, context, L"../x64/Debug/PixelShader.cso");
+	//dxRenderer->vertexShader->SetMatrix4x4("viewMatrix", camera.view);
+	//dxRenderer->vertexShader->SetMatrix4x4("projectionMatrix", camera.projection);
+	//dxRenderer->vertexShader->SetMatrix4x4("worldMatrix", glm::mat4(1.0f));
+	//dxRenderer->vertexShader->CopyAllBufferData();
+	ID3DBlob* shaderBlob = nullptr;
+	D3DReadFileToBlob(
+		L"../x64/Debug/VertexShader.cso", // Using a custom helper for file paths
+		&shaderBlob);
 
+	device->CreateVertexShader(
+		shaderBlob->GetBufferPointer(), // Get a pointer to the blob's contents
+		shaderBlob->GetBufferSize(),	// How big is that data?
+		0,								// No classes in this shader
+		dxRenderer->vertexShader.GetAddressOf());	// The address of the ID3D11VertexShader*
+
+	// Create an input layout that describes the vertex format
+	// used by the vertex shader we're using
+	//  - This is used by the pipeline to know how to interpret the raw data
+	//     sitting inside a vertex buffer
+	//  - Doing this NOW because it requires a vertex shader's byte code to verify against!
+	//  - Luckily, we already have that loaded (the blob above)
+	D3D11_INPUT_ELEMENT_DESC inputElements[4] = {};
+
+	// Set up the first element - a position, which is 3 float values
+	inputElements[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;				// Most formats are described as color channels; really it just means "Three 32-bit floats"
+	inputElements[0].SemanticName = "POSITION";							// This is "POSITION" - needs to match the semantics in our vertex shader input!
+	inputElements[0].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;	// How far into the vertex is this?  Assume it's after the previous element
+
+	// Set up the second element - a color, which is 4 more float values
+	inputElements[1].Format = DXGI_FORMAT_R32G32B32_FLOAT;			
+	inputElements[1].SemanticName = "NORMAL";
+	inputElements[1].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+
+	inputElements[2].Format = DXGI_FORMAT_R32G32_FLOAT;
+	inputElements[2].SemanticName = "TEXCOORD";
+	inputElements[2].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+
+	inputElements[3].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	inputElements[3].SemanticName = "TANGENT";
+	inputElements[3].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+
+	//Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;
+	// Create the input layout, verifying our description against actual shader code
+	device->CreateInputLayout(
+		inputElements,					// An array of descriptions
+		4,								// How many elements in that array
+		shaderBlob->GetBufferPointer(),	// Pointer to the code of a shader that uses this layout
+		shaderBlob->GetBufferSize(),	// Size of the shader code that uses this layout
+		dxRenderer->inputLayout.GetAddressOf());	// Address of the resulting ID3D11InputLayout*
+	context->IASetInputLayout(dxRenderer->inputLayout.Get());
+
+
+	unsigned int size = sizeof(MatrixConstantBuffer);
+	size = (size + 15) / 16 * 16;
+
+	D3D11_BUFFER_DESC matrixBufferDesc = {};
+	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	matrixBufferDesc.ByteWidth = size;
+	matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	matrixBufferDesc.MiscFlags = 0;
+	matrixBufferDesc.StructureByteStride = 0;
+
+	device->CreateBuffer(&matrixBufferDesc, 0, dxRenderer->constantBuffer.GetAddressOf());
+	D3D11_MAPPED_SUBRESOURCE mappedBuffer = {};
+
+	//context->Map(dxRenderer->constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedBuffer);
+	//MatrixConstantBuffer* cb = (MatrixConstantBuffer*)mappedBuffer.pData;
+	//cb->world = glm::mat4(1.0f);
+	//cb->view = camera.view;
+	//cb->projection = camera.projection;
+	//cb->colorTint = glm::vec4(1, 1, 1, 1);
+
+	//context->Unmap(dxRenderer->constantBuffer.Get(), 0);
+	//context->VSSetConstantBuffers(0, 1, dxRenderer->constantBuffer.GetAddressOf());
+
+	D3DReadFileToBlob(
+		L"../x64/Debug/PixelShader.cso", // Using a custom helper for file paths
+		&shaderBlob);
+
+	device->CreatePixelShader(
+		shaderBlob->GetBufferPointer(),
+		shaderBlob->GetBufferSize(),
+		0,
+		dxRenderer->pixelShader.GetAddressOf());
+
+	shaderBlob->Release();
 	D3D11_SAMPLER_DESC samplerDesc = {};
 	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -27,7 +109,8 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	samplerDesc.MaxAnisotropy = 16;
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	device->CreateSamplerState(&samplerDesc, &dxRenderer->samplerState);
-	dxRenderer->pixelShader->SetSamplerState("samplerOptions", dxRenderer->samplerState);
+	//dxRenderer->pixelShader->SetSamplerState("samplerOptions", dxRenderer->samplerState);
+	context->PSSetSamplers(0, 1, &dxRenderer->samplerState);
 }
 
 // This method implementation is empty because it is not actually needed for DirectX, 
@@ -56,7 +139,7 @@ void DirectXRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
 
 	D3D11_BUFFER_DESC ibd;
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
-	ibd.ByteWidth = sizeof(int) * dxRenderer->numIndices;         // 3 = number of indices in the buffer
+	ibd.ByteWidth = sizeof(int) * dxRenderer->numIndices;
 	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER; // Tells DirectX this is an index buffer
 	ibd.CPUAccessFlags = 0;
 	ibd.MiscFlags = 0;
@@ -77,8 +160,10 @@ void DirectXRenderSystem::Draw(IRenderer* renderer)
 	BindTexture(dxRenderer);
 	context->IASetVertexBuffers(0, 1, dxRenderer->vertexBuffer.GetAddressOf(), &stride, &offset);
 	context->IASetIndexBuffer(dxRenderer->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	dxRenderer->vertexShader->SetShader();
-	dxRenderer->pixelShader->SetShader();
+	//dxRenderer->vertexShader->SetShader();
+	//dxRenderer->pixelShader->SetShader();
+	context->VSSetShader(dxRenderer->vertexShader.Get(), 0, 0);
+	context->PSSetShader(dxRenderer->pixelShader.Get(), 0, 0);
 	context->DrawIndexed(
 		dxRenderer->numIndices,     // The number of indices to use (we could draw a subset if we wanted)
 		0,     // Offset to the first index we want to use
@@ -88,24 +173,36 @@ void DirectXRenderSystem::Draw(IRenderer* renderer)
 
 void DirectXRenderSystem::DrawWireframe(IRenderer* renderer)
 {
-	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
-	glm::vec4 oldRendererColor = dxRenderer->vertexColor;
-	dxRenderer->vertexShader->SetFloat4("colorTint", glm::vec4(1, 1, 1, 1));
-	dxRenderer->vertexShader->CopyAllBufferData();
-	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-	Draw(dxRenderer);
-	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	dxRenderer->vertexShader->SetFloat4("colorTint", oldRendererColor);
+	//DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
+	//glm::vec4 oldRendererColor = dxRenderer->vertexColor;
+	//dxRenderer->vertexShader->SetFloat4("colorTint", glm::vec4(1, 1, 1, 1));
+	//dxRenderer->vertexShader->CopyAllBufferData();
+	//context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	//Draw(dxRenderer);
+	//context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//dxRenderer->vertexShader->SetFloat4("colorTint", oldRendererColor);
 }
 
 void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera)
 {
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
-	dxRenderer->vertexShader->SetMatrix4x4("viewMatrix", camera.view);
+
+	D3D11_MAPPED_SUBRESOURCE data = {};
+	MatrixConstantBuffer cb;
+	cb.view = camera.view;
+	cb.projection = camera.projection;
+	cb.world = meshTransform.worldMatrix;
+	cb.colorTint = dxRenderer->vertexColor;
+
+	context->Map(dxRenderer->constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);
+	memcpy(data.pData, &cb, sizeof(cb));
+	context->Unmap(dxRenderer->constantBuffer.Get(), 0);
+	/*dxRenderer->vertexShader->SetMatrix4x4("viewMatrix", camera.view);
 	dxRenderer->vertexShader->SetMatrix4x4("projectionMatrix", camera.projection);
 	dxRenderer->vertexShader->SetMatrix4x4("worldMatrix", meshTransform.worldMatrix);
-	dxRenderer->vertexShader->SetFloat4("colorTint", dxRenderer->vertexColor);
-	dxRenderer->vertexShader->CopyAllBufferData();
+	dxRenderer->vertexShader->SetFloat4("colorTint", dxRenderer->vertexColor);*/
+	//dxRenderer->vertexShader->CopyAllBufferData();
+	context->VSSetConstantBuffers(0, 1, dxRenderer->constantBuffer.GetAddressOf());
 }
 
 DirectXRenderSystem::DirectXRenderSystem(ID3D11Device* dev, ID3D11DeviceContext* ctx) : device(dev), context(ctx)
@@ -161,8 +258,9 @@ void DirectXRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath
 	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(dxRenderer->diffuseTexture.imageGraphicsData);
 	//DirectXRenderer* dx11Renderer = (DirectXRenderer*)renderer;
 
-	dxRenderer->pixelShader->SetShaderResourceView("diffuseTexture", dx11ImageGraphicsData->srv);
-	dxRenderer->pixelShader->CopyAllBufferData();
+	//dxRenderer->pixelShader->SetShaderResourceView("diffuseTexture", dx11ImageGraphicsData->srv);
+	//dxRenderer->pixelShader->CopyAllBufferData();
+	context->PSSetShaderResources(0, 1, &dx11ImageGraphicsData->srv);
 }
 
 void DirectXRenderSystem::LoadTexture(PEImage& img)
@@ -175,8 +273,9 @@ void DirectXRenderSystem::BindTexture(DirectXRenderer* renderer)
 	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(renderer->diffuseTexture.imageGraphicsData);
 	//DirectXRenderer* dx11Renderer = (DirectXRenderer*)renderer;
 
-	renderer->pixelShader->SetShaderResourceView("diffuseTexture", dx11ImageGraphicsData->srv);
-	renderer->pixelShader->CopyAllBufferData();
+	//renderer->pixelShader->SetShaderResourceView("diffuseTexture", dx11ImageGraphicsData->srv);
+	//renderer->pixelShader->CopyAllBufferData();
+	context->PSSetShaderResources(0, 1, &dx11ImageGraphicsData->srv);
 
 }
 
