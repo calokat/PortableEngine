@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(EmscriptenPortTest)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z --preload-file ../../Assets/Models --preload-file ../../Assets/Images --preload-file ../../Shaders/GLSL-ES -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -sUSE_SDL=2 -sASYNCIFY -s ASYNCIFY_IMPORTS=['browserPaste']")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z --preload-file ../../Assets/Models --preload-file ../../Assets/Images --preload-file ../../Shaders/GLSL-ES -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -sUSE_SDL=2 -sASYNCIFY -s ASYNCIFY_IMPORTS=['browserPaste'] --shell-file shell_minimal_runtime.html")
 file(GLOB primarySrc "*.cpp")
 file(GLOB ImGuizmoSrc "../../ImGuizmo/*.cpp")
 file(GLOB core_src "../PE_Core/*.cpp")
