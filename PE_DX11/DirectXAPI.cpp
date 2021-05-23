@@ -5,7 +5,7 @@
 #include <iostream>
 #include <backends/imgui_impl_dx11.h>
 #include "CameraSystem.h"
-#include "XRGraphicsPlugin_DirectX11.h"
+#include "../PE_XR/Graphics_Plugins/DirectX11/XRGraphicsPlugin_DirectX11.h"
 // ********** REQUIRED WITHOUT SIMPLE SHADER **********
 // Needed for a helper function to read compiled shader files from the hard drive
 #pragma comment(lib, "d3dcompiler.lib")

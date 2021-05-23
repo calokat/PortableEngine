@@ -40,8 +40,10 @@
 #include "InspectorWindow.h"
 #include "AssetBrowserWindow.h"
 #include "WindowHeader.h"
-#include "XRAPI.h"
-#include "MockXRAPI.h"
+#ifndef __EMSCRIPTEN__
+#include "../PE_XR/XRAPI.h"
+#endif
+#include "../PE_XR/MockXRAPI.h"
 #include <thread>
 #include "raycast.h"
 #include "loop.h"

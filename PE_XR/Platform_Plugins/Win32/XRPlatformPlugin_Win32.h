@@ -1,5 +1,5 @@
 #pragma once
-#include "IXRPlatformPlugin.h"
+#include "../PE_XR/IXRPlatformPlugin.h"
 class XRPlatformPlugin_Win32 :
     public IXRPlatformPlugin
 {

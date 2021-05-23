@@ -1,5 +1,5 @@
 #pragma once
-#include "IXRGraphicsPlugin.h"
+#include "../PE_XR/IXRGraphicsPlugin.h"
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <windows.h>

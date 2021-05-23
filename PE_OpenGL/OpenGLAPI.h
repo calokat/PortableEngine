@@ -20,7 +20,9 @@ public:
 	void DrawGui();
 	void OnResize();
 	~OpenGLAPI();
+#ifndef __EMSCRIPTEN__
 	IXRGraphicsPlugin* GetXRGraphicsPlugin();
+#endif
 	void BindToScreen();
 private:
 	GameWindow* window;
@@ -34,6 +36,8 @@ private:
 	Shader* vertex;
 	Shader* pixel;
 	Camera& engineCam;
+#ifndef __EMSCRIPTEN__
 	IXRGraphicsPlugin* xrGraphics;
+#endif
 };
 

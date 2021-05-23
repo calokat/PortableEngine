@@ -1,5 +1,5 @@
 #pragma once
-#include "IXRGraphicsPlugin.h"
+#include "../PE_XR/IXRGraphicsPlugin.h"
 #define XR_USE_PLATFORM_WIN32 1
 #define XR_USE_GRAPHICS_API_OPENGL 1
 #ifdef _WIN32
