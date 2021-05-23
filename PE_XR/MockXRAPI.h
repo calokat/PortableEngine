@@ -2,7 +2,6 @@
 #include "IXRAPI.h"
 #include <entt.hpp>
 #include "IRenderSystem.h"
-#include <openxr/openxr.h>
 #include "IPlatform.h"
 #include "IGraphicsAPI.h"
 #include "GameWindow.h"
