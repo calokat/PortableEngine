@@ -33,8 +33,8 @@ public:
 struct MatrixConstantBuffer
 {
 	glm::vec4 colorTint;
-	glm::mat4 view;
 	glm::mat4 world;
+	glm::mat4 view;
 	glm::mat4 projection;
 };
 #endif
