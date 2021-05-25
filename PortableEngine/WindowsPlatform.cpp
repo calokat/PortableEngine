@@ -4,7 +4,7 @@
 #include <imgui.h>
 #include <backends/imgui_impl_win32.h>
 #include "WindowsAssetManager.h"
-#include "XRPlatformPlugin_Win32.h"
+#include "../PE_XR/Platform_Plugins/Win32/XRPlatformPlugin_Win32.h"
 
 WindowsPlatform* WindowsPlatform::staticThis = 0;
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

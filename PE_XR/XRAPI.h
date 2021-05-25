@@ -18,7 +18,7 @@ struct Swapchain {
 
 
 class XRAPI
-    : IXRAPI
+    : public IXRAPI
 {
 public:
 	XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window);

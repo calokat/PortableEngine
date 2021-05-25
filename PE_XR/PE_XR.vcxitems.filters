@@ -29,6 +29,7 @@
       <Filter>Graphics_Plugins\DirectX11</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)XRAPI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MockXRAPI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Platform_Plugins\Win32\XRPlatformPlugin_Win32.h">

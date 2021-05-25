@@ -17,6 +17,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics_Plugins\DirectX11\XRGraphicsPlugin_DirectX11.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics_Plugins\OpenGL\XRGraphicsPlugin_OpenGL.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)IXRAPI.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MockXRAPI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Platform_Plugins\Win32\XRPlatformPlugin_Win32.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)XRAPI.cpp" />
   </ItemGroup>
