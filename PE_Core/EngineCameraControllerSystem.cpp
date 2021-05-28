@@ -1,5 +1,6 @@
 #include "EngineCameraControllerSystem.h"
 #include "TransformSystem.h"
+#include <glm/gtx/euler_angles.hpp>
 void EngineCameraControllerSystem::ControlCamera(IInputSystem* inputSystem, Transform& camTransform)
 {
 	float cameraMoveSpeed = .05f;
@@ -56,13 +57,49 @@ void EngineCameraControllerSystem::LookCamera(IInputSystem* inputSystem, Transfo
 		{
 			newCamRotX = 0;
 		}
+		camTransform.rotation += glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0);
+		camTransform.rotation.z = 0;
+		glm::quat xQuat = glm::angleAxis(camTransform.rotation.x, glm::vec3(1, 0, 0));
+		glm::quat yQuat = glm::angleAxis(-camTransform.rotation.y, glm::vec3(0, 1, 0));
+		camTransform.orientation = yQuat * xQuat;
+		TransformSystem::CalculateWorldMatrix(&camTransform);
+		//camTransform.rotation += glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0);
+		//camTransform.rotation.z = 0;
+		//glm::quat xQuat = glm::angleAxis(camTransform.rotation.x, glm::vec3(1, 0, 0));
+		//glm::quat yQuat = glm::angleAxis(camTransform.rotation.y, glm::vec3(0, 1, 0));
+		//camTransform.orientation = xQuat * yQuat;
+		//TransformSystem::CalculateWorldMatrix(&camTransform);
+		//camTransform.orientation = glm::quat(camTransform.rotation);
+		//TransformSystem::CalculateWorldMatrix(&camTransform);
 		//cam.GetTransform()->Rotate(glm::vec3(newCamRotX * .005f, -delta.x * .005f, 0));
-		TransformSystem::Rotate(glm::vec3(newCamRotX * .005f, delta.x * .005f, 0), &camTransform);
+		//TransformSystem::Rotate(glm::vec3(newCamRotX * .005f, delta.x * .005f, 0), &camTransform);
+		//glm::quat rotQuat(glm::vec3(newCamRotX * .005f, delta.x * .005f, 0));
+		//camTransform.orientation = rotQuat * camTransform.orientation;
+		//glm::vec3 rotWithNoZ;
+		//glm::extractEulerAngleXYZ(glm::mat4(camTransform.orientation), rotWithNoZ.x, rotWithNoZ.y, rotWithNoZ.z);
+		//rotWithNoZ.z = 0;
+		//camTransform.orientation = glm::quat(rotWithNoZ);
+		//TransformSystem::CalculateWorldMatrix(&camTransform);
 	}
 	else
 	{
+		camTransform.rotation += glm::vec3(delta.y * .005f, -delta.x * .005f, 0);
+		camTransform.rotation.z = 0;
+		glm::quat xQuat = glm::angleAxis(camTransform.rotation.x, glm::vec3(1, 0, 0));
+		glm::quat yQuat = glm::angleAxis(-camTransform.rotation.y, glm::vec3(0, 1, 0));
+		camTransform.orientation = yQuat * xQuat;
+		TransformSystem::CalculateWorldMatrix(&camTransform);
+		//camTransform.orientation = glm::quat(camTransform.rotation);
+		//TransformSystem::CalculateWorldMatrix(&camTransform);
 		//cam.GetTransform()->Rotate(glm::vec3(delta.y * .005f, -delta.x * .005f, 0));
-		TransformSystem::Rotate(glm::vec3(delta.y * .005f, delta.x * .005f, 0), &camTransform);
+		//TransformSystem::Rotate(glm::vec3(delta.y * .005f, delta.x * .005f, 0), &camTransform);
+		//glm::quat rotQuat(glm::vec3(delta.y * .005f, delta.x * .005f, 0));
+		//camTransform.orientation = rotQuat * camTransform.orientation;
+		//glm::vec3 rotWithNoZ;
+		//glm::extractEulerAngleXYZ(glm::mat4(camTransform.orientation), rotWithNoZ.x, rotWithNoZ.y, rotWithNoZ.z);
+		//rotWithNoZ.z = 0;
+		//camTransform.orientation = glm::quat(rotWithNoZ);
+		//TransformSystem::CalculateWorldMatrix(&camTransform);
 	}
 }
 

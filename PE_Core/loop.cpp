@@ -124,11 +124,16 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	windowHeader.Render(registry, plat->GetAssetManager(), renderSystem);
 	entityListWindow.Render(entityView);
 	inspectorWindow.Render(registry);
+
 	assetWindow.Render(plat->GetAssetManager(), renderSystem);
 
 	graph->ClearScreen();
 	auto camEntityView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camEntityView[0]);
+	ImGui::Begin("Camera Rotation");
+	ImGui::DragFloat3("Camera rotation", glm::value_ptr(camTransform.rotation));
+	ImGui::End();
+
 	TransformSystem::CalculateWorldMatrix(&camTransform);
 	CameraSystem::CalculateViewMatrixLH(camera, camTransform);
 	entt::entity selected = GizmoSystem::GetSelectedEntity();
@@ -156,8 +161,8 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 		DrawIteration<GLRenderer>(camera, selected, registry, renderSystem);
 	}
 	auto transformView = registry.view<Transform>();
-	GizmoSystem::UpdateGizmo(plat->GetInputSystem());
-	GizmoSystem::DrawGizmo(camera, transformView);
+	//GizmoSystem::UpdateGizmo(plat->GetInputSystem());
+	//GizmoSystem::DrawGizmo(camera, transformView);
 
 	EngineCameraControllerSystem::ControlCamera(plat->GetInputSystem(), camTransform);
 

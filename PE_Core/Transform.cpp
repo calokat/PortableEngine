@@ -115,6 +115,7 @@ Transform& Transform::operator=(Transform&& other)
 		this->position = other.position;
 		this->rotation = other.rotation;
 		this->scale = other.scale;
+		this->orientation = other.orientation;
 	}
 	return *this;
 }
