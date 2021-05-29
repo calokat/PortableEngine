@@ -74,23 +74,23 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>..\..\json\single_include\nlohmann;..\..\..\common\glew\include;..\..\entt\src\entt;..\..\imgui;..\..\stb;..\..\ImGuizmo;$(IncludePath)</IncludePath>
-    <LibraryPath>..\..\..\common\glew\lib\Release\x64;../../../common\openxr_loader_windows-1.0.9\openxr_loader_windows\x64\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\json\single_include\nlohmann;..\..\..\common\glew\include;..\..\entt\src\entt;..\..\imgui;..\..\stb;..\..\ImGuizmo;..\..\assimp\include;C:\Users\Caleb\Documents\GitHub\assimp\build\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\..\common\glew\lib\Release\x64;../../../common\openxr_loader_windows-1.0.9\openxr_loader_windows\x64\lib;C:\Users\Caleb\Documents\GitHub\assimp\build\lib\MinSizeRel;$(LibraryPath)</LibraryPath>
     <SourcePath>..\..\GitHub\imgui\backends;..\..\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\..\json\single_include\nlohmann;..\..\..\common\glew\include;..\..\entt\src\entt;..\..\imgui;..\..\stb;..\..\ImGuizmo;$(IncludePath)</IncludePath>
-    <LibraryPath>..\..\..\common\glew\lib\Release\x64;../../../common\openxr_loader_windows-1.0.9\openxr_loader_windows\x64\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\json\single_include\nlohmann;..\..\..\common\glew\include;..\..\entt\src\entt;..\..\imgui;..\..\stb;..\..\ImGuizmo;..\..\assimp\include;C:\Users\Caleb\Documents\GitHub\assimp\build\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\..\common\glew\lib\Release\x64;../../../common\openxr_loader_windows-1.0.9\openxr_loader_windows\x64\lib;C:\Users\Caleb\Documents\GitHub\assimp\build\lib\MinSizeRel;$(LibraryPath)</LibraryPath>
     <SourcePath>..\..\GitHub\imgui\backends;..\..\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LibraryPath>..\..\..\common\glew\lib\Release\x64;../../../common\openxr_loader_windows-1.0.9\openxr_loader_windows\x64\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>..\..\json\single_include\nlohmann;..\..\..\common\glew\include;..\..\entt\src\entt;..\..\imgui;..\..\stb;..\..\ImGuizmo;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>..\..\..\common\glew\lib\Release\x64;../../../common\openxr_loader_windows-1.0.9\openxr_loader_windows\x64\lib;C:\Users\Caleb\Documents\GitHub\assimp\build\lib\MinSizeRel;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\json\single_include\nlohmann;..\..\..\common\glew\include;..\..\entt\src\entt;..\..\imgui;..\..\stb;..\..\ImGuizmo;..\..\assimp\include;C:\Users\Caleb\Documents\GitHub\assimp\build\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <SourcePath>..\..\GitHub\imgui\backends;..\..\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>..\..\..\common\glew\lib\Release\x64;../../../common\openxr_loader_windows-1.0.9\openxr_loader_windows\x64\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>..\..\json\single_include\nlohmann;..\..\..\common\glew\include;..\..\entt\src\entt;..\..\imgui;..\..\stb;..\..\ImGuizmo;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>..\..\..\common\glew\lib\Release\x64;../../../common\openxr_loader_windows-1.0.9\openxr_loader_windows\x64\lib;C:\Users\Caleb\Documents\GitHub\assimp\build\lib\MinSizeRel;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\json\single_include\nlohmann;..\..\..\common\glew\include;..\..\entt\src\entt;..\..\imgui;..\..\stb;..\..\ImGuizmo;..\..\assimp\include;C:\Users\Caleb\Documents\GitHub\assimp\build\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <SourcePath>..\..\GitHub\imgui\backends;..\..\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -104,7 +104,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>openxr_loader.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>openxr_loader.lib;glew32.lib;opengl32.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -118,7 +118,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>openxr_loader.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>openxr_loader.lib;glew32.lib;opengl32.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -136,7 +136,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>openxr_loader.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>openxr_loader.lib;glew32.lib;opengl32.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -154,7 +154,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>openxr_loader.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>openxr_loader.lib;glew32.lib;opengl32.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
