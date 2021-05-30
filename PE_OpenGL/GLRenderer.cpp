@@ -44,6 +44,7 @@ GLRenderer::GLRenderer()
 	vbo = -1;
 	ibo = -1;
 	numVertices = -1;
+	numIndices = 0;
 }
 
 //void Renderer::LoadMesh(std::vector<Vertex> rawVertices)
@@ -93,6 +94,7 @@ GLRenderer& GLRenderer::operator=(GLRenderer&& other)
 		this->fragmentShaderPath = other.fragmentShaderPath;
 		this->vertexColor = other.vertexColor;
 		this->diffuseTexture = std::move(other.diffuseTexture);
+		this->numIndices = other.numIndices;
 	}
 	return *this;
 }

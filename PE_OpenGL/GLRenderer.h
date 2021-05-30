@@ -24,6 +24,7 @@ public:
 	int numVertices;
 	std::string vertexShaderPath;
 	std::string fragmentShaderPath;
+	unsigned int numIndices;
 	GLRenderer(std::string vertexShaderPathParam, std::string fragmentShaderPathParam);
 	GLRenderer();
 	//void LoadMesh(std::vector<Vertex>);

@@ -25,6 +25,7 @@ void GLRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	glGenBuffers(1, &glRenderer->vbo);
 	glGenBuffers(1, &glRenderer->ibo);
 	glBindBuffer(GL_ARRAY_BUFFER, glRenderer->vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glRenderer->ibo);
 	glRenderer->program = glCreateProgram();
 	glAttachShader(glRenderer->program, glRenderer->vertex.GetId());
 	glAttachShader(glRenderer->program, glRenderer->pixel.GetId());
@@ -67,6 +68,7 @@ void GLRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
 	glBindVertexArray(glRenderer->vao);
 	glBufferData(GL_ARRAY_BUFFER, mesh.rawVertices.size() * sizeof(Vertex), mesh.rawVertices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.rawIndices.size() * sizeof(unsigned int), mesh.rawIndices.data(), GL_STATIC_DRAW);
 	GLint posAttrib = glGetAttribLocation(glRenderer->program, "in_position");
 	glEnableVertexAttribArray(posAttrib);
 	SetupAttribute(posAttrib, 3, GL_FLOAT, Vertex, Position);
@@ -82,6 +84,7 @@ void GLRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
 	//SetupAttribute(vertColorAttrib, 3, GL_FLOAT, Vertex, Color);
 	//glVertexAttribPointer(vertColorAttrib, 3, GL_FLOAT, 0, sizeof(Vertex), (void*)offsetof(structure, element));
 	glRenderer->numVertices = mesh.rawVertices.size();
+	glRenderer->numIndices = mesh.rawIndices.size();
 }
 
 void GLRenderSystem::Draw(IRenderer* renderer)
@@ -91,11 +94,11 @@ void GLRenderSystem::Draw(IRenderer* renderer)
 	BindTexture(*glRenderer);
 	if (glRenderer->numVertices == 2)
 	{
-		glDrawArrays(GL_LINES, 0, glRenderer->numVertices);
+		glDrawElements(GL_LINES, glRenderer->numIndices, GL_UNSIGNED_INT, 0);
 	}
 	else
 	{
-		glDrawArrays(GL_TRIANGLES, 0, glRenderer->numVertices);
+		glDrawElements(GL_TRIANGLES, glRenderer->numIndices, GL_UNSIGNED_INT, 0);
 	}
 }
 
