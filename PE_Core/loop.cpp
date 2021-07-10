@@ -12,6 +12,7 @@
 #include <thread>
 #include "EngineCameraControllerSystem.h"
 #include "GLRenderer.h"
+#include "glm/gtc/matrix_transform.hpp"
 #ifdef _WIN64
 #include "DIrectXRenderer.h"
 #endif
@@ -28,18 +29,16 @@ void DrawIteration(Camera& camera, entt::entity selected, entt::registry& regist
 		renderSystem->BindRenderer(&renderer);
 		renderSystem->UpdateRenderer(&renderer, meshTransform, camera);
 		renderSystem->Draw(&renderer);
-	}
-	if (selected != entt::null)
-	{
-		Mesh& selectedMesh = registry.get<Mesh>(selected);
-		T& r = renderableView.template get<T>(selected);
-		//renderSystem->LoadMesh(&r, selectedMesh);
-		renderSystem->BindRenderer(&r);
-		renderSystem->DrawWireframe(&r);
+		if (selected == renderable)
+		{
+			T& r = renderableView.template get<T>(renderable);
+			renderSystem->BindRenderer(&r);
+			renderSystem->DrawWireframe(&r);
+		}
 	}
 }
 
-void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXRAPI* xr, GameWindow* window, entt::registry& registry, Options options)
+void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXRAPI* xr, GameWindow* window, entt::registry& registry, Options options, Scene<entt::entity> entityGraph)
 {
 	plat->GetInputSystem()->GetKeyPressed();
 	graph->NewGuiFrame();
@@ -115,14 +114,14 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 		MakeRayFromCamera(registry.view<Camera, Transform>(), registry.view<AABB>(), window);
 	}
 
-	auto entityView = registry.view<Name, Transform>();
+	auto entityView = registry.view<Name>();
 	EntityListWindow entityListWindow;
 	InspectorWindow inspectorWindow;
 	AssetBrowserWindow assetWindow;
 	WindowHeader windowHeader;
 
 	windowHeader.Render(registry, plat->GetAssetManager(), renderSystem);
-	entityListWindow.Render(entityView);
+	entityListWindow.Render(entityGraph, entityView);
 	inspectorWindow.Render(registry);
 
 	assetWindow.Render(plat->GetAssetManager(), renderSystem);
@@ -137,6 +136,7 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	TransformSystem::CalculateWorldMatrix(&camTransform);
 	CameraSystem::CalculateViewMatrixLH(camera, camTransform);
 	entt::entity selected = GizmoSystem::GetSelectedEntity();
+	ComputeTransformHeirarchy(entityGraph, registry, Transform());
 	if (xr->IsSessionRunning())
 	{
 		xr->RenderFrame(registry, renderSystem);
@@ -173,4 +173,19 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	ImGui::Render();
 	graph->DrawGui();
 	graph->_SwapBuffers();
+}
+
+void ComputeTransformHeirarchy(Scene<entt::entity> tree, entt::registry& registry, Transform cumulativeTransform)
+{
+	Transform& entityTransform = registry.get<Transform>(tree.data);
+	glm::mat4 translationMat = glm::translate(glm::mat4(1.0), entityTransform.position);
+	glm::mat4 rotationMat = glm::mat4(entityTransform.orientation);
+	glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), entityTransform.scale);
+	glm::mat4 localMatrix = translationMat * rotationMat * scaleMat;
+	entityTransform.worldMatrix = cumulativeTransform.worldMatrix * localMatrix;
+	cumulativeTransform.worldMatrix = entityTransform.worldMatrix;
+	for (Scene<entt::entity> subtree : tree.children)
+	{
+		ComputeTransformHeirarchy(subtree, registry, cumulativeTransform);
+	}
 }
