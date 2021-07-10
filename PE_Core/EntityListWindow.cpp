@@ -1,7 +1,7 @@
 #include "EntityListWindow.h"
 #include <imgui.h>
 #include "GizmoSystem.h"
-void EntityListWindow::Render(Scene<entt::entity> namedEntities, entt::basic_view<entt::entity, entt::exclude_t<>, Name> nameView)
+void EntityListWindow::Render(Tree<entt::entity> namedEntities, entt::basic_view<entt::entity, entt::exclude_t<>, Name> nameView)
 {
 	ImGui::Begin("Entity List");
 	ImGui::SetWindowPos({ 0, 20 });
@@ -12,7 +12,7 @@ void EntityListWindow::Render(Scene<entt::entity> namedEntities, entt::basic_vie
 	ImGui::End();
 }
 
-void EntityListWindow::SetUpGuiTree(Scene<entt::entity> entityTree, entt::basic_view<entt::entity, entt::exclude_t<>, Name> nameView)
+void EntityListWindow::SetUpGuiTree(Tree<entt::entity> entityTree, entt::basic_view<entt::entity, entt::exclude_t<>, Name> nameView)
 {
 	Name entityName = nameView.get<Name>(entityTree.data);
 	if (entityTree.children.size() == 0)

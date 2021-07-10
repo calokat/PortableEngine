@@ -29,9 +29,9 @@ void MeshLoaderSystem::ProcessMesh(aiMesh* assimpMesh, const aiScene* scene, Mes
 	m.numIndices = m.rawIndices.size();
 }
 
-Scene<MeshCreateInfo> MeshLoaderSystem::CreateMeshHeirarchy(const char* path)
+Tree<MeshCreateInfo> MeshLoaderSystem::CreateMeshHeirarchy(const char* path)
 {
-	Scene<MeshCreateInfo> res;
+	Tree<MeshCreateInfo> res;
 	Assimp::Importer imp;
 	const aiScene* meshScene = imp.ReadFile(path, aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_EmbedTextures);
 	const aiNode* root = meshScene->mRootNode;
@@ -39,7 +39,7 @@ Scene<MeshCreateInfo> MeshLoaderSystem::CreateMeshHeirarchy(const char* path)
 	return res;
 }
 
-void MeshLoaderSystem::AddToMeshHeirarchy(Scene<MeshCreateInfo>& parent, const aiNode* assimpNode, const aiScene* assimpScene)
+void MeshLoaderSystem::AddToMeshHeirarchy(Tree<MeshCreateInfo>& parent, const aiNode* assimpNode, const aiScene* assimpScene)
 {
 	aiVector3D pos, scale;
 	aiQuaternion rot;

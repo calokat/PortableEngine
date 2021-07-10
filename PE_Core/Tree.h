@@ -2,9 +2,9 @@
 #include <vector>
 #include <functional>
 template<class T>
-struct Scene
+struct Tree
 {
 	T data;
-	std::vector<Scene> children;
+	std::vector<Tree> children;
 	bool isEmpty;
 };

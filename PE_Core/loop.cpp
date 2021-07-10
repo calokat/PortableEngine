@@ -38,7 +38,7 @@ void DrawIteration(Camera& camera, entt::entity selected, entt::registry& regist
 	}
 }
 
-void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXRAPI* xr, GameWindow* window, entt::registry& registry, Options options, Scene<entt::entity> entityGraph)
+void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXRAPI* xr, GameWindow* window, entt::registry& registry, Options options, Tree<entt::entity> entityGraph)
 {
 	plat->GetInputSystem()->GetKeyPressed();
 	graph->NewGuiFrame();
@@ -175,7 +175,7 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	graph->_SwapBuffers();
 }
 
-void ComputeTransformHeirarchy(Scene<entt::entity> tree, entt::registry& registry, Transform cumulativeTransform)
+void ComputeTransformHeirarchy(Tree<entt::entity> tree, entt::registry& registry, Transform cumulativeTransform)
 {
 	Transform& entityTransform = registry.get<Transform>(tree.data);
 	glm::mat4 translationMat = glm::translate(glm::mat4(1.0), entityTransform.position);
@@ -184,7 +184,7 @@ void ComputeTransformHeirarchy(Scene<entt::entity> tree, entt::registry& registr
 	glm::mat4 localMatrix = translationMat * rotationMat * scaleMat;
 	entityTransform.worldMatrix = cumulativeTransform.worldMatrix * localMatrix;
 	cumulativeTransform.worldMatrix = entityTransform.worldMatrix;
-	for (Scene<entt::entity> subtree : tree.children)
+	for (Tree<entt::entity> subtree : tree.children)
 	{
 		ComputeTransformHeirarchy(subtree, registry, cumulativeTransform);
 	}

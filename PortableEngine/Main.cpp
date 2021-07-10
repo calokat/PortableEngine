@@ -47,7 +47,7 @@
 #include <thread>
 #include "raycast.h"
 #include "loop.h"
-#include "Scene.h"
+#include "Tree.h"
 
 //template<class T>
 //void TrySerializeComponent(json& master)
@@ -177,10 +177,10 @@
 //	AABBSystem::UpdateAABB(aabb, newMesh, meshTransform);
 //}
 //
-void MakeMesh_Recursive(entt::registry& registry, Scene<MeshCreateInfo> scene, IRenderSystem* renderSystem, IAssetManager* assetManager, Camera& renderingCam, Transform& renderingCamTransform, Scene<entt::entity>& parent)
+void MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> scene, IRenderSystem* renderSystem, IAssetManager* assetManager, Camera& renderingCam, Transform& renderingCamTransform, Tree<entt::entity>& parent)
 {
 	auto newMeshEntity = registry.create();
-	Scene<entt::entity> newEntityNode = { newMeshEntity };
+	Tree<entt::entity> newEntityNode = { newMeshEntity };
 	parent.children.push_back(newEntityNode);
 	if (scene.isEmpty)
 	{
@@ -209,7 +209,7 @@ void MakeMesh_Recursive(entt::registry& registry, Scene<MeshCreateInfo> scene, I
 	}
 }
 
-void MakeMesh(Scene<MeshCreateInfo> meshScene, entt::registry& registry, IRenderSystem* renderSystem, IAssetManager* assetManager, Scene<entt::entity>& meshRoot, glm::vec3 pos = glm::vec3(0, 0, 0))
+void MakeMesh(Tree<MeshCreateInfo> meshScene, entt::registry& registry, IRenderSystem* renderSystem, IAssetManager* assetManager, Tree<entt::entity>& meshRoot, glm::vec3 pos = glm::vec3(0, 0, 0))
 {
 	auto camView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
@@ -524,8 +524,8 @@ int main(int argc, char* argv[])
 	//renderSystem->CreateTexture(assetThumbnail.assetImage);
 	//renderSystem->LoadTexture(&assetThumbnail.assetImageRenderer, assetThumbnail.assetImage);	
 	
-	Scene<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../../../Secret_Meshes/duo.fbx").c_str());
-	Scene<entt::entity> entityScene;
+	Tree<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../../../Secret_Meshes/duo.fbx").c_str());
+	Tree<entt::entity> entityScene;
 	entityScene.data = registry.create();
 	registry.emplace<Name>(entityScene.data, "$");
 	registry.emplace<Transform>(entityScene.data);

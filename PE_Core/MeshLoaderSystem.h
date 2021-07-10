@@ -5,7 +5,7 @@
 #include <assimp\scene.h>
 #include <assimp\postprocess.h>
 #include "Transform.h"
-#include "Scene.h"
+#include "Tree.h"
 struct MeshCreateInfo
 {
 	Mesh m;
@@ -15,7 +15,7 @@ class MeshLoaderSystem
 {
 public:
 	static void ProcessMesh(aiMesh* assimpMesh, const aiScene* scene, Mesh& peMesh);
-	static Scene<MeshCreateInfo> CreateMeshHeirarchy(const char* path);
-	static void AddToMeshHeirarchy(Scene<MeshCreateInfo>& parent, const aiNode* assimpNode, const aiScene* assimpScene);
+	static Tree<MeshCreateInfo> CreateMeshHeirarchy(const char* path);
+	static void AddToMeshHeirarchy(Tree<MeshCreateInfo>& parent, const aiNode* assimpNode, const aiScene* assimpScene);
 };
 
