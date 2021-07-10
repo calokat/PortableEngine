@@ -48,6 +48,7 @@
 #include "raycast.h"
 #include "loop.h"
 #include "Tree.h"
+#include "Relationship.h"
 
 //template<class T>
 //void TrySerializeComponent(json& master)
@@ -177,12 +178,16 @@
 //	AABBSystem::UpdateAABB(aabb, newMesh, meshTransform);
 //}
 //
-void MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> scene, IRenderSystem* renderSystem, IAssetManager* assetManager, Camera& renderingCam, Transform& renderingCamTransform, Tree<entt::entity>& parent)
+void MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> scene, IRenderSystem* renderSystem, IAssetManager* assetManager, Camera& renderingCam, Transform& renderingCamTransform, entt::entity parent)
 {
 	auto newMeshEntity = registry.create();
-	Tree<entt::entity> newEntityNode = { newMeshEntity };
-	parent.children.push_back(newEntityNode);
-	if (scene.isEmpty)
+	Relationship& childRel = registry.emplace<Relationship>(newMeshEntity);
+	Relationship& parentRel = registry.get<Relationship>(parent);
+	childRel.parent = parent;
+	parentRel.children.insert(std::pair<int, entt::entity>((int)newMeshEntity, newMeshEntity));
+	//Tree<entt::entity> newEntityNode = { newMeshEntity };
+	//parent.children.push_back(newEntityNode);
+	if (scene.data.m.rawVertices.size() == 0)
 	{
 		TransformSystem::CalculateWorldMatrix(&scene.data.t);
 		registry.emplace<Transform>(newMeshEntity, scene.data.t);
@@ -205,11 +210,11 @@ void MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> scene, IR
 	}
 	for (int i = 0; i < scene.children.size(); ++i)
 	{
-		MakeMesh_Recursive(registry, scene.children[i], renderSystem, assetManager, renderingCam, renderingCamTransform, parent.children[0]);
+		MakeMesh_Recursive(registry, scene.children[i], renderSystem, assetManager, renderingCam, renderingCamTransform, newMeshEntity);
 	}
 }
 
-void MakeMesh(Tree<MeshCreateInfo> meshScene, entt::registry& registry, IRenderSystem* renderSystem, IAssetManager* assetManager, Tree<entt::entity>& meshRoot, glm::vec3 pos = glm::vec3(0, 0, 0))
+void MakeMesh(Tree<MeshCreateInfo> meshScene, entt::registry& registry, IRenderSystem* renderSystem, IAssetManager* assetManager, entt::entity meshRoot, glm::vec3 pos = glm::vec3(0, 0, 0))
 {
 	auto camView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
@@ -525,14 +530,14 @@ int main(int argc, char* argv[])
 	//renderSystem->LoadTexture(&assetThumbnail.assetImageRenderer, assetThumbnail.assetImage);	
 	
 	Tree<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../../../Secret_Meshes/duo.fbx").c_str());
-	Tree<entt::entity> entityScene;
-	entityScene.data = registry.create();
-	registry.emplace<Name>(entityScene.data, "$");
-	registry.emplace<Transform>(entityScene.data);
-	MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), entityScene);
+	entt::entity root = registry.create();
+	registry.emplace<Transform>(root);
+	registry.emplace<Relationship>(root);
+	GizmoSystem::Select(root);
+	MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), root);
 	while (plat->Run() == 0)
 	{
-		Loop(plat, graph, renderSystem, xr, window, registry, options, entityScene);
+		Loop(plat, graph, renderSystem, xr, window, registry, options, root);
 	}
 	onResizeDelegate.reset();
 	delete window;

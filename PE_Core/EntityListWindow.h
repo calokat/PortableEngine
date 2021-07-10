@@ -3,12 +3,12 @@
 #include "misc_components.h"
 #include "Transform.h"
 #include "Tree.h"
+#include "Relationship.h"
 
 class EntityListWindow
 {
 public:
-	void Render(Tree<entt::entity> namedEntities, entt::basic_view<entt::entity, entt::exclude_t<>, Name> nameView);
+	void Render(Relationship& rootRel, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship> nameView);
 private:
-	void SetUpGuiTree(Tree<entt::entity> entityTree, entt::basic_view<entt::entity, entt::exclude_t<>, Name> nameView);
+	void SetUpGuiTree(entt::entity parent, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship> nameView);
 };
-

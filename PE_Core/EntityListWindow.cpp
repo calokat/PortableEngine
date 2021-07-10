@@ -1,26 +1,30 @@
 #include "EntityListWindow.h"
 #include <imgui.h>
 #include "GizmoSystem.h"
-void EntityListWindow::Render(Tree<entt::entity> namedEntities, entt::basic_view<entt::entity, entt::exclude_t<>, Name> nameView)
+void EntityListWindow::Render(Relationship& rootRel, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship> nameView)
 {
 	ImGui::Begin("Entity List");
 	ImGui::SetWindowPos({ 0, 20 });
 	ImGui::SetWindowSize({ 200, 780 });
+	// the root entity likely does not have a name, start with it's children
+	for (auto it = rootRel.children.begin(); it != rootRel.children.end(); ++it)
+	{
+		SetUpGuiTree(it->second, nameView);
+	}
 
-	SetUpGuiTree(namedEntities, nameView);
-	
 	ImGui::End();
 }
 
-void EntityListWindow::SetUpGuiTree(Tree<entt::entity> entityTree, entt::basic_view<entt::entity, entt::exclude_t<>, Name> nameView)
+void EntityListWindow::SetUpGuiTree(entt::entity parent, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship> nameView)
 {
-	Name entityName = nameView.get<Name>(entityTree.data);
-	if (entityTree.children.size() == 0)
+	Name entityName = nameView.get<Name>(parent);
+	Relationship& parentRel = nameView.get<Relationship>(parent);
+	if (parentRel.children.size() == 0)
 	{
 		if (ImGui::MenuItem(entityName.nameString.c_str()))
 		{
 			GizmoSystem::DeselectAll();
-			GizmoSystem::Select(entityTree.data);
+			GizmoSystem::Select(parent);
 		}
 	}
 	else
@@ -30,11 +34,11 @@ void EntityListWindow::SetUpGuiTree(Tree<entt::entity> entityTree, entt::basic_v
 			if (ImGui::IsItemClicked())
 			{
 				GizmoSystem::DeselectAll();
-				GizmoSystem::Select(entityTree.data);
+				GizmoSystem::Select(parent);
 			}
-			for (auto child : entityTree.children)
+			for (auto it = parentRel.children.begin(); it != parentRel.children.end(); ++it)
 			{
-				SetUpGuiTree(child, nameView);
+				SetUpGuiTree(it->second, nameView);
 			}
 			ImGui::TreePop();
 		}
