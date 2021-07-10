@@ -34,7 +34,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)InspectorWindow.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)IRenderSystem.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)loop.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Mesh.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MeshLoaderSystem.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PEImage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)raycast.cpp" />
@@ -70,6 +69,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)PEAsset.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PEImage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)raycast.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Timer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transform.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TransformSystem.h" />
