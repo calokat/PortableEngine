@@ -47,6 +47,7 @@
 #include <thread>
 #include "raycast.h"
 #include "loop.h"
+#include "Scene.h"
 
 //template<class T>
 //void TrySerializeComponent(json& master)
@@ -176,28 +177,46 @@
 //	AABBSystem::UpdateAABB(aabb, newMesh, meshTransform);
 //}
 //
-void MakeMesh(const char* path, glm::vec3 pos, entt::registry& registry, IRenderSystem* renderSystem, IAssetManager* assetManager, const char* name = "GameObject") {
+void MakeMesh_Recursive(entt::registry& registry, Scene<MeshCreateInfo> scene, IRenderSystem* renderSystem, IAssetManager* assetManager, Camera& renderingCam, Transform& renderingCamTransform, Scene<entt::entity>& parent)
+{
+	auto newMeshEntity = registry.create();
+	Scene<entt::entity> newEntityNode = { newMeshEntity };
+	parent.children.push_back(newEntityNode);
+	if (scene.isEmpty)
+	{
+		TransformSystem::CalculateWorldMatrix(&scene.data.t);
+		registry.emplace<Transform>(newMeshEntity, scene.data.t);
+		Name& nameComp = registry.emplace<Name>(newMeshEntity);
+		nameComp = { scene.data.m.path };
+	}
+	else if (scene.data.m.path != "")
+	{
+		Mesh& newMesh = registry.emplace<Mesh>(newMeshEntity, scene.data.m);
+		TransformSystem::CalculateWorldMatrix(&scene.data.t);
+		Transform& meshTransform = registry.emplace<Transform>(newMeshEntity, scene.data.t);
+		IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
+		renderSystem->Load(&newMeshRenderer, renderingCam);
+		renderSystem->LoadMesh(&newMeshRenderer, newMesh);
+		renderSystem->LoadTexture(&newMeshRenderer, assetManager->GetAssetPath("../../Assets/Images/rock.png"));
+		Name& nameComp = registry.emplace<Name>(newMeshEntity);
+		nameComp = { newMesh.path };
+		AABB& aabb = registry.emplace<AABB>(newMeshEntity);
+		AABBSystem::UpdateAABB(aabb, newMesh, meshTransform);
+	}
+	for (int i = 0; i < scene.children.size(); ++i)
+	{
+		MakeMesh_Recursive(registry, scene.children[i], renderSystem, assetManager, renderingCam, renderingCamTransform, parent.children[0]);
+	}
+}
+
+void MakeMesh(Scene<MeshCreateInfo> meshScene, entt::registry& registry, IRenderSystem* renderSystem, IAssetManager* assetManager, Scene<entt::entity>& meshRoot, glm::vec3 pos = glm::vec3(0, 0, 0))
+{
 	auto camView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
-	auto newMeshEntity = registry.create();
-	Mesh& newMesh = registry.emplace<Mesh>(newMeshEntity, path);
-	MeshLoaderSystem::LoadMesh(newMesh.path.c_str(), newMesh);
-	Transform& meshTransform = registry.emplace<Transform>(newMeshEntity);
-	meshTransform.position = pos;
-	TransformSystem::CalculateWorldMatrix(&meshTransform);
-	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
-	renderSystem->Load(&newMeshRenderer, camera);
-	renderSystem->LoadMesh(&newMeshRenderer, newMesh);
-	//newMeshRenderer.diffuseTexture = PEImage(plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png"));
-	//ImageSystem::CreateImage(newMeshRenderer.diffuseTexture);
-	//renderSystem->CreateTexture(newMeshRenderer.diffuseTexture);
-	renderSystem->LoadTexture(&newMeshRenderer, assetManager->GetAssetPath("../../Assets/Images/rock.png")/*newMeshRenderer.diffuseTexture*/);
-	//ImageSystem::DestroyImage(newMeshRenderer.diffuseTexture);
-	Name& nameComp = registry.emplace<Name>(newMeshEntity);
-	nameComp = { name };
-	AABB& aabb = registry.emplace<AABB>(newMeshEntity);
-	AABBSystem::UpdateAABB(aabb, newMesh, meshTransform);
+	MakeMesh_Recursive(registry, meshScene, renderSystem, assetManager, camera, camTransform, meshRoot);
+	//Scene<Transform&> s = { camTransform, {{camTransform}} };
 }
+
 
 //void MakeRayFromCamera()
 //{
@@ -503,14 +522,17 @@ int main(int argc, char* argv[])
 	//assetThumbnail.assetImage = PEImage(plat->GetAssetManager()->GetAssetPath("../../Assets/Images/directory.png"));
 	//ImageSystem::CreateImage(assetThumbnail.assetImage);
 	//renderSystem->CreateTexture(assetThumbnail.assetImage);
-	//renderSystem->LoadTexture(&assetThumbnail.assetImageRenderer, assetThumbnail.assetImage);
-	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cone.obj").c_str(), glm::vec3(0, 0, -9), registry, renderSystem, plat->GetAssetManager(), "Cone");
-	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cube.obj").c_str(), glm::vec3(0, 0, -3), registry, renderSystem, plat->GetAssetManager(), "Cube");
-	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/helix.obj").c_str(), glm::vec3(3, 0, -6), registry, renderSystem, plat->GetAssetManager(), "Helix");
-	MakeMesh(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/torus.obj").c_str(), glm::vec3(-3, 0, -6), registry, renderSystem, plat->GetAssetManager(), "Torus");
+	//renderSystem->LoadTexture(&assetThumbnail.assetImageRenderer, assetThumbnail.assetImage);	
+	
+	Scene<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../../../Secret_Meshes/duo.fbx").c_str());
+	Scene<entt::entity> entityScene;
+	entityScene.data = registry.create();
+	registry.emplace<Name>(entityScene.data, "$");
+	registry.emplace<Transform>(entityScene.data);
+	MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), entityScene);
 	while (plat->Run() == 0)
 	{
-		Loop(plat, graph, renderSystem, xr, window, registry, options);
+		Loop(plat, graph, renderSystem, xr, window, registry, options, entityScene);
 	}
 	onResizeDelegate.reset();
 	delete window;
