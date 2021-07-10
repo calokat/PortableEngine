@@ -69,6 +69,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)PEAsset.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PEImage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)raycast.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Relationship.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Tree.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Timer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transform.h" />
