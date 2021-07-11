@@ -4,7 +4,11 @@
 #include "Transform.h"
 #include "Tree.h"
 #include "Relationship.h"
-
+struct ChildMoveInfo
+{
+	Relationship oldChildRel;
+	entt::entity child;
+};
 class EntityListWindow
 {
 public:
