@@ -531,6 +531,7 @@ int main(int argc, char* argv[])
 	
 	Tree<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../../../Secret_Meshes/duo.fbx").c_str());
 	entt::entity root = registry.create();
+	registry.emplace<Name>(root, "$");
 	registry.emplace<Transform>(root);
 	registry.emplace<Relationship>(root);
 	GizmoSystem::Select(root);
