@@ -1,5 +1,6 @@
 #include "TransformSystem.h"
 #include <glm/gtx/euler_angles.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
 void TransformSystem::MoveRelative(glm::vec3 unrotated, Transform* transform)
 {
 	glm::vec4 unrotatedVec(unrotated.x, unrotated.y, unrotated.z, 0);
@@ -49,6 +50,15 @@ glm::vec3 TransformSystem::GetEulerRotation(Transform& transform)
 	glm::vec3 result;
 	glm::extractEulerAngleXYZ(glm::mat4(transform.orientation), result.x, result.y, result.z);
 	return result;
+}
+
+void TransformSystem::DecomposeTransform(const Transform& toDecomp, Transform& out)
+{
+	out.worldMatrix = toDecomp.worldMatrix;
+	glm::vec3 throwawaySkew;
+	glm::vec4 throwawayPerspective;
+	glm::decompose(out.worldMatrix, out.scale, out.orientation, out.position, throwawaySkew, throwawayPerspective);
+	out.rotation = glm::eulerAngles(out.orientation);
 }
 
 void TransformSystem::CalculateWorldMatrix(Transform* transform)

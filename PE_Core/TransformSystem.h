@@ -13,5 +13,6 @@ public:
 	static void CalculateEulerAngles(Transform& transform);
 	static void CalculateScale(Transform& transform);
 	static glm::vec3 GetEulerRotation(Transform& transform);
+	static void DecomposeTransform(const Transform& toDecomp, Transform& out);
 };
 
