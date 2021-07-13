@@ -115,7 +115,7 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 		MakeRayFromCamera(registry.view<Camera, Transform>(), registry.view<AABB>(), window);
 	}
 
-	auto entityView = registry.view<Name, Relationship>();
+	auto entityView = registry.view<Name, Relationship, Transform>();
 	EntityListWindow entityListWindow;
 	InspectorWindow inspectorWindow;
 	AssetBrowserWindow assetWindow;

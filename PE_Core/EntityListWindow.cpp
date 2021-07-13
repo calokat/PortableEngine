@@ -1,7 +1,9 @@
 #include "EntityListWindow.h"
 #include <imgui.h>
 #include "GizmoSystem.h"
-void EntityListWindow::Render(Relationship& rootRel, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship> nameView)
+#include "TransformSystem.h"
+#include <glm/common.hpp>
+void EntityListWindow::Render(Relationship& rootRel, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship, Transform> nameView)
 {
 	ImGui::Begin("Entity List");
 	ImGui::SetWindowPos({ 0, 20 });
@@ -15,7 +17,7 @@ void EntityListWindow::Render(Relationship& rootRel, entt::basic_view<entt::enti
 	ImGui::End();
 }
 
-void EntityListWindow::SetUpGuiTree(entt::entity parent, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship> nameView)
+void EntityListWindow::SetUpGuiTree(entt::entity parent, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship, Transform> nameView)
 {
 	Name entityName = nameView.get<Name>(parent);
 	Relationship& parentRel = nameView.get<Relationship>(parent);
@@ -43,6 +45,15 @@ void EntityListWindow::SetUpGuiTree(entt::entity parent, entt::basic_view<entt::
 				childRel.parent = parent;
 				Relationship& formerParentRel = nameView.get<Relationship>(infoPayload->oldChildRel.parent);
 				formerParentRel.children.erase((int)infoPayload->child);
+
+
+				Transform& childTransform = nameView.get<Transform>(infoPayload->child);
+				Transform& parentTransform = nameView.get<Transform>(parent);
+				TransformSystem::DecomposeTransform(childTransform, childTransform);
+				childTransform.position = childTransform.position - parentTransform.position;
+				childTransform.rotation = childTransform.rotation - parentTransform.rotation;
+				childTransform.orientation = childTransform.orientation * glm::inverse(parentTransform.orientation);
+				childTransform.scale = childTransform.scale / parentTransform.scale;
 			}
 			ImGui::EndDragDropTarget();
 		}

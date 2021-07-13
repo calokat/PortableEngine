@@ -12,7 +12,7 @@ struct ChildMoveInfo
 class EntityListWindow
 {
 public:
-	void Render(Relationship& rootRel, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship> nameView);
+	void Render(Relationship& rootRel, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship, Transform> nameView);
 private:
-	void SetUpGuiTree(entt::entity parent, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship> nameView);
+	void SetUpGuiTree(entt::entity parent, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship, Transform> nameView);
 };
