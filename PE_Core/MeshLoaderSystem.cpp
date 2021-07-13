@@ -45,7 +45,8 @@ void MeshLoaderSystem::AddToMeshHeirarchy(Tree<MeshCreateInfo>& parent, const ai
 	aiQuaternion rot;
 	assimpNode->mTransformation.Decompose(scale, rot, pos);
 	parent.data.t.position = glm::vec3(pos.x, pos.y, pos.z);
-	//parent.data.t.orientation = glm::quat(rot.w, rot.x, rot.y, rot.z);
+	parent.data.t.orientation = glm::quat(rot.w, rot.x, rot.y, rot.z);
+	parent.data.t.rotation = glm::eulerAngles(parent.data.t.orientation);
 	parent.data.t.scale = glm::vec3(scale.x, scale.y, scale.z);
 	if (assimpNode->mNumMeshes == 0)
 	{
