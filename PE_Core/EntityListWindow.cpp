@@ -40,20 +40,23 @@ void EntityListWindow::SetUpGuiTree(entt::entity parent, entt::basic_view<entt::
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CHILD_MOVE"))
 			{
 				ChildMoveInfo* infoPayload = (ChildMoveInfo*)payload->Data;
-				parentRel.children.insert(std::pair((int)infoPayload->child, infoPayload->child));
 				Relationship& childRel = nameView.get<Relationship>(infoPayload->child);
-				childRel.parent = parent;
-				Relationship& formerParentRel = nameView.get<Relationship>(infoPayload->oldChildRel.parent);
-				formerParentRel.children.erase((int)infoPayload->child);
+				if (childRel.parent != parent)
+				{
+					parentRel.children.insert(std::pair((int)infoPayload->child, infoPayload->child));
+					childRel.parent = parent;
+					Relationship& formerParentRel = nameView.get<Relationship>(infoPayload->oldChildRel.parent);
+					formerParentRel.children.erase((int)infoPayload->child);
 
 
-				Transform& childTransform = nameView.get<Transform>(infoPayload->child);
-				Transform& parentTransform = nameView.get<Transform>(parent);
-				TransformSystem::DecomposeTransform(childTransform, childTransform);
-				childTransform.position = childTransform.position - parentTransform.position;
-				childTransform.rotation = childTransform.rotation - parentTransform.rotation;
-				childTransform.orientation = childTransform.orientation * glm::inverse(parentTransform.orientation);
-				childTransform.scale = childTransform.scale / parentTransform.scale;
+					Transform& childTransform = nameView.get<Transform>(infoPayload->child);
+					Transform& parentTransform = nameView.get<Transform>(parent);
+					TransformSystem::DecomposeTransform(childTransform, childTransform);
+					childTransform.position = childTransform.position - parentTransform.position;
+					childTransform.rotation = childTransform.rotation - parentTransform.rotation;
+					childTransform.orientation = childTransform.orientation * glm::inverse(parentTransform.orientation);
+					childTransform.scale = childTransform.scale / parentTransform.scale;
+				}
 			}
 			ImGui::EndDragDropTarget();
 		}
