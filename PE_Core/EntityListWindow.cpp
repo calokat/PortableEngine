@@ -51,11 +51,14 @@ void EntityListWindow::SetUpGuiTree(entt::entity parent, entt::basic_view<entt::
 
 					Transform& childTransform = nameView.get<Transform>(infoPayload->child);
 					Transform& parentTransform = nameView.get<Transform>(parent);
-					TransformSystem::DecomposeTransform(childTransform, childTransform);
-					childTransform.position = childTransform.position - parentTransform.position;
-					childTransform.rotation = childTransform.rotation - parentTransform.rotation;
-					childTransform.orientation = childTransform.orientation * glm::inverse(parentTransform.orientation);
-					childTransform.scale = childTransform.scale / parentTransform.scale;
+					Transform transientTransform;
+					transientTransform.worldMatrix = glm::inverse(parentTransform.worldMatrix) * childTransform.worldMatrix;
+					TransformSystem::DecomposeTransform(transientTransform, transientTransform);
+					childTransform.position = transientTransform.position;
+					childTransform.rotation = -transientTransform.rotation;
+					childTransform.orientation = glm::inverse(transientTransform.orientation);
+					childTransform.scale = transientTransform.scale;
+
 				}
 			}
 			ImGui::EndDragDropTarget();
