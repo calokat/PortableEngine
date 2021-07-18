@@ -178,7 +178,7 @@
 //	AABBSystem::UpdateAABB(aabb, newMesh, meshTransform);
 //}
 //
-void MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> scene, IRenderSystem* renderSystem, IAssetManager* assetManager, Camera& renderingCam, Transform& renderingCamTransform, entt::entity parent)
+entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> scene, IRenderSystem* renderSystem, IAssetManager* assetManager, Camera& renderingCam, Transform& renderingCamTransform, entt::entity parent)
 {
 	auto newMeshEntity = registry.create();
 	Relationship& childRel = registry.emplace<Relationship>(newMeshEntity);
@@ -212,13 +212,14 @@ void MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> scene, IR
 	{
 		MakeMesh_Recursive(registry, scene.children[i], renderSystem, assetManager, renderingCam, renderingCamTransform, newMeshEntity);
 	}
+	return newMeshEntity;
 }
 
-void MakeMesh(Tree<MeshCreateInfo> meshScene, entt::registry& registry, IRenderSystem* renderSystem, IAssetManager* assetManager, entt::entity meshRoot, glm::vec3 pos = glm::vec3(0, 0, 0))
+entt::entity MakeMesh(Tree<MeshCreateInfo> meshScene, entt::registry& registry, IRenderSystem* renderSystem, IAssetManager* assetManager, entt::entity meshRoot, glm::vec3 pos = glm::vec3(0, 0, 0))
 {
 	auto camView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
-	MakeMesh_Recursive(registry, meshScene, renderSystem, assetManager, camera, camTransform, meshRoot);
+	return MakeMesh_Recursive(registry, meshScene, renderSystem, assetManager, camera, camTransform, meshRoot);
 	//Scene<Transform&> s = { camTransform, {{camTransform}} };
 }
 
@@ -535,7 +536,8 @@ int main(int argc, char* argv[])
 	registry.emplace<Transform>(root);
 	registry.emplace<Relationship>(root);
 	GizmoSystem::Select(root);
-	MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), root);
+	entt::entity duoRoot = MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), root);
+	entt::entity subDuo = MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), duoRoot);
 	while (plat->Run() == 0)
 	{
 		Loop(plat, graph, renderSystem, xr, window, registry, options, root);
