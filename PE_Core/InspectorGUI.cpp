@@ -14,16 +14,23 @@ void ComponentGUI(Transform& t)
 		TransformSystem::CalculateWorldMatrix(&t);
 	}
 	//TransformSystem::CalculateEulerAngles(t);
-	if (ImGui::DragFloat3("Rotation", glm::value_ptr(t.rotation), .01f))
+	glm::vec3 degrees = glm::degrees(t.rotation);
+	if (ImGui::DragFloat3("Rotation", glm::value_ptr(degrees)))
 	{
+		t.rotation = glm::radians(degrees);
 		TransformSystem::SetOrientation(t.rotation, &t);
-		TransformSystem::CalculateWorldMatrix(&t);
+		//TransformSystem::CalculateWorldMatrix(&t);
 	}
 	//TransformSystem::CalculateScale(t);
 	if (ImGui::DragFloat3("Scale", glm::value_ptr(t.scale), .01f))
 	{
 		TransformSystem::CalculateWorldMatrix(&t);
 	}
+	glm::vec3 globalRot = glm::degrees(glm::eulerAngles(t.orientation));
+	ImGui::Text("Global Rotation:");
+	ImGui::Text("X: %f", globalRot.x);
+	ImGui::Text("Y: %f", globalRot.y);
+	ImGui::Text("Z: %f", globalRot.z);
 	//t.rotation = TransformSystem::CalculateEulerAngles(t);
 	//ImGui::DragFloat3("Rotation", glm::value_ptr(t.rotation));
 }
