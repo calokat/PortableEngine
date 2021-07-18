@@ -9,6 +9,11 @@ void InspectorWindow::Render(entt::registry& registry)
 	entt::entity selected = GizmoSystem::GetSelectedEntity();
 	if (selected != entt::null)
 	{
+		Name* n = registry.try_get<Name>(selected);
+		if (n)
+		{
+			ComponentGUI(*n);
+		}
 		Transform* t = registry.try_get<Transform>(selected);
 		if (t)
 		{

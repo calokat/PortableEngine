@@ -5,7 +5,7 @@
 #ifdef _WIN64
 #include "DIrectXRenderer.h"
 #endif
-
+void ComponentGUI(const Name& n);
 void ComponentGUI(Transform& t);
 void ComponentGUI(GLRenderer& r);
 void ComponentGUI(Rotator& r);

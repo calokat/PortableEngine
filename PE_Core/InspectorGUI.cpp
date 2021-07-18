@@ -5,6 +5,10 @@
 #ifdef _WIN64
 #include "DirectX11ImageGraphicsData.h"
 #endif
+void ComponentGUI(const Name& n)
+{
+	ImGui::Text(n.nameString.c_str());
+}
 void ComponentGUI(Transform& t)
 {
 	//TransformSystem::CalculatePosition(t);
