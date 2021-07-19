@@ -66,7 +66,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 	//return float4(input.normal, 1);
 	//return float4(finalColor, 1);
 	//return float4(input.color);
-	return float4(surfaceColor, 1);
+	return float4(surfaceColor * input.color, 1);
 	// Just return the input color
 	// - This color (like most values passing through the rasterizer) is 
 	//   interpolated for each pixel between the corresponding vertices 

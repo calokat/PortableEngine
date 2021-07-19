@@ -17,6 +17,8 @@ DirectXRenderer& DirectXRenderer::operator=(DirectXRenderer&& other) noexcept
 	this->vertexShaderPath = other.vertexShaderPath;
 	this->fragmentShaderPath = other.fragmentShaderPath;
 	this->vertexShader = other.vertexShader;
+	this->samplerState = other.samplerState;
+	other.samplerState = nullptr;
 	other.vertexShader = nullptr;
 	this->pixelShader = other.pixelShader;
 	other.pixelShader = nullptr;
@@ -24,6 +26,7 @@ DirectXRenderer& DirectXRenderer::operator=(DirectXRenderer&& other) noexcept
 	this->indexBuffer.Swap(other.indexBuffer);
 	this->numIndices = other.numIndices;
 	this->numVertices = other.numVertices;
+	this->vertexColor = other.vertexColor;
 	this->diffuseTexture = std::move(other.diffuseTexture);
 	this->inputLayout = other.inputLayout;
 	other.inputLayout = nullptr;

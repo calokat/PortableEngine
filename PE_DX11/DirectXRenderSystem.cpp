@@ -126,7 +126,7 @@ void DirectXRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
 	dxRenderer->numIndices = mesh.numIndices;
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(Vertex) * dxRenderer->numVertices;       // 3 = number of vertices in the buffer
+	vbd.ByteWidth = sizeof(Vertex) * dxRenderer->numVertices;
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER; // Tells DirectX this is a vertex buffer
 	vbd.CPUAccessFlags = 0;
 	vbd.MiscFlags = 0;
