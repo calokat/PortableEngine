@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(EmscriptenPortTest)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z --preload-file ../../Assets/Models --preload-file ../../Assets/Images --preload-file ../../Shaders/GLSL-ES -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -sUSE_SDL=2 -sASYNCIFY -s ASYNCIFY_IMPORTS=['browserPaste'] -s ALLOW_MEMORY_GROWTH=1 --shell-file shell_minimal_runtime.html")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z --preload-file ../../Assets/Models --preload-file ../../Assets/Images --preload-file ../../Shaders/GLSL-ES --preload-file ../../../../Secret_Meshes/ -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -sUSE_SDL=2 -sASYNCIFY -s ASYNCIFY_IMPORTS=['browserPaste'] -s ALLOW_MEMORY_GROWTH=1 --shell-file shell_minimal_runtime.html")
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z --preload-file C:/Users/Caleb/Documents/GitHub/PortableEngine/Assets/Models --preload-file C:/Users/Caleb/Documents/GitHub/PortableEngine/Assets/Images --preload-file C:/Users/Caleb/Documents/GitHub/PortableEngine/Shaders/GLSL-ES -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -sUSE_SDL=2 -sASYNCIFY -s ASYNCIFY_IMPORTS=['browserPaste'] --shell-file C:/Users/Caleb/Documents/GitHub/PortableEngine/PortableEngine/cmakebuild/shell_minimal_runtime.html")
 file(GLOB primarySrc "*.cpp")
 file(GLOB ImGuizmoSrc "../../ImGuizmo/*.cpp")
