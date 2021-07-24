@@ -1,6 +1,7 @@
 #include "XRAPI.h"
 #include <iostream>
 #include <assert.h>
+#include "TransformSystem.h"
 XRAPI::XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window, Options options) : platform(plat), graphics(graph)
 {
 	Init();
@@ -231,15 +232,41 @@ bool XRAPI::IsSessionRunning()
 	return m_sessionRunning;
 }
 
-void XRAPI::UpdateDevices()
+void XRAPI::UpdateDevices(XrTime predictedTime, entt::basic_view<entt::entity, entt::exclude_t<>, XRDevice, Transform> xrDevices, entt::basic_view<entt::entity, entt::exclude_t<>, Camera, Transform> cameraTransformView)
 {
+	auto [cam, camTransform] = cameraTransformView.get(cameraTransformView.front());
+	for (auto devIt = xrDevices.begin(); devIt != xrDevices.end(); ++devIt)
+	{
+		auto [dev, t] = xrDevices.get(*devIt);
+		switch (dev.type)
+		{
+		case XRDeviceType::LeftHand:
+		case XRDeviceType::RightHand:
+			XrSpaceLocation spaceLocation{ XR_TYPE_SPACE_LOCATION };
+			XrResult res = xrLocateSpace(inputState.handSpace[dev.type], m_appSpace, predictedTime, &spaceLocation);
+			if (XR_UNQUALIFIED_SUCCESS(res)) {
+				if ((spaceLocation.locationFlags & XR_SPACE_LOCATION_POSITION_VALID_BIT) != 0 &&
+					(spaceLocation.locationFlags & XR_SPACE_LOCATION_ORIENTATION_VALID_BIT) != 0) {
+					XrVector3f posePos = spaceLocation.pose.position;
+					t.position = glm::vec3(posePos.x, posePos.y, posePos.z) + camTransform.position;
+					XrQuaternionf poseQuat = spaceLocation.pose.orientation;
+					t.orientation = glm::quat(poseQuat.w, poseQuat.x, poseQuat.y, poseQuat.z);
+					TransformSystem::CalculateWorldMatrix(&t);
+				}
+			}
+			else {
+			}
 
+		}
+
+	}
 }
 
 void XRAPI::Frame(entt::registry& reg, IRenderSystem* renderSystem)
 {
 	XrFrameState frameState = BeginFrame();
 	LocateViews(frameState.predictedDisplayTime);
+	UpdateDevices(frameState.predictedDisplayTime, reg.view<XRDevice, Transform>(), reg.view<Camera, Transform>());
 	auto camView = reg.view<Camera, Transform>();
 	auto camTransform = camView.get<Transform>(camView.front());
 	CalculateCameraViews(camTransform);

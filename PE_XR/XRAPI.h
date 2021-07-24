@@ -43,9 +43,9 @@ public:
 	XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window, Options options);
     void PollEvents(/*bool* exitRenderLoop, bool* requestRestart*/);
     bool IsSessionRunning();
-    void UpdateDevices();
     void Frame(entt::registry& reg, IRenderSystem* renderSystem);
 private:
+    void UpdateDevices(XrTime predictedTime, entt::basic_view<entt::entity, entt::exclude_t<>, XRDevice, Transform> xrDevices, entt::basic_view<entt::entity, entt::exclude_t<>, Camera, Transform> cameraTransformView);
 	IPlatform* platform;
 	IGraphicsAPI* graphics;
     XrFrameState BeginFrame();
