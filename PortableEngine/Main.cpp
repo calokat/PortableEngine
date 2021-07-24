@@ -538,6 +538,21 @@ int main(int argc, char* argv[])
 	GizmoSystem::Select(root);
 	entt::entity duoRoot = MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), root);
 	entt::entity subDuo = MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), duoRoot);
+
+	
+	Tree<MeshCreateInfo> handMeshInfo = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cube.obj").c_str());
+
+	entt::entity leftXRHand = MakeMesh(handMeshInfo, registry, renderSystem, plat->GetAssetManager(), root);
+	entt::entity rightXRHand = MakeMesh(handMeshInfo, registry, renderSystem, plat->GetAssetManager(), root);
+
+	Transform& leftXRHandTransform = registry.get<Transform>(leftXRHand);
+	Transform& rightXRHandTransform = registry.get<Transform>(rightXRHand);
+	leftXRHandTransform.scale = { .1f, .1f, .1f };
+	rightXRHandTransform.scale = { .1f, .1f, .1f };
+
+	registry.emplace<XRDevice>(leftXRHand, XRDeviceType::LeftHand);
+	registry.emplace<XRDevice>(rightXRHand, XRDeviceType::RightHand);
+
 	while (plat->Run() == 0)
 	{
 		Loop(plat, graph, renderSystem, xr, window, registry, options, root);
