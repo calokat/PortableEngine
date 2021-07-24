@@ -110,33 +110,33 @@ Camera::Camera(float aspectRatio)
 //	return transform;
 //}
 
-Camera& Camera::operator=(Camera&& other) noexcept
-{
-	if (this != &other)
-	{
-		this->view = other.view;
-		this->projection = other.projection;
-		this->fieldOfView = other.fieldOfView;
-		this->aspectRatio = other.aspectRatio;
-		this->nearPlaneDistance = other.nearPlaneDistance;
-		this->farPlaneDistance = other.farPlaneDistance;
-		this->movementSpeed = other.movementSpeed;
-		this->lookSpeed = other.lookSpeed;
-		this->prevMousePosition = other.prevMousePosition;
-		//this->transform = new Transform((*other.transform));
-	}
-	return *this;
-}
-
-Camera::Camera(Camera&& other) noexcept
-{
-	*this = std::move(other);
-}
-
-Camera::Camera(Camera& other)
-{
-	*this = std::move(other);
-}
+//Camera& Camera::operator=(Camera&& other) noexcept
+//{
+//	if (this != &other)
+//	{
+//		this->view = other.view;
+//		this->projection = other.projection;
+//		this->fieldOfView = other.fieldOfView;
+//		this->aspectRatio = other.aspectRatio;
+//		this->nearPlaneDistance = other.nearPlaneDistance;
+//		this->farPlaneDistance = other.farPlaneDistance;
+//		this->movementSpeed = other.movementSpeed;
+//		this->lookSpeed = other.lookSpeed;
+//		this->prevMousePosition = other.prevMousePosition;
+//		//this->transform = new Transform((*other.transform));
+//	}
+//	return *this;
+//}
+//
+//Camera::Camera(Camera&& other) noexcept
+//{
+//	*this = std::move(other);
+//}
+//
+//Camera::Camera(Camera& other)
+//{
+//	*this = std::move(other);
+//}
 
 //Camera::~Camera()
 //{

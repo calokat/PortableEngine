@@ -27,9 +27,9 @@ public:
 	//void UpdateProjectionMatrix(float aspect);
 	//void Update(float dt, HWND windowHandle);
 	//Transform* GetTransform();
-	Camera& operator=(Camera&& other) noexcept;
-	Camera(Camera&& other) noexcept;
-	Camera(Camera& other);
+	//Camera& operator=(Camera&& other) noexcept;
+	//Camera(Camera&& other) noexcept;
+	//Camera(Camera& other);
 	//~Camera();
 };
 
