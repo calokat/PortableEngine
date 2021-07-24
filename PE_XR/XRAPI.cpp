@@ -467,7 +467,7 @@ bool XRAPI::RenderLayer(XrTime predictedDisplayTime, std::vector<XrCompositionLa
 		projectionLayerViews[i].subImage.imageRect.extent = { viewSwapchain.width, viewSwapchain.height };
 
 		const XrSwapchainImageBaseHeader* const swapchainImage = m_swapchainImages[viewSwapchain.handle][swapchainImageIndex];
-		graphics->GetXRGraphicsPlugin()->RenderView(projectionLayerViews[i], swapchainImage, m_colorSwapchainFormat, reg, renderSystem /*cubes*/);
+		graphics->GetXRGraphicsPlugin()->RenderView(projectionLayerViews[i], swapchainImage, m_colorSwapchainFormat, reg, renderSystem, viewCams[i]);
 
 		XrSwapchainImageReleaseInfo releaseInfo{ XR_TYPE_SWAPCHAIN_IMAGE_RELEASE_INFO };
 		assert(XR_SUCCEEDED(xrReleaseSwapchainImage(viewSwapchain.handle, &releaseInfo)));
