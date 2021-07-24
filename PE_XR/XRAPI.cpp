@@ -241,6 +241,32 @@ void XRAPI::RenderFrame(entt::registry& reg, IRenderSystem* renderSystem)
 
 }
 
+bool XRAPI::LocateViews(XrTime predictedDisplayTime)
+{
+	XrResult res;
+
+	XrViewState viewState{ XR_TYPE_VIEW_STATE };
+	uint32_t viewCapacityInput = (uint32_t)m_views.size();
+	uint32_t viewCountOutput;
+
+	XrViewLocateInfo viewLocateInfo{ XR_TYPE_VIEW_LOCATE_INFO };
+	viewLocateInfo.viewConfigurationType = m_viewConfigType;
+	viewLocateInfo.displayTime = predictedDisplayTime;
+	viewLocateInfo.space = m_appSpace;
+
+	res = xrLocateViews(m_session, &viewLocateInfo, &viewState, viewCapacityInput, &viewCountOutput, m_views.data());
+	assert(XR_SUCCEEDED(res));
+	assert(viewCountOutput == viewCapacityInput);
+	assert(viewCountOutput == m_configViews.size());
+	assert(viewCountOutput == m_swapchains.size());
+
+	if ((viewState.viewStateFlags & XR_VIEW_STATE_POSITION_VALID_BIT) == 0 ||
+		(viewState.viewStateFlags & XR_VIEW_STATE_ORIENTATION_VALID_BIT) == 0) {
+		return false;  // There is no valid tracking poses for the views.
+	}
+	return true;
+}
+
 XrFrameState XRAPI::BeginFrame()
 {
 	assert(m_session != XR_NULL_HANDLE);

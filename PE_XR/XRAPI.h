@@ -29,6 +29,7 @@ private:
 	IPlatform* platform;
 	IGraphicsAPI* graphics;
     XrFrameState BeginFrame();
+    bool LocateViews(XrTime predictedDisplayTime);
 	XrResult Init();
 	XrResult CreateXRInstance();
 	void InitializeXRSystem();
