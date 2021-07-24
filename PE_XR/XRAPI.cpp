@@ -7,6 +7,7 @@ XRAPI::XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window, Options o
 	Init();
 	InitializeXRSystem();
 	InitializeXRSession();
+	InitializeActions();
 	CreateSwapchains(window);
 	switch (options.graphicsAPI)
 	{
@@ -266,6 +267,7 @@ void XRAPI::Frame(entt::registry& reg, IRenderSystem* renderSystem)
 {
 	XrFrameState frameState = BeginFrame();
 	LocateViews(frameState.predictedDisplayTime);
+	PollActions();
 	UpdateDevices(frameState.predictedDisplayTime, reg.view<XRDevice, Transform>(), reg.view<Camera, Transform>());
 	auto camView = reg.view<Camera, Transform>();
 	auto camTransform = camView.get<Transform>(camView.front());
@@ -343,6 +345,74 @@ void XRAPI::CalculateCameraViews(const Transform& primaryCamTransform)
 		
 		viewCams[i] = toAdd;
 	}
+}
+
+void XRAPI::InitializeActions()
+{
+	// Create an action set.
+	{
+		XrActionSetCreateInfo actionSetInfo{ XR_TYPE_ACTION_SET_CREATE_INFO };
+		strcpy_s(actionSetInfo.actionSetName, "gameplay");
+		strcpy_s(actionSetInfo.localizedActionSetName, "Gameplay");
+		actionSetInfo.priority = 0;
+		xrCreateActionSet(m_instance, &actionSetInfo, &inputState.actionSet);
+	}
+
+	// Get the XrPath for the left and right hands - we will use them as subaction paths.
+	xrStringToPath(m_instance, "/user/hand/left", &inputState.handSubactionPath[Side::LEFT]);
+	xrStringToPath(m_instance, "/user/hand/right", &inputState.handSubactionPath[Side::RIGHT]);
+
+	{
+		XrActionCreateInfo actionInfo{ XR_TYPE_ACTION_CREATE_INFO };
+		// Create an input action getting the left and right hand poses.
+		actionInfo.actionType = XR_ACTION_TYPE_POSE_INPUT;
+		strcpy_s(actionInfo.actionName, "hand_pose");
+		strcpy_s(actionInfo.localizedActionName, "Hand Pose");
+		actionInfo.countSubactionPaths = uint32_t(inputState.handSubactionPath.size());
+		actionInfo.subactionPaths = inputState.handSubactionPath.data();
+		xrCreateAction(inputState.actionSet, &actionInfo, &inputState.poseAction);
+	}
+
+	std::array<XrPath, 2> posePath;
+	xrStringToPath(m_instance, "/user/hand/left/input/grip/pose", &posePath[Side::LEFT]);
+	xrStringToPath(m_instance, "/user/hand/right/input/grip/pose", &posePath[Side::RIGHT]);
+
+	{
+		XrPath oculusTouchInteractionProfilePath;
+		xrStringToPath(m_instance, "/interaction_profiles/oculus/touch_controller", &oculusTouchInteractionProfilePath);
+		std::vector<XrActionSuggestedBinding> bindings{{
+														{inputState.poseAction, posePath[Side::LEFT]},
+														{inputState.poseAction, posePath[Side::RIGHT]}
+		}};
+		XrInteractionProfileSuggestedBinding suggestedBindings{ XR_TYPE_INTERACTION_PROFILE_SUGGESTED_BINDING };
+		suggestedBindings.interactionProfile = oculusTouchInteractionProfilePath;
+		suggestedBindings.suggestedBindings = bindings.data();
+		suggestedBindings.countSuggestedBindings = (uint32_t)bindings.size();
+		xrSuggestInteractionProfileBindings(m_instance, &suggestedBindings);
+	}
+
+	XrActionSpaceCreateInfo actionSpaceInfo{ XR_TYPE_ACTION_SPACE_CREATE_INFO };
+	actionSpaceInfo.action = inputState.poseAction;
+	actionSpaceInfo.poseInActionSpace.orientation.w = 1.f;
+	actionSpaceInfo.subactionPath = inputState.handSubactionPath[Side::LEFT];
+	xrCreateActionSpace(m_session, &actionSpaceInfo, &inputState.handSpace[Side::LEFT]);
+	actionSpaceInfo.subactionPath = inputState.handSubactionPath[Side::RIGHT];
+	xrCreateActionSpace(m_session, &actionSpaceInfo, &inputState.handSpace[Side::RIGHT]);
+
+	XrSessionActionSetsAttachInfo attachInfo{ XR_TYPE_SESSION_ACTION_SETS_ATTACH_INFO };
+	attachInfo.countActionSets = 1;
+	attachInfo.actionSets = &inputState.actionSet;
+	xrAttachSessionActionSets(m_session, &attachInfo);
+}
+
+void XRAPI::PollActions()
+{
+	// Sync actions
+	const XrActiveActionSet activeActionSet{ inputState.actionSet, XR_NULL_PATH };
+	XrActionsSyncInfo syncInfo{ XR_TYPE_ACTIONS_SYNC_INFO };
+	syncInfo.countActiveActionSets = 1;
+	syncInfo.activeActionSets = &activeActionSet;
+	XrResult res = xrSyncActions(m_session, &syncInfo);
 }
 
 XrFrameState XRAPI::BeginFrame()

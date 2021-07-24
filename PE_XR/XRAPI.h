@@ -48,6 +48,8 @@ private:
     void UpdateDevices(XrTime predictedTime, entt::basic_view<entt::entity, entt::exclude_t<>, XRDevice, Transform> xrDevices, entt::basic_view<entt::entity, entt::exclude_t<>, Camera, Transform> cameraTransformView);
 	IPlatform* platform;
 	IGraphicsAPI* graphics;
+    void InitializeActions();
+    void PollActions();
     XrFrameState BeginFrame();
     void RenderFrame(entt::registry& reg, IRenderSystem* renderSystem, XrFrameState frameState);
     bool LocateViews(XrTime predictedDisplayTime);
