@@ -9,7 +9,7 @@
 #include "GameWindow.h"
 #include <entt.hpp>
 #include "IRenderSystem.h"
-
+#include "misc_components.h"
 struct Swapchain {
     XrSwapchain handle;
     int32_t width;
@@ -21,7 +21,7 @@ class XRAPI
     : public IXRAPI
 {
 public:
-	XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window);
+	XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window, Options options);
     void PollEvents(/*bool* exitRenderLoop, bool* requestRestart*/);
     bool IsSessionRunning();
     void RenderFrame(entt::registry& reg, IRenderSystem* renderSystem);
@@ -65,5 +65,6 @@ private:
     XrEventDataBuffer m_eventDataBuffer;
 
     std::vector<Camera> viewCams;
+    GraphicsAPI graphicsAPI;
 };
 

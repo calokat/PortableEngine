@@ -520,7 +520,7 @@ int main(int argc, char* argv[])
 	}
 	//xr = new XRAPI(plat, graph, window);
 	IXRAPI* xr = nullptr;
-	xr = new MockXRAPI();
+	xr = new XRAPI(plat, graph, window, options);
 	plat->GetAssetManager()->LoadDefaultThumbnails(renderSystem);
 	plat->GetAssetManager()->LoadAssetsFromCurrentDirectory(renderSystem);
 	//entt::entity assetImageEntity = registry.create();

@@ -1,12 +1,23 @@
 #include "XRAPI.h"
 #include <iostream>
 #include <assert.h>
-XRAPI::XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window) : platform(plat), graphics(graph)
+XRAPI::XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window, Options options) : platform(plat), graphics(graph)
 {
 	Init();
 	InitializeXRSystem();
 	InitializeXRSession();
 	CreateSwapchains(window);
+	switch (options.graphicsAPI)
+	{
+	case PE::GraphicsAPI::OpenGL:
+		graphicsAPI = GraphicsAPI::GRAPHICS_OPENGL;
+		break;
+	case PE::GraphicsAPI::DirectX11:
+		graphicsAPI = GraphicsAPI::GRAPHICS_D3D;
+		break;
+	default:
+		graphicsAPI = GraphicsAPI::GRAPHICS_OPENGL_ES;
+	}
 }
 
 XrResult XRAPI::Init()
