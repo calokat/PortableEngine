@@ -14,6 +14,6 @@ bool MockXRAPI::IsSessionRunning()
 	return true;
 }
 
-void MockXRAPI::RenderFrame(entt::registry& reg, IRenderSystem* renderSystem)
+void MockXRAPI::Frame(entt::registry& reg, IRenderSystem* renderSystem)
 {
 }

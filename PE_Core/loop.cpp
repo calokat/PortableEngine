@@ -140,7 +140,7 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	ComputeTransformHeirarchy(sceneRoot, registry, Transform());
 	if (xr->IsSessionRunning())
 	{
-		xr->RenderFrame(registry, renderSystem);
+		xr->Frame(registry, renderSystem);
 	}
 	else
 	{

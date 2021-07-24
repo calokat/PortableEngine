@@ -12,6 +12,6 @@ public:
     MockXRAPI();
     void PollEvents(/*bool* exitRenderLoop, bool* requestRestart*/);
     bool IsSessionRunning();
-    void RenderFrame(entt::registry& reg, IRenderSystem* renderSystem);
+    void Frame(entt::registry& reg, IRenderSystem* renderSystem);
 };
 

@@ -24,11 +24,13 @@ public:
 	XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window, Options options);
     void PollEvents(/*bool* exitRenderLoop, bool* requestRestart*/);
     bool IsSessionRunning();
-    void RenderFrame(entt::registry& reg, IRenderSystem* renderSystem);
+    void UpdateDevices();
+    void Frame(entt::registry& reg, IRenderSystem* renderSystem);
 private:
 	IPlatform* platform;
 	IGraphicsAPI* graphics;
     XrFrameState BeginFrame();
+    void RenderFrame(entt::registry& reg, IRenderSystem* renderSystem, XrFrameState frameState);
     bool LocateViews(XrTime predictedDisplayTime);
     void CalculateCameraViews(const Transform& primaryCamTransform);
 	XrResult Init();

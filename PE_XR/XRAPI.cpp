@@ -231,9 +231,24 @@ bool XRAPI::IsSessionRunning()
 	return m_sessionRunning;
 }
 
-void XRAPI::RenderFrame(entt::registry& reg, IRenderSystem* renderSystem)
+void XRAPI::UpdateDevices()
+{
+
+}
+
+void XRAPI::Frame(entt::registry& reg, IRenderSystem* renderSystem)
 {
 	XrFrameState frameState = BeginFrame();
+	LocateViews(frameState.predictedDisplayTime);
+	auto camView = reg.view<Camera, Transform>();
+	auto camTransform = camView.get<Transform>(camView.front());
+	CalculateCameraViews(camTransform);
+	RenderFrame(reg, renderSystem, frameState);
+
+}
+
+void XRAPI::RenderFrame(entt::registry& reg, IRenderSystem* renderSystem, XrFrameState frameState)
+{
 	std::vector<XrCompositionLayerBaseHeader*> layers;
 	XrCompositionLayerProjection layer{ XR_TYPE_COMPOSITION_LAYER_PROJECTION };
 	std::vector<XrCompositionLayerProjectionView> projectionLayerViews;
