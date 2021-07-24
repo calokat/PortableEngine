@@ -10,3 +10,12 @@ public:
     virtual ~IXRAPI() {};
 };
 
+enum XRDeviceType {
+    LeftHand,
+    RightHand
+};
+
+struct XRDevice
+{
+    XRDeviceType type;
+};
