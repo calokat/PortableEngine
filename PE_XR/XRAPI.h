@@ -10,11 +10,30 @@
 #include <entt.hpp>
 #include "IRenderSystem.h"
 #include "misc_components.h"
+#include <array>
 struct Swapchain {
     XrSwapchain handle;
     int32_t width;
     int32_t height;
 };
+
+enum Side {
+    LEFT,
+    RIGHT
+};
+
+struct InputState {
+    XrActionSet actionSet{ XR_NULL_HANDLE };
+    XrAction grabAction{ XR_NULL_HANDLE };
+    XrAction poseAction{ XR_NULL_HANDLE };
+    XrAction vibrateAction{ XR_NULL_HANDLE };
+    XrAction quitAction{ XR_NULL_HANDLE };
+    std::array<XrPath, 2> handSubactionPath;
+    std::array<XrSpace, 2> handSpace;
+    std::array<float, 2> handScale = { {1.0f, 1.0f} };
+    std::array<XrBool32, 2> handActive;
+};
+
 
 
 class XRAPI
@@ -68,5 +87,6 @@ private:
 
     std::vector<Camera> viewCams;
     GraphicsAPI graphicsAPI;
+    InputState inputState;
 };
 
