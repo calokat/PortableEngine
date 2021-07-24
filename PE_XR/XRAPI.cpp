@@ -267,6 +267,31 @@ bool XRAPI::LocateViews(XrTime predictedDisplayTime)
 	return true;
 }
 
+void XRAPI::CalculateCameraViews(const Transform& primaryCamTransform)
+{
+	viewCams.resize(m_views.size());
+	for (int i = 0; i < m_views.size(); ++i)
+	{
+		const auto& pose = m_views[i].pose;
+		XrMatrix4x4f proj;
+		XrMatrix4x4f_CreateProjectionFov(&proj, graphicsAPI, m_views[i].fov, 0.05f, 100.0f);
+		XrMatrix4x4f toView;
+		XrVector3f scale{ 1.f, 1.f, 1.f };
+		XrVector3f camOriginalPos = { primaryCamTransform.position.x, primaryCamTransform.position.y, primaryCamTransform.position.z };
+		XrVector3f finalPos;
+		XrVector3f_Add(&finalPos, &camOriginalPos, &pose.position);
+		XrMatrix4x4f_CreateTranslationRotationScale(&toView, &finalPos, &pose.orientation, &scale);
+		XrMatrix4x4f view;
+		XrMatrix4x4f_InvertRigidBody(&view, &toView);
+
+		Camera toAdd;
+		toAdd.view = glm::make_mat4(view.m);
+		toAdd.projection = glm::make_mat4(proj.m);
+		
+		viewCams[i] = toAdd;
+	}
+}
+
 XrFrameState XRAPI::BeginFrame()
 {
 	assert(m_session != XR_NULL_HANDLE);

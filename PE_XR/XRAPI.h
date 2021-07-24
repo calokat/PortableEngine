@@ -30,6 +30,7 @@ private:
 	IGraphicsAPI* graphics;
     XrFrameState BeginFrame();
     bool LocateViews(XrTime predictedDisplayTime);
+    void CalculateCameraViews(const Transform& primaryCamTransform);
 	XrResult Init();
 	XrResult CreateXRInstance();
 	void InitializeXRSystem();
@@ -62,5 +63,7 @@ private:
     bool m_sessionRunning{ false };
 
     XrEventDataBuffer m_eventDataBuffer;
+
+    std::vector<Camera> viewCams;
 };
 
