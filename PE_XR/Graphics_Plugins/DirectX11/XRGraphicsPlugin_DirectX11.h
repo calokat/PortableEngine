@@ -20,7 +20,7 @@ public:
 	virtual int64_t SelectColorSwapchainFormat(const std::vector<int64_t>& runtimeFormats) const;
 	virtual std::vector<XrSwapchainImageBaseHeader*> AllocateSwapchainImageStructs(uint32_t capacity, const XrSwapchainCreateInfo& /*swapchainCreateInfo*/);
 	virtual void RenderView(const XrCompositionLayerProjectionView& layerView, const XrSwapchainImageBaseHeader* swapchainImage,
-		int64_t swapchainFormat, entt::registry& reg, IRenderSystem* renderSystem);
+		int64_t swapchainFormat, entt::registry& reg, IRenderSystem* renderSystem, Camera viewCam);
 private:
 	Microsoft::WRL::ComPtr<IDXGIAdapter1> GetAdapter(LUID adapterId);
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> GetDepthStencilView(ID3D11Texture2D* colorTexture);
