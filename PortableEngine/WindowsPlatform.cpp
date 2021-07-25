@@ -159,11 +159,6 @@ IAssetManager* WindowsPlatform::GetAssetManager()
 	return assetManager;
 }
 
-IXRPlatformPlugin* WindowsPlatform::GetXRPlatformPlugin()
-{
-	return xrPlatform;
-}
-
 void WindowsPlatform::SetWindowResizeCallback(entt::delegate<void()> callback)
 {
 	windowResizeCallback = callback;
@@ -174,7 +169,6 @@ WindowsPlatform::WindowsPlatform(GameWindow* win)
 	staticThis = this;
 	window = win;
 	assetManager = new WindowsAssetManager();
-	xrPlatform = new XRPlatformPlugin_Win32();
 	//hInstance = hinst;
 	/*windowWidth = winWidth;
 	windowHeight = winHeight;*/
@@ -186,7 +180,6 @@ WindowsPlatform::~WindowsPlatform()
 	ImGui_ImplWin32_Shutdown();
 	delete inputSystem;
 	delete assetManager;
-	delete xrPlatform;
 }
 
 LRESULT WindowsPlatform::WindowsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)

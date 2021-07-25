@@ -20,7 +20,6 @@ public:
 	IInputSystem* GetInputSystem();
 	void NewGuiFrame();
 	IAssetManager* GetAssetManager();
-	IXRPlatformPlugin* GetXRPlatformPlugin();
 	void SetWindowResizeCallback(entt::delegate<void()> callback);
 
 private:
@@ -37,6 +36,5 @@ private:
 	IInputSystem* inputSystem;
 	IAssetManager* assetManager;
 	entt::delegate<void()> windowResizeCallback;
-	IXRPlatformPlugin* xrPlatform;
 };
 #endif
