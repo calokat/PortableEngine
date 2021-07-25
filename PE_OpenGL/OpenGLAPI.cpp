@@ -165,3 +165,8 @@ void OpenGLAPI::BindToScreen()
 	glViewport(window->x, window->y, window->width, window->height);
 	//OnResize();
 }
+
+IOpenGLContext* OpenGLAPI::GetOpenGLContext()
+{
+	return glContext;
+}

@@ -24,6 +24,8 @@ public:
 	IXRGraphicsPlugin* GetXRGraphicsPlugin();
 #endif
 	void BindToScreen();
+	// unique to OpenGLAPI, and not shared with the IGraphicsAPI interface
+	IOpenGLContext* GetOpenGLContext();
 private:
 	GameWindow* window;
 //#ifdef _WIN64
