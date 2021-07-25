@@ -20,9 +20,6 @@ public:
 	void DrawGui();
 	void OnResize();
 	~OpenGLAPI();
-#ifndef __EMSCRIPTEN__
-	IXRGraphicsPlugin* GetXRGraphicsPlugin();
-#endif
 	void BindToScreen();
 	// unique to OpenGLAPI, and not shared with the IGraphicsAPI interface
 	IOpenGLContext* GetOpenGLContext();
@@ -38,8 +35,5 @@ private:
 	Shader* vertex;
 	Shader* pixel;
 	Camera& engineCam;
-#ifndef __EMSCRIPTEN__
-	IXRGraphicsPlugin* xrGraphics;
-#endif
 };
 

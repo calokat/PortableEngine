@@ -5,6 +5,7 @@
 #include "GameWindow.h"
 #include <d3d11.h>
 #include "glm/glm.hpp"
+#include "Camera.h"
 //#include "Mesh.h"
 #include <wrl/client.h> // Used for ComPtr - a smart pointer for COM objects
 class DirectXAPI :
@@ -23,7 +24,6 @@ public:
 	void OnResize();
 	Microsoft::WRL::ComPtr<ID3D11Device>		device;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>	context;
-	IXRGraphicsPlugin* GetXRGraphicsPlugin();
 	void BindToScreen();
 
 private:
@@ -54,7 +54,5 @@ private:
 
 	//Mesh* testHelix;
 	Camera& engineCam;
-
-	IXRGraphicsPlugin* xrGraphics;
 };
 #endif

@@ -1,7 +1,4 @@
 #pragma once
-#ifndef __EMSCRIPTEN__
-#include "../PE_XR/IXRGraphicsPlugin.h"
-#endif
 class IGraphicsAPI
 {
 public:
@@ -13,8 +10,5 @@ public:
 	virtual void DrawGui() = 0;
 	virtual void OnResize() = 0;
 	virtual ~IGraphicsAPI() {};
-#ifndef __EMSCRIPTEN__
-	virtual IXRGraphicsPlugin* GetXRGraphicsPlugin() = 0;
-#endif
 	virtual void BindToScreen() = 0;
 };

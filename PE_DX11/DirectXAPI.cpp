@@ -5,7 +5,6 @@
 #include <iostream>
 #include <backends/imgui_impl_dx11.h>
 #include "CameraSystem.h"
-#include "../PE_XR/Graphics_Plugins/DirectX11/XRGraphicsPlugin_DirectX11.h"
 // ********** REQUIRED WITHOUT SIMPLE SHADER **********
 // Needed for a helper function to read compiled shader files from the hard drive
 #pragma comment(lib, "d3dcompiler.lib")
@@ -145,7 +144,6 @@ int DirectXAPI::Init()
 
 	ImGui_ImplDX11_Init(device.Get(), context.Get());
 
-	xrGraphics = new XRGraphicsPlugin_DirectX11(context, device, window);
 	//context->IASetInputLayout(inputLayout);
 	// Return the "everything is ok" HRESULT value
 	return S_OK;
@@ -243,7 +241,6 @@ DirectXAPI::~DirectXAPI()
 	if (ps) { ps->Release(); }
 	if (vsConstantBuffer) { vsConstantBuffer->Release(); }
 	if (inputLayout) { inputLayout->Release(); }
-	if (xrGraphics) { delete xrGraphics; }
 	//if (testHelix) delete testHelix;
 	// ********** REQUIRED WITHOUT SIMPLE SHADER **********
 	ImGui_ImplDX11_Shutdown();
@@ -530,10 +527,6 @@ void DirectXAPI::OnResize()
 	context->RSSetViewports(1, &viewport);
 
 	CameraSystem::CalculateProjectionMatrixLH(engineCam, (float)window->width / window->height);
-}
-IXRGraphicsPlugin* DirectXAPI::GetXRGraphicsPlugin()
-{
-	return xrGraphics;
 }
 void DirectXAPI::BindToScreen()
 {
