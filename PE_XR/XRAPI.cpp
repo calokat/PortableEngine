@@ -8,7 +8,7 @@
 #endif
 #include "openxr/openxr_platform.h"
 #include "../PE_XR/Graphics_Plugins/OpenGL/XRGraphicsPlugin_OpenGL.h"
-XRAPI::XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window, Options options) : platform(plat), graphics(graph)
+XRAPI::XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window, Options options)
 {
 	switch (options.graphicsAPI)
 	{
