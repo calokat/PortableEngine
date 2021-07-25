@@ -8,12 +8,14 @@
 #include <windows.h>
 #include <wrl/client.h>  // For Microsoft::WRL::ComPtr
 #include "GameWindow.h"
+#include "DirectXAPI.h"
 
 class XRGraphicsPlugin_DirectX11 :
     public IXRGraphicsPlugin
 {
 public:
-	XRGraphicsPlugin_DirectX11(Microsoft::WRL::ComPtr<ID3D11DeviceContext> ctx, Microsoft::WRL::ComPtr<ID3D11Device> dev, GameWindow* win);
+	XRGraphicsPlugin_DirectX11(DirectXAPI* dxApi);
+	XRGraphicsPlugin_DirectX11(Microsoft::WRL::ComPtr<ID3D11DeviceContext> ctx, Microsoft::WRL::ComPtr<ID3D11Device> dev);
 	virtual std::vector<const char*> GetGraphicsExtensions();
 	virtual void InitializeDeviceForXR(XrInstance instance, XrSystemId systemId);
 	virtual const XrBaseInStructure* GetGraphicsBinding();

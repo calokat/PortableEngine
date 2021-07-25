@@ -1,14 +1,15 @@
 #pragma once
 #include "../PE_XR/IXRGraphicsPlugin.h"
-#define XR_USE_PLATFORM_WIN32 1
-#define XR_USE_GRAPHICS_API_OPENGL 1
 #ifdef _WIN32
 #include <Windows.h>
 #endif
+#undef XR_USE_GRAPHICS_API_D3D11
 #include <openxr/openxr.h>
 #include <openxr/openxr_platform.h>
+#define XR_USE_GRAPHICS_API_D3D11 1
 #include "GameWindow.h"
 #include "IOpenGLContext.h"
+#include "OpenGLAPI.h"
 #include <algorithm>
 #include <list>
 #include <map>
@@ -17,6 +18,7 @@ class XRGraphicsPlugin_OpenGL :
     public IXRGraphicsPlugin
 {
 public:
+    XRGraphicsPlugin_OpenGL(OpenGLAPI* glApi, GameWindow* win);
     XRGraphicsPlugin_OpenGL(GameWindow* win, IOpenGLContext* ctx);
     std::vector<const char*> GetGraphicsExtensions();
     void InitializeDeviceForXR(XrInstance instance, XrSystemId systemId);

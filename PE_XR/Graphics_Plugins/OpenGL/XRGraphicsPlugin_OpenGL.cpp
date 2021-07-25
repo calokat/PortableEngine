@@ -10,6 +10,10 @@
 #include "CameraSystem.h"
 #include "TransformSystem.h"
 
+XRGraphicsPlugin_OpenGL::XRGraphicsPlugin_OpenGL(OpenGLAPI* glApi, GameWindow* win) : window(win), glContext(glApi->GetOpenGLContext())
+{
+}
+
 XRGraphicsPlugin_OpenGL::XRGraphicsPlugin_OpenGL(GameWindow* win, IOpenGLContext* ctx) : window(win), glContext(ctx)
 {
 }

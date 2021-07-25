@@ -3,8 +3,12 @@
 #include "DIrectXRenderer.h"
 #pragma comment(lib, "dxgi.lib")
 
-XRGraphicsPlugin_DirectX11::XRGraphicsPlugin_DirectX11(Microsoft::WRL::ComPtr<ID3D11DeviceContext> ctx, Microsoft::WRL::ComPtr<ID3D11Device> dev, GameWindow* win)
-    : m_deviceContext(ctx), m_device(dev), window(win)
+XRGraphicsPlugin_DirectX11::XRGraphicsPlugin_DirectX11(DirectXAPI* dxApi) : m_deviceContext(dxApi->context), m_device(dxApi->device)
+{
+}
+
+XRGraphicsPlugin_DirectX11::XRGraphicsPlugin_DirectX11(Microsoft::WRL::ComPtr<ID3D11DeviceContext> ctx, Microsoft::WRL::ComPtr<ID3D11Device> dev)
+    : m_deviceContext(ctx), m_device(dev)
 {
 }
 
