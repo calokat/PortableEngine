@@ -10,22 +10,35 @@
 #include "../PE_XR/Graphics_Plugins/OpenGL/XRGraphicsPlugin_OpenGL.h"
 XRAPI::XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window, Options options) : platform(plat), graphics(graph)
 {
+	switch (options.graphicsAPI)
+	{
+	case PE::GraphicsAPI::OpenGL:
+		graphicsAPI = GraphicsAPI::GRAPHICS_OPENGL;
+		graphicsPlugin = new XRGraphicsPlugin_OpenGL((OpenGLAPI*)graph, window);
+		break;
+	case PE::GraphicsAPI::DirectX11:
+		graphicsAPI = GraphicsAPI::GRAPHICS_D3D;
+		graphicsPlugin = new XRGraphicsPlugin_DirectX11((DirectXAPI*)graph);
+		break;
+	default:
+		graphicsAPI = GraphicsAPI::GRAPHICS_OPENGL_ES;
+	}
+	switch (options.platform)
+	{
+	case PE::Platform::Win32:
+		platformPlugin = new XRPlatformPlugin_Win32();
+	}
 	Init();
 	InitializeXRSystem();
 	InitializeXRSession();
 	InitializeActions();
 	CreateSwapchains(window);
-	switch (options.graphicsAPI)
-	{
-	case PE::GraphicsAPI::OpenGL:
-		graphicsAPI = GraphicsAPI::GRAPHICS_OPENGL;
-		break;
-	case PE::GraphicsAPI::DirectX11:
-		graphicsAPI = GraphicsAPI::GRAPHICS_D3D;
-		break;
-	default:
-		graphicsAPI = GraphicsAPI::GRAPHICS_OPENGL_ES;
-	}
+}
+
+XRAPI::~XRAPI()
+{
+	delete platformPlugin;
+	delete graphicsPlugin;
 }
 
 XrResult XRAPI::Init()
@@ -53,16 +66,16 @@ XrResult XRAPI::CreateXRInstance()
 {
 	assert(m_instance == XR_NULL_HANDLE);
 	std::vector<const char*> extensions;
-	const std::vector<const char*> platformExtensions = platform->GetXRPlatformPlugin()->GetPlatformExtensions();
+	const std::vector<const char*> platformExtensions = platformPlugin->GetPlatformExtensions();
 	std::transform(platformExtensions.begin(), platformExtensions.end(), std::back_inserter(extensions),
 		[](const char* ext) { return ext; });
-	const std::vector<const char*> graphicsExtensions = graphics->GetXRGraphicsPlugin()->GetGraphicsExtensions();
+	const std::vector<const char*> graphicsExtensions = graphicsPlugin->GetGraphicsExtensions();
 	std::transform(graphicsExtensions.begin(), graphicsExtensions.end(), std::back_inserter(extensions),
 		[](const char* ext) { return ext; });
 
 
 	XrInstanceCreateInfo createInfo = { XR_TYPE_INSTANCE_CREATE_INFO };
-	createInfo.next = platform->GetXRPlatformPlugin()->GetInstanceCreateExtension();
+	createInfo.next = platformPlugin->GetInstanceCreateExtension();
 	createInfo.createFlags = 0;
 	createInfo.enabledApiLayerCount = 0;
 	createInfo.enabledApiLayerNames = nullptr;
@@ -88,13 +101,13 @@ void XRAPI::InitializeXRSystem()
 	systemInfo.formFactor = XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY;
 	m_environmentBlendMode = XR_ENVIRONMENT_BLEND_MODE_OPAQUE;
 	XrResult res = xrGetSystem(m_instance, &systemInfo, &m_systemId);
-	graphics->GetXRGraphicsPlugin()->InitializeDeviceForXR(m_instance, m_systemId);
+	graphicsPlugin->InitializeDeviceForXR(m_instance, m_systemId);
 }
 
 void XRAPI::InitializeXRSession()
 {
 	XrSessionCreateInfo createInfo{ XR_TYPE_SESSION_CREATE_INFO };
-	createInfo.next = graphics->GetXRGraphicsPlugin()->GetGraphicsBinding();
+	createInfo.next = graphicsPlugin->GetGraphicsBinding();
 	createInfo.systemId = m_systemId;
 	XrResult res = xrCreateSession(m_instance, &createInfo, &m_session);
 
@@ -137,7 +150,7 @@ void XRAPI::CreateSwapchains(GameWindow* window)
 		res = xrEnumerateSwapchainFormats(m_session, (uint32_t)swapchainFormats.size(), &swapchainFormatCount,
 			swapchainFormats.data());
 		swapchainFormatCount == swapchainFormats.size();
-		m_colorSwapchainFormat = graphics->GetXRGraphicsPlugin()->SelectColorSwapchainFormat(swapchainFormats);
+		m_colorSwapchainFormat = graphicsPlugin->SelectColorSwapchainFormat(swapchainFormats);
 
 		// Print swapchain formats and the selected one.
 		//{
@@ -186,7 +199,7 @@ void XRAPI::CreateSwapchains(GameWindow* window)
 			res = xrEnumerateSwapchainImages(swapchain.handle, 0, &imageCount, nullptr);
 			// XXX This should really just return XrSwapchainImageBaseHeader*
 			std::vector<XrSwapchainImageBaseHeader*> swapchainImages =
-				graphics->GetXRGraphicsPlugin()->AllocateSwapchainImageStructs(imageCount, swapchainCreateInfo);
+				graphicsPlugin->AllocateSwapchainImageStructs(imageCount, swapchainCreateInfo);
 			res = xrEnumerateSwapchainImages(swapchain.handle, imageCount, &imageCount, swapchainImages[0]);
 
 			m_swapchainImages.insert(std::make_pair(swapchain.handle, std::move(swapchainImages)));
@@ -505,7 +518,7 @@ bool XRAPI::RenderLayer(XrTime predictedDisplayTime, std::vector<XrCompositionLa
 		projectionLayerViews[i].subImage.imageRect.extent = { viewSwapchain.width, viewSwapchain.height };
 
 		const XrSwapchainImageBaseHeader* const swapchainImage = m_swapchainImages[viewSwapchain.handle][swapchainImageIndex];
-		graphics->GetXRGraphicsPlugin()->RenderView(projectionLayerViews[i], swapchainImage, m_colorSwapchainFormat, reg, renderSystem, viewCams[i]);
+		graphicsPlugin->RenderView(projectionLayerViews[i], swapchainImage, m_colorSwapchainFormat, reg, renderSystem, viewCams[i]);
 
 		XrSwapchainImageReleaseInfo releaseInfo{ XR_TYPE_SWAPCHAIN_IMAGE_RELEASE_INFO };
 		assert(XR_SUCCEEDED(xrReleaseSwapchainImage(viewSwapchain.handle, &releaseInfo)));

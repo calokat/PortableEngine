@@ -42,6 +42,7 @@ class XRAPI
 {
 public:
 	XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window, Options options);
+    ~XRAPI();
     void PollEvents(/*bool* exitRenderLoop, bool* requestRestart*/);
     bool IsSessionRunning();
     void Frame(entt::registry& reg, IRenderSystem* renderSystem);
