@@ -2,6 +2,12 @@
 #include <iostream>
 #include <assert.h>
 #include "TransformSystem.h"
+#ifdef _WIN64
+#include "../PE_XR/Graphics_Plugins/DirectX11/XRGraphicsPlugin_DirectX11.h"
+#include "../PE_XR/Platform_Plugins/Win32/XRPlatformPlugin_Win32.h"
+#endif
+#include "openxr/openxr_platform.h"
+#include "../PE_XR/Graphics_Plugins/OpenGL/XRGraphicsPlugin_OpenGL.h"
 XRAPI::XRAPI(IPlatform* plat, IGraphicsAPI* graph, GameWindow* window, Options options) : platform(plat), graphics(graph)
 {
 	Init();

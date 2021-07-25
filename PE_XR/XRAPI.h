@@ -4,13 +4,14 @@
 #include "IGraphicsAPI.h"
 #include "xr_defines.h"
 #include "openxr/openxr.h"
-#include "openxr/openxr_platform.h"
 #include "openxr/xr_linear.h"
 #include "GameWindow.h"
 #include <entt.hpp>
 #include "IRenderSystem.h"
 #include "misc_components.h"
 #include <array>
+#include "../PE_XR/IXRGraphicsPlugin.h"
+#include "../PE_XR/IXRPlatformPlugin.h"
 struct Swapchain {
     XrSwapchain handle;
     int32_t width;
@@ -90,5 +91,8 @@ private:
     std::vector<Camera> viewCams;
     GraphicsAPI graphicsAPI;
     InputState inputState;
+
+    IXRPlatformPlugin* platformPlugin;
+    IXRGraphicsPlugin* graphicsPlugin;
 };
 

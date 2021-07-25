@@ -115,6 +115,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\..\..\common\glm;..\..\..\common\openxr_loader_windows-1.0.9\openxr_loader_windows\include;../PE_Core;../PE_OpenGL;../PE_DX11;</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>XR_USE_GRAPHICS_API_OPENGL;XR_OS_WINDOWS;XR_USE_PLATFORM_WIN32;XR_USE_GRAPHICS_API_D3D11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,6 +150,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\..\..\common\glm;..\..\..\common\openxr_loader_windows-1.0.9\openxr_loader_windows\include;</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>XR_USE_GRAPHICS_API_OPENGL;XR_OS_WINDOWS;XR_USE_PLATFORM_WIN32;XR_USE_GRAPHICS_API_D3D11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
