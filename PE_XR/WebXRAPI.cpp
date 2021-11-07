@@ -43,7 +43,7 @@ void WebXRAPI::RenderEye(entt::registry& reg, IRenderSystem* renderSystem, Camer
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, eyeBuffer.frameBuffer);
 	auto renderableView = reg.view<GLRenderer, Transform>();
-	glViewport(eyeWidth * index, 0, eyeWidth * (index + 1), eyeHeight);
+	//glViewport(eyeWidth * index, 0, eyeWidth * (index + 1), eyeHeight);
 	glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//entt::entity cameraEntity = reg.view<Camera, Transform>().front();
@@ -99,7 +99,7 @@ extern "C" {
 		int height = WebXRAPI::staticThis->eyeHeight;
 		glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, WebXRAPI::staticThis->eyeBuffers[1].frameBuffer);
-		glBlitFramebuffer(width, 0, width * 2, height, width, 0, width * 2, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+		glBlitFramebuffer(0, 0, width, height, width, 0, width * 2, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 		
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, WebXRAPI::staticThis->eyeBuffers[0].frameBuffer);
