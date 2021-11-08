@@ -42,11 +42,11 @@ void DrawIteration(Camera& camera, entt::entity selected, entt::registry& regist
 void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXRAPI* xr, GameWindow* window, entt::registry& registry, Options options, entt::entity sceneRoot)
 {
 	plat->GetInputSystem()->GetKeyPressed();
-	graph->NewGuiFrame();
-	plat->NewGuiFrame();
-	ImGui::NewFrame();
-	ImGuizmo::BeginFrame();
-	ImGuizmo::Enable(true);
+	//graph->NewGuiFrame();
+	//plat->NewGuiFrame();
+	//ImGui::NewFrame();
+	//ImGuizmo::BeginFrame();
+	//ImGuizmo::Enable(true);
 	static float vertColorPick[4];
 	//	ImGui::BeginMainMenuBar();
 	//	if (ImGui::BeginMenu("File"))
@@ -116,23 +116,23 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	}
 
 	auto entityView = registry.view<Name, Relationship, Transform>();
-	EntityListWindow entityListWindow;
-	InspectorWindow inspectorWindow;
-	AssetBrowserWindow assetWindow;
-	WindowHeader windowHeader;
+	//EntityListWindow entityListWindow;
+	//InspectorWindow inspectorWindow;
+	//AssetBrowserWindow assetWindow;
+	//WindowHeader windowHeader;
 	Relationship& rootRel = registry.get<Relationship>(sceneRoot);
-	windowHeader.Render(registry, plat->GetAssetManager(), renderSystem);
-	entityListWindow.Render(rootRel, entityView);
-	inspectorWindow.Render(registry);
+	//windowHeader.Render(registry, plat->GetAssetManager(), renderSystem);
+	//entityListWindow.Render(rootRel, entityView);
+	//inspectorWindow.Render(registry);
 
-	assetWindow.Render(plat->GetAssetManager(), renderSystem);
+	//assetWindow.Render(plat->GetAssetManager(), renderSystem);
 
-	graph->ClearScreen();
+	//graph->ClearScreen();
 	auto camEntityView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camEntityView[0]);
-	ImGui::Begin("Camera Rotation");
-	ImGui::DragFloat3("Camera rotation", glm::value_ptr(camTransform.rotation));
-	ImGui::End();
+	//ImGui::Begin("Camera Rotation");
+	//ImGui::DragFloat3("Camera rotation", glm::value_ptr(camTransform.rotation));
+	//ImGui::End();
 
 	TransformSystem::CalculateWorldMatrix(&camTransform);
 	CameraSystem::CalculateViewMatrixLH(camera, camTransform);
@@ -144,10 +144,10 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	}
 	else
 	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(250));
+		//std::this_thread::sleep_for(std::chrono::milliseconds(250));
 	}
 	xr->PollEvents();
-	graph->BindToScreen();
+	//graph->BindToScreen();
 	// Note: I do not know why, but when I use CalculateProjectionMatrixLH the view on screen is backwards, even though
 	// I use CalculateProjectionMatrixLH for almost everything
 	//CameraSystem::CalculateProjectionMatrixRH(camera, (float)window->width / window->height);
@@ -159,7 +159,7 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 #endif
 	if (options.graphicsAPI == PE::GraphicsAPI::OpenGL)
 	{
-		DrawIteration<GLRenderer>(camera, selected, registry, renderSystem);
+		//DrawIteration<GLRenderer>(camera, selected, registry, renderSystem);
 	}
 	auto transformView = registry.view<Transform>();
 	//GizmoSystem::UpdateGizmo(plat->GetInputSystem());
@@ -171,8 +171,8 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	{
 		GizmoSystem::DeselectAll();
 	}
-	ImGui::Render();
-	graph->DrawGui();
+	//ImGui::Render();
+	//graph->DrawGui();
 	graph->_SwapBuffers();
 }
 

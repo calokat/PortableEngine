@@ -28,7 +28,7 @@ public:
     IGraphicsAPI* graphics;
     IRenderSystem* renderSystem;
     //GLuint viewTextures[2];
-    WebXR_Eyebuffer eyeBuffers[2];
+    WebXR_Eyebuffer eyeBuffer, blankBuffer;
     int eyeWidth, eyeHeight;
     bool isSessionRunning = false;
     Camera viewCameras[2];

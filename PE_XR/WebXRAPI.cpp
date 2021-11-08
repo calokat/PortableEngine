@@ -11,8 +11,8 @@ WebXRAPI::WebXRAPI(IGraphicsAPI* graph, IRenderSystem* rs)
 	this->graphics = graph;
 	this->renderSystem = rs;
 	//glGenTextures(2, viewTextures);
-	WebXR_Eyebuffer_Init(eyeBuffers[0]);
-	WebXR_Eyebuffer_Init(eyeBuffers[1]);
+	WebXR_Eyebuffer_Init(eyeBuffer);
+	WebXR_Eyebuffer_Init(blankBuffer);
 	if (staticThis == nullptr)
 	{
 		staticThis = this;
@@ -31,11 +31,15 @@ bool WebXRAPI::IsSessionRunning()
 
 void WebXRAPI::Frame(entt::registry& reg, IRenderSystem* renderSystem)
 {
-	entt::entity cameraEntity = reg.view<Camera, Transform>().front();
-	Camera& viewCam = reg.get<Camera>(cameraEntity);
+	//GLfloat red[] = { 1, 0, 0, 1 };
+	//glClearBufferfv(GL_COLOR, 0, red);
+	//glClearBufferfi(GL_DEPTH_STENCIL, 0, 1, 1);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, this->blankBuffer.frameBuffer);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->eyeBuffer.frameBuffer);
+	glBlitFramebuffer(0, 0, this->eyeWidth * 2, this->eyeHeight, 0, 0, this->eyeWidth * 2, this->eyeHeight, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 	for (int i = 0; i < 2; ++i)
 	{
-		RenderEye(reg, renderSystem, viewCameras[i], eyeBuffers[i], i);
+		RenderEye(reg, renderSystem, viewCameras[i], eyeBuffer, i);
 	}
 }
 
@@ -44,11 +48,11 @@ void WebXRAPI::RenderEye(entt::registry& reg, IRenderSystem* renderSystem, Camer
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, eyeBuffer.frameBuffer);
 	auto renderableView = reg.view<GLRenderer, Transform>();
 	//glViewport(eyeWidth * index, 0, eyeWidth * (index + 1), eyeHeight);
-	glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//entt::entity cameraEntity = reg.view<Camera, Transform>().front();
 	//Camera& viewCam = reg.get<Camera>(cameraEntity);
-	graphics->ClearScreen();
+	//graphics->ClearScreen();
 	for (auto renderable : renderableView)
 	{
 		GLRenderer& renderer = reg.get<GLRenderer>(renderable);
@@ -69,17 +73,24 @@ void WebXRAPI::RenderEye(entt::registry& reg, IRenderSystem* renderSystem, Camer
 
 extern "C" {
 
+	void webxr_clear_framebuffer()
+	{
+		GLenum colorAttachment = GL_COLOR_ATTACHMENT0;
+		glDrawBuffers(1, &colorAttachment);
+		glClearColor(1, 0, 0, 1);
+		glClearDepth(1);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+
 	void webxr_set_eye_measurements(int w, int h)
 	{
 		if (WebXRAPI::staticThis->eyeWidth != 0 && WebXRAPI::staticThis->eyeHeight != 0) return;
 		WebXRAPI::staticThis->eyeWidth = w;
 		WebXRAPI::staticThis->eyeHeight = h;
-
-		WebXR_Eyebuffer_AllocateRenderbuffers(WebXRAPI::staticThis->eyeBuffers[0], w, h);
-		WebXR_Eyebuffer_AllocateRenderbuffers(WebXRAPI::staticThis->eyeBuffers[1], w, h);
-
-		WebXR_Eyebuffer_BindRenderBuffersToFrameBuffer(WebXRAPI::staticThis->eyeBuffers[0]);
-		WebXR_Eyebuffer_BindRenderBuffersToFrameBuffer(WebXRAPI::staticThis->eyeBuffers[1]);
+		WebXR_Eyebuffer_AllocateRenderbuffers(WebXRAPI::staticThis->blankBuffer, w, h);
+		WebXR_Eyebuffer_BindRenderBuffersToFrameBuffer(WebXRAPI::staticThis->blankBuffer);
+		WebXR_Eyebuffer_AllocateRenderbuffers(WebXRAPI::staticThis->eyeBuffer, w, h);
+		WebXR_Eyebuffer_BindRenderBuffersToFrameBuffer(WebXRAPI::staticThis->eyeBuffer);
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{
@@ -94,19 +105,22 @@ extern "C" {
 	void webxr_render_scene()
 	{
 		//WebXRAPI::staticThis->graphics->ClearScreen();
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, WebXRAPI::staticThis->eyeBuffers[0].frameBuffer);
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, WebXRAPI::staticThis->eyeBuffer.frameBuffer);
 		int width = WebXRAPI::staticThis->eyeWidth;
 		int height = WebXRAPI::staticThis->eyeHeight;
-		glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, WebXRAPI::staticThis->eyeBuffers[1].frameBuffer);
-		glBlitFramebuffer(0, 0, width, height, width, 0, width * 2, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+		glBlitFramebuffer(0, 0, width * 2, height, 0, 0, width * 2, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 		
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, WebXRAPI::staticThis->eyeBuffers[0].frameBuffer);
-		glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, WebXRAPI::staticThis->eyeBuffers[1].frameBuffer);
-		glBlitFramebuffer(width, 0, width * 2, height, width, 0, width * 2, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+		//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+		//glBindFramebuffer(GL_READ_FRAMEBUFFER, WebXRAPI::staticThis->eyeBuffer.frameBuffer);
+		//glBlitFramebuffer(0, 0, width * 2, height, 0, 0, width * 2, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 		//WebXRAPI::staticThis->graphics->_SwapBuffers();
+
+		//GLenum colorAttachment = GL_COLOR_ATTACHMENT0;
+		//glDrawBuffers(1, &colorAttachment);
+		//glClearColor(1, 0, 0, 1);
+		//glClearDepth(1);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	}
 	
 	void webxr_set_camera_matrices(float* matricesPtr)
@@ -155,10 +169,10 @@ void WebXR_Eyebuffer_Init(WebXR_Eyebuffer& buffer)
 void WebXR_Eyebuffer_AllocateRenderbuffers(WebXR_Eyebuffer buffer, unsigned int w, unsigned int h)
 {
 	glBindRenderbuffer(GL_RENDERBUFFER, buffer.colorBuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA32F, w, h);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA32F, w * 2, h);
 	
 	glBindRenderbuffer(GL_RENDERBUFFER, buffer.depthStencilBuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w, h);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w * 2, h);
 }
 
 void WebXR_Eyebuffer_BindRenderBuffersToFrameBuffer(WebXR_Eyebuffer buffer)
