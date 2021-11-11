@@ -39,6 +39,7 @@ void WebXRAPI::Frame(entt::registry& reg, IRenderSystem* renderSystem)
 	glBlitFramebuffer(0, 0, this->eyeWidth * 2, this->eyeHeight, 0, 0, this->eyeWidth * 2, this->eyeHeight, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 	for (int i = 0; i < 2; ++i)
 	{
+		glViewport(eyeWidth * i, 0, eyeWidth, eyeHeight);
 		RenderEye(reg, renderSystem, viewCameras[i], eyeBuffer, i);
 	}
 }
@@ -110,6 +111,9 @@ extern "C" {
 		int height = WebXRAPI::staticThis->eyeHeight;
 		glBlitFramebuffer(0, 0, width * 2, height, 0, 0, width * 2, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 		
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+		glBlitFramebuffer(0, 0, width * 2, height, 0, 0, width * 2, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+
 		//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 		//glBindFramebuffer(GL_READ_FRAMEBUFFER, WebXRAPI::staticThis->eyeBuffer.frameBuffer);
 		//glBlitFramebuffer(0, 0, width * 2, height, 0, 0, width * 2, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
@@ -126,7 +130,7 @@ extern "C" {
 	void webxr_set_camera_matrices(float* matricesPtr)
 	{
 		Camera* viewCameras = WebXRAPI::staticThis->viewCameras;
-		const int offset = 4 * 16;
+		const int offset = sizeof(float) * 16;
 		memcpy(glm::value_ptr(viewCameras[0].view), matricesPtr, offset);
 		memcpy(glm::value_ptr(viewCameras[0].projection), matricesPtr + 16, offset);
 
