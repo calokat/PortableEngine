@@ -1,9 +1,9 @@
-//#ifdef __EMSCRIPTEN__
+#ifdef __EMSCRIPTEN__
 #include "WebXRAPI.h"
 #include "GLRenderer.h"
 #include <imgui.h>
 #include <backends/imgui_impl_opengl3.h>
-
+#include "TransformSystem.h"
 WebXRAPI* WebXRAPI::staticThis;
 
 WebXRAPI::WebXRAPI(IGraphicsAPI* graph, IRenderSystem* rs)
@@ -17,6 +17,8 @@ WebXRAPI::WebXRAPI(IGraphicsAPI* graph, IRenderSystem* rs)
 	{
 		staticThis = this;
 	}
+	//this->inputTransforms[0].scale = { .1f, .1f, .1f };
+	//this->inputTransforms[1].scale = { .1f, .1f, .1f };
 }
 
 void WebXRAPI::PollEvents()
@@ -34,6 +36,36 @@ void WebXRAPI::Frame(entt::registry& reg, IRenderSystem* renderSystem)
 	//GLfloat red[] = { 1, 0, 0, 1 };
 	//glClearBufferfv(GL_COLOR, 0, red);
 	//glClearBufferfi(GL_DEPTH_STENCIL, 0, 1, 1);
+	
+	auto inputView = reg.view<Transform, XRDevice>();
+
+	for (auto input : inputView)
+	{
+		auto [transform, device] = inputView.get(input);
+		if (device.type == XRDeviceType::LeftHand)
+		{
+			//for (int i = 0; i < 4; ++i)
+			//{
+			//	printf("Left hand before[%f %f %f %f]\n", transform.worldMatrix[i][0], transform.worldMatrix[i][1], transform.worldMatrix[i][2], transform.worldMatrix[i][3]);
+			//}
+			transform = inputTransforms[0];
+			//for (int i = 0; i < 4; ++i)
+			//{
+			//	printf("Left hand again [%f %f %f %f]\n", transform.worldMatrix[i][0], transform.worldMatrix[i][1], transform.worldMatrix[i][2], transform.worldMatrix[i][3]);
+			//}
+
+		}
+		else if (device.type == XRDeviceType::RightHand)
+		{
+			transform = inputTransforms[1];
+			//for (int i = 0; i < 4; ++i)
+			//{
+			//	printf("Right hand again [%f %f %f %f]\n", transform.worldMatrix[i][0], transform.worldMatrix[i][1], transform.worldMatrix[i][2], transform.worldMatrix[i][3]);
+			//}
+		}
+		TransformSystem::CalculateWorldMatrix(&transform);
+	}
+	
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, this->blankBuffer.frameBuffer);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->eyeBuffer.frameBuffer);
 	glBlitFramebuffer(0, 0, this->eyeWidth * 2, this->eyeHeight, 0, 0, this->eyeWidth * 2, this->eyeHeight, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
@@ -65,7 +97,6 @@ void WebXRAPI::RenderEye(entt::registry& reg, IRenderSystem* renderSystem, Camer
 		renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam);
 		renderSystem->Draw(&renderer);
 	}
-
 
 	//ImGui::Render();
 	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -110,9 +141,8 @@ extern "C" {
 		int width = WebXRAPI::staticThis->eyeWidth;
 		int height = WebXRAPI::staticThis->eyeHeight;
 		glBlitFramebuffer(0, 0, width * 2, height, 0, 0, width * 2, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
-		
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-		glBlitFramebuffer(0, 0, width * 2, height, 0, 0, width * 2, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+		//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+		//glBlitFramebuffer(0, 0, width * 2, height, 0, 0, width * 2, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 
 		//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 		//glBindFramebuffer(GL_READ_FRAMEBUFFER, WebXRAPI::staticThis->eyeBuffer.frameBuffer);
@@ -161,6 +191,14 @@ extern "C" {
 		//}
 
 	}
+
+	void webxr_set_input_matrices(float* leftInputMatrix, float* rightInputMatrix) {
+		WebXRAPI::staticThis->inputTransforms[0].position = { leftInputMatrix[0], leftInputMatrix[1], leftInputMatrix[2] };
+		WebXRAPI::staticThis->inputTransforms[0].orientation = { leftInputMatrix[3], leftInputMatrix[4], leftInputMatrix[5], leftInputMatrix[6] };
+
+		WebXRAPI::staticThis->inputTransforms[1].position = { rightInputMatrix[0], rightInputMatrix[1], rightInputMatrix[2] };
+		WebXRAPI::staticThis->inputTransforms[1].orientation = { rightInputMatrix[3], rightInputMatrix[4], rightInputMatrix[5], rightInputMatrix[6] };
+	}
 }
 
 void WebXR_Eyebuffer_Init(WebXR_Eyebuffer& buffer)
@@ -185,4 +223,4 @@ void WebXR_Eyebuffer_BindRenderBuffersToFrameBuffer(WebXR_Eyebuffer buffer)
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, buffer.colorBuffer);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, buffer.depthStencilBuffer);
 }
-//#endif
+#endif

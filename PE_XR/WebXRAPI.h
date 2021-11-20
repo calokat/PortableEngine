@@ -1,4 +1,4 @@
-//#ifdef __EMSCRIPTEN__
+#ifdef __EMSCRIPTEN__
 #pragma once
 #include "IXRAPI.h"
 #include "IGraphicsAPI.h"
@@ -32,5 +32,6 @@ public:
     int eyeWidth, eyeHeight;
     bool isSessionRunning = false;
     Camera viewCameras[2];
+    Transform inputTransforms[2];
 };
-//#endif
+#endif
