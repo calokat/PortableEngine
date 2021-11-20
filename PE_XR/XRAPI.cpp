@@ -1,3 +1,4 @@
+#ifndef __EMSCRIPTEN__
 #include "XRAPI.h"
 #include <iostream>
 #include <assert.h>
@@ -410,6 +411,29 @@ void XRAPI::InitializeActions()
 		xrSuggestInteractionProfileBindings(m_instance, &suggestedBindings);
 	}
 
+	// Suggest bindings for the Valve Index Controller.
+	{
+		XrPath indexControllerInteractionProfilePath;
+		xrStringToPath(m_instance, "/interaction_profiles/valve/index_controller", &indexControllerInteractionProfilePath);
+		//std::vector<XrActionSuggestedBinding> bindings{ {{m_input.grabAction, squeezeForcePath[Side::LEFT]},
+		//												{m_input.grabAction, squeezeForcePath[Side::RIGHT]},
+		//												{m_input.poseAction, posePath[Side::LEFT]},
+		//												{m_input.poseAction, posePath[Side::RIGHT]},
+		//												{m_input.quitAction, bClickPath[Side::LEFT]},
+		//												{m_input.quitAction, bClickPath[Side::RIGHT]},
+		//												{m_input.vibrateAction, hapticPath[Side::LEFT]},
+		//												{m_input.vibrateAction, hapticPath[Side::RIGHT]}} };
+		std::vector<XrActionSuggestedBinding> bindings{
+			{inputState.poseAction, posePath[Side::LEFT]},
+			{inputState.poseAction, posePath[Side::RIGHT]}
+		};
+		XrInteractionProfileSuggestedBinding suggestedBindings{ XR_TYPE_INTERACTION_PROFILE_SUGGESTED_BINDING };
+		suggestedBindings.interactionProfile = indexControllerInteractionProfilePath;
+		suggestedBindings.suggestedBindings = bindings.data();
+		suggestedBindings.countSuggestedBindings = (uint32_t)bindings.size();
+		xrSuggestInteractionProfileBindings(m_instance, &suggestedBindings);
+	}
+
 	XrActionSpaceCreateInfo actionSpaceInfo{ XR_TYPE_ACTION_SPACE_CREATE_INFO };
 	actionSpaceInfo.action = inputState.poseAction;
 	actionSpaceInfo.poseInActionSpace.orientation.w = 1.f;
@@ -529,3 +553,4 @@ bool XRAPI::RenderLayer(XrTime predictedDisplayTime, std::vector<XrCompositionLa
 	layer.views = projectionLayerViews.data();
 	return true;
 }
+#endif

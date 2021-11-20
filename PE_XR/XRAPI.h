@@ -1,4 +1,5 @@
 #pragma once
+#ifndef __EMSCRIPTEN__
 #include "IXRAPI.h"
 #include "IPlatform.h"
 #include "IGraphicsAPI.h"
@@ -95,3 +96,4 @@ private:
     IXRGraphicsPlugin* graphicsPlugin;
 };
 
+#endif
