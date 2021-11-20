@@ -359,3 +359,6 @@ PortableEngine/*.json
 
 # Include the 3D  models
 !Assets/Models/*.obj
+
+# Include vr.js, it's getting pretty important
+!PortableEngine/cmakebuild/vr.js
