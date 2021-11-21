@@ -106,37 +106,3 @@ Transform::Transform()
 //	return glm::vec3(localFwd.x, localFwd.y, localFwd.z);*/
 //
 //}
-
-Transform& Transform::operator=(Transform&& other)
-{
-	if (this != &other)
-	{
-		this->worldMatrix = other.worldMatrix;
-		this->position = other.position;
-		this->rotation = other.rotation;
-		this->scale = other.scale;
-		this->orientation = other.orientation;
-	}
-	return *this;
-}
-
-Transform& Transform::operator=(Transform& other)
-{
-	*this = std::move(other);
-	return *this;
-}
-
-Transform::Transform(Transform&& other) noexcept
-{
-	*this = std::move(other);
-}
-
-Transform::Transform(Transform& other)
-{
-	*this = std::move(other);
-}
-
-bool Transform::operator==(Transform& other)
-{
-	return this->worldMatrix == other.worldMatrix;
-}
