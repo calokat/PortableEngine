@@ -42,6 +42,8 @@
 #include "WindowHeader.h"
 #ifndef __EMSCRIPTEN__
 #include "../PE_XR/XRAPI.h"
+#else
+#include "../PE_XR/WebXRAPI.h"
 #endif
 #include "../PE_XR/MockXRAPI.h"
 #include <thread>
@@ -194,7 +196,7 @@ entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> s
 		Name& nameComp = registry.emplace<Name>(newMeshEntity);
 		nameComp = { scene.data.m.path };
 	}
-	else if (scene.data.m.path != "")
+	else if (!scene.isEmpty)
 	{
 		Mesh& newMesh = registry.emplace<Mesh>(newMeshEntity, scene.data.m);
 		TransformSystem::CalculateWorldMatrix(&scene.data.t);
@@ -520,7 +522,12 @@ int main(int argc, char* argv[])
 	}
 	//xr = new XRAPI(plat, graph, window);
 	IXRAPI* xr = nullptr;
+#ifdef _WIN64
 	xr = new XRAPI(plat, graph, window, options);
+#else
+	xr = new WebXRAPI(graph, renderSystem);
+#endif
+	//xr = new WebXRAPI(graph, renderSystem);
 	plat->GetAssetManager()->LoadDefaultThumbnails(renderSystem);
 	plat->GetAssetManager()->LoadAssetsFromCurrentDirectory(renderSystem);
 	//entt::entity assetImageEntity = registry.create();
@@ -537,18 +544,18 @@ int main(int argc, char* argv[])
 	registry.emplace<Relationship>(root);
 	GizmoSystem::Select(root);
 	entt::entity duoRoot = MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), root);
-	entt::entity subDuo = MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), duoRoot);
+	//entt::entity subDuo = MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), duoRoot);
 
 	
-	Tree<MeshCreateInfo> handMeshInfo = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cube.obj").c_str());
+	Tree<MeshCreateInfo> handMeshInfo = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/index_controller_edit.stl").c_str());
 
 	entt::entity leftXRHand = MakeMesh(handMeshInfo, registry, renderSystem, plat->GetAssetManager(), root);
 	entt::entity rightXRHand = MakeMesh(handMeshInfo, registry, renderSystem, plat->GetAssetManager(), root);
 
 	Transform& leftXRHandTransform = registry.get<Transform>(leftXRHand);
 	Transform& rightXRHandTransform = registry.get<Transform>(rightXRHand);
-	leftXRHandTransform.scale = { .1f, .1f, .1f };
-	rightXRHandTransform.scale = { .1f, .1f, .1f };
+	leftXRHandTransform.scale = { -1, 1, 1 };
+	rightXRHandTransform.scale = { 1, 1, 1 };
 
 	registry.emplace<XRDevice>(leftXRHand, XRDeviceType::LeftHand);
 	registry.emplace<XRDevice>(rightXRHand, XRDeviceType::RightHand);
