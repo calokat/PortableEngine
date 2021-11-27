@@ -132,8 +132,8 @@ function drawFrame(time, frame) {
             let offset = viewMatrices + SIZE_OF_WEBXR_VIEW * (view.eye === 'left' ? 0 : 1)
             offset = nativizeMatrix(offset, view.transform.inverse.matrix)
             offset = nativizeMatrix(offset, view.projectionMatrix)
-            web_xr_render_scene()
         }
+        web_xr_render_scene()
 
         let leftInputData = Module._malloc(7 * 4)
         let rightInputData = Module._malloc(7 * 4)
