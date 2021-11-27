@@ -547,7 +547,7 @@ int main(int argc, char* argv[])
 	//entt::entity subDuo = MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), duoRoot);
 
 	
-	Tree<MeshCreateInfo> handMeshInfo = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/index_controller_edit.stl").c_str());
+	Tree<MeshCreateInfo> handMeshInfo = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/index_controller.stl").c_str());
 
 	entt::entity leftXRHand = MakeMesh(handMeshInfo, registry, renderSystem, plat->GetAssetManager(), root);
 	entt::entity rightXRHand = MakeMesh(handMeshInfo, registry, renderSystem, plat->GetAssetManager(), root);
