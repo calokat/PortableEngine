@@ -1,2 +1,2 @@
 REM emcc Main.cpp -I../../../common/glm/glm -I../../../Github/entt/src/entt
-%~dp0\..\..\emsdk\emsdk_env && %~dp0\..\..\emsdk\upstream\emscripten\emcmake cmake -S ./ -B ./cmakebuild && %~dp0\..\..\emsdk\upstream\emscripten\emcmake cmake build ./cmakebuild && %~dp0\..\..\emsdk\upstream\emscripten\emmake make -C ./cmakebuild
+%~dp0\..\..\emsdk\emsdk_env && %~dp0\..\..\emsdk\upstream\emscripten\emcmake cmake -S ./ -B ./out && %~dp0\..\..\emsdk\upstream\emscripten\emcmake cmake build ./out && %~dp0\..\..\emsdk\upstream\emscripten\emmake make -C ./out
