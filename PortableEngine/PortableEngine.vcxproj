@@ -161,8 +161,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui\backends\imgui_impl_win32.cpp" />
-    <ClCompile Include="EmscriptenInputSystem.cpp" />
-    <ClCompile Include="EmscriptenPlatform.cpp" />
     <ClCompile Include="imgui_impl_emscripten.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="SerializationSystem.cpp" />
@@ -171,8 +169,6 @@
     <ClCompile Include="WindowsPlatform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EmscriptenInputSystem.h" />
-    <ClInclude Include="EmscriptenPlatform.h" />
     <ClInclude Include="imgui_impl_emscripten.h" />
     <ClInclude Include="misc_components.h" />
     <ClInclude Include="SerializationSystem.h" />
