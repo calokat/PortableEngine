@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PE_DX11", "PE_DX11\PE_DX11.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PE_XR", "PE_XR\PE_XR.vcxitems", "{6873A98B-FBC2-43F4-8298-F09AE698A335}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PortableEngine_Web", "PortableEngine_Web\PortableEngine_Web.vcxproj", "{11AD3775-E889-4A38-BF41-B733EF90BC1B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		PE_DX11\PE_DX11.vcxitems*{546c62a3-45b2-4453-aa32-27ac768f223f}*SharedItemsImports = 9
@@ -39,6 +41,14 @@ Global
 		{D6A26970-43BD-4D88-ADE2-FF6F2BE93969}.Release|x64.Build.0 = Release|x64
 		{D6A26970-43BD-4D88-ADE2-FF6F2BE93969}.Release|x86.ActiveCfg = Release|Win32
 		{D6A26970-43BD-4D88-ADE2-FF6F2BE93969}.Release|x86.Build.0 = Release|Win32
+		{11AD3775-E889-4A38-BF41-B733EF90BC1B}.Debug|x64.ActiveCfg = Debug|x64
+		{11AD3775-E889-4A38-BF41-B733EF90BC1B}.Debug|x64.Build.0 = Debug|x64
+		{11AD3775-E889-4A38-BF41-B733EF90BC1B}.Debug|x86.ActiveCfg = Debug|Win32
+		{11AD3775-E889-4A38-BF41-B733EF90BC1B}.Debug|x86.Build.0 = Debug|Win32
+		{11AD3775-E889-4A38-BF41-B733EF90BC1B}.Release|x64.ActiveCfg = Release|x64
+		{11AD3775-E889-4A38-BF41-B733EF90BC1B}.Release|x64.Build.0 = Release|x64
+		{11AD3775-E889-4A38-BF41-B733EF90BC1B}.Release|x86.ActiveCfg = Release|Win32
+		{11AD3775-E889-4A38-BF41-B733EF90BC1B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
