@@ -64,7 +64,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <NMakeBuildCommandLine>build_web.bat</NMakeBuildCommandLine>
-    <NMakePreprocessorDefinitions>_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakePreprocessorDefinitions>_DEBUG;__EMSCRIPTEN__;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>C:\Users\Caleb\Documents\GitHub\PortableEngine\PE_OpenGL;C:\Users\Caleb\Documents\GitHub\PortableEngine\PE_XR;C:\Users\Caleb\Documents\GitHub\PortableEngine\PE_Core;C:\Users\Caleb\Documents\GitHub\entt\src\entt;C:\Users\Caleb\Documents\GitHub\imgui;C:\Users\Caleb\Documents\common\glm;C:\Users\Caleb\Documents\GitHub\emsdk\upstream\emscripten\system\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <NMakeBuildCommandLine>./create.bat</NMakeBuildCommandLine>
@@ -84,6 +85,7 @@
     <ClCompile Include="EmscriptenAssetManager.cpp" />
     <ClCompile Include="EmscriptenInputSystem.cpp" />
     <ClCompile Include="EmscriptenPlatform.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EmscriptenAssetManager.h" />
