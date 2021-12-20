@@ -1,9 +1,7 @@
 #ifdef __EMSCRIPTEN__
 #include "EmscriptenInputSystem.h"
 #include <iostream>
-#include <imgui.h>
 #include <SDL/SDL.h>
-#include <backends/imgui_impl_sdl.h>
 #include <emscripten.h>
 InputData EmscriptenInputSystem::current;
 InputData EmscriptenInputSystem::previous;
@@ -63,148 +61,158 @@ void EmscriptenInputSystem::GetKeyPressed()
 	SDL_Event event;
     while (SDL_PollEvent(&event))
     {
-        ImGui_ImplSDL2_ProcessEvent(&event);
         // Capture events here, based on io.WantCaptureMouse and io.WantCaptureKeyboard
 		//printf("Key is %i and KeyCode is %i\n", event.key.keysym.scancode, sdlKeyMap[event.key.keysym.scancode]);
 		//current.keys[sdlKeyMap[event.key.keysym.scancode]] = (event.type == SDL_KEYDOWN);
-
-		KeyboardCode keyCode;
-		switch (event.key.keysym.sym)
+		if (event.type == SDL_EventType::SDL_KEYDOWN || event.type == SDL_EventType::SDL_KEYUP)
 		{
-		case SDL_SCANCODE_0:
-			keyCode = KeyboardCode::Num0;
-			break;
-		case SDL_SCANCODE_1:
-			keyCode = KeyboardCode::Num1;
-			break;
-		case SDL_SCANCODE_2:
-			keyCode = KeyboardCode::Num2;
-			break;
-		case SDL_SCANCODE_3:
-			keyCode = KeyboardCode::Num3;
-			break;
-		case SDL_SCANCODE_4:
-			keyCode = KeyboardCode::Num4;
-			break;
-		case SDL_SCANCODE_5:
-			keyCode = KeyboardCode::Num5;
-			break;
-		case SDL_SCANCODE_6:
-			keyCode = KeyboardCode::Num6;
-			break;
-		case SDL_SCANCODE_7:
-			keyCode = KeyboardCode::Num7;
-			break;
-		case SDL_SCANCODE_8:
-			keyCode = KeyboardCode::Num8;
-			break;
-		case SDL_SCANCODE_9:
-			keyCode = KeyboardCode::Num9;
-			break;
-		case SDL_SCANCODE_A:
-			keyCode = KeyboardCode::A;
-			break;
-		case SDL_SCANCODE_B:
-			keyCode = KeyboardCode::B;
-			break;
-		case SDL_SCANCODE_C:
-			keyCode = KeyboardCode::C;
-			break;
-		case SDL_SCANCODE_D:
-			keyCode = KeyboardCode::D;
-			break;
-		case SDL_SCANCODE_E:
-			keyCode = KeyboardCode::E;
-			break;
-		case SDL_SCANCODE_F:
-			keyCode = KeyboardCode::F;
-			break;
-		case SDL_SCANCODE_G:
-			keyCode = KeyboardCode::G;
-			break;
-		case SDL_SCANCODE_H:
-			keyCode = KeyboardCode::H;
-			break;
-		case SDL_SCANCODE_I:
-			keyCode = KeyboardCode::I;
-			break;
-		case SDL_SCANCODE_J:
-			keyCode = KeyboardCode::J;
-			break;
-		case SDL_SCANCODE_K:
-			keyCode = KeyboardCode::K;
-			break;
-		case SDL_SCANCODE_L:
-			keyCode = KeyboardCode::L;
-			break;
-		case SDL_SCANCODE_M:
-			keyCode = KeyboardCode::M;
-			break;
-		case SDL_SCANCODE_N:
-			keyCode = KeyboardCode::N;
-			break;
-		case SDL_SCANCODE_O:
-			keyCode = KeyboardCode::O;
-			break;
-		case SDL_SCANCODE_P:
-			keyCode = KeyboardCode::P;
-			break;
-		case SDL_SCANCODE_Q:
-			keyCode = KeyboardCode::Q;
-			break;
-		case SDL_SCANCODE_R:
-			keyCode = KeyboardCode::R;
-			break;
-		case SDL_SCANCODE_S:
-			keyCode = KeyboardCode::S;
-			break;
-		case SDL_SCANCODE_T:
-			keyCode = KeyboardCode::T;
-			break;
-		case SDL_SCANCODE_U:
-			keyCode = KeyboardCode::U;
-			break;
-		case SDL_SCANCODE_V:
-			keyCode = KeyboardCode::V;
-			break;
-		case SDL_SCANCODE_W:
-			keyCode = KeyboardCode::W;
-			break;
-		case SDL_SCANCODE_X:
-			keyCode = KeyboardCode::X;
-			break;
-		case SDL_SCANCODE_Y:
-			keyCode = KeyboardCode::Y;
-			break;
-		case SDL_SCANCODE_Z:
-			keyCode = KeyboardCode::Z;
-			break;
-		default:
-			keyCode = KeyboardCode::N;
+			KeyboardCode keyCode;
+			switch (event.key.keysym.sym)
+			{
+			case SDL_SCANCODE_0:
+				keyCode = KeyboardCode::Num0;
+				break;
+			case SDL_SCANCODE_1:
+				keyCode = KeyboardCode::Num1;
+				break;
+			case SDL_SCANCODE_2:
+				keyCode = KeyboardCode::Num2;
+				break;
+			case SDL_SCANCODE_3:
+				keyCode = KeyboardCode::Num3;
+				break;
+			case SDL_SCANCODE_4:
+				keyCode = KeyboardCode::Num4;
+				break;
+			case SDL_SCANCODE_5:
+				keyCode = KeyboardCode::Num5;
+				break;
+			case SDL_SCANCODE_6:
+				keyCode = KeyboardCode::Num6;
+				break;
+			case SDL_SCANCODE_7:
+				keyCode = KeyboardCode::Num7;
+				break;
+			case SDL_SCANCODE_8:
+				keyCode = KeyboardCode::Num8;
+				break;
+			case SDL_SCANCODE_9:
+				keyCode = KeyboardCode::Num9;
+				break;
+			case SDL_SCANCODE_A:
+				keyCode = KeyboardCode::A;
+				break;
+			case SDL_SCANCODE_B:
+				keyCode = KeyboardCode::B;
+				break;
+			case SDL_SCANCODE_C:
+				keyCode = KeyboardCode::C;
+				break;
+			case SDL_SCANCODE_D:
+				keyCode = KeyboardCode::D;
+				break;
+			case SDL_SCANCODE_E:
+				keyCode = KeyboardCode::E;
+				break;
+			case SDL_SCANCODE_F:
+				keyCode = KeyboardCode::F;
+				break;
+			case SDL_SCANCODE_G:
+				keyCode = KeyboardCode::G;
+				break;
+			case SDL_SCANCODE_H:
+				keyCode = KeyboardCode::H;
+				break;
+			case SDL_SCANCODE_I:
+				keyCode = KeyboardCode::I;
+				break;
+			case SDL_SCANCODE_J:
+				keyCode = KeyboardCode::J;
+				break;
+			case SDL_SCANCODE_K:
+				keyCode = KeyboardCode::K;
+				break;
+			case SDL_SCANCODE_L:
+				keyCode = KeyboardCode::L;
+				break;
+			case SDL_SCANCODE_M:
+				keyCode = KeyboardCode::M;
+				break;
+			case SDL_SCANCODE_N:
+				keyCode = KeyboardCode::N;
+				break;
+			case SDL_SCANCODE_O:
+				keyCode = KeyboardCode::O;
+				break;
+			case SDL_SCANCODE_P:
+				keyCode = KeyboardCode::P;
+				break;
+			case SDL_SCANCODE_Q:
+				keyCode = KeyboardCode::Q;
+				break;
+			case SDL_SCANCODE_R:
+				keyCode = KeyboardCode::R;
+				break;
+			case SDL_SCANCODE_S:
+				keyCode = KeyboardCode::S;
+				break;
+			case SDL_SCANCODE_T:
+				keyCode = KeyboardCode::T;
+				break;
+			case SDL_SCANCODE_U:
+				keyCode = KeyboardCode::U;
+				break;
+			case SDL_SCANCODE_V:
+				keyCode = KeyboardCode::V;
+				break;
+			case SDL_SCANCODE_W:
+				keyCode = KeyboardCode::W;
+				break;
+			case SDL_SCANCODE_X:
+				keyCode = KeyboardCode::X;
+				break;
+			case SDL_SCANCODE_Y:
+				keyCode = KeyboardCode::Y;
+				break;
+			case SDL_SCANCODE_Z:
+				keyCode = KeyboardCode::Z;
+				break;
+			default:
+				keyCode = KeyboardCode::N;
+			}
+			current.keys[keyCode] = event.type == SDL_KEYDOWN;
+			current.keys[KeyboardCode::LCtrl] = current.keys[KeyboardCode::RCtrl] = SDL_GetModState() & KMOD_CTRL;
 		}
-		current.keys[keyCode] = event.type == SDL_KEYDOWN;
-		current.keys[KeyboardCode::LCtrl] = current.keys[KeyboardCode::RCtrl] = SDL_GetModState() & KMOD_CTRL;
+		else if (event.type == SDL_MOUSEBUTTONDOWN)
+		{
+			if (event.button.button == 1)
+			{
+				current.mouseButtons[MouseButton::Left] = true;
+			}
+			else if (event.button.button == 3)
+			{
+				current.mouseButtons[MouseButton::Right] = true;
+			}
+		}
+		else if (event.type == SDL_MOUSEBUTTONUP)
+		{
+			if (event.button.button == 1)
+			{
+				current.mouseButtons[MouseButton::Left] = false;
+			}
+			else if (event.button.button == 3)
+			{
+				current.mouseButtons[MouseButton::Right] = false;
+			}
+		}
+		glm::ivec2 mousePos = {};
+		SDL_GetMouseState(&mousePos.x, &mousePos.y);
+		current.cursorPos = mousePos;
     }
-	ImGuiIO& io = ImGui::GetIO();
-	current.mouseButtons[MouseButton::Left] = io.MouseDown[0];
-	current.mouseButtons[MouseButton::Right] = io.MouseDown[1];
-	//current.cursorPos = {io.MousePos.x, io.MousePos.y};
-
-	if (current.keys[KeyboardCode::C] && current.keys[KeyboardCode::LCtrl])
-	{
-		browserCopy(io.GetClipboardTextFn(NULL));
-	}
-	if (current.keys[KeyboardCode::V] && current.keys[KeyboardCode::LCtrl])
-	{
-		const char* cbText = browserPaste();
-		SDL_SetClipboardText(cbText);
-		printf("%s\n", SDL_GetClipboardText());
-		delete cbText;
-	}
 	 int mx, my;
 	 SDL_GetMouseState(&mx, &my);
-	 current.cursorPos.x = (float)mx; current.cursorPos.y = (float)my;
-	//current.keys[KeyboardCode::W] = true;
+	 current.cursorPos.x = (float)mx;
+	 current.cursorPos.y = (float)my;
 
 }
 bool EmscriptenInputSystem::IsKeyPressed(KeyboardCode kc)
@@ -258,7 +266,8 @@ EM_BOOL EmscriptenInputSystem::MouseCallback(int eventType, const EmscriptenMous
 {
 	// previous = current;
 	// current.cursorPos = glm::vec2(mouseEvent->targetX, mouseEvent->targetY);
-	deltaCursorPos = glm::vec2(mouseEvent->movementX, mouseEvent->movementY);
+
+	deltaCursorPos = current.cursorPos - previous.cursorPos;
 	return false;
 }
 EM_BOOL EmscriptenInputSystem::MouseDownCallback(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData)
@@ -280,13 +289,6 @@ EM_BOOL EmscriptenInputSystem::MouseUpCallback(int eventType, const EmscriptenMo
 }
 EM_BOOL EmscriptenInputSystem::KeyDownCallback(int eventType, const EmscriptenKeyboardEvent* kbEvent, void* userData)
 {
-	ImGuiIO& io = ImGui::GetIO();
-	// for now, only add input characters if they are printable(i.e. not whitespace or special characters)
-	// special characters have key strings of more than one character
-	if (strlen(kbEvent->key) == 1)
-	{
-		io.AddInputCharacterUTF16((unsigned short)kbEvent->key[0]);
-	}
 	current.keys[KeyboardCode::A] = strcmp(kbEvent->key, "a") == 0;
 	current.keys[KeyboardCode::B] = strcmp(kbEvent->key, "b") == 0;
 	current.keys[KeyboardCode::C] = strcmp(kbEvent->key, "c") == 0;
