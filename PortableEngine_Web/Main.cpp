@@ -70,7 +70,6 @@ int main(int argc, char* argv[])
 	// (Try to) Setup IMGUI	
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO();
 	ImGui::StyleColorsDark();
 
 	options.platform = PE::Platform::Web;

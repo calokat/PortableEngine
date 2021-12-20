@@ -86,7 +86,6 @@ int main(int argc, char* argv[])
 	// (Try to) Setup IMGUI	
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO();
 	ImGui::StyleColorsDark();
 
 
@@ -168,7 +167,8 @@ int main(int argc, char* argv[])
 	//xr = new XRAPI(plat, graph, window);
 	IXRAPI* xr = nullptr;
 #ifdef _WIN64
-	xr = new XRAPI(plat, graph, window, options);
+	//xr = new XRAPI(plat, graph, window, options);
+	xr = new MockXRAPI();
 #else
 	xr = new WebXRAPI(graph, renderSystem);
 #endif
