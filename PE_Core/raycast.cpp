@@ -29,22 +29,20 @@ void RaycastAgainstAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, entt::basic_view<
 	}
 }
 
-void MakeRayFromCamera(entt::basic_view<entt::entity, entt::exclude_t<>, Camera, Transform> cameras, entt::basic_view<entt::entity, entt::exclude_t<>, AABB> aabbs, GameWindow* window)
+void MakeRayFromCamera(entt::basic_view<entt::entity, entt::exclude_t<>, Camera, Transform> cameras, entt::basic_view<entt::entity, entt::exclude_t<>, AABB> aabbs, GameWindow* window, glm::vec2 screenCoordinates)
 {
 	//auto camView = registry.view<Camera>();
 	
 	auto [camera, camTransform] = cameras.get<Camera, Transform>(cameras.front());
-	ImGuiIO& io = ImGui::GetIO();
-	ImVec2 mousePos = io.MousePos;
 	// Blessed be this code taken from https://gamedev.stackexchange.com/questions/157674/simple-mouseray-picking-in-opengl
 	glm::vec3 mouse_world_nearplane = glm::unProject(
-		glm::vec3(mousePos.x, window->height - mousePos.y, 0.0f),
+		glm::vec3(screenCoordinates.x, window->height - screenCoordinates.y, 0.0f),
 		camera.view, //view matrix
 		camera.projection,
 		glm::ivec4(0, 0, window->width, window->height));
 
 	glm::vec3 mouse_world_farplane = glm::unProject(
-		glm::vec3(mousePos.x, window->height - mousePos.y, 1.0f),
+		glm::vec3(screenCoordinates.x, window->height - screenCoordinates.y, 1.0f),
 		camera.view, //view matrix
 		camera.projection,
 		glm::ivec4(0, 0, window->width, window->height));

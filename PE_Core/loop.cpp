@@ -112,7 +112,7 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 		// TODO: Put the picking code in its own system
 	if (plat->GetInputSystem()->WasMouseButtonClicked(MouseButton::Left))
 	{
-		MakeRayFromCamera(registry.view<Camera, Transform>(), registry.view<AABB>(), window);
+		MakeRayFromCamera(registry.view<Camera, Transform>(), registry.view<AABB>(), window, plat->GetInputSystem()->GetCursorPosition());
 	}
 
 	auto entityView = registry.view<Name, Relationship, Transform>();
