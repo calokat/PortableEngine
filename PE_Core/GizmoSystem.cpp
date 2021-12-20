@@ -2,14 +2,13 @@
 
 std::vector<entt::entity> GizmoSystem::selected;
 ImGuizmo::OPERATION GizmoSystem::op;
-void GizmoSystem::DrawGizmo(Camera camera, entt::basic_view<entt::entity, entt::exclude_t<>, Transform> transformView)
+void GizmoSystem::DrawGizmo(Camera camera, entt::basic_view<entt::entity, entt::exclude_t<>, Transform> transformView, const GameWindow& gameWindow)
 {
 	if (selected.empty())
 	{
 		return;
 	}
-	ImGuiIO& io = ImGui::GetIO();
-	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+	ImGuizmo::SetRect(0, 0, gameWindow.width, gameWindow.height);
 	// assume only one thing can be selected at this time
 	for (auto entity : transformView)
 	{
