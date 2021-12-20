@@ -127,7 +127,7 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 
 	//assetWindow.Render(plat->GetAssetManager(), renderSystem);
 
-	//graph->ClearScreen();
+	graph->ClearScreen();
 	auto camEntityView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camEntityView[0]);
 	//ImGui::Begin("Camera Rotation");
@@ -147,7 +147,7 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 		//std::this_thread::sleep_for(std::chrono::milliseconds(250));
 	}
 	xr->PollEvents();
-	//graph->BindToScreen();
+	graph->BindToScreen();
 	// Note: I do not know why, but when I use CalculateProjectionMatrixLH the view on screen is backwards, even though
 	// I use CalculateProjectionMatrixLH for almost everything
 	//CameraSystem::CalculateProjectionMatrixRH(camera, (float)window->width / window->height);
@@ -159,7 +159,7 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 #endif
 	if (options.graphicsAPI == PE::GraphicsAPI::OpenGL)
 	{
-		//DrawIteration<GLRenderer>(camera, selected, registry, renderSystem);
+		DrawIteration<GLRenderer>(camera, selected, registry, renderSystem);
 	}
 	auto transformView = registry.view<Transform>();
 	//GizmoSystem::UpdateGizmo(plat->GetInputSystem());
