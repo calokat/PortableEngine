@@ -11,7 +11,7 @@ void WindowsInputSystem::GetKeyPressed()
 
 	POINT mousePos = {};
 	GetCursorPos(&mousePos);
-	//ScreenToClient(hwnd, &mousePos);
+	ScreenToClient(hwnd, &mousePos);
 	current.cursorPos = glm::vec2(mousePos.x, mousePos.y);
 
 	current.keys[KeyboardCode::A] = GetAsyncKeyState('A') & 0x8000;
@@ -62,42 +62,6 @@ void WindowsInputSystem::GetKeyPressed()
 	current.mouseButtons[MouseButton::Left] = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
 	current.mouseButtons[MouseButton::Middle] = GetAsyncKeyState(VK_MBUTTON) & 0x8000;
 	current.mouseButtons[MouseButton::Right] = GetAsyncKeyState(VK_RBUTTON) & 0x8000;
-	if (current.mouseButtons[MouseButton::Right])
-	{
-		SetCursor(NULL);
-		RECT winRect;
-		GetWindowRect(hwnd, &winRect);
-
-		if (current.cursorPos.x > winRect.right)
-		{
-			SetCursorPos(winRect.left, mousePos.y);
-			previous.cursorPos = { winRect.left, mousePos.y };
-			current.cursorPos = { winRect.left, mousePos.y };
-		}
-		if (current.cursorPos.x < winRect.left)
-		{
-			SetCursorPos(winRect.right, mousePos.y);
-			previous.cursorPos = { winRect.right, mousePos.y };
-			current.cursorPos = { winRect.right, mousePos.y };
-		}
-		if (current.cursorPos.y > winRect.bottom)
-		{
-			SetCursorPos(mousePos.x, winRect.top);
-			previous.cursorPos = { mousePos.x, winRect.top };
-			current.cursorPos = { mousePos.x, winRect.top };
-		}
-		if (current.cursorPos.y < winRect.top)
-		{
-			SetCursorPos(mousePos.x, winRect.bottom);
-			previous.cursorPos = { mousePos.x, winRect.bottom };
-			current.cursorPos = { mousePos.x, winRect.bottom };
-		}
-
-	}
-	else if (previous.mouseButtons[MouseButton::Right])
-	{
-		SetCursor(cursor);
-	}
 }
 
 glm::vec2 WindowsInputSystem::GetCursorPosition()
