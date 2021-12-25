@@ -30,12 +30,6 @@ void DrawIteration(Camera& camera, entt::entity selected, entt::registry& regist
 		renderSystem->BindRenderer(&renderer);
 		renderSystem->UpdateRenderer(&renderer, meshTransform, camera);
 		renderSystem->Draw(&renderer);
-		if (selected == renderable)
-		{
-			T& r = renderableView.template get<T>(renderable);
-			renderSystem->BindRenderer(&r);
-			renderSystem->DrawWireframe(&r);
-		}
 	}
 }
 
