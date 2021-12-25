@@ -20,60 +20,50 @@ IRenderer& GLRenderSystem::CreateRenderer(entt::registry& reg, entt::entity& e)
 void GLRenderSystem::Load(IRenderer* renderer, Camera& camera)
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
-	glGenVertexArrays(1, &glRenderer->vao);
-	glBindVertexArray(glRenderer->vao);
-	glGenBuffers(1, &glRenderer->vbo);
-	glGenBuffers(1, &glRenderer->ibo);
-	glBindBuffer(GL_ARRAY_BUFFER, glRenderer->vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glRenderer->ibo);
-	glRenderer->program = glCreateProgram();
-	glAttachShader(glRenderer->program, glRenderer->vertex.GetId());
-	glAttachShader(glRenderer->program, glRenderer->pixel.GetId());
-	glLinkProgram(glRenderer->program);
-	glUseProgram(glRenderer->program);
-	glRenderer->projLoc = glGetUniformLocation(glRenderer->program, "projection");
-	glRenderer->viewLoc = glGetUniformLocation(glRenderer->program, "view");
-	glRenderer->modelLoc = glGetUniformLocation(glRenderer->program, "model");
-	glRenderer->colorLoc = glGetUniformLocation(glRenderer->program, "in_color");
+	glGenVertexArrays(1, &glRenderer->shaderProgram.vao.u);
+	glBindVertexArray(glRenderer->shaderProgram.vao.u);
+	glGenBuffers(1, &glRenderer->shaderProgram.vbo.u);
+	glGenBuffers(1, &glRenderer->shaderProgram.ibo.u);
+	glBindBuffer(GL_ARRAY_BUFFER, glRenderer->shaderProgram.vbo.u);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glRenderer->shaderProgram.ibo.u);
+	glRenderer->shaderProgram.programID = glCreateProgram();
+	glAttachShader(glRenderer->shaderProgram.programID, glRenderer->shaderProgram.vertex.GetId());
+	glAttachShader(glRenderer->shaderProgram.programID, glRenderer->shaderProgram.pixel.GetId());
+	glLinkProgram(glRenderer->shaderProgram.programID);
+	glUseProgram(glRenderer->shaderProgram.programID);
+	glRenderer->shaderProgram.uniforms["projection"].value.s = glGetUniformLocation(glRenderer->shaderProgram.programID, "projection");
+	glRenderer->shaderProgram.uniforms["view"].value.s = glGetUniformLocation(glRenderer->shaderProgram.programID, "view");
+	glRenderer->shaderProgram.uniforms["model"].value.s = glGetUniformLocation(glRenderer->shaderProgram.programID, "model");
+	glRenderer->shaderProgram.uniforms["in_color"].value.s = glGetUniformLocation(glRenderer->shaderProgram.programID, "in_color");
+	glRenderer->shaderProgram.attributes["in_position"].value.u = glGetAttribLocation(glRenderer->shaderProgram.programID, "in_position");
+	glRenderer->shaderProgram.attributes["aTexCoord"].value.u = glGetAttribLocation(glRenderer->shaderProgram.programID, "aTexCoord");
 	glm::mat4 model(1.0f);
-	glUniformMatrix4fv(glRenderer->modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-	glUniformMatrix4fv(glRenderer->viewLoc, 1, GL_FALSE, glm::value_ptr(camera.view));
-	glUniformMatrix4fv(glRenderer->projLoc, 1, GL_FALSE, glm::value_ptr(camera.projection));
-	glUniform4f(glRenderer->colorLoc, glRenderer->vertexColor.x, glRenderer->vertexColor.y, glRenderer->vertexColor.z, glRenderer->vertexColor.w);
+	glUniformMatrix4fv(glRenderer->shaderProgram.uniforms["model"].value.s, 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(glRenderer->shaderProgram.uniforms["view"].value.s, 1, GL_FALSE, glm::value_ptr(camera.view));
+	glUniformMatrix4fv(glRenderer->shaderProgram.uniforms["projection"].value.s, 1, GL_FALSE, glm::value_ptr(camera.projection));
+	glUniform4f(glRenderer->shaderProgram.uniforms["in_color"].value.s, glRenderer->vertexColor.x, glRenderer->vertexColor.y, glRenderer->vertexColor.z, glRenderer->vertexColor.w);
+
+	glEnableVertexAttribArray(glRenderer->shaderProgram.attributes["in_position"].value.u);
+	SetupAttribute(glRenderer->shaderProgram.attributes["in_position"].value.u, 3, GL_FLOAT, Vertex, Position);
+	glEnableVertexAttribArray(glRenderer->shaderProgram.attributes["aTexCoord"].value.u);
+	SetupAttribute(glRenderer->shaderProgram.attributes["aTexCoord"].value.u, 2, GL_FLOAT, Vertex, UV);
 }
 
 void GLRenderSystem::BindRenderer(IRenderer* renderer)
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
-	glBindVertexArray(glRenderer->vao);
-	glBindBuffer(GL_ARRAY_BUFFER, glRenderer->vbo);
-	GLint posAttrib = glGetAttribLocation(glRenderer->program, "in_position");
-	glEnableVertexAttribArray(posAttrib);
-	SetupAttribute(posAttrib, 3, GL_FLOAT, Vertex, Position);
-
-	GLint uvAttrib = glGetAttribLocation(glRenderer->program, "aTexCoord");
-	glEnableVertexAttribArray(uvAttrib);
-	SetupAttribute(uvAttrib, 2, GL_FLOAT, Vertex, UV);
-
-	GLint vertColorAttrib = glGetUniformLocation(glRenderer->program, "in_color");
+	glBindVertexArray(glRenderer->shaderProgram.vao.u);
 }
 
 void GLRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
-	glBindVertexArray(glRenderer->vao);
+	glBindVertexArray(glRenderer->shaderProgram.vao.u);
 	glBufferData(GL_ARRAY_BUFFER, mesh.rawVertices.size() * sizeof(Vertex), mesh.rawVertices.data(), GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.rawIndices.size() * sizeof(unsigned int), mesh.rawIndices.data(), GL_STATIC_DRAW);
-	GLint posAttrib = glGetAttribLocation(glRenderer->program, "in_position");
+	GLint posAttrib = glGetAttribLocation(glRenderer->shaderProgram.programID, "in_position");
 	glEnableVertexAttribArray(posAttrib);
 	SetupAttribute(posAttrib, 3, GL_FLOAT, Vertex, Position);
-
-	GLint uvAttrib = glGetAttribLocation(glRenderer->program, "aTexCoord");
-	glEnableVertexAttribArray(uvAttrib);
-	SetupAttribute(uvAttrib, 2, GL_FLOAT, Vertex, UV);
-
-	GLint vertColorAttrib = glGetUniformLocation(glRenderer->program, "in_color");
-
 	glRenderer->numVertices = mesh.rawVertices.size();
 	glRenderer->numIndices = mesh.rawIndices.size();
 }
@@ -81,7 +71,7 @@ void GLRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
 void GLRenderSystem::Draw(IRenderer* renderer)
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
-	glBindVertexArray(glRenderer->vao);
+	glBindVertexArray(glRenderer->shaderProgram.vao.u);
 	BindTexture(*glRenderer);
 	if (glRenderer->numVertices == 2)
 	{
@@ -95,28 +85,21 @@ void GLRenderSystem::Draw(IRenderer* renderer)
 
 void GLRenderSystem::DrawWireframe(IRenderer* renderer)
 {
-	GLRenderer* glRenderer = (GLRenderer*)renderer;
-	glBindVertexArray(glRenderer->vao);
-	glUseProgram(glRenderer->program);
-	glUniform4f(glRenderer->colorLoc, 1, 1, 1, 1);
-	glDrawArrays(GL_LINES, 0, glRenderer->numVertices);
 }
 
 void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera)
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
-	glUseProgram(glRenderer->program);
-	glUniformMatrix4fv(glRenderer->viewLoc, 1, GL_FALSE, glm::value_ptr(camera.view));
-	glUniformMatrix4fv(glRenderer->projLoc, 1, GL_FALSE, glm::value_ptr(camera.projection));
-	glUniformMatrix4fv(glRenderer->modelLoc, 1, GL_FALSE, glm::value_ptr(meshTransform.worldMatrix));
-	glUniform4f(glRenderer->colorLoc, glRenderer->vertexColor.x, glRenderer->vertexColor.y, glRenderer->vertexColor.z, glRenderer->vertexColor.w);
+	glUseProgram(glRenderer->shaderProgram.programID);
+	glUniformMatrix4fv(glRenderer->shaderProgram.uniforms["view"].value.u, 1, GL_FALSE, glm::value_ptr(camera.view));
+	glUniformMatrix4fv(glRenderer->shaderProgram.uniforms["projection"].value.u, 1, GL_FALSE, glm::value_ptr(camera.projection));
+	glUniformMatrix4fv(glRenderer->shaderProgram.uniforms["model"].value.u, 1, GL_FALSE, glm::value_ptr(meshTransform.worldMatrix));
+	glUniform4f(glRenderer->shaderProgram.uniforms["in_color"].value.u, glRenderer->vertexColor.x, glRenderer->vertexColor.y, glRenderer->vertexColor.z, glRenderer->vertexColor.w);
+
 }
 
 void GLRenderSystem::DrawGizmo(Camera camera)
 {
-	ImGuiIO& io = ImGui::GetIO();
-	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-	ImGuizmo::Manipulate(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), ImGuizmo::TRANSLATE, ImGuizmo::WORLD, glm::value_ptr(newView));
 }
 
 void GLRenderSystem::CreateTexture(PEImage& img)
