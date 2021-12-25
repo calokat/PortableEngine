@@ -21,6 +21,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)IOpenGLContext.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OpenGLAPI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OpenGLESContext.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)OpenGLShaderProgram.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Shader.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinOpenGLContext.cpp" />
   </ItemGroup>
@@ -32,6 +33,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)OpenGLAPI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OpenGLESContext.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OpenGLImageGraphicsData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)OpenGLShaderProgram.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Shader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)WinOpenGLContext.h" />
   </ItemGroup>
