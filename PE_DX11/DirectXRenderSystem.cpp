@@ -12,22 +12,16 @@ IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity
 void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 {
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
-	//dxRenderer->vertexShader = new SimpleVertexShader(device, context, L"../x64/Debug/VertexShader.cso");
-	//dxRenderer->pixelShader = new SimplePixelShader(device, context, L"../x64/Debug/PixelShader.cso");
-	//dxRenderer->vertexShader->SetMatrix4x4("viewMatrix", camera.view);
-	//dxRenderer->vertexShader->SetMatrix4x4("projectionMatrix", camera.projection);
-	//dxRenderer->vertexShader->SetMatrix4x4("worldMatrix", glm::mat4(1.0f));
-	//dxRenderer->vertexShader->CopyAllBufferData();
 	ID3DBlob* shaderBlob = nullptr;
 	D3DReadFileToBlob(
-		L"../x64/Debug/VertexShader.cso", // Using a custom helper for file paths
+		L"../x64/Debug/VertexShader.cso",
 		&shaderBlob);
 
 	device->CreateVertexShader(
-		shaderBlob->GetBufferPointer(), // Get a pointer to the blob's contents
-		shaderBlob->GetBufferSize(),	// How big is that data?
-		0,								// No classes in this shader
-		dxRenderer->vertexShader.GetAddressOf());	// The address of the ID3D11VertexShader*
+		shaderBlob->GetBufferPointer(),
+		shaderBlob->GetBufferSize(),
+		0,							
+		dxRenderer->vertexShader.GetAddressOf());
 
 	// Create an input layout that describes the vertex format
 	// used by the vertex shader we're using
@@ -80,16 +74,6 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	device->CreateBuffer(&matrixBufferDesc, 0, dxRenderer->constantBuffer.GetAddressOf());
 	D3D11_MAPPED_SUBRESOURCE mappedBuffer = {};
 
-	//context->Map(dxRenderer->constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedBuffer);
-	//MatrixConstantBuffer* cb = (MatrixConstantBuffer*)mappedBuffer.pData;
-	//cb->world = glm::mat4(1.0f);
-	//cb->view = camera.view;
-	//cb->projection = camera.projection;
-	//cb->colorTint = glm::vec4(1, 1, 1, 1);
-
-	//context->Unmap(dxRenderer->constantBuffer.Get(), 0);
-	//context->VSSetConstantBuffers(0, 1, dxRenderer->constantBuffer.GetAddressOf());
-
 	D3DReadFileToBlob(
 		L"../x64/Debug/PixelShader.cso", // Using a custom helper for file paths
 		&shaderBlob);
@@ -109,7 +93,6 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	samplerDesc.MaxAnisotropy = 16;
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	device->CreateSamplerState(&samplerDesc, &dxRenderer->samplerState);
-	//dxRenderer->pixelShader->SetSamplerState("samplerOptions", dxRenderer->samplerState);
 	context->PSSetSamplers(0, 1, &dxRenderer->samplerState);
 }
 
@@ -127,7 +110,7 @@ void DirectXRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	vbd.ByteWidth = sizeof(Vertex) * dxRenderer->numVertices;
-	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER; // Tells DirectX this is a vertex buffer
+	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = 0;
 	vbd.MiscFlags = 0;
 	vbd.StructureByteStride = 0;
@@ -160,8 +143,6 @@ void DirectXRenderSystem::Draw(IRenderer* renderer)
 	BindTexture(dxRenderer);
 	context->IASetVertexBuffers(0, 1, dxRenderer->vertexBuffer.GetAddressOf(), &stride, &offset);
 	context->IASetIndexBuffer(dxRenderer->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	//dxRenderer->vertexShader->SetShader();
-	//dxRenderer->pixelShader->SetShader();
 	context->VSSetShader(dxRenderer->vertexShader.Get(), 0, 0);
 	context->PSSetShader(dxRenderer->pixelShader.Get(), 0, 0);
 	context->DrawIndexed(
@@ -173,14 +154,6 @@ void DirectXRenderSystem::Draw(IRenderer* renderer)
 
 void DirectXRenderSystem::DrawWireframe(IRenderer* renderer)
 {
-	//DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
-	//glm::vec4 oldRendererColor = dxRenderer->vertexColor;
-	//dxRenderer->vertexShader->SetFloat4("colorTint", glm::vec4(1, 1, 1, 1));
-	//dxRenderer->vertexShader->CopyAllBufferData();
-	//context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-	//Draw(dxRenderer);
-	//context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//dxRenderer->vertexShader->SetFloat4("colorTint", oldRendererColor);
 }
 
 void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera)
@@ -197,11 +170,6 @@ void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTran
 	context->Map(dxRenderer->constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);
 	memcpy(data.pData, &cb, sizeof(cb));
 	context->Unmap(dxRenderer->constantBuffer.Get(), 0);
-	/*dxRenderer->vertexShader->SetMatrix4x4("viewMatrix", camera.view);
-	dxRenderer->vertexShader->SetMatrix4x4("projectionMatrix", camera.projection);
-	dxRenderer->vertexShader->SetMatrix4x4("worldMatrix", meshTransform.worldMatrix);
-	dxRenderer->vertexShader->SetFloat4("colorTint", dxRenderer->vertexColor);*/
-	//dxRenderer->vertexShader->CopyAllBufferData();
 	context->VSSetConstantBuffers(0, 1, dxRenderer->constantBuffer.GetAddressOf());
 }
 
@@ -256,10 +224,6 @@ void DirectXRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath
 	CreateTexture(dxRenderer->diffuseTexture);
 
 	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(dxRenderer->diffuseTexture.imageGraphicsData);
-	//DirectXRenderer* dx11Renderer = (DirectXRenderer*)renderer;
-
-	//dxRenderer->pixelShader->SetShaderResourceView("diffuseTexture", dx11ImageGraphicsData->srv);
-	//dxRenderer->pixelShader->CopyAllBufferData();
 	context->PSSetShaderResources(0, 1, &dx11ImageGraphicsData->srv);
 }
 
@@ -271,12 +235,7 @@ void DirectXRenderSystem::LoadTexture(PEImage& img)
 void DirectXRenderSystem::BindTexture(DirectXRenderer* renderer)
 {
 	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(renderer->diffuseTexture.imageGraphicsData);
-	//DirectXRenderer* dx11Renderer = (DirectXRenderer*)renderer;
-
-	//renderer->pixelShader->SetShaderResourceView("diffuseTexture", dx11ImageGraphicsData->srv);
-	//renderer->pixelShader->CopyAllBufferData();
 	context->PSSetShaderResources(0, 1, &dx11ImageGraphicsData->srv);
-
 }
 
 #endif

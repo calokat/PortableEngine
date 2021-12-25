@@ -55,12 +55,7 @@ void GLRenderSystem::BindRenderer(IRenderer* renderer)
 	glEnableVertexAttribArray(uvAttrib);
 	SetupAttribute(uvAttrib, 2, GL_FLOAT, Vertex, UV);
 
-	//GLint vertColorAttrib = glGetAttribLocation(glRenderer->program, "in_color");
 	GLint vertColorAttrib = glGetUniformLocation(glRenderer->program, "in_color");
-	//glEnableVertexAttribArray(vertColorAttrib);
-
-	//SetupAttribute(vertColorAttrib, 3, GL_FLOAT, Vertex, Color);
-	//glVertexAttribPointer(vertColorAttrib, 3, GL_FLOAT, 0, sizeof(Vertex), (void*)offsetof(structure, element));
 }
 
 void GLRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
@@ -77,12 +72,8 @@ void GLRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
 	glEnableVertexAttribArray(uvAttrib);
 	SetupAttribute(uvAttrib, 2, GL_FLOAT, Vertex, UV);
 
-	//GLint vertColorAttrib = glGetAttribLocation(glRenderer->program, "in_color");
 	GLint vertColorAttrib = glGetUniformLocation(glRenderer->program, "in_color");
-	//glEnableVertexAttribArray(vertColorAttrib);
 
-	//SetupAttribute(vertColorAttrib, 3, GL_FLOAT, Vertex, Color);
-	//glVertexAttribPointer(vertColorAttrib, 3, GL_FLOAT, 0, sizeof(Vertex), (void*)offsetof(structure, element));
 	glRenderer->numVertices = mesh.rawVertices.size();
 	glRenderer->numIndices = mesh.rawIndices.size();
 }

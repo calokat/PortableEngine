@@ -26,23 +26,6 @@ Shader::Shader(std::string pathArg, GLint typeArg)
 	shaderSource[shaderLength] = '\0';
 	stream.close();
 	glShaderSource(id, 1, &shaderSource, 0);
-	/*glCompileShader(vShader);
-	int checkStatus;
-	glGetShaderiv(vShader, GL_COMPILE_STATUS, &checkStatus);
-	if (checkStatus == 0)
-	{
-		GLint length = 0;
-		glGetShaderiv(vShader, GL_INFO_LOG_LENGTH, &length);
-		GLchar* log = new char[length + 1];
-		glGetShaderInfoLog(vShader, length, 0, log);
-		std::cout << log << '/n';
-		glDeleteShader(vShader);
-		delete[] log;
-
-		std::cout << "Shader compilation failed" << std::endl;
-		return;
-	}*/
-
 	delete[] shaderSource;
 }
 

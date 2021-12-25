@@ -7,7 +7,6 @@
 class Shader
 {
 private:
-	//std::string path;
 	GLint shaderType;
 	GLint id;
 public:
