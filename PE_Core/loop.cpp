@@ -36,10 +36,10 @@ void DrawIteration(Camera& camera, entt::entity selected, entt::registry& regist
 void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXRAPI* xr, GameWindow* window, entt::registry& registry, Options options, entt::entity sceneRoot)
 {
 	plat->GetInputSystem()->GetKeyPressed();
-	//graph->NewGuiFrame();
-	//plat->NewGuiFrame();
-	//ImGui::NewFrame();
-	//ImGuizmo::BeginFrame();
+	graph->NewGuiFrame();
+	plat->NewGuiFrame();
+	ImGui::NewFrame();
+	ImGuizmo::BeginFrame();
 	//ImGuizmo::Enable(true);
 	static float vertColorPick[4];
 	//	ImGui::BeginMainMenuBar();
@@ -111,13 +111,13 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 
 	auto entityView = registry.view<Name, Relationship, Transform>();
 	//EntityListWindow entityListWindow;
-	//InspectorWindow inspectorWindow;
+	InspectorWindow inspectorWindow;
 	//AssetBrowserWindow assetWindow;
 	//WindowHeader windowHeader;
 	Relationship& rootRel = registry.get<Relationship>(sceneRoot);
 	//windowHeader.Render(registry, plat->GetAssetManager(), renderSystem);
 	//entityListWindow.Render(rootRel, entityView);
-	//inspectorWindow.Render(registry);
+	inspectorWindow.Render(registry);
 
 	//assetWindow.Render(plat->GetAssetManager(), renderSystem);
 
@@ -165,8 +165,8 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	{
 		GizmoSystem::DeselectAll();
 	}
-	//ImGui::Render();
-	//graph->DrawGui();
+	ImGui::Render();
+	graph->DrawGui();
 	graph->_SwapBuffers();
 }
 
