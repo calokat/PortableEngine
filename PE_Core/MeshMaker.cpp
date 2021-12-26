@@ -24,7 +24,7 @@ entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> s
 		Mesh& newMesh = registry.emplace<Mesh>(newMeshEntity, scene.data.m);
 		TransformSystem::CalculateWorldMatrix(&scene.data.t);
 		Transform& meshTransform = registry.emplace<Transform>(newMeshEntity, scene.data.t);
-		IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity);
+		IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity, ShaderType::Unlit_Textured);
 		renderSystem->Load(&newMeshRenderer, renderingCam);
 		renderSystem->LoadMesh(&newMeshRenderer, newMesh);
 		renderSystem->LoadTexture(&newMeshRenderer, assetManager->GetAssetPath("../../Assets/Images/rock.png"));
