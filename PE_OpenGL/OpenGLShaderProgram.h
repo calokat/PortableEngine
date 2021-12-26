@@ -3,7 +3,7 @@
 #include <map>
 #include "Shader.h"
 
-enum ShaderProgramProperties {Fully_3D, Colored, Textured};
+enum ShaderProgramProperties {Fully_3D = 1, Colored = 2, Textured = 4};
 
 union SignedOrUnsigned
 {
@@ -27,4 +27,5 @@ public:
 	Shader pixel;
 	std::map<const char*, OpenGLShaderField> attributes;
 	std::map<const char*, OpenGLShaderField> uniforms;
+	int propertyFlags;
 };
