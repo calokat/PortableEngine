@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentShaderPathParam)
+GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentShaderPathParam, ShaderType type)
 {
 	shaderProgram.vertex = Shader(vertexShaderPathParam, GL_VERTEX_SHADER);
 	shaderProgram.pixel = Shader(fragmentShaderPathParam, GL_FRAGMENT_SHADER);
@@ -11,7 +11,7 @@ GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentSh
 	shaderProgram.attributes = { {"in_position", {} }, {"aTexCoord", {} } };
 	shaderProgram.uniforms = { {"projection", {} }, {"view", {} }, {"model", {} }, {"in_color", {} } };
 	shaderProgram.propertyFlags = ShaderProgramProperties::Colored | ShaderProgramProperties::Fully_3D | ShaderProgramProperties::Textured;
-
+	shaderProgram.propertyFlags = type;
 }
 
 GLRenderer::GLRenderer()

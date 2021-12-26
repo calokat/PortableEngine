@@ -18,7 +18,7 @@ class GLRenderer : public IRenderer
 public:
 	int numVertices;
 	unsigned int numIndices;
-	GLRenderer(std::string vertexShaderPathParam, std::string fragmentShaderPathParam);
+	GLRenderer(std::string vertexShaderPathParam, std::string fragmentShaderPathParam, ShaderType type);
 	GLRenderer();
 	glm::vec4 vertexColor = { 1, 1, 1, 1 };
 	PEImage diffuseTexture;
