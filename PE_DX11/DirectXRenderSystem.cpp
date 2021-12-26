@@ -3,7 +3,7 @@
 #include "DirectX11ImageGraphicsData.h"
 #include "ImageSystem.h"
 
-IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity& e)
+IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity& e, ShaderType type)
 {
 	IRenderer& rendererRef = reg.emplace<DirectXRenderer>(e);
 	return rendererRef;
