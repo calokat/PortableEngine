@@ -5,12 +5,12 @@
 #include "OpenGLImageGraphicsData.h"
 #include "ImageSystem.h"
 
-IRenderer& GLRenderSystem::CreateRenderer(entt::registry& reg, entt::entity& e)
+IRenderer& GLRenderSystem::CreateRenderer(entt::registry& reg, entt::entity& e, ShaderType type)
 {
 	#ifdef __EMSCRIPTEN__
-	IRenderer& rendererRef = reg.emplace<GLRenderer>(e, platform->GetAssetManager()->GetAssetPath("../../Shaders/GLSL-ES/vertex.glsl"), platform->GetAssetManager()->GetAssetPath("../../Shaders/GLSL-ES/fragment.glsl"));
+	IRenderer& rendererRef = reg.emplace<GLRenderer>(e, platform->GetAssetManager()->GetAssetPath("../../Shaders/GLSL-ES/vertex.glsl"), platform->GetAssetManager()->GetAssetPath("../../Shaders/GLSL-ES/fragment.glsl"), type);
 	#else
-	IRenderer& rendererRef = reg.emplace<GLRenderer>(e, platform->GetAssetManager()->GetAssetPath("../../Shaders/GLSL/vertex.glsl"), platform->GetAssetManager()->GetAssetPath("../../Shaders/GLSL/fragment.glsl"));
+	IRenderer& rendererRef = reg.emplace<GLRenderer>(e, platform->GetAssetManager()->GetAssetPath(typeToVertexPath[type]), platform->GetAssetManager()->GetAssetPath(typeToPixelPath[type]), type);
 	#endif
 	return rendererRef;
 }
