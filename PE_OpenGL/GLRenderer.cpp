@@ -10,6 +10,8 @@ GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentSh
 	shaderProgram.pixel.Compile();
 	shaderProgram.attributes = { {"in_position", {} }, {"aTexCoord", {} } };
 	shaderProgram.uniforms = { {"projection", {} }, {"view", {} }, {"model", {} }, {"in_color", {} } };
+	shaderProgram.propertyFlags = ShaderProgramProperties::Colored | ShaderProgramProperties::Fully_3D | ShaderProgramProperties::Textured;
+
 }
 
 GLRenderer::GLRenderer()
