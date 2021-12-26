@@ -4,10 +4,18 @@
 #include "Mesh.h"
 #include <entt.hpp>
 #include "PEImage.h"
+#include "OpenGLShaderProgram.h"
+
+enum ShaderType
+{
+	Unlit_Color = ShaderProgramProperties::Colored | ShaderProgramProperties::Fully_3D,
+	Unlit_Textured = ShaderProgramProperties::Fully_3D | ShaderProgramProperties::Textured | ShaderProgramProperties::Colored
+};
+
 class IRenderSystem
 {
 public:
-	virtual IRenderer& CreateRenderer(entt::registry& reg, entt::entity& e) = 0;
+	virtual IRenderer& CreateRenderer(entt::registry& reg, entt::entity& e, ShaderType type) = 0;
 	virtual void Load(IRenderer* renderer, Camera& camera) = 0;
 	virtual void BindRenderer(IRenderer* renderer) = 0;
 	virtual void LoadMesh(IRenderer* renderer, Mesh& mesh/*, ID3D11Device* device*/) = 0;
