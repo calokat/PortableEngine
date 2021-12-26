@@ -24,10 +24,6 @@ entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> s
 		Mesh& newMesh = registry.emplace<Mesh>(newMeshEntity, scene.data.m);
 		TransformSystem::CalculateWorldMatrix(&scene.data.t);
 		Transform& meshTransform = registry.emplace<Transform>(newMeshEntity, scene.data.t);
-		IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, newMeshEntity, ShaderType::Unlit_Textured);
-		renderSystem->Load(&newMeshRenderer, renderingCam);
-		renderSystem->LoadMesh(&newMeshRenderer, newMesh);
-		renderSystem->LoadTexture(&newMeshRenderer, assetManager->GetAssetPath("../../Assets/Images/rock.png"));
 		Name& nameComp = registry.emplace<Name>(newMeshEntity);
 		nameComp = { newMesh.path };
 		AABB& aabb = registry.emplace<AABB>(newMeshEntity);
@@ -38,6 +34,25 @@ entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> s
 		MakeMesh_Recursive(registry, scene.children[i], renderSystem, assetManager, renderingCam, renderingCamTransform, newMeshEntity);
 	}
 	return newMeshEntity;
+}
+
+void AttachRenderers(entt::registry& registry, IRenderSystem* renderSystem, const char* texturePath, entt::entity rootEntity, ShaderType shaderType)
+{
+	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, rootEntity, shaderType);
+	Mesh& entityMesh = registry.get<Mesh>(rootEntity);
+	Camera dummyCam;
+	// TODO: Remove camera parameter from renderSystem->Load()
+	renderSystem->Load(&newMeshRenderer, dummyCam);
+	renderSystem->LoadMesh(&newMeshRenderer, entityMesh);
+	Relationship rel = registry.get<Relationship>(rootEntity);
+	if (shaderType & ShaderProgramProperties::Textured)
+	{
+		renderSystem->LoadTexture(&newMeshRenderer, texturePath);
+	}
+	for (auto childIt = rel.children.begin(); childIt != rel.children.end(); ++childIt)
+	{
+		AttachRenderers(registry, renderSystem, texturePath, childIt->second, shaderType);
+	}
 }
 
 entt::entity MakeMesh(Tree<MeshCreateInfo> meshScene, entt::registry& registry, IRenderSystem* renderSystem, IAssetManager* assetManager, entt::entity meshRoot, glm::vec3 pos)

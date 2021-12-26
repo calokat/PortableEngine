@@ -8,3 +8,4 @@
 
 entt::entity MakeMesh(Tree<MeshCreateInfo> meshScene, entt::registry& registry, IRenderSystem* renderSystem, IAssetManager* assetManager, entt::entity meshRoot, glm::vec3 pos = glm::vec3(0, 0, 0));
 entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> scene, IRenderSystem* renderSystem, IAssetManager* assetManager, Camera& renderingCam, Transform& renderingCamTransform, entt::entity parent);
+void AttachRenderers(entt::registry& registry, IRenderSystem* renderSystem, const char* texturePath, entt::entity rootEntity, ShaderType shaderType);
