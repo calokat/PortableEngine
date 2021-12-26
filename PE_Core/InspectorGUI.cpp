@@ -42,7 +42,10 @@ void ComponentGUI(Transform& t)
 void ComponentGUI(GLRenderer& r)
 {
 	ImGui::ColorPicker4("Renderer Color", glm::value_ptr(r.vertexColor));
-	ImGui::Image((void*)(std::dynamic_pointer_cast<OpenGLImageGraphicsData>(r.diffuseTexture.imageGraphicsData))->texture, ImVec2(100, 100));
+	if (r.shaderProgram.propertyFlags & ShaderProgramProperties::Textured)
+	{
+		ImGui::Image((void*)(std::dynamic_pointer_cast<OpenGLImageGraphicsData>(r.diffuseTexture.imageGraphicsData))->texture, ImVec2(100, 100));
+	}
 }
 
 void ComponentGUI(Rotator& r)
