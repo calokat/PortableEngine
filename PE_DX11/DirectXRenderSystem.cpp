@@ -5,7 +5,25 @@
 
 IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity& e, ShaderType type)
 {
-	IRenderer& rendererRef = reg.emplace<DirectXRenderer>(e);
+	DirectXRenderer& rendererRef = reg.emplace<DirectXRenderer>(e);
+	rendererRef.shaderProgram.shaderType = type;
+	switch (rendererRef.shaderProgram.shaderType)
+	{
+		case ShaderType::Unlit_Color:
+		case ShaderType::Unlit_Textured:
+			rendererRef.shaderProgram.constantBufferFields[0] = "colorTint";
+			rendererRef.shaderProgram.constantBufferFields[1] = "world";
+			rendererRef.shaderProgram.constantBufferFields[2] = "view";
+			rendererRef.shaderProgram.constantBufferFields[3] = "projection";
+
+			rendererRef.shaderProgram.constantBufferMap = {
+				{"colorTint", {16, ConstantBufferValueType::Vec4f } },
+				{"world", {64, ConstantBufferValueType::Mat4f } },
+				{"view", {64, ConstantBufferValueType::Mat4f } },
+				{"projection", {64, ConstantBufferValueType::Mat4f } }
+			};
+			break;
+	}
 	return rendererRef;
 }
 
@@ -14,14 +32,14 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
 	ID3DBlob* shaderBlob = nullptr;
 	D3DReadFileToBlob(
-		L"../x64/Debug/VertexShader.cso",
+		typeToVertexPath[dxRenderer->shaderProgram.shaderType],
 		&shaderBlob);
 
 	device->CreateVertexShader(
 		shaderBlob->GetBufferPointer(),
 		shaderBlob->GetBufferSize(),
 		0,							
-		dxRenderer->vertexShader.GetAddressOf());
+		dxRenderer->shaderProgram.vertexShader.GetAddressOf());
 
 	// Create an input layout that describes the vertex format
 	// used by the vertex shader we're using
@@ -56,11 +74,16 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 		4,								// How many elements in that array
 		shaderBlob->GetBufferPointer(),	// Pointer to the code of a shader that uses this layout
 		shaderBlob->GetBufferSize(),	// Size of the shader code that uses this layout
-		dxRenderer->inputLayout.GetAddressOf());	// Address of the resulting ID3D11InputLayout*
-	context->IASetInputLayout(dxRenderer->inputLayout.Get());
+		dxRenderer->shaderProgram.inputLayout.GetAddressOf());	// Address of the resulting ID3D11InputLayout*
+	context->IASetInputLayout(dxRenderer->shaderProgram.inputLayout.Get());
 
 
-	unsigned int size = sizeof(MatrixConstantBuffer);
+	//unsigned int size = sizeof(MatrixConstantBuffer);
+	unsigned int size = 0;
+	for (auto it = dxRenderer->shaderProgram.constantBufferMap.begin(); it != dxRenderer->shaderProgram.constantBufferMap.end(); ++it)
+	{
+		size += it->second.byteSize;
+	}
 	size = (size + 15) / 16 * 16;
 
 	D3D11_BUFFER_DESC matrixBufferDesc = {};
@@ -71,18 +94,18 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	matrixBufferDesc.MiscFlags = 0;
 	matrixBufferDesc.StructureByteStride = 0;
 
-	device->CreateBuffer(&matrixBufferDesc, 0, dxRenderer->constantBuffer.GetAddressOf());
+	device->CreateBuffer(&matrixBufferDesc, 0, dxRenderer->shaderProgram.constantBuffer.GetAddressOf());
 	D3D11_MAPPED_SUBRESOURCE mappedBuffer = {};
 
 	D3DReadFileToBlob(
-		L"../x64/Debug/PixelShader.cso", // Using a custom helper for file paths
+		typeToPixelPath[dxRenderer->shaderProgram.shaderType],
 		&shaderBlob);
 
 	device->CreatePixelShader(
 		shaderBlob->GetBufferPointer(),
 		shaderBlob->GetBufferSize(),
 		0,
-		dxRenderer->pixelShader.GetAddressOf());
+		dxRenderer->shaderProgram.pixelShader.GetAddressOf());
 
 	shaderBlob->Release();
 	D3D11_SAMPLER_DESC samplerDesc = {};
@@ -92,8 +115,8 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
 	samplerDesc.MaxAnisotropy = 16;
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-	device->CreateSamplerState(&samplerDesc, &dxRenderer->samplerState);
-	context->PSSetSamplers(0, 1, &dxRenderer->samplerState);
+	device->CreateSamplerState(&samplerDesc, &dxRenderer->shaderProgram.samplerState);
+	context->PSSetSamplers(0, 1, &dxRenderer->shaderProgram.samplerState);
 }
 
 // This method implementation is empty because it is not actually needed for DirectX, 
@@ -118,7 +141,7 @@ void DirectXRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
 	D3D11_SUBRESOURCE_DATA initialVertexData;
 	initialVertexData.pSysMem = mesh.rawVertices.data();
 
-	device->CreateBuffer(&vbd, &initialVertexData, dxRenderer->vertexBuffer.GetAddressOf());
+	device->CreateBuffer(&vbd, &initialVertexData, dxRenderer->shaderProgram.vertexBuffer.GetAddressOf());
 
 	D3D11_BUFFER_DESC ibd;
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
@@ -131,7 +154,7 @@ void DirectXRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
 	D3D11_SUBRESOURCE_DATA initialIndexData;
 	initialIndexData.pSysMem = mesh.rawIndices.data();
 
-	device->CreateBuffer(&ibd, &initialIndexData, dxRenderer->indexBuffer.GetAddressOf());
+	device->CreateBuffer(&ibd, &initialIndexData, dxRenderer->shaderProgram.indexBuffer.GetAddressOf());
 }
 
 void DirectXRenderSystem::Draw(IRenderer* renderer)
@@ -141,10 +164,10 @@ void DirectXRenderSystem::Draw(IRenderer* renderer)
 
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
 	BindTexture(dxRenderer);
-	context->IASetVertexBuffers(0, 1, dxRenderer->vertexBuffer.GetAddressOf(), &stride, &offset);
-	context->IASetIndexBuffer(dxRenderer->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	context->VSSetShader(dxRenderer->vertexShader.Get(), 0, 0);
-	context->PSSetShader(dxRenderer->pixelShader.Get(), 0, 0);
+	context->IASetVertexBuffers(0, 1, dxRenderer->shaderProgram.vertexBuffer.GetAddressOf(), &stride, &offset);
+	context->IASetIndexBuffer(dxRenderer->shaderProgram.indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	context->VSSetShader(dxRenderer->shaderProgram.vertexShader.Get(), 0, 0);
+	context->PSSetShader(dxRenderer->shaderProgram.pixelShader.Get(), 0, 0);
 	context->DrawIndexed(
 		dxRenderer->numIndices,     // The number of indices to use (we could draw a subset if we wanted)
 		0,     // Offset to the first index we want to use
@@ -167,10 +190,14 @@ void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTran
 	cb.world = meshTransform.worldMatrix;
 	cb.colorTint = dxRenderer->vertexColor;
 
-	context->Map(dxRenderer->constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);
-	memcpy(data.pData, &cb, sizeof(cb));
-	context->Unmap(dxRenderer->constantBuffer.Get(), 0);
-	context->VSSetConstantBuffers(0, 1, dxRenderer->constantBuffer.GetAddressOf());
+	context->Map(dxRenderer->shaderProgram.constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);
+	//memcpy(data.pData, &cb, sizeof(cb));
+	memcpy(data.pData, &cb.colorTint, sizeof(cb.colorTint));
+	memcpy((char*)data.pData + sizeof(cb.colorTint), &cb.world, sizeof(cb.world));
+	memcpy((char*)data.pData + sizeof(cb.colorTint) + sizeof(cb.world), &cb.view, sizeof(cb.view));
+	memcpy((char*)data.pData + sizeof(cb.colorTint) + sizeof(cb.world) + sizeof(cb.view), &cb.projection, sizeof(cb.projection));
+	context->Unmap(dxRenderer->shaderProgram.constantBuffer.Get(), 0);
+	context->VSSetConstantBuffers(0, 1, dxRenderer->shaderProgram.constantBuffer.GetAddressOf());
 }
 
 DirectXRenderSystem::DirectXRenderSystem(ID3D11Device* dev, ID3D11DeviceContext* ctx) : device(dev), context(ctx)
@@ -234,6 +261,7 @@ void DirectXRenderSystem::LoadTexture(PEImage& img)
 
 void DirectXRenderSystem::BindTexture(DirectXRenderer* renderer)
 {
+	if (renderer->shaderProgram.shaderType == ShaderType::Unlit_Color) return;
 	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(renderer->diffuseTexture.imageGraphicsData);
 	context->PSSetShaderResources(0, 1, &dx11ImageGraphicsData->srv);
 }
