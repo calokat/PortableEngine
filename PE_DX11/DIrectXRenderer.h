@@ -7,27 +7,15 @@
 #include <wrl/client.h>
 #include "DirectXAPI.h"
 #include "IRenderer.h"
+#include "DirectX11ShaderProgram.h"
 class DirectXRenderer : public IRenderer
 {
 public:
-	DirectXRenderer();
-	DirectXRenderer(DirectXRenderer&& other);
-	DirectXRenderer& operator=(DirectXRenderer&& other) noexcept;
-	//DirectXRenderer(DirectXAPI* dxApi);
-	std::string vertexShaderPath;
-	std::string fragmentShaderPath;
-	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertexShader;
-	ID3D11SamplerState* samplerState;
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
 	int numVertices;
 	int numIndices;
 	glm::vec4 vertexColor = { 1, 1, 1, 1 };
 	PEImage diffuseTexture;
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer;
-	~DirectXRenderer();
+	DirectX11ShaderProgram shaderProgram;
 };
 
 struct MatrixConstantBuffer
