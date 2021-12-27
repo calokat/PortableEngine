@@ -183,6 +183,21 @@ int main(int argc, char* argv[])
 	GizmoSystem::Select(root);
 	entt::entity duoRoot = MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), root);
 
+	Relationship& duoRootRel = registry.get<Relationship>(duoRoot);
+
+	for (auto it = duoRootRel.children.begin(); it != duoRootRel.children.end(); it++)
+	{
+		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str(), it->second, ShaderType::Unlit_Textured);
+	}
+
+	entt::entity trioRoot = MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), root);
+
+	Relationship& trioRootRel = registry.get<Relationship>(trioRoot);
+
+	for (auto it = trioRootRel.children.begin(); it != trioRootRel.children.end(); it++)
+	{
+		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str(), it->second, ShaderType::Unlit_Color);
+	}
 	
 	Tree<MeshCreateInfo> handMeshInfo = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/index_controller.stl").c_str());
 
