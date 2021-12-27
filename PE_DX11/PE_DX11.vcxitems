@@ -16,7 +16,6 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DirectXAPI.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)DirectXRenderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DirectXRenderSystem.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SimpleShader.cpp" />
   </ItemGroup>
