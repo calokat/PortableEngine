@@ -101,10 +101,15 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	//	}
 	//	ImGui::EndMainMenuBar();
 
-		// TODO: Put the picking code in its own system
+	auto camEntityView = registry.view<Camera>();
+	auto [camera, camTransform] = registry.get<Camera, Transform>(camEntityView[0]);
+
+	TransformSystem::CalculateWorldMatrix(&camTransform);
+	CameraSystem::CalculateViewMatrixLH(camera, camTransform);
+	// TODO: Put the picking code in its own system
 	if (plat->GetInputSystem()->WasMouseButtonClicked(MouseButton::Left))
 	{
-		MakeRayFromCamera(registry.view<Camera, Transform>(), registry.view<AABB>(), window, plat->GetInputSystem()->GetCursorPosition());
+		MakeRayFromCamera(camera, registry.view<AABB, Transform>(), window, plat->GetInputSystem()->GetCursorPosition());
 	}
 
 	auto entityView = registry.view<Name, Relationship, Transform>();
@@ -120,14 +125,6 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	//assetWindow.Render(plat->GetAssetManager(), renderSystem);
 
 	graph->ClearScreen();
-	auto camEntityView = registry.view<Camera>();
-	auto [camera, camTransform] = registry.get<Camera, Transform>(camEntityView[0]);
-	//ImGui::Begin("Camera Rotation");
-	//ImGui::DragFloat3("Camera rotation", glm::value_ptr(camTransform.rotation));
-	//ImGui::End();
-
-	TransformSystem::CalculateWorldMatrix(&camTransform);
-	CameraSystem::CalculateViewMatrixLH(camera, camTransform);
 	entt::entity selected = GizmoSystem::GetSelectedEntity();
 	ComputeTransformHeirarchy(sceneRoot, registry, Transform());
 	if (xr->IsSessionRunning())
