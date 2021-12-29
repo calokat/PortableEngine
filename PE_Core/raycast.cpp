@@ -1,11 +1,30 @@
 #include "raycast.h"
 #include "GizmoSystem.h"
+#include "AABBSystem.h"
 
-void RaycastAgainstAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, entt::basic_view<entt::entity, entt::exclude_t<>, AABB> aabbView)
+void RaycastAgainstAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, entt::basic_view<entt::entity, entt::exclude_t<>, AABB, Transform> aabbView)
 {
 	for (auto& ae : aabbView)
 	{
-		AABB& aabb = aabbView.get<AABB>(ae);
+		AABB aabb = aabbView.get<AABB>(ae);
+		Transform t = aabbView.get<Transform>(ae);
+
+		aabb.min = aabb.min * t.scale;
+		aabb.max = aabb.max * t.scale;
+
+		if (t.rotation != glm::vec3(0))
+		{
+			Mesh m = AABBSystem::GenerateMeshFromAABB(aabb);
+			for (auto it = m.rawVertices.begin(); it != m.rawVertices.end(); ++it)
+			{
+				it->Position = it->Position * t.orientation;
+			}
+			AABBSystem::UpdateAABB(aabb, m, t);
+		}
+
+		aabb.min = aabb.min + t.position;
+		aabb.max = aabb.max + t.position;
+
 		// Thank you https://gdbooks.gitbooks.io/3dcollisions/content/Chapter3/raycast_aabb.html
 		float t1 = (aabb.min.x - rayOrigin.x) / rayDir.x;
 		float t2 = (aabb.max.x - rayOrigin.x) / rayDir.x;
@@ -29,11 +48,10 @@ void RaycastAgainstAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, entt::basic_view<
 	}
 }
 
-void MakeRayFromCamera(entt::basic_view<entt::entity, entt::exclude_t<>, Camera, Transform> cameras, entt::basic_view<entt::entity, entt::exclude_t<>, AABB> aabbs, GameWindow* window, glm::vec2 screenCoordinates)
+void MakeRayFromCamera(Camera camera, entt::basic_view<entt::entity, entt::exclude_t<>, AABB, Transform> aabbs, GameWindow* window, glm::vec2 screenCoordinates)
 {
 	//auto camView = registry.view<Camera>();
 	
-	auto [camera, camTransform] = cameras.get<Camera, Transform>(cameras.front());
 	// Blessed be this code taken from https://gamedev.stackexchange.com/questions/157674/simple-mouseray-picking-in-opengl
 	glm::vec3 mouse_world_nearplane = glm::unProject(
 		glm::vec3(screenCoordinates.x, window->height - screenCoordinates.y, 0.0f),

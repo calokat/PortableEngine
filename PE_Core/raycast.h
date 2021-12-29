@@ -5,5 +5,5 @@
 #include "Transform.h"
 #include "GameWindow.h"
 
-void RaycastAgainstAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, entt::basic_view<entt::entity, entt::exclude_t<>, AABB> aabbView);
-void MakeRayFromCamera(entt::basic_view<entt::entity, entt::exclude_t<>, Camera, Transform> cameras, entt::basic_view<entt::entity, entt::exclude_t<>, AABB> aabbs, GameWindow* window, glm::vec2 screenCoordinates);
+void RaycastAgainstAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, entt::basic_view<entt::entity, entt::exclude_t<>, AABB, Transform> aabbView);
+void MakeRayFromCamera(Camera camera, entt::basic_view<entt::entity, entt::exclude_t<>, AABB, Transform> aabbs, GameWindow* window, glm::vec2 screenCoordinates);
