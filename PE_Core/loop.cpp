@@ -39,8 +39,6 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	graph->NewGuiFrame();
 	plat->NewGuiFrame();
 	ImGui::NewFrame();
-	ImGuizmo::BeginFrame();
-	//ImGuizmo::Enable(true);
 	static float vertColorPick[4];
 	//	ImGui::BeginMainMenuBar();
 	//	if (ImGui::BeginMenu("File"))
