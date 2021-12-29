@@ -104,6 +104,19 @@ int main(int argc, char* argv[])
 	entt::entity leftXRHand = MakeMesh(handMeshInfo, registry, renderSystem, plat->GetAssetManager(), root);
 	entt::entity rightXRHand = MakeMesh(handMeshInfo, registry, renderSystem, plat->GetAssetManager(), root);
 
+	Relationship& leftHandRel = registry.get<Relationship>(leftXRHand);
+	for (auto it = leftHandRel.children.begin(); it != leftHandRel.children.end(); it++)
+	{
+		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str(), it->second, ShaderType::Unlit_Textured);
+	}
+
+	Relationship& duoRel = registry.get<Relationship>(duoRoot);
+
+	for (auto it = duoRel.children.begin(); it != duoRel.children.end(); it++)
+	{
+		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str(), it->second, ShaderType::Unlit_Textured);
+	}
+
 	Transform& leftXRHandTransform = registry.get<Transform>(leftXRHand);
 	Transform& rightXRHandTransform = registry.get<Transform>(rightXRHand);
 	leftXRHandTransform.scale = { -1, 1, 1 };
