@@ -5,6 +5,8 @@
 class AABBSystem
 {
 public:
-	static void UpdateAABB(AABB& bb, Mesh& m, Transform& t);
+	static void UpdateAABB(AABB& bb, Mesh m, Transform t);
+	static Mesh GenerateMeshFromAABB(AABB bb);
+	static Mesh GetUnitCube();
 };
 
