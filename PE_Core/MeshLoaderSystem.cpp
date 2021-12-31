@@ -10,6 +10,12 @@ void MeshLoaderSystem::ProcessMesh(aiMesh* assimpMesh, const aiScene* scene, Mes
 		vertex.Position.x = assimpMesh->mVertices[i].x;
 		vertex.Position.y = assimpMesh->mVertices[i].y;
 		vertex.Position.z = assimpMesh->mVertices[i].z;
+		if (assimpMesh->HasNormals())
+		{
+			vertex.Normal.x = assimpMesh->mNormals[i].x;
+			vertex.Normal.y = assimpMesh->mNormals[i].y;
+			vertex.Normal.z = assimpMesh->mNormals[i].z;
+		}
 		if (assimpMesh->mTextureCoords[0]) {
 			vertex.UV.x = (float)assimpMesh->mTextureCoords[0][i].x;
 			vertex.UV.y = (float)assimpMesh->mTextureCoords[0][i].y;
