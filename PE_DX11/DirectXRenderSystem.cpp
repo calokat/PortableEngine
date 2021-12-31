@@ -2,6 +2,7 @@
 #include "DirectXRenderSystem.h"
 #include "DirectX11ImageGraphicsData.h"
 #include "ImageSystem.h"
+#include "lights.h"
 
 IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity& e, ShaderType type)
 {
@@ -11,16 +12,37 @@ IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity
 	{
 		case ShaderType::Unlit_Color:
 		case ShaderType::Unlit_Textured:
-			rendererRef.shaderProgram.constantBufferFields[0] = "colorTint";
-			rendererRef.shaderProgram.constantBufferFields[1] = "world";
-			rendererRef.shaderProgram.constantBufferFields[2] = "view";
-			rendererRef.shaderProgram.constantBufferFields[3] = "projection";
+		case ShaderType::Lit_Color:
+			rendererRef.shaderProgram.vertexConstBuffer.constantBufferFields[0] = "colorTint";
+			rendererRef.shaderProgram.vertexConstBuffer.constantBufferFields[1] = "world";
+			rendererRef.shaderProgram.vertexConstBuffer.constantBufferFields[2] = "view";
+			rendererRef.shaderProgram.vertexConstBuffer.constantBufferFields[3] = "projection";
 
-			rendererRef.shaderProgram.constantBufferMap = {
-				{"colorTint", {16, ConstantBufferValueType::Vec4f } },
-				{"world", {64, ConstantBufferValueType::Mat4f } },
-				{"view", {64, ConstantBufferValueType::Mat4f } },
-				{"projection", {64, ConstantBufferValueType::Mat4f } }
+			rendererRef.shaderProgram.vertexConstBuffer.constantBufferMap = {
+				{"colorTint", { 16 } },
+				{"world", { 64 } },
+				{"view", { 64 } },
+				{"projection", { 64 } }
+			};
+			break;
+	}
+
+	switch (rendererRef.shaderProgram.shaderType)
+	{
+		case ShaderType::Lit_Color:
+			rendererRef.shaderProgram.pixelConstBuffer.constantBufferFields[0] = "dirLight";
+			rendererRef.shaderProgram.pixelConstBuffer.constantBufferFields[1] = "cameraPos";
+			rendererRef.shaderProgram.pixelConstBuffer.constantBufferFields[2] = "padding1";
+			rendererRef.shaderProgram.pixelConstBuffer.constantBufferFields[3] = "specularIntensity";
+			rendererRef.shaderProgram.pixelConstBuffer.constantBufferFields[4] = "padding2";
+			rendererRef.shaderProgram.pixelConstBuffer.constantBufferFields[5] = "pointLight";
+			rendererRef.shaderProgram.pixelConstBuffer.constantBufferMap = {
+				{ "dirLight", { sizeof(DirectionalLight) } },
+				{ "cameraPos", { sizeof(glm::vec3) } },
+				{ "padding1", { sizeof(float) } },
+				{ "specularIntensity", { sizeof(float) } },
+				{ "padding2", { sizeof(glm::vec3) } },
+				{ "pointLight", { sizeof(PointLight) } }
 			};
 			break;
 	}
@@ -80,7 +102,7 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 
 	//unsigned int size = sizeof(MatrixConstantBuffer);
 	unsigned int size = 0;
-	for (auto it = dxRenderer->shaderProgram.constantBufferMap.begin(); it != dxRenderer->shaderProgram.constantBufferMap.end(); ++it)
+	for (auto it = dxRenderer->shaderProgram.vertexConstBuffer.constantBufferMap.begin(); it != dxRenderer->shaderProgram.vertexConstBuffer.constantBufferMap.end(); ++it)
 	{
 		size += it->second.byteSize;
 	}
@@ -94,8 +116,7 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	matrixBufferDesc.MiscFlags = 0;
 	matrixBufferDesc.StructureByteStride = 0;
 
-	device->CreateBuffer(&matrixBufferDesc, 0, dxRenderer->shaderProgram.constantBuffer.GetAddressOf());
-	D3D11_MAPPED_SUBRESOURCE mappedBuffer = {};
+	device->CreateBuffer(&matrixBufferDesc, 0, dxRenderer->shaderProgram.vertexConstBuffer.constantBuffer.GetAddressOf());
 
 	D3DReadFileToBlob(
 		typeToPixelPath[dxRenderer->shaderProgram.shaderType],
@@ -116,6 +137,24 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	samplerDesc.MaxAnisotropy = 16;
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	device->CreateSamplerState(&samplerDesc, &dxRenderer->shaderProgram.samplerState);
+
+	size = 0;
+	for (auto it = dxRenderer->shaderProgram.pixelConstBuffer.constantBufferMap.begin(); it != dxRenderer->shaderProgram.pixelConstBuffer.constantBufferMap.end(); ++it)
+	{
+		size += it->second.byteSize;
+	}
+	size = (size + 15) / 16 * 16;
+
+	D3D11_BUFFER_DESC lightBufferDesc = {};
+	lightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	lightBufferDesc.ByteWidth = size;
+	lightBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	lightBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	lightBufferDesc.MiscFlags = 0;
+	lightBufferDesc.StructureByteStride = 0;
+
+	device->CreateBuffer(&lightBufferDesc, 0, dxRenderer->shaderProgram.pixelConstBuffer.constantBuffer.GetAddressOf());
+
 	context->PSSetSamplers(0, 1, &dxRenderer->shaderProgram.samplerState);
 }
 
@@ -190,14 +229,35 @@ void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTran
 	cb.world = meshTransform.worldMatrix;
 	cb.colorTint = dxRenderer->vertexColor;
 
-	context->Map(dxRenderer->shaderProgram.constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);
+	context->Map(dxRenderer->shaderProgram.vertexConstBuffer.constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);
 	//memcpy(data.pData, &cb, sizeof(cb));
 	memcpy(data.pData, &cb.colorTint, sizeof(cb.colorTint));
 	memcpy((char*)data.pData + sizeof(cb.colorTint), &cb.world, sizeof(cb.world));
 	memcpy((char*)data.pData + sizeof(cb.colorTint) + sizeof(cb.world), &cb.view, sizeof(cb.view));
 	memcpy((char*)data.pData + sizeof(cb.colorTint) + sizeof(cb.world) + sizeof(cb.view), &cb.projection, sizeof(cb.projection));
-	context->Unmap(dxRenderer->shaderProgram.constantBuffer.Get(), 0);
-	context->VSSetConstantBuffers(0, 1, dxRenderer->shaderProgram.constantBuffer.GetAddressOf());
+	context->Unmap(dxRenderer->shaderProgram.vertexConstBuffer.constantBuffer.Get(), 0);
+	context->VSSetConstantBuffers(0, 1, dxRenderer->shaderProgram.vertexConstBuffer.constantBuffer.GetAddressOf());
+
+	if (dxRenderer->shaderProgram.shaderType != ShaderType::Lit_Color) return;
+	LightBufferData lightBufferData;
+	DirectionalLight light;
+	light.AmbientColor = glm::vec3(.1f, .0f, .2f);
+	light.DiffuseColor = glm::vec3(1, 0, 0);
+	light.Direction = glm::vec3(1, 0, 0);
+	lightBufferData.dirLight = light;
+	lightBufferData.cameraPos = camera.view[3];
+	lightBufferData.specularIntensity = 16;
+	lightBufferData.pointLight.AmbientColor = glm::vec3(0, 0, 0);
+	lightBufferData.pointLight.DiffuseColor = glm::vec3(.7f, 0, .2f);
+	lightBufferData.pointLight.Position = glm::vec3(10, 2, 0);
+	//lightBufferData.cameraPos = glm::vec3(5, 4, 0);
+	//lightBufferData.specularIntensity = 32;
+
+	data = {};
+	context->Map(dxRenderer->shaderProgram.pixelConstBuffer.constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);
+	memcpy(data.pData, &lightBufferData, sizeof(LightBufferData));
+	context->Unmap(dxRenderer->shaderProgram.pixelConstBuffer.constantBuffer.Get(), 0);
+	context->PSSetConstantBuffers(0, 1, dxRenderer->shaderProgram.pixelConstBuffer.constantBuffer.GetAddressOf());
 }
 
 DirectXRenderSystem::DirectXRenderSystem(ID3D11Device* dev, ID3D11DeviceContext* ctx) : device(dev), context(ctx)
