@@ -25,5 +25,6 @@
     <FxCompile Include="PixelShader.hlsl" />
     <FxCompile Include="PixelShader_UnlitColor.hlsl" />
     <FxCompile Include="VertexShader_UnlitColor.hlsl" />
+    <FxCompile Include="PixelShader_LitColor.hlsl" />
   </ItemGroup>
 </Project>
