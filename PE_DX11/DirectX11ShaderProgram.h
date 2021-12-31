@@ -5,12 +5,18 @@
 #include <map>
 #include "IRenderSystem.h"
 
-enum ConstantBufferValueType { Vec1f, Vec2f, Vec3f, Vec4f, Mat4f };
+enum ConstantBufferValueType { Vec1f, Vec2f, Vec3f, Vec4f, Mat4f, Array };
 
 struct ConstantBufferValue
 {
 	size_t byteSize;
-	ConstantBufferValueType type;
+};
+
+struct DirectXConstantBuffer
+{
+	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer;
+	const char* constantBufferFields[16];
+	std::map<const char*, ConstantBufferValue> constantBufferMap;
 };
 
 struct DirectX11ShaderProgram
@@ -21,9 +27,8 @@ struct DirectX11ShaderProgram
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer;
-	const char* constantBufferFields[16];
-	std::map<const char*, ConstantBufferValue> constantBufferMap;
+	DirectXConstantBuffer vertexConstBuffer;
+	DirectXConstantBuffer pixelConstBuffer;
 	ShaderType shaderType;
 };
 #endif
