@@ -63,6 +63,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)IPlatform.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IRenderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IRenderSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)lights.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)loop.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mesh.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MeshLoaderSystem.h" />
