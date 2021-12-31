@@ -1,7 +1,7 @@
 #pragma once
 #include "PEImage.h"
 
-enum ShaderProgramProperties { Fully_3D = 1, Colored = 2, Textured = 4 };
+enum ShaderProgramProperties { Fully_3D = 1, Colored = 2, Textured = 4, Lit = 8 };
 
 class IRenderer
 {
