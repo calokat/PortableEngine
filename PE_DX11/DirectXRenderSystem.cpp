@@ -13,11 +13,6 @@ IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity
 		case ShaderType::Unlit_Color:
 		case ShaderType::Unlit_Textured:
 		case ShaderType::Lit_Color:
-			rendererRef.shaderProgram.vertexConstBuffer.constantBufferFields[0] = "colorTint";
-			rendererRef.shaderProgram.vertexConstBuffer.constantBufferFields[1] = "world";
-			rendererRef.shaderProgram.vertexConstBuffer.constantBufferFields[2] = "view";
-			rendererRef.shaderProgram.vertexConstBuffer.constantBufferFields[3] = "projection";
-
 			rendererRef.shaderProgram.vertexConstBuffer.constantBufferMap = {
 				{"colorTint", { 16 } },
 				{"world", { 64 } },
@@ -30,19 +25,11 @@ IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity
 	switch (rendererRef.shaderProgram.shaderType)
 	{
 		case ShaderType::Lit_Color:
-			rendererRef.shaderProgram.pixelConstBuffer.constantBufferFields[0] = "dirLight";
-			rendererRef.shaderProgram.pixelConstBuffer.constantBufferFields[1] = "cameraPos";
-			rendererRef.shaderProgram.pixelConstBuffer.constantBufferFields[2] = "padding1";
-			rendererRef.shaderProgram.pixelConstBuffer.constantBufferFields[3] = "specularIntensity";
-			rendererRef.shaderProgram.pixelConstBuffer.constantBufferFields[4] = "padding2";
-			rendererRef.shaderProgram.pixelConstBuffer.constantBufferFields[5] = "pointLight";
 			rendererRef.shaderProgram.pixelConstBuffer.constantBufferMap = {
 				{ "dirLight", { sizeof(DirectionalLight) } },
+				{ "pointLight", { sizeof(PointLight) } },
 				{ "cameraPos", { sizeof(glm::vec3) } },
-				{ "padding1", { sizeof(float) } },
 				{ "specularIntensity", { sizeof(float) } },
-				{ "padding2", { sizeof(glm::vec3) } },
-				{ "pointLight", { sizeof(PointLight) } }
 			};
 			break;
 	}
@@ -147,7 +134,7 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 
 	D3D11_BUFFER_DESC lightBufferDesc = {};
 	lightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	lightBufferDesc.ByteWidth = size;
+	lightBufferDesc.ByteWidth = sizeof(LightBufferData);
 	lightBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	lightBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	lightBufferDesc.MiscFlags = 0;
@@ -241,17 +228,15 @@ void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTran
 	if (dxRenderer->shaderProgram.shaderType != ShaderType::Lit_Color) return;
 	LightBufferData lightBufferData;
 	DirectionalLight light;
-	light.AmbientColor = glm::vec3(.1f, .0f, .2f);
-	light.DiffuseColor = glm::vec3(1, 0, 0);
-	light.Direction = glm::vec3(1, 0, 0);
+	light.AmbientColor = glm::vec4(.1f, .0f, .2f, 1);
+	light.DiffuseColor = glm::vec4(0, 0, 0, 1);
+	light.Direction = glm::vec4(0, 0, 1, 0);
 	lightBufferData.dirLight = light;
 	lightBufferData.cameraPos = camera.view[3];
 	lightBufferData.specularIntensity = 16;
-	lightBufferData.pointLight.AmbientColor = glm::vec3(0, 0, 0);
-	lightBufferData.pointLight.DiffuseColor = glm::vec3(.7f, 0, .2f);
-	lightBufferData.pointLight.Position = glm::vec3(10, 2, 0);
-	//lightBufferData.cameraPos = glm::vec3(5, 4, 0);
-	//lightBufferData.specularIntensity = 32;
+	lightBufferData.pointLight.AmbientColor = glm::vec4(0, 0, 0, 1);
+	lightBufferData.pointLight.DiffuseColor = glm::vec4(.8f, .0f, .2f, 1);
+	lightBufferData.pointLight.Position = glm::vec4(0, 2, 0, 1);
 
 	data = {};
 	context->Map(dxRenderer->shaderProgram.pixelConstBuffer.constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);
