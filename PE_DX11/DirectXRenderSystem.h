@@ -25,8 +25,8 @@ public:
 private:
 	ID3D11Device* device;
 	ID3D11DeviceContext* context;
-	std::map<ShaderType, LPCWSTR> typeToVertexPath = { {ShaderType::Unlit_Color, L"../x64/Debug/VertexShader_UnlitColor.cso"}, {ShaderType::Unlit_Textured, L"../x64/Debug/VertexShader.cso"}, {ShaderType::Lit_Color, L"../x64/Debug/VertexShader.cso"} };
-	std::map<ShaderType, LPCWSTR> typeToPixelPath = { {ShaderType::Unlit_Color, L"../x64/Debug/PixelShader_UnlitColor.cso" }, { ShaderType::Unlit_Textured, L"../x64/Debug/PixelShader.cso" }, {ShaderType::Lit_Color, L"../x64/Debug/PixelShader_LitColor.cso"}};
+	std::map<ShaderType, LPCWSTR> typeToVertexPath = { {ShaderType::Unlit_Color, L"../x64/Debug/VertexShader_UnlitColor.cso"}, {ShaderType::Unlit_Textured, L"../x64/Debug/VertexShader.cso"}, {ShaderType::Lit_Color, L"../x64/Debug/VertexShader.cso"}, {ShaderType::Lit_Textured, L"../x64/Debug/VertexShader.cso"} };
+	std::map<ShaderType, LPCWSTR> typeToPixelPath = { {ShaderType::Unlit_Color, L"../x64/Debug/PixelShader_UnlitColor.cso" }, { ShaderType::Unlit_Textured, L"../x64/Debug/PixelShader.cso" }, {ShaderType::Lit_Color, L"../x64/Debug/PixelShader_LitColor.cso"}, {ShaderType::Lit_Textured, L"../x64/Debug/PixelShader_LitTextured.cso"} };
 	void BindTexture(DirectXRenderer* renderer);
 };
 //void DrawGizmo(Camera camera);

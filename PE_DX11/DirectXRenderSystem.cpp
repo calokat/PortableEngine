@@ -13,6 +13,7 @@ IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity
 		case ShaderType::Unlit_Color:
 		case ShaderType::Unlit_Textured:
 		case ShaderType::Lit_Color:
+		case ShaderType::Lit_Textured:
 			rendererRef.shaderProgram.vertexConstBuffer.constantBufferMap = {
 				{"colorTint", { 16 } },
 				{"world", { 64 } },
@@ -123,7 +124,7 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
 	samplerDesc.MaxAnisotropy = 16;
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-	device->CreateSamplerState(&samplerDesc, &dxRenderer->shaderProgram.samplerState);
+	HRESULT res = device->CreateSamplerState(&samplerDesc, &dxRenderer->shaderProgram.samplerState);
 
 	size = 0;
 	for (auto it = dxRenderer->shaderProgram.pixelConstBuffer.constantBufferMap.begin(); it != dxRenderer->shaderProgram.pixelConstBuffer.constantBufferMap.end(); ++it)
@@ -225,24 +226,28 @@ void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTran
 	context->Unmap(dxRenderer->shaderProgram.vertexConstBuffer.constantBuffer.Get(), 0);
 	context->VSSetConstantBuffers(0, 1, dxRenderer->shaderProgram.vertexConstBuffer.constantBuffer.GetAddressOf());
 
-	if (dxRenderer->shaderProgram.shaderType != ShaderType::Lit_Color) return;
-	LightBufferData lightBufferData;
-	DirectionalLight light;
-	light.AmbientColor = glm::vec4(.1f, .0f, .2f, 1);
-	light.DiffuseColor = glm::vec4(0, 0, 0, 1);
-	light.Direction = glm::vec4(0, 0, 1, 0);
-	lightBufferData.dirLight = light;
-	lightBufferData.cameraPos = camera.view[3];
-	lightBufferData.specularIntensity = 16;
-	lightBufferData.pointLight.AmbientColor = glm::vec4(0, 0, 0, 1);
-	lightBufferData.pointLight.DiffuseColor = glm::vec4(.8f, .0f, .2f, 1);
-	lightBufferData.pointLight.Position = glm::vec4(0, 2, 0, 1);
+	if (dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Lit)
+	{
+		LightBufferData lightBufferData;
+		DirectionalLight light;
+		light.AmbientColor = glm::vec4(.1f, .0f, .2f, 1);
+		light.DiffuseColor = glm::vec4(0, 0, 0, 1);
+		light.Direction = glm::vec4(0, 0, 1, 0);
+		lightBufferData.dirLight = light;
+		lightBufferData.cameraPos = camera.view[3];
+		lightBufferData.specularIntensity = 16;
+		lightBufferData.pointLight.AmbientColor = glm::vec4(0, 0, 0, 1);
+		lightBufferData.pointLight.DiffuseColor = glm::vec4(.8f, .0f, .2f, 1);
+		lightBufferData.pointLight.Position = glm::vec4(0, 2, 0, 1);
 
-	data = {};
-	context->Map(dxRenderer->shaderProgram.pixelConstBuffer.constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);
-	memcpy(data.pData, &lightBufferData, sizeof(LightBufferData));
-	context->Unmap(dxRenderer->shaderProgram.pixelConstBuffer.constantBuffer.Get(), 0);
-	context->PSSetConstantBuffers(0, 1, dxRenderer->shaderProgram.pixelConstBuffer.constantBuffer.GetAddressOf());
+		data = {};
+		context->Map(dxRenderer->shaderProgram.pixelConstBuffer.constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);
+		memcpy(data.pData, &lightBufferData, sizeof(LightBufferData));
+		context->Unmap(dxRenderer->shaderProgram.pixelConstBuffer.constantBuffer.Get(), 0);
+		context->PSSetConstantBuffers(0, 1, dxRenderer->shaderProgram.pixelConstBuffer.constantBuffer.GetAddressOf());
+	}
+
+	context->PSSetSamplers(0, 1, &dxRenderer->shaderProgram.samplerState);
 }
 
 DirectXRenderSystem::DirectXRenderSystem(ID3D11Device* dev, ID3D11DeviceContext* ctx) : device(dev), context(ctx)
@@ -291,6 +296,7 @@ void DirectXRenderSystem::CreateTexture(PEImage& img)
 void DirectXRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath)
 {
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
+	if ((dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Textured) == 0) return;
 	dxRenderer->diffuseTexture = PEImage(imagePath);
 	ImageSystem::CreateImage(dxRenderer->diffuseTexture);
 	CreateTexture(dxRenderer->diffuseTexture);
@@ -306,7 +312,7 @@ void DirectXRenderSystem::LoadTexture(PEImage& img)
 
 void DirectXRenderSystem::BindTexture(DirectXRenderer* renderer)
 {
-	if (renderer->shaderProgram.shaderType == ShaderType::Unlit_Color) return;
+	if ((renderer->shaderProgram.shaderType & ShaderProgramProperties::Textured) == 0) return;
 	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(renderer->diffuseTexture.imageGraphicsData);
 	context->PSSetShaderResources(0, 1, &dx11ImageGraphicsData->srv);
 }
