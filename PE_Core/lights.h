@@ -3,29 +3,21 @@
 
 struct DirectionalLight
 {
-	glm::vec3 AmbientColor;
-	float padding1;
-	glm::vec3 DiffuseColor;
-	float padding2;
-	glm::vec3 Direction;
-	float padding3;
+	glm::vec4 AmbientColor;
+	glm::vec4 DiffuseColor;
+	glm::vec4 Direction;
 };
 
 struct PointLight
 {
-	glm::vec3 AmbientColor;
-	float padding1;
-	glm::vec3 DiffuseColor;
-	float padding2;
-	glm::vec3 Position;
-	float padding3;
+	glm::vec4 AmbientColor;
+	glm::vec4 DiffuseColor;
+	glm::vec4 Position;
 };
 
 struct LightBufferData {
 	DirectionalLight dirLight;
-	glm::vec3 cameraPos;
-	float padding1;
-	float specularIntensity;
-	glm::vec3 padding2;
 	PointLight pointLight;
+	glm::vec3 cameraPos;
+	float specularIntensity;
 };

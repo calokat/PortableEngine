@@ -3,21 +3,15 @@
 // structs
 struct DirectionalLight
 {
-	float3 AmbientColor;
-	float padding1;
-	float3 DiffuseColor;
-	float padding2;
-	float3 Direction;
-	float padding3;
+	float4 AmbientColor;
+	float4 DiffuseColor;
+	float4 Direction;
 };
 struct PointLight
 {
-	float3 AmbientColor;
-	float padding1;
-	float3 DiffuseColor;
-	float padding2;
-	float3 Position;
-	float padding3;
+	float4 AmbientColor;
+	float4 DiffuseColor;
+	float4 Position;
 };
 struct VertexShaderInput
 {

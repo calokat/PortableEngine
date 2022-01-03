@@ -3,11 +3,9 @@
 cbuffer LightData: register(b0)
 {
 	DirectionalLight dirLight;
-	float3 cameraPos;
-	float padding1;
-	float specularIntensity;
-	float3 padding2;
 	PointLight pointLight;
+	float3 cameraPos;
+	float specularIntensity;
 };
 
 // Texture2D diffuseTexture : register(t0);
@@ -28,7 +26,7 @@ float3 CalculatePointLight(PointLight light, VertexToPixel input)
 	input.normal = normalize(input.normal);
 	float3 normalizedNegatedLightDir = normalize(light.Position - input.worldPos);
 	float lightAmount = saturate(dot(normalizedNegatedLightDir, input.normal));
-	float3 finalColor = lightAmount * float4(light.DiffuseColor, 1) * input.color + float4(light.AmbientColor, 1) + PhongPoint(light, input);
+	float3 finalColor = lightAmount * float4(light.DiffuseColor.xyz, 1) * input.color + float4(light.AmbientColor.xyz, 1) + PhongPoint(light, input);
 	return finalColor;
 }
 
