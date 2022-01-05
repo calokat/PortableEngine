@@ -59,7 +59,7 @@ void ComponentGUI(Rotator& r)
 void ComponentGUI(DirectXRenderer& dxr)
 {
 	ImGui::ColorPicker4("Renderer Color", glm::value_ptr(dxr.vertexColor));
-	if (dxr.shaderProgram.shaderType == ShaderProgramProperties::Textured)
+	if (dxr.shaderProgram.shaderType & ShaderProgramProperties::Textured)
 	{
 		ImGui::Image((void*)(std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(dxr.diffuseTexture.imageGraphicsData))->srv, ImVec2(100, 100));
 	}
