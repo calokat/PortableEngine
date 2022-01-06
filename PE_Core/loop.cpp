@@ -17,6 +17,7 @@
 #ifdef _WIN64
 #include "DIrectXRenderer.h"
 #endif
+#include "BillboardSystem.h"
 template<class T>
 void DrawIteration(Camera& camera, entt::entity selected, entt::registry& registry, IRenderSystem* renderSystem)
 {
@@ -106,6 +107,9 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 
 	TransformSystem::CalculateWorldMatrix(&camTransform);
 	CameraSystem::CalculateViewMatrixLH(camera, camTransform);
+
+	BillboardSystem::SetBillboardTransforms(registry.view<Billboard, Transform>(), camera);
+
 	// TODO: Put the picking code in its own system
 	if (plat->GetInputSystem()->WasMouseButtonClicked(MouseButton::Left))
 	{
