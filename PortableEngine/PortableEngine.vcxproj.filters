@@ -8,6 +8,7 @@
     <ClCompile Include="WindowsPlatform.cpp" />
     <ClCompile Include="WindowsAssetManager.cpp" />
     <ClCompile Include="..\..\imgui\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\..\DirectXTK\Src\WICTextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui_impl_emscripten.h" />
@@ -16,6 +17,7 @@
     <ClInclude Include="WindowsInputSystem.h" />
     <ClInclude Include="WindowsPlatform.h" />
     <ClInclude Include="WindowsAssetManager.h" />
+    <ClInclude Include="..\..\DirectXTK\Inc\WICTextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

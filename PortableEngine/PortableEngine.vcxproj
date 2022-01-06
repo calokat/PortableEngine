@@ -79,7 +79,7 @@
     <SourcePath>..\..\GitHub\imgui\backends;..\..\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\..\json\single_include\nlohmann;..\..\..\common\glew\include;..\..\entt\src\entt;..\..\imgui;..\..\stb;..\..\ImGuizmo;..\..\assimp\include;C:\Users\Caleb\Documents\GitHub\assimp\build\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\json\single_include\nlohmann;..\..\..\common\glew\include;..\..\entt\src\entt;..\..\imgui;..\..\stb;..\..\ImGuizmo;..\..\assimp\include;C:\Users\Caleb\Documents\GitHub\assimp\build\include;..\..\DirectXTK\Inc;$(IncludePath)</IncludePath>
     <LibraryPath>..\..\..\common\glew\lib\Release\x64;../../../common\openxr_loader_windows-1.0.9\openxr_loader_windows\x64\lib;C:\Users\Caleb\Documents\GitHub\assimp\build\lib\MinSizeRel;$(LibraryPath)</LibraryPath>
     <SourcePath>..\..\GitHub\imgui\backends;..\..\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
@@ -90,7 +90,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>..\..\..\common\glew\lib\Release\x64;../../../common\openxr_loader_windows-1.0.9\openxr_loader_windows\x64\lib;C:\Users\Caleb\Documents\GitHub\assimp\build\lib\MinSizeRel;$(LibraryPath)</LibraryPath>
-    <IncludePath>..\..\json\single_include\nlohmann;..\..\..\common\glew\include;..\..\entt\src\entt;..\..\imgui;..\..\stb;..\..\ImGuizmo;..\..\assimp\include;C:\Users\Caleb\Documents\GitHub\assimp\build\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>..\..\json\single_include\nlohmann;..\..\..\common\glew\include;..\..\entt\src\entt;..\..\imgui;..\..\stb;..\..\ImGuizmo;..\..\assimp\include;C:\Users\Caleb\Documents\GitHub\assimp\build\include;..\..\DirectXTK\Inc;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <SourcePath>..\..\GitHub\imgui\backends;..\..\GitHub\ImGuizmo;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\DirectXTK\Src\WICTextureLoader.cpp" />
     <ClCompile Include="..\..\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui_impl_emscripten.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="WindowsPlatform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\DirectXTK\Inc\WICTextureLoader.h" />
     <ClInclude Include="imgui_impl_emscripten.h" />
     <ClInclude Include="misc_components.h" />
     <ClInclude Include="SerializationSystem.h" />
@@ -206,11 +208,4 @@
     <Import Project="..\packages\Microsoft.XAudio2.Redist.1.2.3\build\native\Microsoft.XAudio2.Redist.targets" Condition="Exists('..\packages\Microsoft.XAudio2.Redist.1.2.3\build\native\Microsoft.XAudio2.Redist.targets')" />
     <Import Project="..\packages\directxtk_desktop_2017.2020.8.15.1\build\native\directxtk_desktop_2017.targets" Condition="Exists('..\packages\directxtk_desktop_2017.2020.8.15.1\build\native\directxtk_desktop_2017.targets')" />
   </ImportGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.XAudio2.Redist.1.2.3\build\native\Microsoft.XAudio2.Redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.XAudio2.Redist.1.2.3\build\native\Microsoft.XAudio2.Redist.targets'))" />
-    <Error Condition="!Exists('..\packages\directxtk_desktop_2017.2020.8.15.1\build\native\directxtk_desktop_2017.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtk_desktop_2017.2020.8.15.1\build\native\directxtk_desktop_2017.targets'))" />
-  </Target>
 </Project>
