@@ -3,6 +3,9 @@
 #include "DirectX11ImageGraphicsData.h"
 #include "ImageSystem.h"
 #include "lights.h"
+#include <WICTextureLoader.h>
+
+#pragma warning(disable:4996)
 
 IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity& e, ShaderType type)
 {
@@ -258,39 +261,16 @@ void DirectXRenderSystem::CreateTexture(PEImage& img)
 {
 	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::make_shared<DirectX11ImageGraphicsData>();
 	img.imageGraphicsData = dx11ImageGraphicsData;
-	// stolen from https://github.com/ocornut/imgui/wiki/Image-Loading-and-Displaying-Examples#Example-for-DirectX11-users
-	
-	// Create texture
-	D3D11_TEXTURE2D_DESC desc;
-	ZeroMemory(&desc, sizeof(desc));
-	desc.Width = img.width;
-	desc.Height = img.height;
-	desc.MipLevels = 1;
-	desc.ArraySize = 1;
-	desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	desc.SampleDesc.Count = 1;
-	desc.Usage = D3D11_USAGE_DEFAULT;
-	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	desc.CPUAccessFlags = 0;
-	
-	ID3D11Texture2D* pTexture = NULL;
-	D3D11_SUBRESOURCE_DATA subResource;
-	subResource.pSysMem = img.data;
-	subResource.SysMemPitch = desc.Width * 3;
-	subResource.SysMemSlicePitch = 0;
-	device->CreateTexture2D(&desc, &subResource, &pTexture);
-	
-	// Create texture view
-	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-	ZeroMemory(&srvDesc, sizeof(srvDesc));
-	srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	srvDesc.Texture2D.MipLevels = desc.MipLevels;
-	srvDesc.Texture2D.MostDetailedMip = 0;
-	device->CreateShaderResourceView(pTexture, &srvDesc, &dx11ImageGraphicsData->srv);
-	pTexture->Release();
 
-	ImageSystem::DestroyImage(img);
+	size_t requiredSize = mbstowcs(nullptr, img.path.c_str(), 0);
+
+	wchar_t* widePath = new wchar_t[requiredSize + 1];
+
+	mbstowcs(widePath, img.path.c_str(), requiredSize + 1);
+
+	HRESULT hr = DirectX::CreateWICTextureFromFile(device, widePath, nullptr, &dx11ImageGraphicsData->srv);
+	
+	delete[] widePath;
 }
 
 void DirectXRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath)
@@ -298,7 +278,6 @@ void DirectXRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
 	if ((dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Textured) == 0) return;
 	dxRenderer->diffuseTexture = PEImage(imagePath);
-	ImageSystem::CreateImage(dxRenderer->diffuseTexture);
 	CreateTexture(dxRenderer->diffuseTexture);
 
 	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(dxRenderer->diffuseTexture.imageGraphicsData);
