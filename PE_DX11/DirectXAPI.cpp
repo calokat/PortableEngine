@@ -144,6 +144,16 @@ int DirectXAPI::Init()
 
 	ImGui_ImplDX11_Init(device.Get(), context.Get());
 
+	ID3D11RasterizerState* g_pRasterState;
+
+	D3D11_RASTERIZER_DESC rasterizerState;
+	rasterizerState.CullMode = D3D11_CULL_NONE;
+	rasterizerState.FrontCounterClockwise = false;
+
+	device->CreateRasterizerState(&rasterizerState, &g_pRasterState);
+
+	context->RSSetState(g_pRasterState);
+
 	//context->IASetInputLayout(inputLayout);
 	// Return the "everything is ok" HRESULT value
 	return S_OK;
