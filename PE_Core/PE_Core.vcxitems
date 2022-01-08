@@ -34,6 +34,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)InspectorGUI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)InspectorWindow.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)IRenderSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)LightsSystem.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)loop.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MeshLoaderSystem.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MeshMaker.cpp" />
@@ -66,6 +67,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)IRenderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IRenderSystem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)lights.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LightsSystem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)loop.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mesh.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MeshLoaderSystem.h" />
