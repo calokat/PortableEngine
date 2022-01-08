@@ -1,6 +1,9 @@
 #pragma once
 #include "glm/common.hpp"
 
+#define MAX_POINT_LIGHTS 8
+
+
 struct DirectionalLight
 {
 	glm::vec4 AmbientColor;
