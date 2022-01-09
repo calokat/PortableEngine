@@ -181,7 +181,7 @@ int main(int argc, char* argv[])
 	registry.emplace<Transform>(root);
 	registry.emplace<Relationship>(root);
 	GizmoSystem::Select(root);
-	entt::entity duoRoot = MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), root);
+	entt::entity duoRoot = MakeMesh(duoScene, registry, root);
 
 	Relationship& duoRootRel = registry.get<Relationship>(duoRoot);
 

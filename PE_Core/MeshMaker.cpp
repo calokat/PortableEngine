@@ -3,7 +3,7 @@
 #include "TransformSystem.h"
 #include "misc_components.h"
 #include "AABBSystem.h"
-entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> scene, IRenderSystem* renderSystem, IAssetManager* assetManager, Camera& renderingCam, Transform& renderingCamTransform, entt::entity parent)
+entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> scene, entt::entity parent)
 {
 	auto newMeshEntity = registry.create();
 	Relationship& childRel = registry.emplace<Relationship>(newMeshEntity);
@@ -31,7 +31,7 @@ entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> s
 	}
 	for (int i = 0; i < scene.children.size(); ++i)
 	{
-		MakeMesh_Recursive(registry, scene.children[i], renderSystem, assetManager, renderingCam, renderingCamTransform, newMeshEntity);
+		MakeMesh_Recursive(registry, scene.children[i], newMeshEntity);
 	}
 	return newMeshEntity;
 }
@@ -55,10 +55,7 @@ void AttachRenderers(entt::registry& registry, IRenderSystem* renderSystem, cons
 	}
 }
 
-entt::entity MakeMesh(Tree<MeshCreateInfo> meshScene, entt::registry& registry, IRenderSystem* renderSystem, IAssetManager* assetManager, entt::entity meshRoot, glm::vec3 pos)
+entt::entity MakeMesh(Tree<MeshCreateInfo> meshScene, entt::registry& registry, entt::entity meshRoot)
 {
-	auto camView = registry.view<Camera>();
-	auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
-	return MakeMesh_Recursive(registry, meshScene, renderSystem, assetManager, camera, camTransform, meshRoot);
-	//Scene<Transform&> s = { camTransform, {{camTransform}} };
+	return MakeMesh_Recursive(registry, meshScene, meshRoot);
 }
