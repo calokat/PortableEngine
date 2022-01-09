@@ -77,7 +77,7 @@ void GLRenderSystem::DrawWireframe(IRenderer* renderer)
 {
 }
 
-void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera)
+void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLight, PointLight pointLights[MAX_POINT_LIGHTS])
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
 	glUseProgram(glRenderer->shaderProgram.programID);

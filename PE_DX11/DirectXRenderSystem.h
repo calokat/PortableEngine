@@ -17,7 +17,7 @@ public:
 	void LoadMesh(IRenderer* renderer, Mesh& mesh);
 	void Draw(IRenderer* DirectXRenderer);
 	void DrawWireframe(IRenderer* DirectXRenderer);
-	void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera);
+	void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLight, PointLight pointLights[MAX_POINT_LIGHTS]);
 	DirectXRenderSystem(ID3D11Device* dev, ID3D11DeviceContext* ctx);
 	void CreateTexture(PEImage& img);
 	void LoadTexture(IRenderer* renderer, std::string imagePath);

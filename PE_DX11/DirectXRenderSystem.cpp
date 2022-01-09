@@ -209,7 +209,7 @@ void DirectXRenderSystem::DrawWireframe(IRenderer* renderer)
 {
 }
 
-void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera)
+void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLight, PointLight pointLights[MAX_POINT_LIGHTS])
 {
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
 
@@ -232,16 +232,10 @@ void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTran
 	if (dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Lit)
 	{
 		LightBufferData lightBufferData;
-		DirectionalLight light;
-		light.AmbientColor = glm::vec4(.1f, .0f, .2f, 1);
-		light.DiffuseColor = glm::vec4(0, 0, 0, 1);
-		light.Direction = glm::vec4(0, 0, 1, 0);
-		lightBufferData.dirLight = light;
+		lightBufferData.dirLight = dirLight;
 		lightBufferData.cameraPos = camera.view[3];
 		lightBufferData.specularIntensity = 16;
-		lightBufferData.pointLight.AmbientColor = glm::vec4(0, 0, 0, 1);
-		lightBufferData.pointLight.DiffuseColor = glm::vec4(.8f, .0f, .2f, 1);
-		lightBufferData.pointLight.Position = glm::vec4(0, 2, 0, 1);
+		lightBufferData.pointLight = pointLights[0];
 
 		data = {};
 		context->Map(dxRenderer->shaderProgram.pixelConstBuffer.constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);

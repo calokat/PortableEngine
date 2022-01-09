@@ -134,7 +134,14 @@ void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView&
         //renderSystem->LoadMesh(&renderer, mesh);
         renderSystem->BindRenderer(&renderer);
         
-        renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam);
+        DirectionalLight dirLight;
+        dirLight.Direction = glm::vec4(0, 1, 0, 0);
+        dirLight.DiffuseColor = glm::vec4(1, 0, 1, 1);
+
+        PointLight pointLights[MAX_POINT_LIGHTS];
+
+
+        renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam, dirLight, pointLights);
         renderSystem->Draw(&renderer);
     }
 

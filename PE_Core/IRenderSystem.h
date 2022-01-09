@@ -5,6 +5,7 @@
 #include <entt.hpp>
 #include "PEImage.h"
 #include "OpenGLShaderProgram.h"
+#include "lights.h"
 
 enum ShaderType
 {
@@ -23,7 +24,7 @@ public:
 	virtual void LoadMesh(IRenderer* renderer, Mesh& mesh/*, ID3D11Device* device*/) = 0;
 	virtual void Draw(IRenderer* renderer/*, ID3D11DeviceContext* context*/) = 0;
 	virtual void DrawWireframe(IRenderer* renderer/*, ID3D11DeviceContext* context*/) = 0;
-	virtual void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera) = 0;
+	virtual void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLight, PointLight pointLights[MAX_POINT_LIGHTS]) = 0;
 	virtual void CreateTexture(PEImage& img) = 0;
 	virtual void LoadTexture(IRenderer* renderer, std::string imagePath) = 0;
 	virtual void LoadTexture(PEImage& img) = 0;

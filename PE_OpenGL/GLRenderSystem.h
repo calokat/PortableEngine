@@ -19,7 +19,7 @@ public:
 	void LoadMesh(IRenderer* renderer, Mesh& mesh);
 	void Draw(IRenderer* renderer);
 	void DrawWireframe(IRenderer* renderer);
-	void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera);
+	void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLight, PointLight pointLights[MAX_POINT_LIGHTS]);
 	void DrawGizmo(Camera camera);
 	void CreateTexture(PEImage& img);
 	void LoadTexture(IRenderer* renderer, std::string imagePath);
