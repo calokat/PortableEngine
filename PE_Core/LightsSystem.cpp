@@ -21,6 +21,8 @@ namespace LightsSystem
 	{
 		entt::entity res = reg.create();
 		PointLight& pl = reg.emplace<PointLight>(res);
+		pl.DiffuseColor = glm::vec4(1, 1, 1, 1);
+		pl.AmbientColor = glm::vec4(.3, .2, .3, 1);
 		reg.emplace<Name>(res, "Light Test");
 		Transform& plTransform = reg.emplace<Transform>(res);
 		reg.emplace<Relationship>(res);
@@ -32,5 +34,13 @@ namespace LightsSystem
 			AttachRenderers(reg, renderSystem, assetManager->GetAssetPath("../../Assets/Images/light_bulb.jpg").c_str(), it->second, ShaderType::Unlit_Textured);
 		}
 		return res;
+	}
+	void LoadPointLightPositions(entt::basic_view<entt::entity, entt::exclude_t<>, PointLight, Transform> pointLights)
+	{
+		for (entt::entity entity : pointLights)
+		{
+			auto [pointLight, pointLightTransform] = pointLights.get(entity);
+			pointLight.Position = pointLightTransform.worldMatrix[3];
+		}
 	}
 }
