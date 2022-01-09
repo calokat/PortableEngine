@@ -6,11 +6,7 @@
 #include <assimp\postprocess.h>
 #include "Transform.h"
 #include "Tree.h"
-struct MeshCreateInfo
-{
-	Mesh m;
-	Transform t;
-};
+#include "MeshCreateInfo.h"
 class MeshLoaderSystem
 {
 public:
@@ -18,4 +14,3 @@ public:
 	static Tree<MeshCreateInfo> CreateMeshHeirarchy(const char* path);
 	static void AddToMeshHeirarchy(Tree<MeshCreateInfo>& parent, const aiNode* assimpNode, const aiScene* assimpScene);
 };
-

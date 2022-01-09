@@ -70,6 +70,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LightsSystem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)loop.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mesh.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MeshCreateInfo.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MeshLoaderSystem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MeshMaker.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)misc_components.h" />
