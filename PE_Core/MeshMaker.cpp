@@ -3,7 +3,7 @@
 #include "TransformSystem.h"
 #include "misc_components.h"
 #include "AABBSystem.h"
-entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> scene, entt::entity parent)
+entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> scene, entt::entity parent, bool attachAABBs)
 {
 	auto newMeshEntity = registry.create();
 	Relationship& childRel = registry.emplace<Relationship>(newMeshEntity);
@@ -26,12 +26,15 @@ entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> s
 		Transform& meshTransform = registry.emplace<Transform>(newMeshEntity, scene.data.t);
 		Name& nameComp = registry.emplace<Name>(newMeshEntity);
 		nameComp = { newMesh.path };
-		AABB& aabb = registry.emplace<AABB>(newMeshEntity);
-		AABBSystem::UpdateAABB(aabb, newMesh, meshTransform);
+		if (attachAABBs)
+		{
+			AABB& aabb = registry.emplace<AABB>(newMeshEntity);
+			AABBSystem::UpdateAABB(aabb, newMesh, meshTransform);
+		}
 	}
 	for (int i = 0; i < scene.children.size(); ++i)
 	{
-		MakeMesh_Recursive(registry, scene.children[i], newMeshEntity);
+		MakeMesh_Recursive(registry, scene.children[i], newMeshEntity, attachAABBs);
 	}
 	return newMeshEntity;
 }
