@@ -146,7 +146,8 @@ int DirectXAPI::Init()
 
 	ID3D11RasterizerState* g_pRasterState;
 
-	D3D11_RASTERIZER_DESC rasterizerState;
+	D3D11_RASTERIZER_DESC rasterizerState = {};
+	rasterizerState.FillMode = D3D11_FILL_SOLID;
 	rasterizerState.CullMode = D3D11_CULL_NONE;
 	rasterizerState.FrontCounterClockwise = false;
 
