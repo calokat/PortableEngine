@@ -18,7 +18,7 @@ namespace LightsSystem
 			pointLights[i] = pointLightView.get<PointLight>(*it);
 		}
 	}
-	entt::entity CreatePointLight(entt::registry& reg, Tree<MeshCreateInfo> billBoardCreateInfo, IRenderSystem* renderSystem, IAssetManager* assetManager)
+	entt::entity CreatePointLight(entt::registry& reg)
 	{
 		entt::entity res = reg.create();
 		PointLight& pl = reg.emplace<PointLight>(res);
@@ -27,17 +27,17 @@ namespace LightsSystem
 		reg.emplace<Name>(res, "Light Test");
 		Transform& plTransform = reg.emplace<Transform>(res);
 		reg.emplace<Relationship>(res);
-		entt::entity billBoardEntity = MakeMesh_Recursive(reg, billBoardCreateInfo, res, false);
-		reg.emplace<Billboard>(billBoardEntity);
-		Relationship& billBoardRel = reg.get<Relationship>(billBoardEntity);
-		for (auto it = billBoardRel.children.begin(); it != billBoardRel.children.end(); ++it)
-		{
-			AttachRenderers(reg, renderSystem, assetManager->GetAssetPath("../../Assets/Images/light_bulb.jpg").c_str(), it->second, ShaderType::Unlit_Textured);
-		}
-		Mesh planeMesh = billBoardCreateInfo.children[0].data.m;
-		AABB bb = {};
-		AABBSystem::UpdateAABB(bb, planeMesh, plTransform);
-		reg.emplace<AABB>(res, bb);
+		return res;
+	}
+	entt::entity CreateDirectionalLight(entt::registry& reg)
+	{
+		entt::entity res = reg.create();
+		DirectionalLight& dl = reg.emplace<DirectionalLight>(res);
+		dl.AmbientColor = glm::vec4(0);
+		dl.DiffuseColor = glm::vec4(1);
+		reg.emplace<Name>(res, "Dir Light");
+		Transform& dlTransform = reg.emplace<Transform>(res);
+		reg.emplace<Relationship>(res);
 		return res;
 	}
 	void LoadPointLightPositions(entt::basic_view<entt::entity, entt::exclude_t<>, PointLight, Transform> pointLights)
@@ -46,6 +46,14 @@ namespace LightsSystem
 		{
 			auto [pointLight, pointLightTransform] = pointLights.get(entity);
 			pointLight.Position = pointLightTransform.worldMatrix[3];
+		}
+	}
+	void LoadDirLightDirections(entt::basic_view<entt::entity, entt::exclude_t<>, DirectionalLight, Transform> dirLights)
+	{
+		for (entt::entity entity : dirLights)
+		{
+			auto [dirLight, dirLightTransform] = dirLights.get(entity);
+			dirLight.Direction = glm::vec4(dirLightTransform.worldMatrix[0][2], dirLightTransform.worldMatrix[1][2], dirLightTransform.worldMatrix[2][2], 0);
 		}
 	}
 }
