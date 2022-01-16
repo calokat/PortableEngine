@@ -117,13 +117,13 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	}
 
 	auto entityView = registry.view<Name, Relationship, Transform>();
-	//EntityListWindow entityListWindow;
+	EntityListWindow entityListWindow;
 	InspectorWindow inspectorWindow;
 	//AssetBrowserWindow assetWindow;
 	//WindowHeader windowHeader;
 	Relationship& rootRel = registry.get<Relationship>(sceneRoot);
 	//windowHeader.Render(registry, plat->GetAssetManager(), renderSystem);
-	//entityListWindow.Render(rootRel, entityView);
+	entityListWindow.Render(rootRel, entityView);
 	inspectorWindow.Render(registry);
 
 	//assetWindow.Render(plat->GetAssetManager(), renderSystem);
