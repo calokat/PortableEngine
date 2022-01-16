@@ -52,6 +52,8 @@
 #include "Tree.h"
 #include "Relationship.h"
 #include "MeshMaker.h"
+#include "BillboardSystem.h"
+#include "LightsSystem.h"
 
 int main(int argc, char* argv[])
 {
@@ -172,46 +174,46 @@ int main(int argc, char* argv[])
 #else
 	xr = new WebXRAPI(graph, renderSystem);
 #endif
-	plat->GetAssetManager()->LoadDefaultThumbnails(renderSystem);
-	plat->GetAssetManager()->LoadAssetsFromCurrentDirectory(renderSystem);
+	//plat->GetAssetManager()->LoadDefaultThumbnails(renderSystem);
+	//plat->GetAssetManager()->LoadAssetsFromCurrentDirectory(renderSystem);
 	
-	Tree<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../../../Secret_Meshes/duo.fbx").c_str());
 	entt::entity root = registry.create();
 	registry.emplace<Name>(root, "$");
 	registry.emplace<Transform>(root);
 	registry.emplace<Relationship>(root);
 	GizmoSystem::Select(root);
+	Tree<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../../../Secret_Meshes/duo.fbx").c_str());
 	entt::entity duoRoot = MakeMesh(duoScene, registry, root);
 
 	Relationship& duoRootRel = registry.get<Relationship>(duoRoot);
 
 	for (auto it = duoRootRel.children.begin(); it != duoRootRel.children.end(); it++)
 	{
-		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str(), it->second, ShaderType::Unlit_Textured);
+		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str(), it->second, ShaderType::Lit_Textured);
 	}
 
-	entt::entity trioRoot = MakeMesh(duoScene, registry, renderSystem, plat->GetAssetManager(), root);
+	Tree<MeshCreateInfo> billboardMeshInfo = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/plane.fbx").c_str());
 
-	Relationship& trioRootRel = registry.get<Relationship>(trioRoot);
 
-	for (auto it = trioRootRel.children.begin(); it != trioRootRel.children.end(); it++)
-	{
-		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str(), it->second, ShaderType::Unlit_Color);
-	}
-	
-	Tree<MeshCreateInfo> handMeshInfo = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/index_controller.stl").c_str());
+	entt::entity pointLightEntity = LightsSystem::CreatePointLight(registry);
+	Relationship& pointLightRel = registry.get<Relationship>(pointLightEntity);
+	entt::entity dirLightEntity = LightsSystem::CreateDirectionalLight(registry);
+	Relationship& dirLightRel = registry.get<Relationship>(dirLightEntity);
 
-	entt::entity leftXRHand = MakeMesh(handMeshInfo, registry, renderSystem, plat->GetAssetManager(), root);
-	entt::entity rightXRHand = MakeMesh(handMeshInfo, registry, renderSystem, plat->GetAssetManager(), root);
+	pointLightRel.parent = root;
+	Relationship& rootRel = registry.get<Relationship>(root);
+	rootRel.children.insert(std::pair((int)pointLightEntity, pointLightEntity));
 
-	Transform& leftXRHandTransform = registry.get<Transform>(leftXRHand);
-	Transform& rightXRHandTransform = registry.get<Transform>(rightXRHand);
-	leftXRHandTransform.scale = { -1, 1, 1 };
-	rightXRHandTransform.scale = { 1, 1, 1 };
+	//entt::entity dirLightEntity = registry.create();
+	//registry.emplace<Name>(dirLightEntity, "Directional Light");
+	//DirectionalLight& dirLight = registry.emplace<DirectionalLight>(dirLightEntity);
+	//dirLight.Direction = glm::vec4(0, 0, 1, 0);
+	//dirLight.DiffuseColor = glm::vec4(0, 1, 0, 1);
 
-	registry.emplace<XRDevice>(leftXRHand, XRDeviceType::LeftHand);
-	registry.emplace<XRDevice>(rightXRHand, XRDeviceType::RightHand);
 
+	dirLightRel.parent = root;
+	rootRel = registry.get<Relationship>(root);
+	rootRel.children.insert(std::pair((int)dirLightEntity, dirLightEntity));
 	while (plat->Run() == 0)
 	{
 		Loop(plat, graph, renderSystem, xr, window, registry, options, root);
