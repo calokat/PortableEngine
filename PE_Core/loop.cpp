@@ -1,4 +1,3 @@
-#pragma once
 #include "loop.h"
 #include <imgui.h>
 #include "GizmoSystem.h"
@@ -18,10 +17,15 @@
 #include "DIrectXRenderer.h"
 #endif
 #include "BillboardSystem.h"
+#include "LightsSystem.h"
 template<class T>
 void DrawIteration(Camera& camera, entt::entity selected, entt::registry& registry, IRenderSystem* renderSystem)
 {
 	auto renderableView = registry.view<T, Transform>();
+	DirectionalLight dirLight;
+	PointLight pointLights[MAX_POINT_LIGHTS];
+
+	LightsSystem::ExtractLightsFromRegistry(registry, dirLight, pointLights);
 	for (auto renderable : renderableView)
 	{
 		T& renderer = registry.get<T>(renderable);
@@ -29,7 +33,7 @@ void DrawIteration(Camera& camera, entt::entity selected, entt::registry& regist
 		Transform& meshTransform = registry.get<Transform>(renderable);
 		//renderSystem->LoadMesh(&renderer, mesh);
 		renderSystem->BindRenderer(&renderer);
-		renderSystem->UpdateRenderer(&renderer, meshTransform, camera);
+		renderSystem->UpdateRenderer(&renderer, meshTransform, camera, dirLight, pointLights);
 		renderSystem->Draw(&renderer);
 	}
 }
@@ -40,7 +44,6 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	graph->NewGuiFrame();
 	plat->NewGuiFrame();
 	ImGui::NewFrame();
-	static float vertColorPick[4];
 	//	ImGui::BeginMainMenuBar();
 	//	if (ImGui::BeginMenu("File"))
 	//	{
@@ -130,6 +133,8 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	graph->ClearScreen();
 	entt::entity selected = GizmoSystem::GetSelectedEntity();
 	ComputeTransformHeirarchy(sceneRoot, registry, Transform());
+	LightsSystem::LoadPointLightPositions(registry.view<PointLight, Transform>());
+	LightsSystem::LoadDirLightDirections(registry.view<DirectionalLight, Transform>());
 	if (xr->IsSessionRunning())
 	{
 		xr->Frame(registry, renderSystem);
