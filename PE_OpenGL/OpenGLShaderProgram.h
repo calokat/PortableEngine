@@ -24,6 +24,7 @@ public:
 	Shader vertex;
 	Shader pixel;
 	std::map<const char*, OpenGLShaderField> attributes;
-	std::map<const char*, OpenGLShaderField> uniforms;
+	std::map<const char*, OpenGLShaderField> vertexUniforms;
+	std::map<const char*, OpenGLShaderField> fragmentUniforms;
 	int propertyFlags;
 };
