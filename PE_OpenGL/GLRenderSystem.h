@@ -32,7 +32,7 @@ private:
 	std::map<ShaderType, const char*> typeToVertexPath = { {ShaderType::Unlit_Color, "../../Shaders/GLSL-ES/vertex-unlit-color.glsl"}, {ShaderType::Unlit_Textured, "../../Shaders/GLSL-ES/vertex.glsl"} };
 	std::map<ShaderType, const char*> typeToPixelPath = { {ShaderType::Unlit_Color, "../../Shaders/GLSL-ES/fragment-unlit-color.glsl" }, { ShaderType::Unlit_Textured, "../../Shaders/GLSL-ES/fragment.glsl" } };
 #else
-	std::map<ShaderType, const char*> typeToVertexPath = { {ShaderType::Unlit_Color, "../../Shaders/GLSL/vertex-unlit-color.glsl"}, {ShaderType::Unlit_Textured, "../../Shaders/GLSL/vertex.glsl"}, {ShaderType::Lit_Color, "../../Shaders/GLSL/vertex-lit-color.glsl"} };
-	std::map<ShaderType, const char*> typeToPixelPath = { {ShaderType::Unlit_Color, "../../Shaders/GLSL/fragment-unlit-color.glsl" }, { ShaderType::Unlit_Textured, "../../Shaders/GLSL/fragment.glsl" }, {ShaderType::Lit_Color, "../../Shaders/GLSL/fragment-lit-color.glsl"} };
+	std::map<ShaderType, const char*> typeToVertexPath = { {ShaderType::Unlit_Color, "../../Shaders/GLSL/vertex-unlit-color.glsl"}, {ShaderType::Unlit_Textured, "../../Shaders/GLSL/vertex.glsl"}, {ShaderType::Lit_Color, "../../Shaders/GLSL/vertex-lit-color.glsl"}, {ShaderType::Lit_Textured, "../../Shaders/GLSL/vertex-lit-textured.glsl"} };
+	std::map<ShaderType, const char*> typeToPixelPath = { {ShaderType::Unlit_Color, "../../Shaders/GLSL/fragment-unlit-color.glsl" }, { ShaderType::Unlit_Textured, "../../Shaders/GLSL/fragment.glsl" }, {ShaderType::Lit_Color, "../../Shaders/GLSL/fragment-lit-color.glsl"}, {ShaderType::Lit_Textured, "../../Shaders/GLSL/fragment-lit-textured.glsl"} };
 #endif
 };
