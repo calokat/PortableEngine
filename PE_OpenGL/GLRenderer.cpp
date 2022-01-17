@@ -13,6 +13,10 @@ GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentSh
 	{
 		shaderProgram.attributes.emplace(std::pair<const char*, OpenGLShaderField>("in_normal", {}));
 	}
+	if (type & ShaderProgramProperties::Textured)
+	{
+		shaderProgram.attributes.emplace(std::pair<const char*, OpenGLShaderField>("aTexCoord", {}));
+	}
 	shaderProgram.vertexUniforms = { {"projection", {} }, {"view", {} }, {"model", {} }, {"in_color", {} } };
 	if (type & ShaderProgramProperties::Lit)
 	{
