@@ -29,9 +29,13 @@ void GLRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	{
 		glRenderer->shaderProgram.attributes[attrIt->first].value.u = glGetAttribLocation(glRenderer->shaderProgram.programID, attrIt->first);
 	}
-	for (auto uniIt = glRenderer->shaderProgram.uniforms.begin(); uniIt != glRenderer->shaderProgram.uniforms.end(); ++uniIt)
+	for (auto uniIt = glRenderer->shaderProgram.vertexUniforms.begin(); uniIt != glRenderer->shaderProgram.vertexUniforms.end(); ++uniIt)
 	{
-		glRenderer->shaderProgram.uniforms[uniIt->first].value.s = glGetUniformLocation(glRenderer->shaderProgram.programID, uniIt->first);
+		glRenderer->shaderProgram.vertexUniforms[uniIt->first].value.s = glGetUniformLocation(glRenderer->shaderProgram.programID, uniIt->first);
+	}
+	for (auto uniIt = glRenderer->shaderProgram.fragmentUniforms.begin(); uniIt != glRenderer->shaderProgram.fragmentUniforms.end(); ++uniIt)
+	{
+		uniIt->second.value.s = glGetUniformLocation(glRenderer->shaderProgram.programID, uniIt->first);
 	}
 
 	glEnableVertexAttribArray(glRenderer->shaderProgram.attributes["in_position"].value.u);
@@ -40,6 +44,11 @@ void GLRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	{
 		glEnableVertexAttribArray(glRenderer->shaderProgram.attributes["aTexCoord"].value.u);
 		SetupAttribute(glRenderer->shaderProgram.attributes["aTexCoord"].value.u, 2, GL_FLOAT, Vertex, UV);
+	}
+	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Lit)
+	{
+		glEnableVertexAttribArray(glRenderer->shaderProgram.attributes["in_normal"].value.u);
+		SetupAttribute(glRenderer->shaderProgram.attributes["in_normal"].value.u, 3, GL_FLOAT, Vertex, Normal);
 	}
 }
 
@@ -83,13 +92,24 @@ void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform
 	glUseProgram(glRenderer->shaderProgram.programID);
 	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Fully_3D)
 	{
-		glUniformMatrix4fv(glRenderer->shaderProgram.uniforms["view"].value.u, 1, GL_FALSE, glm::value_ptr(camera.view));
-		glUniformMatrix4fv(glRenderer->shaderProgram.uniforms["projection"].value.u, 1, GL_FALSE, glm::value_ptr(camera.projection));
-		glUniformMatrix4fv(glRenderer->shaderProgram.uniforms["model"].value.u, 1, GL_FALSE, glm::value_ptr(meshTransform.worldMatrix));
+		glUniformMatrix4fv(glRenderer->shaderProgram.vertexUniforms["view"].value.u, 1, GL_FALSE, glm::value_ptr(camera.view));
+		glUniformMatrix4fv(glRenderer->shaderProgram.vertexUniforms["projection"].value.u, 1, GL_FALSE, glm::value_ptr(camera.projection));
+		glUniformMatrix4fv(glRenderer->shaderProgram.vertexUniforms["model"].value.u, 1, GL_FALSE, glm::value_ptr(meshTransform.worldMatrix));
 	}
 	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Colored)
 	{
-		glUniform4f(glRenderer->shaderProgram.uniforms["in_color"].value.u, glRenderer->vertexColor.x, glRenderer->vertexColor.y, glRenderer->vertexColor.z, glRenderer->vertexColor.w);
+		glUniform4f(glRenderer->shaderProgram.vertexUniforms["in_color"].value.u, glRenderer->vertexColor.x, glRenderer->vertexColor.y, glRenderer->vertexColor.z, glRenderer->vertexColor.w);
+	}
+	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Lit)
+	{
+		glUniform4f(glRenderer->shaderProgram.fragmentUniforms["dirLight.AmbientColor"].value.u, dirLight.AmbientColor.x, dirLight.AmbientColor.y, dirLight.AmbientColor.z, dirLight.AmbientColor.w);
+		glUniform4f(glRenderer->shaderProgram.fragmentUniforms["dirLight.DiffuseColor"].value.u, dirLight.DiffuseColor.x, dirLight.DiffuseColor.y, dirLight.DiffuseColor.z, dirLight.DiffuseColor.w);
+		glUniform4f(glRenderer->shaderProgram.fragmentUniforms["dirLight.Direction"].value.u, dirLight.Direction.x, dirLight.Direction.y, dirLight.Direction.z, dirLight.Direction.w);
+		glUniform4f(glRenderer->shaderProgram.fragmentUniforms["pointLights[0].AmbientColor"].value.u, pointLights[0].AmbientColor.x, pointLights[0].AmbientColor.y, pointLights[0].AmbientColor.z, pointLights[0].AmbientColor.w);
+		glUniform4f(glRenderer->shaderProgram.fragmentUniforms["pointLights[0].DiffuseColor"].value.u, pointLights[0].DiffuseColor.x, pointLights[0].DiffuseColor.y, pointLights[0].DiffuseColor.z, pointLights[0].DiffuseColor.w);
+		glUniform4f(glRenderer->shaderProgram.fragmentUniforms["pointLights[0].Position"].value.u, pointLights[0].Position.x, pointLights[0].Position.y, pointLights[0].Position.z, pointLights[0].Position.w);
+		glUniform3f(glRenderer->shaderProgram.fragmentUniforms["cameraPos"].value.u, camera.view[3].x, camera.view[3].y, camera.view[3].z);
+		glUniform1f(glRenderer->shaderProgram.fragmentUniforms["specularIntensity"].value.u, 16);
 	}
 }
 
