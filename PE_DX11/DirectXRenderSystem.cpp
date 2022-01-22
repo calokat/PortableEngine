@@ -233,7 +233,8 @@ void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTran
 	{
 		LightBufferData lightBufferData;
 		lightBufferData.dirLight = dirLight;
-		lightBufferData.cameraPos = camera.view[3];
+		glm::mat4 inverseView = glm::inverse(camera.view);
+		lightBufferData.cameraPos = inverseView[3];
 		lightBufferData.specularIntensity = 16;
 		lightBufferData.pointLight = pointLights[0];
 
