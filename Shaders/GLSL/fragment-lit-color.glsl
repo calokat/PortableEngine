@@ -25,7 +25,7 @@ out vec4 out_color;
 
 float PhongPoint(PointLight light)
 {
-    vec3 R = normalize(reflect(light.Position.xyz - worldPos, normal));
+    vec3 R = normalize(reflect(worldPos - light.Position.xyz, normal));
     vec3 V = normalize(cameraPos - worldPos);
     float RdotV = clamp(dot(R, V), 0, 1);
     float spec = pow(RdotV, 256);

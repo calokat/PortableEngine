@@ -27,11 +27,11 @@ out vec4 out_color;
 
 float PhongPoint(PointLight light)
 {
-    vec3 R = normalize(reflect(light.Position.xyz - worldPos, normal));
+    vec3 R = normalize(reflect(worldPos - light.Position.xyz, normal));
     vec3 V = normalize(cameraPos - worldPos);
     float RdotV = clamp(dot(R, V), 0, 1);
-    float spec = pow(RdotV, 256);
-    spec = spec * specularIntensity;
+    float spec = pow(RdotV, 32);
+    // spec = spec * specularIntensity;
     return spec;
 }
 
@@ -56,7 +56,7 @@ vec3 CalculateDirLight(DirectionalLight light)
 
 void main()
 {
-    vec3 finalColor = CalculateDirLight(dirLight) + CalculatePointLight(pointLights[0]);
+    vec3 finalColor = CalculatePointLight(pointLights[0]);
     finalColor = finalColor * texture(ourTexture, TexCoord).xyz * color.xyz;
     out_color = vec4(finalColor, 1);
 }

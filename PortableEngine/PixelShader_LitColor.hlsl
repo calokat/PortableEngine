@@ -13,7 +13,7 @@ cbuffer LightData: register(b0)
 
 float PhongPoint(PointLight light, VertexToPixel input)
 {
-	float3 R = normalize(reflect(light.Position - input.worldPos, input.normal));
+	float3 R = normalize(reflect(input.worldPos - light.Position, input.normal));
 	float3 V = normalize(cameraPos - input.worldPos);
 	float RdotV = saturate(dot(R, V));
 	float spec = pow(RdotV, 256);
