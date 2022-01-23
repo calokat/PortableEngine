@@ -4,6 +4,8 @@
 #include <imgui.h>
 #include <backends/imgui_impl_opengl3.h>
 #include "TransformSystem.h"
+#include "LightsSystem.h"
+
 WebXRAPI* WebXRAPI::staticThis;
 
 WebXRAPI::WebXRAPI(IGraphicsAPI* graph, IRenderSystem* rs)
@@ -86,6 +88,10 @@ void WebXRAPI::RenderEye(entt::registry& reg, IRenderSystem* renderSystem, Camer
 	//entt::entity cameraEntity = reg.view<Camera, Transform>().front();
 	//Camera& viewCam = reg.get<Camera>(cameraEntity);
 	//graphics->ClearScreen();
+	DirectionalLight dirLight;
+	PointLight pointLights[MAX_POINT_LIGHTS];
+	LightsSystem::ExtractLightsFromRegistry(reg, dirLight, pointLights);
+
 	for (auto renderable : renderableView)
 	{
 		GLRenderer& renderer = reg.get<GLRenderer>(renderable);
@@ -94,12 +100,10 @@ void WebXRAPI::RenderEye(entt::registry& reg, IRenderSystem* renderSystem, Camer
 		//renderSystem->LoadMesh(&renderer, mesh);
 		renderSystem->BindRenderer(&renderer);
 
-		renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam);
+		renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam, dirLight, pointLights);
 		renderSystem->Draw(&renderer);
 	}
 
-	//ImGui::Render();
-	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 }
 

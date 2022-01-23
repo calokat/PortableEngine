@@ -36,6 +36,7 @@
 #include "Tree.h"
 #include "Relationship.h"
 #include "MeshMaker.h"
+#include "LightsSystem.h"
 
 int main(int argc, char* argv[])
 {
@@ -107,23 +108,37 @@ int main(int argc, char* argv[])
 	Relationship& leftHandRel = registry.get<Relationship>(leftXRHand);
 	for (auto it = leftHandRel.children.begin(); it != leftHandRel.children.end(); it++)
 	{
-		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str(), it->second, ShaderType::Unlit_Textured);
+		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str(), it->second, ShaderType::Lit_Textured);
 	}
 
 	Relationship& duoRel = registry.get<Relationship>(duoRoot);
 
 	for (auto it = duoRel.children.begin(); it != duoRel.children.end(); it++)
 	{
-		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str(), it->second, ShaderType::Unlit_Textured);
+		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str(), it->second, ShaderType::Lit_Textured);
 	}
 
-	Transform& leftXRHandTransform = registry.get<Transform>(leftXRHand);
-	Transform& rightXRHandTransform = registry.get<Transform>(rightXRHand);
-	leftXRHandTransform.scale = { -1, 1, 1 };
-	rightXRHandTransform.scale = { 1, 1, 1 };
+	entt::entity pointLightEntity = LightsSystem::CreatePointLight(registry);
+	Relationship& pointLightRel = registry.get<Relationship>(pointLightEntity);
+	entt::entity dirLightEntity = LightsSystem::CreateDirectionalLight(registry);
+	Relationship& dirLightRel = registry.get<Relationship>(dirLightEntity);
 
-	registry.emplace<XRDevice>(leftXRHand, XRDeviceType::LeftHand);
-	registry.emplace<XRDevice>(rightXRHand, XRDeviceType::RightHand);
+	pointLightRel.parent = root;
+	Relationship& rootRel = registry.get<Relationship>(root);
+	rootRel.children.insert(std::pair((int)pointLightEntity, pointLightEntity));
+
+	dirLightRel.parent = root;
+	rootRel = registry.get<Relationship>(root);
+	rootRel.children.insert(std::pair((int)dirLightEntity, dirLightEntity));
+
+
+	//Transform& leftXRHandTransform = registry.get<Transform>(leftXRHand);
+	//Transform& rightXRHandTransform = registry.get<Transform>(rightXRHand);
+	//leftXRHandTransform.scale = { -1, 1, 1 };
+	//rightXRHandTransform.scale = { 1, 1, 1 };
+
+	//registry.emplace<XRDevice>(leftXRHand, XRDeviceType::LeftHand);
+	//registry.emplace<XRDevice>(rightXRHand, XRDeviceType::RightHand);
 
 	while (plat->Run() == 0)
 	{
