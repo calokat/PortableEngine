@@ -57,7 +57,7 @@ vec3 CalculateDirLight(DirectionalLight light)
 
 void main()
 {
-    vec3 finalColor = CalculatePointLight(pointLights[0]);
+    vec3 finalColor = CalculateDirLight(dirLight) + CalculatePointLight(pointLights[0]);
     finalColor = finalColor * texture(ourTexture, TexCoord).xyz * color.xyz;
     out_color = vec4(finalColor, 1);
 }
