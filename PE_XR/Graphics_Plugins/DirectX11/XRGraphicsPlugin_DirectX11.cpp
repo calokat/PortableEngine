@@ -1,6 +1,7 @@
 #include "XRGraphicsPlugin_DirectX11.h"
 #include <openxr/xr_linear.h>
 #include "DIrectXRenderer.h"
+#include "LightsSystem.h"
 #pragma comment(lib, "dxgi.lib")
 
 XRGraphicsPlugin_DirectX11::XRGraphicsPlugin_DirectX11(DirectXAPI* dxApi) : m_deviceContext(dxApi->context), m_device(dxApi->device)
@@ -141,10 +142,12 @@ void XRGraphicsPlugin_DirectX11::RenderView(const XrCompositionLayerProjectionVi
         renderSystem->BindRenderer(&renderer);
 
         DirectionalLight dirLight;
-        dirLight.Direction = glm::vec4(0, 1, 0, 0);
-        dirLight.DiffuseColor = glm::vec4(1, 0, 1, 1);
+        //dirLight.Direction = glm::vec4(0, 1, 0, 0);
+        //dirLight.DiffuseColor = glm::vec4(1, 0, 1, 1);
 
         PointLight pointLights[MAX_POINT_LIGHTS];
+
+        LightsSystem::ExtractLightsFromRegistry(reg, dirLight, pointLights);
 
         renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam, dirLight, pointLights);
         renderSystem->Draw(&renderer);
