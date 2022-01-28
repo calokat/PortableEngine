@@ -11,7 +11,7 @@ void MockXRAPI::PollEvents()
 
 bool MockXRAPI::IsSessionRunning()
 {
-	return true;
+	return false;
 }
 
 void MockXRAPI::Frame(entt::registry& reg, IRenderSystem* renderSystem)
