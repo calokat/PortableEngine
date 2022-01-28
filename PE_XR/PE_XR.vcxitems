@@ -19,7 +19,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)IXRAPI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MockXRAPI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Platform_Plugins\Win32\XRPlatformPlugin_Win32.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)WebXRAPI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)XRAPI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -30,7 +29,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)IXRPlatformPlugin.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MockXRAPI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Platform_Plugins\Win32\XRPlatformPlugin_Win32.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)WebXRAPI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)XRAPI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)xr_defines.h" />
   </ItemGroup>

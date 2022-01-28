@@ -28,8 +28,8 @@
 #include "InspectorWindow.h"
 #include "AssetBrowserWindow.h"
 #include "WindowHeader.h"
-#include "../PE_XR/WebXRAPI.h"
-#include "../PE_XR/MockXRAPI.h"
+#include "WebXRAPI.h"
+#include "MockXRAPI.h"
 #include <thread>
 #include "raycast.h"
 #include "loop.h"
