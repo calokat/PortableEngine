@@ -112,10 +112,10 @@ void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView&
     //glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 
-    const uint32_t depthTexture = GetDepthTexture(colorTexture);
+    //const uint32_t depthTexture = GetDepthTexture(colorTexture);
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorTexture, 0);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture, 0);
+    //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture, 0);
 
     // Clear swapchain and depth buffer.
     //glClearColor(DarkSlateGray[0], DarkSlateGray[1], DarkSlateGray[2], DarkSlateGray[3]);
