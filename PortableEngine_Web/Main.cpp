@@ -26,7 +26,6 @@
 #include "OpenGLImageGraphicsData.h"
 #include "EntityListWindow.h"
 #include "InspectorWindow.h"
-#include "AssetBrowserWindow.h"
 #include "WindowHeader.h"
 #include "WebXRAPI.h"
 #include "MockXRAPI.h"

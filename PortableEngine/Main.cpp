@@ -38,7 +38,6 @@
 #include "OpenGLImageGraphicsData.h"
 #include "EntityListWindow.h"
 #include "InspectorWindow.h"
-#include "AssetBrowserWindow.h"
 #include "WindowHeader.h"
 #ifndef __EMSCRIPTEN__
 #include "../PE_XR/XRAPI.h"

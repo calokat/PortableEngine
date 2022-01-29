@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
     <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -21,7 +21,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\imgui\imgui_tables.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\imgui\imgui_widgets.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AABBSystem.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)AssetBrowserWindow.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BillboardSystem.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Camera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CameraSystem.cpp" />
@@ -47,7 +46,6 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AABB.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AABBSystem.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)AssetBrowserWindow.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BillboardSystem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Camera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CameraSystem.h" />
