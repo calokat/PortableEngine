@@ -169,8 +169,8 @@ int main(int argc, char* argv[])
 	//xr = new XRAPI(plat, graph, window);
 	IXRAPI* xr = nullptr;
 #ifdef _WIN64
-	//xr = new XRAPI(plat, graph, window, options);
-	xr = new MockXRAPI();
+	xr = new XRAPI(plat, graph, window, options);
+	//xr = new MockXRAPI();
 #else
 	xr = new WebXRAPI(graph, renderSystem);
 #endif
@@ -182,7 +182,7 @@ int main(int argc, char* argv[])
 	registry.emplace<Transform>(root);
 	registry.emplace<Relationship>(root);
 	GizmoSystem::Select(root);
-	Tree<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../../../Secret_Meshes/duo.fbx").c_str());
+	Tree<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/duo.fbx").c_str());
 	entt::entity duoRoot = MakeMesh(duoScene, registry, root);
 
 	Relationship& duoRootRel = registry.get<Relationship>(duoRoot);
@@ -192,7 +192,19 @@ int main(int argc, char* argv[])
 		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str(), it->second, ShaderType::Lit_Textured);
 	}
 
-	Tree<MeshCreateInfo> billboardMeshInfo = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/plane.fbx").c_str());
+	Tree<MeshCreateInfo> cylinderScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cylinder.obj").c_str());
+
+	entt::entity cylRoot = MakeMesh(cylinderScene, registry, root);
+
+	Relationship& cylRel = registry.get<Relationship>(cylRoot);
+
+	for (auto it = cylRel.children.begin(); it != cylRel.children.end(); ++it)
+	{
+		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/cushion.png").c_str(), it->second, ShaderType::Lit_Textured);
+	}
+
+	Transform& cylTransform = registry.get<Transform>(cylRoot);
+	cylTransform.position.y = 5;
 
 
 	entt::entity pointLightEntity = LightsSystem::CreatePointLight(registry);
@@ -203,13 +215,6 @@ int main(int argc, char* argv[])
 	pointLightRel.parent = root;
 	Relationship& rootRel = registry.get<Relationship>(root);
 	rootRel.children.insert(std::pair((int)pointLightEntity, pointLightEntity));
-
-	//entt::entity dirLightEntity = registry.create();
-	//registry.emplace<Name>(dirLightEntity, "Directional Light");
-	//DirectionalLight& dirLight = registry.emplace<DirectionalLight>(dirLightEntity);
-	//dirLight.Direction = glm::vec4(0, 0, 1, 0);
-	//dirLight.DiffuseColor = glm::vec4(0, 1, 0, 1);
-
 
 	dirLightRel.parent = root;
 	rootRel = registry.get<Relationship>(root);
