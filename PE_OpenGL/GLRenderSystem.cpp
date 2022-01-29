@@ -56,6 +56,7 @@ void GLRenderSystem::BindRenderer(IRenderer* renderer)
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
 	glBindVertexArray(glRenderer->shaderProgram.vao.u);
+	glBindTexture(GL_TEXTURE_2D, (GLint)(glRenderer->diffuseTexture.imageGraphicsData)->GetData());
 }
 
 void GLRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
