@@ -272,7 +272,7 @@ void DirectXRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath
 {
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
 	if ((dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Textured) == 0) return;
-	dxRenderer->diffuseTexture = PEImage(imagePath);
+	dxRenderer->diffuseTexture = { imagePath };
 	CreateTexture(dxRenderer->diffuseTexture);
 
 	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(dxRenderer->diffuseTexture.imageGraphicsData);

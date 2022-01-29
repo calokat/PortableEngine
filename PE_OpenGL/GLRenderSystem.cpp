@@ -130,7 +130,7 @@ void GLRenderSystem::CreateTexture(PEImage& img)
 void GLRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath)
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
-	glRenderer->diffuseTexture = PEImage(imagePath);
+	glRenderer->diffuseTexture = { imagePath };
 	ImageSystem::CreateImage(glRenderer->diffuseTexture);
 	CreateTexture(glRenderer->diffuseTexture);
 	std::shared_ptr<OpenGLImageGraphicsData> glImageGraphicsData = std::dynamic_pointer_cast<OpenGLImageGraphicsData>(glRenderer->diffuseTexture.imageGraphicsData);
