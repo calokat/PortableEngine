@@ -87,8 +87,6 @@ int main(int argc, char* argv[])
 	renderSystem = new GLRenderSystem(plat);
 	IXRAPI* xr = nullptr;
 	xr = new WebXRAPI(graph, renderSystem);
-	plat->GetAssetManager()->LoadDefaultThumbnails(renderSystem);
-	plat->GetAssetManager()->LoadAssetsFromCurrentDirectory(renderSystem);
 	
 	Tree<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../../../Secret_Meshes/duo.fbx").c_str());
 	entt::entity root = registry.create();

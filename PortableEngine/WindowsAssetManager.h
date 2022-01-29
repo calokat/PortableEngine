@@ -11,14 +11,9 @@ class WindowsAssetManager :
 public:
 	std::string GetAssetPath(std::string relativePath);
 	std::wstring GetAssetPath_Wide(std::wstring relativePath);
-	void LoadAssetsFromCurrentDirectory(IRenderSystem* renderSystem);
-	bool WatchCurrentDirectoryForChanges();
 private:
 	std::string GetExePath();
 	std::wstring GetExePath_Wide();
-	//std::unordered_map<std::string, std::filesystem::file_time_type> pathToLastWrite;
-	DWORD dwWaitStatus;
-	HANDLE dwChangeHandles[2];
 };
 
 #endif
