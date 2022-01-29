@@ -9,7 +9,7 @@
 #include "GizmoSystem.h"
 #include "CameraSystem.h"
 #include "TransformSystem.h"
-
+#include "LightsSystem.h"
 XRGraphicsPlugin_OpenGL::XRGraphicsPlugin_OpenGL(OpenGLAPI* glApi, GameWindow* win) : window(win), glContext(glApi->GetOpenGLContext())
 {
 }
@@ -112,10 +112,10 @@ void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView&
     //glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 
-    //const uint32_t depthTexture = GetDepthTexture(colorTexture);
+    const uint32_t depthTexture = GetDepthTexture(colorTexture);
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorTexture, 0);
-    //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture, 0);
 
     // Clear swapchain and depth buffer.
     //glClearColor(DarkSlateGray[0], DarkSlateGray[1], DarkSlateGray[2], DarkSlateGray[3]);
@@ -125,6 +125,9 @@ void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView&
     // Set shaders and uniform variables.
     //glUseProgram(m_program);
 
+    DirectionalLight dirLight;
+    PointLight pointLights[MAX_POINT_LIGHTS];
+    LightsSystem::ExtractLightsFromRegistry(reg, dirLight, pointLights);
     auto renderableView = reg.view<GLRenderer, Transform>();
     for (auto renderable : renderableView)
     {
@@ -133,18 +136,9 @@ void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView&
         Transform& meshTransform = reg.get<Transform>(renderable);
         //renderSystem->LoadMesh(&renderer, mesh);
         renderSystem->BindRenderer(&renderer);
-        
-        DirectionalLight dirLight;
-        dirLight.Direction = glm::vec4(0, 1, 0, 0);
-        dirLight.DiffuseColor = glm::vec4(1, 0, 1, 1);
-
-        PointLight pointLights[MAX_POINT_LIGHTS];
-
-
         renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam, dirLight, pointLights);
         renderSystem->Draw(&renderer);
     }
-
 
     //ImGui::Render();
     //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -177,7 +171,6 @@ uint32_t XRGraphicsPlugin_OpenGL::GetDepthTexture(uint32_t colorTexture)
     }
 
     // This back-buffer has no corresponding depth-stencil texture, so create one with matching dimensions.
-
     GLint width;
     GLint height;
     glBindTexture(GL_TEXTURE_2D, colorTexture);
@@ -194,6 +187,5 @@ uint32_t XRGraphicsPlugin_OpenGL::GetDepthTexture(uint32_t colorTexture)
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
 
     m_colorToDepthMap.insert(std::make_pair(colorTexture, depthTexture));
-
     return depthTexture;
 }
