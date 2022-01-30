@@ -8,7 +8,6 @@ struct PEImage
 	int width;
 	int height;
 	int numChannels;
-	unsigned char* data;
 	std::shared_ptr<IImageGraphicsData> imageGraphicsData;
 	bool pathChanged;
 	//~PEImage();
