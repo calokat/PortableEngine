@@ -3,6 +3,7 @@
 #include <iostream>
 #include <SDL/SDL.h>
 #include <emscripten.h>
+#include <backends/imgui_impl_sdl.h>
 InputData EmscriptenInputSystem::current;
 InputData EmscriptenInputSystem::previous;
 glm::vec2 EmscriptenInputSystem::deltaCursorPos;
@@ -61,6 +62,7 @@ void EmscriptenInputSystem::GetKeyPressed()
 	SDL_Event event;
     while (SDL_PollEvent(&event))
     {
+		ImGui_ImplSDL2_ProcessEvent(&event);
         // Capture events here, based on io.WantCaptureMouse and io.WantCaptureKeyboard
 		//printf("Key is %i and KeyCode is %i\n", event.key.keysym.scancode, sdlKeyMap[event.key.keysym.scancode]);
 		//current.keys[sdlKeyMap[event.key.keysym.scancode]] = (event.type == SDL_KEYDOWN);
