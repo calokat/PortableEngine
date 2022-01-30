@@ -44,6 +44,16 @@ void ComponentGUI(GLRenderer& r)
 	ImGui::ColorPicker4("Renderer Color", glm::value_ptr(r.vertexColor));
 	if (r.shaderProgram.propertyFlags & ShaderProgramProperties::Textured)
 	{
+		char buf[128];
+		memcpy(buf, r.diffuseTexture.path.c_str(), r.diffuseTexture.path.length());
+		buf[r.diffuseTexture.path.length()] = '\0';
+		ImGui::Text("Path: ");
+		ImGui::SameLine();
+		if (ImGui::InputText(" ", buf, 128))
+		{
+			r.diffuseTexture.path = buf;
+			r.diffuseTexture.pathChanged = true;
+		}
 		ImGui::Image((void*)(std::dynamic_pointer_cast<OpenGLImageGraphicsData>(r.diffuseTexture.imageGraphicsData))->texture, ImVec2(100, 100));
 	}
 }
