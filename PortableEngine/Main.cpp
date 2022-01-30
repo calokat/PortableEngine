@@ -69,6 +69,7 @@ int main(int argc, char* argv[])
 	IGraphicsAPI* graph = nullptr;
 	GameWindow* window = nullptr;
 	IRenderSystem* renderSystem = nullptr;
+	IXRAPI* xr = nullptr;
 	entt::registry registry;
 
 
@@ -121,6 +122,10 @@ int main(int argc, char* argv[])
 					options.graphicsAPI = PE::GraphicsAPI::OpenGL;
 				}
 			}
+			if (!strcmp(argv[i], "-xr"))
+			{
+				options.xr = PE::XrPlatform::OpenXR;
+			}
 		}
 	}
 
@@ -166,16 +171,15 @@ int main(int argc, char* argv[])
 		renderSystem = new GLRenderSystem(plat);
 	}
 	//xr = new XRAPI(plat, graph, window);
-	IXRAPI* xr = nullptr;
-#ifdef _WIN64
-	xr = new XRAPI(plat, graph, window, options);
-	//xr = new MockXRAPI();
-#else
-	xr = new WebXRAPI(graph, renderSystem);
-#endif
-	//plat->GetAssetManager()->LoadDefaultThumbnails(renderSystem);
-	//plat->GetAssetManager()->LoadAssetsFromCurrentDirectory(renderSystem);
-	
+	if (options.xr == PE::XrPlatform::None)
+	{
+		xr = new MockXRAPI();
+	}
+	else if (options.xr == PE::XrPlatform::OpenXR)
+	{
+		xr = new XRAPI(plat, graph, window, options);
+	}
+
 	entt::entity root = registry.create();
 	registry.emplace<Name>(root, "$");
 	registry.emplace<Transform>(root);
