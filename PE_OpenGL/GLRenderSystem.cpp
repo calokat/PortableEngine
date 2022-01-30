@@ -113,6 +113,11 @@ void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform
 		glUniform3f(glRenderer->shaderProgram.fragmentUniforms["cameraPos"].value.u, inverseView[3].x, inverseView[3].y, inverseView[3].z);
 		glUniform1f(glRenderer->shaderProgram.fragmentUniforms["specularIntensity"].value.u, 16);
 	}
+	if (glRenderer->diffuseTexture.pathChanged)
+	{
+		LoadTexture(renderer, glRenderer->diffuseTexture.path);
+		glRenderer->diffuseTexture.pathChanged = false;
+	}
 }
 
 void GLRenderSystem::DrawGizmo(Camera camera)
@@ -131,7 +136,9 @@ void GLRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath)
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
 	glRenderer->diffuseTexture = { imagePath };
-	ImageSystem::CreateImage(glRenderer->diffuseTexture);
+	unsigned char* imageData = nullptr;
+	bool createImageSuccess = ImageSystem::CreateImage(glRenderer->diffuseTexture, &imageData);
+	if (!createImageSuccess) return;
 	CreateTexture(glRenderer->diffuseTexture);
 	std::shared_ptr<OpenGLImageGraphicsData> glImageGraphicsData = std::dynamic_pointer_cast<OpenGLImageGraphicsData>(glRenderer->diffuseTexture.imageGraphicsData);
 	glBindTexture(GL_TEXTURE_2D, glImageGraphicsData->texture);
@@ -157,43 +164,10 @@ void GLRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath)
 #endif
 
 	int imgFormat = (glRenderer->diffuseTexture.numChannels > 3) ? GL_RGBA : GL_RGB;
-	glTexImage2D(GL_TEXTURE_2D, 0, imgFormat, glRenderer->diffuseTexture.width, glRenderer->diffuseTexture.height, 0, imgFormat, GL_UNSIGNED_BYTE, glRenderer->diffuseTexture.data);
+	glTexImage2D(GL_TEXTURE_2D, 0, imgFormat, glRenderer->diffuseTexture.width, glRenderer->diffuseTexture.height, 0, imgFormat, GL_UNSIGNED_BYTE, imageData);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	ImageSystem::DestroyImage(glRenderer->diffuseTexture);
-}
-
-void GLRenderSystem::LoadTexture(PEImage& img)
-{
-	CreateTexture(img);
-	std::shared_ptr<OpenGLImageGraphicsData> glImageGraphicsData = std::dynamic_pointer_cast<OpenGLImageGraphicsData>(img.imageGraphicsData);
-	glBindTexture(GL_TEXTURE_2D, glImageGraphicsData->texture);
-
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-#ifdef __EMSCRIPTEN__
-	// Power of two check source: https://www.geeksforgeeks.org/cpp-program-to-find-whether-a-no-is-power-of-two/
-	if (ceil(log2(img.width)) == floor(log2(img.width)) && ceil(log2(img.height)) == floor(log2(img.height)))
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // This is required on WebGL for non power-of-two textures
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); // Same
-	}
-	else
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	}
-#else
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-#endif
-
-	int imgFormat = (img.numChannels > 3) ? GL_RGBA : GL_RGB;
-	glTexImage2D(GL_TEXTURE_2D, 0, imgFormat, img.width, img.height, 0, imgFormat, GL_UNSIGNED_BYTE, img.data);
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	ImageSystem::DestroyImage(img);
+	ImageSystem::DestroyImageData(imageData);
 }
 
 GLRenderSystem::GLRenderSystem(IPlatform* plat) : platform(plat)

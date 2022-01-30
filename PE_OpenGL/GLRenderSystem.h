@@ -23,7 +23,6 @@ public:
 	void DrawGizmo(Camera camera);
 	void CreateTexture(PEImage& img);
 	void LoadTexture(IRenderer* renderer, std::string imagePath);
-	virtual void LoadTexture(PEImage& img);
 	GLRenderSystem(IPlatform* plat);
 private:
 	IPlatform* platform;

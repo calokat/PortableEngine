@@ -27,6 +27,5 @@ public:
 	virtual void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLight, PointLight pointLights[MAX_POINT_LIGHTS]) = 0;
 	virtual void CreateTexture(PEImage& img) = 0;
 	virtual void LoadTexture(IRenderer* renderer, std::string imagePath) = 0;
-	virtual void LoadTexture(PEImage& img) = 0;
 	virtual ~IRenderSystem() {};
 };

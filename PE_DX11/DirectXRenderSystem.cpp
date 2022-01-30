@@ -279,11 +279,6 @@ void DirectXRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath
 	context->PSSetShaderResources(0, 1, &dx11ImageGraphicsData->srv);
 }
 
-void DirectXRenderSystem::LoadTexture(PEImage& img)
-{
-	CreateTexture(img);
-}
-
 void DirectXRenderSystem::BindTexture(DirectXRenderer* renderer)
 {
 	if ((renderer->shaderProgram.shaderType & ShaderProgramProperties::Textured) == 0) return;
