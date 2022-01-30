@@ -4,14 +4,14 @@
 
 namespace ImageSystem
 {
-	bool ImageSystem::CreateImage(PEImage& img)
+	bool ImageSystem::CreateImage(PEImage& img, unsigned char** data)
 	{
-		img.data = stbi_load(img.path.c_str(), &img.width, &img.height, &img.numChannels, 0);
-		return img.data != nullptr;
+		*data = stbi_load(img.path.c_str(), &img.width, &img.height, &img.numChannels, 0);
+		return data != nullptr;
 	}
 
-	void ImageSystem::DestroyImage(PEImage& img)
+	void ImageSystem::DestroyImageData(unsigned char* data)
 	{
-		stbi_image_free(img.data);
+		stbi_image_free(data);
 	}
 }

@@ -2,6 +2,6 @@
 #include "PEImage.h"
 namespace ImageSystem
 {
-	bool CreateImage(PEImage& img);
-	void DestroyImage(PEImage& img);
+	bool CreateImage(PEImage& img, unsigned char** data);
+	void DestroyImageData(unsigned char* data);
 };
