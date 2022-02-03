@@ -20,6 +20,12 @@ void MeshLoaderSystem::ProcessMesh(aiMesh* assimpMesh, const aiScene* scene, Mes
 			vertex.UV.x = (float)assimpMesh->mTextureCoords[0][i].x;
 			vertex.UV.y = (float)assimpMesh->mTextureCoords[0][i].y;
 		}
+		if (assimpMesh->HasTangentsAndBitangents())
+		{
+			vertex.Tangent.x = assimpMesh->mTangents[i].x;
+			vertex.Tangent.y = assimpMesh->mTangents[i].y;
+			vertex.Tangent.z = assimpMesh->mTangents[i].z;
+		}
 		m.rawVertices.push_back(vertex);
 	}
 	for (uint32_t i = 0; i < assimpMesh->mNumFaces; ++i)
