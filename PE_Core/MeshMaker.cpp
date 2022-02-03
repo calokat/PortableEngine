@@ -3,6 +3,8 @@
 #include "TransformSystem.h"
 #include "misc_components.h"
 #include "AABBSystem.h"
+#include <map>
+
 entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> scene, entt::entity parent, bool attachAABBs)
 {
 	auto newMeshEntity = registry.create();
@@ -39,7 +41,7 @@ entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> s
 	return newMeshEntity;
 }
 
-void AttachRenderers(entt::registry& registry, IRenderSystem* renderSystem, const char* texturePath, entt::entity rootEntity, ShaderType shaderType)
+void AttachRenderers(entt::registry& registry, IRenderSystem* renderSystem, std::map<const char*, const char*> texturePaths, entt::entity rootEntity, ShaderType shaderType)
 {
 	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, rootEntity, shaderType);
 	Mesh& entityMesh = registry.get<Mesh>(rootEntity);
@@ -50,11 +52,11 @@ void AttachRenderers(entt::registry& registry, IRenderSystem* renderSystem, cons
 	Relationship rel = registry.get<Relationship>(rootEntity);
 	if (shaderType & ShaderProgramProperties::Textured)
 	{
-		renderSystem->LoadTexture(&newMeshRenderer, texturePath);
+		renderSystem->LoadTexture(&newMeshRenderer, texturePaths);
 	}
 	for (auto childIt = rel.children.begin(); childIt != rel.children.end(); ++childIt)
 	{
-		AttachRenderers(registry, renderSystem, texturePath, childIt->second, shaderType);
+		AttachRenderers(registry, renderSystem, texturePaths, childIt->second, shaderType);
 	}
 }
 
