@@ -6,13 +6,15 @@
 #include "PEImage.h"
 #include "OpenGLShaderProgram.h"
 #include "lights.h"
+#include <map>
 
 enum ShaderType
 {
 	Unlit_Color = ShaderProgramProperties::Colored | ShaderProgramProperties::Fully_3D,
 	Unlit_Textured = ShaderProgramProperties::Fully_3D | ShaderProgramProperties::Textured | ShaderProgramProperties::Colored,
 	Lit_Color = ShaderProgramProperties::Fully_3D | ShaderProgramProperties::Colored | ShaderProgramProperties::Lit,
-	Lit_Textured = ShaderProgramProperties::Fully_3D | ShaderProgramProperties::Colored | ShaderProgramProperties::Lit | ShaderProgramProperties::Textured
+	Lit_Textured = ShaderProgramProperties::Fully_3D | ShaderProgramProperties::Colored | ShaderProgramProperties::Lit | ShaderProgramProperties::Textured,
+	Lit_Textured_Normal = ShaderProgramProperties::Fully_3D | ShaderProgramProperties::Colored | ShaderProgramProperties::Lit | ShaderProgramProperties::Textured | ShaderProgramProperties::Normal
 };
 
 class IRenderSystem
@@ -26,6 +28,6 @@ public:
 	virtual void DrawWireframe(IRenderer* renderer/*, ID3D11DeviceContext* context*/) = 0;
 	virtual void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLight, PointLight pointLights[MAX_POINT_LIGHTS]) = 0;
 	virtual void CreateTexture(PEImage& img) = 0;
-	virtual void LoadTexture(IRenderer* renderer, std::string imagePath) = 0;
+	virtual void LoadTexture(IRenderer* renderer, std::map<const char*, const char*> imagePaths) = 0;
 	virtual ~IRenderSystem() {};
 };
