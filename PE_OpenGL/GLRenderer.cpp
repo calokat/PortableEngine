@@ -17,6 +17,10 @@ GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentSh
 	{
 		shaderProgram.attributes.emplace(std::pair<const char*, OpenGLShaderField>("aTexCoord", {}));
 	}
+	if (type & ShaderProgramProperties::Normal)
+	{
+		shaderProgram.attributes.emplace(std::pair<const char*, OpenGLShaderField>("in_tangent", {}));
+	}
 	shaderProgram.vertexUniforms = { {"projection", {} }, {"view", {} }, {"model", {} }, {"in_color", {} } };
 	if (type & ShaderProgramProperties::Lit)
 	{
@@ -30,7 +34,7 @@ GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentSh
 			//{"pointLights[5].AmbientColor", {} }, {"pointLights[5].DiffuseColor", {} }, {"pointLights[5].Position", {} },
 			//{"pointLights[6].AmbientColor", {} }, {"pointLights[6].DiffuseColor", {} }, {"pointLights[6].Position", {} },
 			//{"pointLights[7].AmbientColor", {} }, {"pointLights[7].DiffuseColor", {} }, {"pointLights[7].Position", {} },
-			{"cameraPos", {} }, {"specularIntensity", {} }
+			{"cameraPos", {} }, {"specularIntensity", {} }, {"ourTexture", {}}, {"normalTexture", {}}
 		};
 	}
 	shaderProgram.propertyFlags = type;
