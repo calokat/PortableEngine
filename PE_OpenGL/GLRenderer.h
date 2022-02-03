@@ -8,6 +8,7 @@
 #include "Vertex.h"
 #include "IRenderer.h"
 #include "OpenGLShaderProgram.h"
+#include <map>
 // source: https://github.com/IGME-RIT/Basic-OpenGL-with-GLFW-Assimp/blob/master/OpenGLObjectLoading/mesh.cpp
 #define SetupAttribute(index, size, type, structure, element) \
 	glVertexAttribPointer(index, size, type, 0, sizeof(structure), (void*)offsetof(structure, element)); \
@@ -21,6 +22,6 @@ public:
 	GLRenderer(std::string vertexShaderPathParam, std::string fragmentShaderPathParam, ShaderType type);
 	GLRenderer();
 	glm::vec4 vertexColor = { 1, 1, 1, 1 };
-	PEImage diffuseTexture;
+	std::map<const char*, PEImage> textures;
 	OpenGLShaderProgram shaderProgram;
 };
