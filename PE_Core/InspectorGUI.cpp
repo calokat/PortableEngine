@@ -44,17 +44,20 @@ void ComponentGUI(GLRenderer& r)
 	ImGui::ColorPicker4("Renderer Color", glm::value_ptr(r.vertexColor));
 	if (r.shaderProgram.propertyFlags & ShaderProgramProperties::Textured)
 	{
-		char buf[128];
-		memcpy(buf, r.diffuseTexture.path.c_str(), r.diffuseTexture.path.length());
-		buf[r.diffuseTexture.path.length()] = '\0';
-		ImGui::Text("Path: ");
-		ImGui::SameLine();
-		if (ImGui::InputText(" ", buf, 128))
+		for (auto texIt = r.textures.begin(); texIt != r.textures.end(); ++texIt)
 		{
-			r.diffuseTexture.path = buf;
-			r.diffuseTexture.pathChanged = true;
+			char buf[128];
+			memcpy(buf, texIt->second.path.c_str(), texIt->second.path.length());
+			buf[texIt->second.path.length()] = '\0';
+			ImGui::Text("%s Path: ", texIt->first);
+			ImGui::SameLine();
+			if (ImGui::InputText(buf, buf, 128))
+			{
+				texIt->second.path = buf;
+				texIt->second.pathChanged = true;
+			}
+			ImGui::Image((void*)(std::dynamic_pointer_cast<OpenGLImageGraphicsData>(texIt->second.imageGraphicsData))->texture, ImVec2(100, 100));
 		}
-		ImGui::Image((void*)(std::dynamic_pointer_cast<OpenGLImageGraphicsData>(r.diffuseTexture.imageGraphicsData))->texture, ImVec2(100, 100));
 	}
 }
 
