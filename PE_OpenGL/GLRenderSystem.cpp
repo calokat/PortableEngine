@@ -27,11 +27,11 @@ void GLRenderSystem::Load(IRenderer* renderer, Camera& camera)
 	glUseProgram(glRenderer->shaderProgram.programID);
 	for (auto attrIt = glRenderer->shaderProgram.attributes.begin(); attrIt != glRenderer->shaderProgram.attributes.end(); ++attrIt)
 	{
-		glRenderer->shaderProgram.attributes[attrIt->first].value.u = glGetAttribLocation(glRenderer->shaderProgram.programID, attrIt->first);
+		attrIt->second.value.u = glGetAttribLocation(glRenderer->shaderProgram.programID, attrIt->first);
 	}
 	for (auto uniIt = glRenderer->shaderProgram.vertexUniforms.begin(); uniIt != glRenderer->shaderProgram.vertexUniforms.end(); ++uniIt)
 	{
-		glRenderer->shaderProgram.vertexUniforms[uniIt->first].value.s = glGetUniformLocation(glRenderer->shaderProgram.programID, uniIt->first);
+		uniIt->second.value.s = glGetUniformLocation(glRenderer->shaderProgram.programID, uniIt->first);
 	}
 	for (auto uniIt = glRenderer->shaderProgram.fragmentUniforms.begin(); uniIt != glRenderer->shaderProgram.fragmentUniforms.end(); ++uniIt)
 	{
@@ -50,13 +50,27 @@ void GLRenderSystem::Load(IRenderer* renderer, Camera& camera)
 		glEnableVertexAttribArray(glRenderer->shaderProgram.attributes["in_normal"].value.u);
 		SetupAttribute(glRenderer->shaderProgram.attributes["in_normal"].value.u, 3, GL_FLOAT, Vertex, Normal);
 	}
+	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Normal)
+	{
+		glEnableVertexAttribArray(glRenderer->shaderProgram.attributes["in_tangent"].value.u);
+		SetupAttribute(glRenderer->shaderProgram.attributes["in_tangent"].value.u, 3, GL_FLOAT, Vertex, Tangent);
+	}
 }
 
 void GLRenderSystem::BindRenderer(IRenderer* renderer)
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
 	glBindVertexArray(glRenderer->shaderProgram.vao.u);
-	glBindTexture(GL_TEXTURE_2D, (GLint)(glRenderer->diffuseTexture.imageGraphicsData)->GetData());
+	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Textured)
+	{
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, (GLint)(glRenderer->textures["diffuse"].imageGraphicsData)->GetData());
+	}
+	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Normal)
+	{
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, (GLint)(glRenderer->textures["normal"].imageGraphicsData)->GetData());
+	}
 }
 
 void GLRenderSystem::LoadMesh(IRenderer* renderer, Mesh& mesh)
@@ -113,10 +127,25 @@ void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform
 		glUniform3f(glRenderer->shaderProgram.fragmentUniforms["cameraPos"].value.u, inverseView[3].x, inverseView[3].y, inverseView[3].z);
 		glUniform1f(glRenderer->shaderProgram.fragmentUniforms["specularIntensity"].value.u, 16);
 	}
-	if (glRenderer->diffuseTexture.pathChanged)
+	for (auto texIt = glRenderer->textures.begin(); texIt != glRenderer->textures.end(); ++texIt)
 	{
-		LoadTexture(renderer, glRenderer->diffuseTexture.path);
-		glRenderer->diffuseTexture.pathChanged = false;
+		if (texIt->second.pathChanged)
+		{
+			LoadTexture(texIt->second, texIt->second.path);
+			texIt->second.pathChanged = false;
+		}
+	}
+	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Textured)
+	{
+		glUniform1i(glRenderer->shaderProgram.fragmentUniforms["ourTexture"].value.u, 0);
+	}
+	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Normal)
+	{
+		if (glRenderer->shaderProgram.fragmentUniforms["normalTexture"].value.s < 0)
+		{
+			glRenderer->shaderProgram.fragmentUniforms["normalTexture"].value.s = glGetUniformLocation(glRenderer->shaderProgram.programID, "normalTexture");
+		}
+		glUniform1i(glRenderer->shaderProgram.fragmentUniforms["normalTexture"].value.u, 1);
 	}
 }
 
@@ -132,20 +161,42 @@ void GLRenderSystem::CreateTexture(PEImage& img)
 	
 }
 
-void GLRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath)
+void GLRenderSystem::LoadTexture(IRenderer* renderer, std::map<const char*, const char*> imagePaths)
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
-	glRenderer->diffuseTexture = { imagePath };
+	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Textured)
+	{
+		LoadTexture(glRenderer->textures["diffuse"], imagePaths["diffuse"]);
+	}
+	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Normal)
+	{
+		LoadTexture(glRenderer->textures["normal"], imagePaths["normal"]);
+	}
+}
+
+GLRenderSystem::GLRenderSystem(IPlatform* plat) : platform(plat)
+{
+}
+
+void GLRenderSystem::BindTexture(GLRenderer& renderer)
+{
+	//std::shared_ptr<OpenGLImageGraphicsData> glImageData = std::dynamic_pointer_cast<OpenGLImageGraphicsData>(renderer.diffuseTexture.imageGraphicsData);
+	//glBindTexture(GL_TEXTURE_2D, glImageData->texture);
+}
+
+void GLRenderSystem::LoadTexture(PEImage& texture, std::string imagePath)
+{
+	
+	texture = { imagePath };
 	unsigned char* imageData = nullptr;
-	bool createImageSuccess = ImageSystem::CreateImage(glRenderer->diffuseTexture, &imageData);
+	bool createImageSuccess = ImageSystem::CreateImage(texture, &imageData);
 	if (!createImageSuccess) return;
-	CreateTexture(glRenderer->diffuseTexture);
-	std::shared_ptr<OpenGLImageGraphicsData> glImageGraphicsData = std::dynamic_pointer_cast<OpenGLImageGraphicsData>(glRenderer->diffuseTexture.imageGraphicsData);
+	CreateTexture(texture);
+	std::shared_ptr<OpenGLImageGraphicsData> glImageGraphicsData = std::dynamic_pointer_cast<OpenGLImageGraphicsData>(texture.imageGraphicsData);
 	glBindTexture(GL_TEXTURE_2D, glImageGraphicsData->texture);
-
-
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 #ifdef __EMSCRIPTEN__
 	// Power of two check source: https://www.geeksforgeeks.org/cpp-program-to-find-whether-a-no-is-power-of-two/
 	if (ceil(log2(glRenderer->diffuseTexture.width)) == floor(log2(glRenderer->diffuseTexture.width)) && ceil(log2(glRenderer->diffuseTexture.height)) == floor(log2(glRenderer->diffuseTexture.height)))
@@ -159,23 +210,13 @@ void GLRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	}
 #else
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 #endif
-
-	int imgFormat = (glRenderer->diffuseTexture.numChannels > 3) ? GL_RGBA : GL_RGB;
-	glTexImage2D(GL_TEXTURE_2D, 0, imgFormat, glRenderer->diffuseTexture.width, glRenderer->diffuseTexture.height, 0, imgFormat, GL_UNSIGNED_BYTE, imageData);
+	int imgFormat = (texture.numChannels > 3) ? GL_RGBA : GL_RGB;
+	glTexImage2D(GL_TEXTURE_2D, 0, imgFormat, texture.width, texture.height, 0, imgFormat, GL_UNSIGNED_BYTE, imageData);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	ImageSystem::DestroyImageData(imageData);
-}
 
-GLRenderSystem::GLRenderSystem(IPlatform* plat) : platform(plat)
-{
-}
-
-void GLRenderSystem::BindTexture(GLRenderer& renderer)
-{
-	std::shared_ptr<OpenGLImageGraphicsData> glImageData = std::dynamic_pointer_cast<OpenGLImageGraphicsData>(renderer.diffuseTexture.imageGraphicsData);
-	glBindTexture(GL_TEXTURE_2D, glImageData->texture);
 }
