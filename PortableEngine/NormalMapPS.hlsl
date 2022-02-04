@@ -2,10 +2,8 @@
 
 cbuffer LightData: register(b0)
 {
-	PointLight light;
-	PointLight light2;
-	PointLight light3;
 	DirectionalLight dirLight;
+	PointLight pointLight;
 	float3 cameraPos;
 	float specularIntensity;
 };
@@ -30,7 +28,7 @@ float3 CalculatePointLight(PointLight light, VertexToPixelNormalMap input)
 	input.normal = normalize(input.normal);
 	float3 normalizedNegatedLightDir = normalize(light.Position - input.worldPos);
 	float lightAmount = saturate(dot(normalizedNegatedLightDir, input.normal));
-	float3 finalColor = lightAmount * float4(light.DiffuseColor, 1) * input.color + float4(light.AmbientColor, 1) + PhongPoint(light, input);
+	float3 finalColor = lightAmount * light.DiffuseColor * input.color + light.AmbientColor + PhongPoint(light, input);
 	return finalColor;
 }
 
@@ -69,13 +67,8 @@ float4 main(VertexToPixelNormalMap input) : SV_TARGET
 
 	// Assumes that	input.normal is used later in the shader
 	input.normal = mul(unpackedNormal, TBN); // Note multiplication order
-	float3 finalColor1 = CalculatePointLight(light, input);
-	float3 finalColor2 = CalculatePointLight(light2, input);
-	float3 finalColor3 = CalculatePointLight(light3, input);
-	float3 finalColor4 = CalculateDirLight(dirLight, input);
-	float3 finalColor = finalColor1 + finalColor2 + finalColor3 + finalColor4;
 	float3 surfaceColor = diffuseTexture.Sample(samplerOptions, input.UV).rgb;
-	finalColor = finalColor * surfaceColor * input.color;
+	float3 finalColor = surfaceColor * input.color * CalculateDirLight(dirLight, input) * CalculatePointLight(pointLight, input);
 	//return float4(input.normal, 1);
 return float4(finalColor, 1);
 	// Just return the input color
