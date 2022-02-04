@@ -20,13 +20,13 @@ public:
 	void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLight, PointLight pointLights[MAX_POINT_LIGHTS]);
 	DirectXRenderSystem(ID3D11Device* dev, ID3D11DeviceContext* ctx);
 	void CreateTexture(PEImage& img);
-	void LoadTexture(IRenderer* renderer, std::string imagePath);
+	void LoadTexture(IRenderer* renderer, std::map<const char*, const char*> imagePaths);
 private:
 	ID3D11Device* device;
 	ID3D11DeviceContext* context;
-	std::map<ShaderType, LPCWSTR> typeToVertexPath = { {ShaderType::Unlit_Color, L"../x64/Debug/VertexShader_UnlitColor.cso"}, {ShaderType::Unlit_Textured, L"../x64/Debug/VertexShader.cso"}, {ShaderType::Lit_Color, L"../x64/Debug/VertexShader.cso"}, {ShaderType::Lit_Textured, L"../x64/Debug/VertexShader.cso"} };
-	std::map<ShaderType, LPCWSTR> typeToPixelPath = { {ShaderType::Unlit_Color, L"../x64/Debug/PixelShader_UnlitColor.cso" }, { ShaderType::Unlit_Textured, L"../x64/Debug/PixelShader.cso" }, {ShaderType::Lit_Color, L"../x64/Debug/PixelShader_LitColor.cso"}, {ShaderType::Lit_Textured, L"../x64/Debug/PixelShader_LitTextured.cso"} };
-	void BindTexture(DirectXRenderer* renderer);
+	std::map<ShaderType, LPCWSTR> typeToVertexPath = { {ShaderType::Unlit_Color, L"../x64/Debug/VertexShader_UnlitColor.cso"}, {ShaderType::Unlit_Textured, L"../x64/Debug/VertexShader.cso"}, {ShaderType::Lit_Color, L"../x64/Debug/VertexShader.cso"}, {ShaderType::Lit_Textured, L"../x64/Debug/VertexShader.cso"}, {ShaderType::Lit_Textured_Normal, L"../x64/Debug/NormalMapVS.cso"} };
+	std::map<ShaderType, LPCWSTR> typeToPixelPath = { {ShaderType::Unlit_Color, L"../x64/Debug/PixelShader_UnlitColor.cso" }, { ShaderType::Unlit_Textured, L"../x64/Debug/PixelShader.cso" }, {ShaderType::Lit_Color, L"../x64/Debug/PixelShader_LitColor.cso"}, {ShaderType::Lit_Textured, L"../x64/Debug/PixelShader_LitTextured.cso"}, {ShaderType::Lit_Textured_Normal, L"../x64/Debug/NormalMapPS.cso"} };
+	void LoadTexture(PEImage& texture, const char* imagePath, int index);
 };
 //void DrawGizmo(Camera camera);
 #endif
