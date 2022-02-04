@@ -8,13 +8,15 @@
 #include "DirectXAPI.h"
 #include "IRenderer.h"
 #include "DirectX11ShaderProgram.h"
+#include <map>
+
 class DirectXRenderer : public IRenderer
 {
 public:
 	int numVertices;
 	int numIndices;
 	glm::vec4 vertexColor = { 1, 1, 1, 1 };
-	PEImage diffuseTexture;
+	std::map<const char*, PEImage> textures;
 	DirectX11ShaderProgram shaderProgram;
 };
 
