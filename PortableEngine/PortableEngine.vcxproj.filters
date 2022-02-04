@@ -29,5 +29,7 @@
     <FxCompile Include="VertexShader_UnlitColor.hlsl" />
     <FxCompile Include="PixelShader_LitColor.hlsl" />
     <FxCompile Include="PixelShader_LitTextured.hlsl" />
+    <FxCompile Include="NormalMapPS.hlsl" />
+    <FxCompile Include="NormalMapVS.hlsl" />
   </ItemGroup>
 </Project>
