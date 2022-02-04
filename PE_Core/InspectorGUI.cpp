@@ -74,7 +74,20 @@ void ComponentGUI(DirectXRenderer& dxr)
 	ImGui::ColorPicker4("Renderer Color", glm::value_ptr(dxr.vertexColor));
 	if (dxr.shaderProgram.shaderType & ShaderProgramProperties::Textured)
 	{
-		ImGui::Image((void*)(std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(dxr.diffuseTexture.imageGraphicsData))->srv, ImVec2(100, 100));
+		for (auto texIt = dxr.textures.begin(); texIt != dxr.textures.end(); ++texIt)
+		{
+			char buf[128];
+			memcpy(buf, texIt->second.path.c_str(), texIt->second.path.length());
+			buf[texIt->second.path.length()] = '\0';
+			ImGui::Text("%s Path: ", texIt->first);
+			ImGui::SameLine();
+			if (ImGui::InputText(buf, buf, 128))
+			{
+				texIt->second.path = buf;
+				texIt->second.pathChanged = true;
+			}
+			ImGui::Image((void*)(std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(texIt->second.imageGraphicsData))->srv, ImVec2(100, 100));
+		}
 	}
 }
 #endif
