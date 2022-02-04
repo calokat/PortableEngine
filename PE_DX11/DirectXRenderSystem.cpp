@@ -17,6 +17,7 @@ IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity
 		case ShaderType::Unlit_Textured:
 		case ShaderType::Lit_Color:
 		case ShaderType::Lit_Textured:
+		case ShaderType::Lit_Textured_Normal:
 			rendererRef.shaderProgram.vertexConstBuffer.constantBufferMap = {
 				{"colorTint", { 16 } },
 				{"world", { 64 } },
@@ -193,11 +194,20 @@ void DirectXRenderSystem::Draw(IRenderer* renderer)
 	UINT offset = 0;
 
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
-	BindTexture(dxRenderer);
 	context->IASetVertexBuffers(0, 1, dxRenderer->shaderProgram.vertexBuffer.GetAddressOf(), &stride, &offset);
 	context->IASetIndexBuffer(dxRenderer->shaderProgram.indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	context->VSSetShader(dxRenderer->shaderProgram.vertexShader.Get(), 0, 0);
 	context->PSSetShader(dxRenderer->shaderProgram.pixelShader.Get(), 0, 0);
+	if (dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Textured)
+	{
+		std::shared_ptr<DirectX11ImageGraphicsData> dxImageData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(dxRenderer->textures["diffuse"].imageGraphicsData);
+		context->PSSetShaderResources(0, 1, &dxImageData->srv);
+	}
+	if (dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Normal)
+	{
+		std::shared_ptr<DirectX11ImageGraphicsData> dxImageData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(dxRenderer->textures["normal"].imageGraphicsData);
+		context->PSSetShaderResources(1, 1, &dxImageData->srv);
+	}
 	context->DrawIndexed(
 		dxRenderer->numIndices,     // The number of indices to use (we could draw a subset if we wanted)
 		0,     // Offset to the first index we want to use
@@ -268,22 +278,24 @@ void DirectXRenderSystem::CreateTexture(PEImage& img)
 	delete[] widePath;
 }
 
-void DirectXRenderSystem::LoadTexture(IRenderer* renderer, std::string imagePath)
+void DirectXRenderSystem::LoadTexture(IRenderer* renderer, std::map<const char*, const char*> imagePaths)
 {
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
 	if ((dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Textured) == 0) return;
-	dxRenderer->diffuseTexture = { imagePath };
-	CreateTexture(dxRenderer->diffuseTexture);
-
-	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(dxRenderer->diffuseTexture.imageGraphicsData);
-	context->PSSetShaderResources(0, 1, &dx11ImageGraphicsData->srv);
+	LoadTexture(dxRenderer->textures["diffuse"], imagePaths["diffuse"], 0);
+	if (dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Normal)
+	{
+		LoadTexture(dxRenderer->textures["normal"], imagePaths["normal"], 1);
+	}
 }
 
-void DirectXRenderSystem::BindTexture(DirectXRenderer* renderer)
+
+void DirectXRenderSystem::LoadTexture(PEImage& texture, const char* imagePath, int index)
 {
-	if ((renderer->shaderProgram.shaderType & ShaderProgramProperties::Textured) == 0) return;
-	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(renderer->diffuseTexture.imageGraphicsData);
-	context->PSSetShaderResources(0, 1, &dx11ImageGraphicsData->srv);
+	texture = { imagePath };
+	CreateTexture(texture);
+	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(texture.imageGraphicsData);
+	context->PSSetShaderResources(index, 1, &dx11ImageGraphicsData->srv);
 }
 
 #endif
