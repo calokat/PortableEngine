@@ -24,11 +24,11 @@ namespace PE
 {
 	enum Platform { Win32, Web, Android };
 	enum GraphicsAPI { OpenGL, DirectX11 };
-	enum XrPlatform { None, OpenXR };
+	enum XrPlatform { NoXR, OpenXR };
 }
 struct Options
 {
 	PE::Platform platform;
 	PE::GraphicsAPI graphicsAPI;
-	PE::XrPlatform xr = PE::XrPlatform::None;
+	PE::XrPlatform xr = PE::XrPlatform::NoXR;
 };
