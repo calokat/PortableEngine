@@ -105,14 +105,14 @@ int main(int argc, char* argv[])
 	Relationship& leftHandRel = registry.get<Relationship>(leftXRHand);
 	for (auto it = leftHandRel.children.begin(); it != leftHandRel.children.end(); it++)
 	{
-		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str(), it->second, ShaderType::Lit_Textured);
+		AttachRenderers(registry, renderSystem, { { "diffuse",  plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str() }, { "normal",  plat->GetAssetManager()->GetAssetPath("../../Assets/Images/Normal/rock_normals.png").c_str() } }, it->second, ShaderType::Lit_Textured_Normal);
 	}
 
 	Relationship& duoRel = registry.get<Relationship>(duoRoot);
 
 	for (auto it = duoRel.children.begin(); it != duoRel.children.end(); it++)
 	{
-		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str(), it->second, ShaderType::Lit_Textured);
+		AttachRenderers(registry, renderSystem, { { "diffuse",  plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str() }, { "normal",  plat->GetAssetManager()->GetAssetPath("../../Assets/Images/Normal/rock_normals.png").c_str() } }, it->second, ShaderType::Lit_Textured_Normal);
 	}
 
 	entt::entity pointLightEntity = LightsSystem::CreatePointLight(registry);
