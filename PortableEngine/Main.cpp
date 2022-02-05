@@ -171,7 +171,7 @@ int main(int argc, char* argv[])
 		renderSystem = new GLRenderSystem(plat);
 	}
 	//xr = new XRAPI(plat, graph, window);
-	if (options.xr == PE::XrPlatform::None)
+	if (options.xr == PE::XrPlatform::NoXR)
 	{
 		xr = new MockXRAPI();
 	}
@@ -192,22 +192,9 @@ int main(int argc, char* argv[])
 
 	for (auto it = duoRootRel.children.begin(); it != duoRootRel.children.end(); it++)
 	{
-		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str(), it->second, ShaderType::Lit_Textured);
+		AttachRenderers(registry, renderSystem, { { "diffuse",  plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str() }, { "normal",  plat->GetAssetManager()->GetAssetPath("../../Assets/Images/Normal/rock_normals.png").c_str() } }, it->second, ShaderType::Lit_Textured_Normal);
 	}
 
-	Tree<MeshCreateInfo> cylinderScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cylinder.obj").c_str());
-
-	entt::entity cylRoot = MakeMesh(cylinderScene, registry, root);
-
-	Relationship& cylRel = registry.get<Relationship>(cylRoot);
-
-	for (auto it = cylRel.children.begin(); it != cylRel.children.end(); ++it)
-	{
-		AttachRenderers(registry, renderSystem, plat->GetAssetManager()->GetAssetPath("../../Assets/Images/cushion.png").c_str(), it->second, ShaderType::Lit_Textured);
-	}
-
-	Transform& cylTransform = registry.get<Transform>(cylRoot);
-	cylTransform.position.y = 5;
 
 
 	entt::entity pointLightEntity = LightsSystem::CreatePointLight(registry);
