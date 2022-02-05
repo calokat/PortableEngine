@@ -199,7 +199,7 @@ void GLRenderSystem::LoadTexture(PEImage& texture, std::string imagePath)
 
 #ifdef __EMSCRIPTEN__
 	// Power of two check source: https://www.geeksforgeeks.org/cpp-program-to-find-whether-a-no-is-power-of-two/
-	if (ceil(log2(glRenderer->diffuseTexture.width)) == floor(log2(glRenderer->diffuseTexture.width)) && ceil(log2(glRenderer->diffuseTexture.height)) == floor(log2(glRenderer->diffuseTexture.height)))
+	if (ceil(log2(texture.width)) == floor(log2(texture.width)) && ceil(log2(texture.height)) == floor(log2(texture.height)))
 	{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // This is required on WebGL for non power-of-two textures
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); // Same
