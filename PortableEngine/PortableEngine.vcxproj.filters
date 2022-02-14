@@ -3,7 +3,6 @@
   <ItemGroup>
     <ClCompile Include="imgui_impl_emscripten.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="SerializationSystem.cpp" />
     <ClCompile Include="WindowsInputSystem.cpp" />
     <ClCompile Include="WindowsPlatform.cpp" />
     <ClCompile Include="WindowsAssetManager.cpp" />
@@ -13,7 +12,6 @@
   <ItemGroup>
     <ClInclude Include="imgui_impl_emscripten.h" />
     <ClInclude Include="misc_components.h" />
-    <ClInclude Include="SerializationSystem.h" />
     <ClInclude Include="WindowsInputSystem.h" />
     <ClInclude Include="WindowsPlatform.h" />
     <ClInclude Include="WindowsAssetManager.h" />

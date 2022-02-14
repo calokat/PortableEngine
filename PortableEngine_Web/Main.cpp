@@ -47,7 +47,6 @@ int main(int argc, char* argv[])
 #endif
 
 	Options options;
-	//using json = nlohmann::json;
 	IPlatform* plat = nullptr;
 	IGraphicsAPI* graph = nullptr;
 	GameWindow* window = nullptr;

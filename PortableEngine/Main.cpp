@@ -25,7 +25,6 @@
 #include <typeinfo>
 #include <map>
 #include <random>
-#include <json.hpp>
 #include <iomanip>
 #include "InspectorGUI.h"
 #include "misc_components.h"
@@ -64,7 +63,6 @@ int main(int argc, char* argv[])
 #endif
 
 	Options options;
-	//using json = nlohmann::json;
 	IPlatform* plat = nullptr;
 	IGraphicsAPI* graph = nullptr;
 	GameWindow* window = nullptr;
