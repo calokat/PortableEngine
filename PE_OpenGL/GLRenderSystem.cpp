@@ -1,6 +1,5 @@
 #include "GLRenderSystem.h"
 #include <imgui.h>
-#include <ImGuizmo.h>
 #include "CameraSystem.h"
 #include "OpenGLImageGraphicsData.h"
 #include "ImageSystem.h"
