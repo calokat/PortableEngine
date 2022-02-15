@@ -2,7 +2,7 @@
 #include "IRenderer.h"
 #include "Camera.h"
 #include "Mesh.h"
-#include <entt.hpp>
+#include <entt/entt.hpp>
 #include "PEImage.h"
 #include "OpenGLShaderProgram.h"
 #include "lights.h"

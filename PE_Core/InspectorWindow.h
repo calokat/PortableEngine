@@ -1,5 +1,5 @@
 #pragma once
-#include <entt.hpp>
+#include <entt/entt.hpp>
 class InspectorWindow
 {
 public:

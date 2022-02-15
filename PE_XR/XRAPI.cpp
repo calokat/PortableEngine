@@ -253,7 +253,7 @@ bool XRAPI::IsSessionRunning()
 	return m_sessionRunning;
 }
 
-void XRAPI::UpdateDevices(XrTime predictedTime, entt::basic_view<entt::entity, entt::exclude_t<>, XRDevice, Transform> xrDevices, entt::basic_view<entt::entity, entt::exclude_t<>, Camera, Transform> cameraTransformView)
+void XRAPI::UpdateDevices(XrTime predictedTime, entt::basic_view<entt::entity, entt::get_t<XRDevice, Transform>, entt::exclude_t<>, void> xrDevices, entt::basic_view<entt::entity, entt::get_t<Camera, Transform>, entt::exclude_t<>, void> cameraTransformView)
 {
 	auto [cam, camTransform] = cameraTransformView.get(cameraTransformView.front());
 	for (auto devIt = xrDevices.begin(); devIt != xrDevices.end(); ++devIt)

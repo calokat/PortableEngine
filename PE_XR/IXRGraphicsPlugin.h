@@ -2,7 +2,7 @@
 #include <vector>
 #include "xr_defines.h"
 #include "openxr/openxr.h"
-#include <entt.hpp>
+#include <entt/entt.hpp>
 #include "IRenderSystem.h"
 
 class IXRGraphicsPlugin {

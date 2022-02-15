@@ -1,6 +1,6 @@
 #pragma once
 #include "IXRAPI.h"
-#include <entt.hpp>
+#include <entt/entt.hpp>
 #include "IRenderSystem.h"
 #include "IPlatform.h"
 #include "IGraphicsAPI.h"

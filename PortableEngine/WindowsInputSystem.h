@@ -1,7 +1,7 @@
 #ifdef _WIN64
 #pragma once
 #include "IInputSystem.h"
-#include <entt.hpp>
+#include <entt/entt.hpp>
 #include <vector>
 #include <functional>
 #include <Windows.h>

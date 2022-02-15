@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <backends/imgui_impl_opengl3.h>
+#include <imgui_impl_opengl3.h>
 #include "CameraSystem.h"
 
 int OpenGLAPI::Init()

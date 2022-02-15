@@ -2,7 +2,7 @@
 #include "WindowsInputSystem.h"
 #include "WindowsPlatform.h"
 #include <imgui.h>
-#include <backends/imgui_impl_win32.h>
+#include <imgui_impl_win32.h>
 #include "WindowsAssetManager.h"
 #include "../PE_XR/Platform_Plugins/Win32/XRPlatformPlugin_Win32.h"
 

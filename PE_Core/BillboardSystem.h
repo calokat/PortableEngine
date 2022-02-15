@@ -1,7 +1,7 @@
 #pragma once
 #include "Transform.h"
 #include "Camera.h"
-#include <entt.hpp>
+#include "entt/entt.hpp"
 
 struct Billboard
 {
@@ -11,5 +11,5 @@ private:
 
 namespace BillboardSystem
 {
-	void SetBillboardTransforms(entt::basic_view<entt::entity, entt::exclude_t<>, Billboard, Transform> billboardView, Camera renderCamera);
+	void SetBillboardTransforms(entt::basic_view<entt::entity, entt::get_t<Billboard, Transform>, entt::exclude_t<>, void> billboardView, Camera renderCamera);
 }

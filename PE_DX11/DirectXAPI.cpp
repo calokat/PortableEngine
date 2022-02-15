@@ -3,7 +3,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "Vertex.h"
 #include <iostream>
-#include <backends/imgui_impl_dx11.h>
+#include <imgui_impl_dx11.h>
 #include "CameraSystem.h"
 // ********** REQUIRED WITHOUT SIMPLE SHADER **********
 // Needed for a helper function to read compiled shader files from the hard drive

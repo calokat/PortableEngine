@@ -3,7 +3,7 @@
 #include "DirectX11ImageGraphicsData.h"
 #include "ImageSystem.h"
 #include "lights.h"
-#include <WICTextureLoader.h>
+#include <DirectXTK/WICTextureLoader.h>
 
 #pragma warning(disable:4996)
 

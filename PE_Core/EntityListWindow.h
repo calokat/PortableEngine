@@ -1,5 +1,5 @@
 #pragma once
-#include <entt.hpp>
+#include <entt/entt.hpp>
 #include "misc_components.h"
 #include "Transform.h"
 #include "Tree.h"
@@ -12,7 +12,7 @@ struct ChildMoveInfo
 class EntityListWindow
 {
 public:
-	void Render(Relationship& rootRel, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship, Transform> nameView);
+	void Render(Relationship& rootRel, entt::basic_view<entt::entity, entt::get_t<Name, Relationship, Transform>, entt::exclude_t<>, void> nameView);
 private:
-	void SetUpGuiTree(entt::entity parent, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship, Transform> nameView);
+	void SetUpGuiTree(entt::entity parent, entt::basic_view<entt::entity, entt::get_t<Name, Relationship, Transform>, entt::exclude_t<>, void> nameView);
 };

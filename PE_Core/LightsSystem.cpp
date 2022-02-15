@@ -40,7 +40,7 @@ namespace LightsSystem
 		reg.emplace<Relationship>(res);
 		return res;
 	}
-	void LoadPointLightPositions(entt::basic_view<entt::entity, entt::exclude_t<>, PointLight, Transform> pointLights)
+	void LoadPointLightPositions(entt::basic_view<entt::entity, entt::get_t<PointLight, Transform>, entt::exclude_t<>, void> pointLights)
 	{
 		for (entt::entity entity : pointLights)
 		{
@@ -48,7 +48,7 @@ namespace LightsSystem
 			pointLight.Position = pointLightTransform.worldMatrix[3];
 		}
 	}
-	void LoadDirLightDirections(entt::basic_view<entt::entity, entt::exclude_t<>, DirectionalLight, Transform> dirLights)
+	void LoadDirLightDirections(entt::basic_view<entt::entity, entt::get_t<DirectionalLight, Transform>, entt::exclude_t<>, void> dirLights)
 	{
 		for (entt::entity entity : dirLights)
 		{

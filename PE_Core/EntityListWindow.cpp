@@ -3,7 +3,7 @@
 #include "GizmoSystem.h"
 #include "TransformSystem.h"
 #include <glm/common.hpp>
-void EntityListWindow::Render(Relationship& rootRel, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship, Transform> nameView)
+void EntityListWindow::Render(Relationship& rootRel, entt::basic_view<entt::entity, entt::get_t<Name, Relationship, Transform>, entt::exclude_t<>, void> nameView)
 {
 	ImGui::Begin("Entity List");
 	ImGui::SetWindowPos({ 0, 20 });
@@ -17,7 +17,7 @@ void EntityListWindow::Render(Relationship& rootRel, entt::basic_view<entt::enti
 	ImGui::End();
 }
 
-void EntityListWindow::SetUpGuiTree(entt::entity parent, entt::basic_view<entt::entity, entt::exclude_t<>, Name, Relationship, Transform> nameView)
+void EntityListWindow::SetUpGuiTree(entt::entity parent, entt::basic_view<entt::entity, entt::get_t<Name, Relationship, Transform>, entt::exclude_t<>, void> nameView)
 {
 	Name entityName = nameView.get<Name>(parent);
 	Relationship& parentRel = nameView.get<Relationship>(parent);

@@ -3,7 +3,7 @@
 #include "IInputSystem.h"
 #include <glm/glm.hpp>
 #include "IAssetManager.h"
-#include <entt.hpp>
+#include <entt/entt.hpp>
 class IPlatform
 {
 public:

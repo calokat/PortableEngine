@@ -7,7 +7,7 @@
 #include "openxr/openxr.h"
 #include "openxr/xr_linear.h"
 #include "GameWindow.h"
-#include <entt.hpp>
+#include <entt/entt.hpp>
 #include "IRenderSystem.h"
 #include "misc_components.h"
 #include <array>
@@ -48,7 +48,7 @@ public:
     bool IsSessionRunning();
     void Frame(entt::registry& reg, IRenderSystem* renderSystem);
 private:
-    void UpdateDevices(XrTime predictedTime, entt::basic_view<entt::entity, entt::exclude_t<>, XRDevice, Transform> xrDevices, entt::basic_view<entt::entity, entt::exclude_t<>, Camera, Transform> cameraTransformView);
+    void UpdateDevices(XrTime predictedTime, entt::basic_view<entt::entity, entt::get_t<XRDevice, Transform>, entt::exclude_t<>, void> xrDevices, entt::basic_view<entt::entity, entt::get_t<Camera, Transform>, entt::exclude_t<>, void> cameraTransformView);
     void InitializeActions();
     void PollActions();
     XrFrameState BeginFrame();
