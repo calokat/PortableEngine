@@ -14,7 +14,6 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\imgui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)esUtil.c" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GLRenderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GLRenderSystem.cpp" />

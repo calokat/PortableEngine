@@ -1,21 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="imgui_impl_emscripten.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="WindowsInputSystem.cpp" />
     <ClCompile Include="WindowsPlatform.cpp" />
     <ClCompile Include="WindowsAssetManager.cpp" />
-    <ClCompile Include="..\..\imgui\backends\imgui_impl_win32.cpp" />
-    <ClCompile Include="..\..\DirectXTK\Src\WICTextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="imgui_impl_emscripten.h" />
     <ClInclude Include="misc_components.h" />
     <ClInclude Include="WindowsInputSystem.h" />
     <ClInclude Include="WindowsPlatform.h" />
     <ClInclude Include="WindowsAssetManager.h" />
-    <ClInclude Include="..\..\DirectXTK\Inc\WICTextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
