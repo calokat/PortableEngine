@@ -362,3 +362,5 @@ PortableEngine/*.json
 
 # Include vr.js, it's getting pretty important
 !PortableEngine/cmakebuild/vr.js
+
+build
