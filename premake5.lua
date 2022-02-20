@@ -31,6 +31,7 @@ project "PortableEngine_Win32"
     cppdialect "C++17"
     links {"PE_Core", "PE_DX11", "PE_OpenGL", "PE_XR", "assimp-vc142-mt.lib", "bz2.lib", "DirectXTK.lib", "glew32.lib", "glfw3dll.lib", "GlU32.Lib", "imgui.lib", "Irrlicht.lib", "jpeg.lib", "jsoncpp.lib", "kubazip.lib", "libpng16.lib", "minizip.lib", "OpenGL32.Lib", "openxr_loader.lib", "poly2tri.lib", "polyclipping.lib", "turbojpeg.lib", "zlib.lib"}
     libdirs {"C:/vcpkg/installed/x64-windows/lib"}
+    stringpooling "on"
     local dllDir = "C:/vcpkg/installed/x64-windows/bin/"
     local dlls = os.matchfiles(dllDir .. "*.dll")
     for i,d in pairs(dlls) do
