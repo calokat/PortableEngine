@@ -1,7 +1,6 @@
 #include "XRGraphicsPlugin_OpenGL.h"
 #include <GL/glew.h>
 #include <assert.h>
-#include <openxr/xr_linear.h>
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
 #include "GLRenderer.h"

@@ -1,5 +1,4 @@
 #include "XRGraphicsPlugin_DirectX11.h"
-#include <openxr/xr_linear.h>
 #include "DIrectXRenderer.h"
 #include "LightsSystem.h"
 #pragma comment(lib, "dxgi.lib")
@@ -152,42 +151,6 @@ void XRGraphicsPlugin_DirectX11::RenderView(const XrCompositionLayerProjectionVi
         renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam, dirLight, pointLights);
         renderSystem->Draw(&renderer);
     }
-
-
-    //const XMMATRIX spaceToView = XMMatrixInverse(nullptr, LoadXrPose(layerView.pose));
-    //XrMatrix4x4f projectionMatrix;
-    //XrMatrix4x4f_CreateProjectionFov(&projectionMatrix, GRAPHICS_D3D, layerView.fov, 0.05f, 100.0f);
-
-    // Set shaders and constant buffers.
-    //ViewProjectionConstantBuffer viewProjection;
-    //XMStoreFloat4x4(&viewProjection.ViewProjection, XMMatrixTranspose(spaceToView * LoadXrMatrix(projectionMatrix)));
-    //m_deviceContext->UpdateSubresource(m_viewProjectionCBuffer.Get(), 0, nullptr, &viewProjection, 0, 0);
-
-    //ID3D11Buffer* const constantBuffers[] = { m_modelCBuffer.Get(), m_viewProjectionCBuffer.Get() };
-    //m_deviceContext->VSSetConstantBuffers(0, (UINT)ArraySize(constantBuffers), constantBuffers);
-    //m_deviceContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
-    //m_deviceContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
-
-    // Set cube primitive data.
-    //const UINT strides[] = { sizeof(Geometry::Vertex) };
-    //const UINT offsets[] = { 0 };
-    //ID3D11Buffer* vertexBuffers[] = { m_cubeVertexBuffer.Get() };
-    //m_deviceContext->IASetVertexBuffers(0, (UINT)ArraySize(vertexBuffers), vertexBuffers, strides, offsets);
-    //m_deviceContext->IASetIndexBuffer(m_cubeIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
-    //m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    //m_deviceContext->IASetInputLayout(m_inputLayout.Get());
-
-    // Render each cube
-    //for (const Cube& cube : cubes) {
-    //    // Compute and update the model transform.
-    //    ModelConstantBuffer model;
-    //    XMStoreFloat4x4(&model.Model,
-    //        XMMatrixTranspose(XMMatrixScaling(cube.Scale.x, cube.Scale.y, cube.Scale.z) * LoadXrPose(cube.Pose)));
-    //    m_deviceContext->UpdateSubresource(m_modelCBuffer.Get(), 0, nullptr, &model, 0, 0);
-
-    //    // Draw the cube.
-    //    m_deviceContext->DrawIndexed((UINT)ArraySize(Geometry::c_cubeIndices), 0, 0);
-    //}
 }
 
 Microsoft::WRL::ComPtr<IDXGIAdapter1> XRGraphicsPlugin_DirectX11::GetAdapter(LUID adapterId)

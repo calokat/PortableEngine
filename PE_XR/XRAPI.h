@@ -5,7 +5,7 @@
 #include "IGraphicsAPI.h"
 #include "xr_defines.h"
 #include "openxr/openxr.h"
-#include "openxr/xr_linear.h"
+#include "xr_linear.h"
 #include "GameWindow.h"
 #include <entt/entt.hpp>
 #include "IRenderSystem.h"
