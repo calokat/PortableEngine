@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
 
 	if (argc < 4)
 	{
-		options.platform = PE::Platform::Web;
+		options.platform = PE::Platform::Win32;
 		options.graphicsAPI = PE::GraphicsAPI::OpenGL;
 	}
 	else
