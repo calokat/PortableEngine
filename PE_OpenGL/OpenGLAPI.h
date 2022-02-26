@@ -8,6 +8,8 @@
 #endif
 #include "IPlatform.h"
 #include "Shader.h"
+#include "Camera.h"
+
 class OpenGLAPI : public IGraphicsAPI
 {
 public:
