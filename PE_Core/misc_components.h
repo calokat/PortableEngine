@@ -22,7 +22,7 @@ struct Thumbnail
 
 namespace PE
 {
-	enum Platform { Win32, Web, Android };
+	enum Platform { Win32, Web, Android, Linux };
 	enum GraphicsAPI { OpenGL, DirectX11 };
 	enum XrPlatform { NoXR, OpenXR };
 }
