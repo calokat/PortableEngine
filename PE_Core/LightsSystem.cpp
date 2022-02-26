@@ -6,7 +6,7 @@
 #include "AABBSystem.h"
 namespace LightsSystem
 {
-	void LightsSystem::ExtractLightsFromRegistry(entt::registry& reg, DirectionalLight& dirLight, PointLight* pointLights)
+	void ExtractLightsFromRegistry(entt::registry& reg, DirectionalLight& dirLight, PointLight* pointLights)
 	{
 		const auto dirLightView = reg.view<DirectionalLight>();
 		dirLight = dirLightView.get<DirectionalLight>(dirLightView.front());
