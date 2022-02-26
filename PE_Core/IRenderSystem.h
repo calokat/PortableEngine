@@ -4,7 +4,6 @@
 #include "Mesh.h"
 #include <entt/entt.hpp>
 #include "PEImage.h"
-#include "OpenGLShaderProgram.h"
 #include "lights.h"
 #include <map>
 

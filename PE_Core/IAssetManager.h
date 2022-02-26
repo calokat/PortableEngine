@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include "IRenderSystem.h"
 #include "PEAsset.h"
 #include <vector>
 #include <memory>
