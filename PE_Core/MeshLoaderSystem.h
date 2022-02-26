@@ -1,9 +1,9 @@
 #pragma once
 #include "Vertex.h"
 #include "Mesh.h"
-#include <assimp\Importer.hpp>
-#include <assimp\scene.h>
-#include <assimp\postprocess.h>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 #include "Transform.h"
 #include "Tree.h"
 #include "MeshCreateInfo.h"
