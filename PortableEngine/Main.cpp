@@ -9,6 +9,9 @@
 #include "EmscriptenPlatform.h"
 #include <emscripten/html5.h>
 #endif
+#ifdef __linux__
+#include "LinuxPlatform.h"
+#endif
 #include "OpenGLAPI.h"
 #include "Mesh.h"
 #include "GLRenderer.h"
@@ -89,7 +92,12 @@ int main(int argc, char* argv[])
 
 	if (argc < 4)
 	{
+		#ifdef _WIN64
 		options.platform = PE::Platform::Win32;
+		#endif
+		#ifdef __linux__
+		options.platform = PE::Platform::Linux;
+		#endif
 		options.graphicsAPI = PE::GraphicsAPI::OpenGL;
 	}
 	else
@@ -135,6 +143,11 @@ int main(int argc, char* argv[])
 	{
 		plat = new EmscriptenPlatform(window);
 	}
+#elif defined __linux__
+	if (options.platform == PE::Platform::Linux)
+	{
+		plat = new LinuxPlatform(window);
+	}
 #endif
 #ifdef _WIN64
 	if (options.graphicsAPI == PE::GraphicsAPI::DirectX11)
@@ -145,7 +158,7 @@ int main(int argc, char* argv[])
 	{
 		graph = new OpenGLAPI(window, plat, cam);
 	}
-#elif defined __EMSCRIPTEN__
+#else
 	graph = new OpenGLAPI(window, plat, cam);
 #endif
 
@@ -166,7 +179,6 @@ int main(int argc, char* argv[])
 	{
 		renderSystem = new GLRenderSystem(plat);
 	}
-	//xr = new XRAPI(plat, graph, window);
 	if (options.xr == PE::XrPlatform::NoXR)
 	{
 		xr = new MockXRAPI();
