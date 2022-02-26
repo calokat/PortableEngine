@@ -1,6 +1,4 @@
 #pragma once
-struct IImageGraphicsData 
+class IImageGraphicsData 
 {
-public:
-	virtual void* GetData() = 0;
 };

@@ -4,8 +4,8 @@
 struct OpenGLImageGraphicsData : public IImageGraphicsData
 {
 	GLuint texture;
-	void* GetData()
+	GLuint GetData()
 	{
-		return (void*)texture;
+		return texture;
 	}
 };

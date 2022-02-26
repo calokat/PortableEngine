@@ -200,12 +200,12 @@ void DirectXRenderSystem::Draw(IRenderer* renderer)
 	context->PSSetShader(dxRenderer->shaderProgram.pixelShader.Get(), 0, 0);
 	if (dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Textured)
 	{
-		std::shared_ptr<DirectX11ImageGraphicsData> dxImageData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(dxRenderer->textures["diffuse"].imageGraphicsData);
+		DirectX11ImageGraphicsData* dxImageData = (DirectX11ImageGraphicsData*)dxRenderer->textures["diffuse"].imageGraphicsData.get();
 		context->PSSetShaderResources(0, 1, &dxImageData->srv);
 	}
 	if (dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Normal)
 	{
-		std::shared_ptr<DirectX11ImageGraphicsData> dxImageData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(dxRenderer->textures["normal"].imageGraphicsData);
+		DirectX11ImageGraphicsData* dxImageData = (DirectX11ImageGraphicsData*)dxRenderer->textures["normal"].imageGraphicsData.get();
 		context->PSSetShaderResources(1, 1, &dxImageData->srv);
 	}
 	context->DrawIndexed(
@@ -294,7 +294,7 @@ void DirectXRenderSystem::LoadTexture(PEImage& texture, const char* imagePath, i
 {
 	texture = { imagePath };
 	CreateTexture(texture);
-	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(texture.imageGraphicsData);
+	DirectX11ImageGraphicsData* dx11ImageGraphicsData = (DirectX11ImageGraphicsData*)texture.imageGraphicsData.get();
 	context->PSSetShaderResources(index, 1, &dx11ImageGraphicsData->srv);
 }
 

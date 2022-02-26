@@ -56,7 +56,8 @@ void ComponentGUI(GLRenderer& r)
 				texIt->second.path = buf;
 				texIt->second.pathChanged = true;
 			}
-			ImGui::Image((void*)(std::dynamic_pointer_cast<OpenGLImageGraphicsData>(texIt->second.imageGraphicsData))->texture, ImVec2(100, 100));
+			OpenGLImageGraphicsData* imageGraphicsData = (OpenGLImageGraphicsData*)texIt->second.imageGraphicsData.get();
+			ImGui::Image((ImTextureID)imageGraphicsData->texture, ImVec2(100, 100));
 		}
 	}
 }
@@ -86,7 +87,8 @@ void ComponentGUI(DirectXRenderer& dxr)
 				texIt->second.path = buf;
 				texIt->second.pathChanged = true;
 			}
-			ImGui::Image((void*)(std::dynamic_pointer_cast<DirectX11ImageGraphicsData>(texIt->second.imageGraphicsData))->srv, ImVec2(100, 100));
+			DirectX11ImageGraphicsData* imageGraphicsData = (DirectX11ImageGraphicsData*)texIt->second.imageGraphicsData.get();
+			ImGui::Image((ImTextureID)(imageGraphicsData)->srv, ImVec2(100, 100));
 		}
 	}
 }

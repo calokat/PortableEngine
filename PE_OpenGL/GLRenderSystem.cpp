@@ -63,12 +63,14 @@ void GLRenderSystem::BindRenderer(IRenderer* renderer)
 	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Textured)
 	{
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, (GLint)(glRenderer->textures["diffuse"].imageGraphicsData)->GetData());
+		OpenGLImageGraphicsData* glGraphicsData = (OpenGLImageGraphicsData*)glRenderer->textures["diffuse"].imageGraphicsData.get();
+		glBindTexture(GL_TEXTURE_2D, glGraphicsData->texture);
 	}
 	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Normal)
 	{
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, (GLint)(glRenderer->textures["normal"].imageGraphicsData)->GetData());
+		OpenGLImageGraphicsData* glGraphicsData = (OpenGLImageGraphicsData*)glRenderer->textures["normal"].imageGraphicsData.get();
+		glBindTexture(GL_TEXTURE_2D, glGraphicsData->texture);
 	}
 }
 
@@ -179,8 +181,6 @@ GLRenderSystem::GLRenderSystem(IPlatform* plat) : platform(plat)
 
 void GLRenderSystem::BindTexture(GLRenderer& renderer)
 {
-	//std::shared_ptr<OpenGLImageGraphicsData> glImageData = std::dynamic_pointer_cast<OpenGLImageGraphicsData>(renderer.diffuseTexture.imageGraphicsData);
-	//glBindTexture(GL_TEXTURE_2D, glImageData->texture);
 }
 
 void GLRenderSystem::LoadTexture(PEImage& texture, std::string imagePath)
@@ -191,7 +191,7 @@ void GLRenderSystem::LoadTexture(PEImage& texture, std::string imagePath)
 	bool createImageSuccess = ImageSystem::CreateImage(texture, &imageData);
 	if (!createImageSuccess) return;
 	CreateTexture(texture);
-	std::shared_ptr<OpenGLImageGraphicsData> glImageGraphicsData = std::dynamic_pointer_cast<OpenGLImageGraphicsData>(texture.imageGraphicsData);
+	OpenGLImageGraphicsData* glImageGraphicsData = (OpenGLImageGraphicsData*)texture.imageGraphicsData.get();
 	glBindTexture(GL_TEXTURE_2D, glImageGraphicsData->texture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
