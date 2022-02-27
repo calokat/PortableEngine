@@ -39,9 +39,9 @@
 #include "EntityListWindow.h"
 #include "InspectorWindow.h"
 #include "WindowHeader.h"
-#ifndef __EMSCRIPTEN__
+#ifdef _WIN64
 #include "../PE_XR/XRAPI.h"
-#else
+#elif defined(__EMSCRIPTEN__)
 #include "../PE_XR/WebXRAPI.h"
 #endif
 #include "../PE_XR/MockXRAPI.h"
@@ -56,13 +56,14 @@
 
 int main(int argc, char* argv[])
 {
-#if defined(DEBUG) | defined(_DEBUG)
-	// Enable memory leak detection as a quick and dirty
-	// way of determining if we forgot to clean something up
-	//  - You may want to use something more advanced, like Visual Leak Detector
-	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-#endif
-
+		printf("Yo yo yo");
+// #if defined(DEBUG) | defined(_DEBUG)
+// 	// Enable memory leak detection as a quick and dirty
+// 	// way of determining if we forgot to clean something up
+// 	//  - You may want to use something more advanced, like Visual Leak Detector
+// 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+// #endif
+	
 	Options options;
 	IPlatform* plat = nullptr;
 	IGraphicsAPI* graph = nullptr;
@@ -183,24 +184,26 @@ int main(int argc, char* argv[])
 	{
 		xr = new MockXRAPI();
 	}
+#ifdef _WIN64
 	else if (options.xr == PE::XrPlatform::OpenXR)
 	{
 		xr = new XRAPI(plat, graph, window, options);
 	}
+#endif
 
 	entt::entity root = registry.create();
 	registry.emplace<Name>(root, "$");
 	registry.emplace<Transform>(root);
 	registry.emplace<Relationship>(root);
 	GizmoSystem::Select(root);
-	Tree<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/duo.fbx").c_str());
+	Tree<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../Assets/Models/duo.fbx").c_str());
 	entt::entity duoRoot = MakeMesh(duoScene, registry, root);
 
 	Relationship& duoRootRel = registry.get<Relationship>(duoRoot);
 
 	for (auto it = duoRootRel.children.begin(); it != duoRootRel.children.end(); it++)
 	{
-		AttachRenderers(registry, renderSystem, { { "diffuse",  plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str() }, { "normal",  plat->GetAssetManager()->GetAssetPath("../../Assets/Images/Normal/rock_normals.png").c_str() } }, it->second, ShaderType::Lit_Textured_Normal);
+		AttachRenderers(registry, renderSystem, { { TextureType::DiffuseTexture,  plat->GetAssetManager()->GetAssetPath("../Assets/Images/rock.png").c_str() }, { TextureType::NormalTexture,  plat->GetAssetManager()->GetAssetPath("../Assets/Images/Normal/rock_normals.png").c_str() } }, it->second, ShaderType::Lit_Textured_Normal);
 	}
 
 
