@@ -15,14 +15,14 @@ LinuxPlatform::LinuxPlatform(GameWindow* win) : window(win)
 	}
 }
 
-EmscriptenPlatform::~EmscriptenPlatform()
+LinuxPlatform::~LinuxPlatform()
 {
 	ImGui_ImplSDL2_Shutdown();
 	delete inputSystem;
 	delete assetManager;
 }
 
-int EmscriptenPlatform::InitWindow()
+int LinuxPlatform::InitWindow()
 {
     SDL_DisplayMode current;
     SDL_GetCurrentDisplayMode(0, &current);
@@ -34,43 +34,43 @@ int EmscriptenPlatform::InitWindow()
 	return 0;
 }
 
-long EmscriptenPlatform::Run()
+long LinuxPlatform::Run()
 {
 	return 0;
 }
 
-std::string EmscriptenPlatform::GetAssetPath(std::string relativePath)
+std::string LinuxPlatform::GetAssetPath(std::string relativePath)
 {
 	return relativePath;
 }
 
-std::wstring EmscriptenPlatform::GetAssetPath_Wide(std::wstring relativePath)
+std::wstring LinuxPlatform::GetAssetPath_Wide(std::wstring relativePath)
 {
 	return relativePath;
 }
-void* EmscriptenPlatform::GetWindowHandle()
+void* LinuxPlatform::GetWindowHandle()
 {
 	return g_Window;
 }
-void* EmscriptenPlatform::GetDeviceContext()
+void* LinuxPlatform::GetDeviceContext()
 {
 	return g_Window;
 }
-IInputSystem* EmscriptenPlatform::GetInputSystem()
+IInputSystem* LinuxPlatform::GetInputSystem()
 {
 	return inputSystem;
 }
-void EmscriptenPlatform::NewGuiFrame()
+void LinuxPlatform::NewGuiFrame()
 {
 	ImGui_ImplSDL2_NewFrame(g_Window);
 }
 
-IAssetManager* EmscriptenPlatform::GetAssetManager()
+IAssetManager* LinuxPlatform::GetAssetManager()
 {
 	return assetManager;
 }
 
-void EmscriptenPlatform::SetWindowResizeCallback(entt::delegate<void()> callback)
+void LinuxPlatform::SetWindowResizeCallback(entt::delegate<void()> callback)
 {
 	windowResizeCallback = callback;
 }

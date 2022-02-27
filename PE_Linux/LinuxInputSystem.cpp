@@ -1,16 +1,13 @@
-#include "EmscriptenInputSystem.h"
+#include "LinuxInputSystem.h"
 #include <iostream>
-#include <SDL/SDL.h>
-#include <backends/imgui_impl_sdl.h>
-InputData LinuxInputSystem::current;
-InputData LinuxInputSystem::previous;
-glm::vec2 LinuxInputSystem::deltaCursorPos;
+#include <SDL2/SDL.h>
+#include <imgui_impl_sdl.h>
 
-LinuxInputSystem::EmscriptenInputSystem()
+LinuxInputSystem::LinuxInputSystem()
 {
 }
 
-void EmscriptenInputSystem::GetKeyPressed()
+void LinuxInputSystem::GetKeyPressed()
 {
 	previous = current;
 	SDL_Event event;
@@ -171,41 +168,41 @@ void EmscriptenInputSystem::GetKeyPressed()
 	 current.cursorPos.y = (float)my;
 
 }
-bool EmscriptenInputSystem::IsKeyPressed(KeyboardCode kc)
+bool LinuxInputSystem::IsKeyPressed(KeyboardCode kc)
 {
 	return current.keys[kc];
 }
 
-bool EmscriptenInputSystem::WasKeyPressed(KeyboardCode kc)
+bool LinuxInputSystem::WasKeyPressed(KeyboardCode kc)
 {
 	return previous.keys[kc];
 }
 
-bool EmscriptenInputSystem::IsMouseButtonPressed(MouseButton mb)
+bool LinuxInputSystem::IsMouseButtonPressed(MouseButton mb)
 {
 	return current.mouseButtons[mb];
 }
 
-bool EmscriptenInputSystem::WasMouseButtonPressed(MouseButton mb)
+bool LinuxInputSystem::WasMouseButtonPressed(MouseButton mb)
 {
 	return previous.mouseButtons[mb];
 }
 
-bool EmscriptenInputSystem::WasMouseButtonClicked(MouseButton mb)
+bool LinuxInputSystem::WasMouseButtonClicked(MouseButton mb)
 {
 	return previous.mouseButtons[MouseButton::Left] && !current.mouseButtons[MouseButton::Left];
 }
 
-glm::vec2 EmscriptenInputSystem::GetCursorPosition()
+glm::vec2 LinuxInputSystem::GetCursorPosition()
 {
 	return current.cursorPos;
 }
-glm::vec2 EmscriptenInputSystem::GetPreviousCursorPosition()
+glm::vec2 LinuxInputSystem::GetPreviousCursorPosition()
 {
 	return previous.cursorPos;
 }
 
-glm::vec2 EmscriptenInputSystem::GetDeltaCursorPosition()
+glm::vec2 LinuxInputSystem::GetDeltaCursorPosition()
 {
 	// Hack: deltaCursorPos does not become (0, 0) when the mouse stops moving. When the mouse stops moving, MouseCallback is not called,
 	// so deltaCursorPos is not assigned (0, 0) and it retains its non-zero value from the previous frame. This hack ensures that 
