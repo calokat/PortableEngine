@@ -63,13 +63,13 @@ void GLRenderSystem::BindRenderer(IRenderer* renderer)
 	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Textured)
 	{
 		glActiveTexture(GL_TEXTURE0);
-		OpenGLImageGraphicsData* glGraphicsData = (OpenGLImageGraphicsData*)glRenderer->textures["diffuse"].imageGraphicsData.get();
+		OpenGLImageGraphicsData* glGraphicsData = (OpenGLImageGraphicsData*)glRenderer->textures[TextureType::DiffuseTexture].imageGraphicsData.get();
 		glBindTexture(GL_TEXTURE_2D, glGraphicsData->texture);
 	}
 	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Normal)
 	{
 		glActiveTexture(GL_TEXTURE1);
-		OpenGLImageGraphicsData* glGraphicsData = (OpenGLImageGraphicsData*)glRenderer->textures["normal"].imageGraphicsData.get();
+		OpenGLImageGraphicsData* glGraphicsData = (OpenGLImageGraphicsData*)glRenderer->textures[TextureType::NormalTexture].imageGraphicsData.get();
 		glBindTexture(GL_TEXTURE_2D, glGraphicsData->texture);
 	}
 }
@@ -162,16 +162,16 @@ void GLRenderSystem::CreateTexture(PEImage& img)
 	
 }
 
-void GLRenderSystem::LoadTexture(IRenderer* renderer, std::map<const char*, const char*> imagePaths)
+void GLRenderSystem::LoadTexture(IRenderer* renderer, std::map<TextureType, const char*> imagePaths)
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
 	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Textured)
 	{
-		LoadTexture(glRenderer->textures["diffuse"], imagePaths["diffuse"]);
+		LoadTexture(glRenderer->textures[TextureType::DiffuseTexture], imagePaths[TextureType::DiffuseTexture]);
 	}
 	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Normal)
 	{
-		LoadTexture(glRenderer->textures["normal"], imagePaths["normal"]);
+		LoadTexture(glRenderer->textures[TextureType::NormalTexture], imagePaths[TextureType::NormalTexture]);
 	}
 }
 

@@ -18,6 +18,6 @@ public:
 	virtual void DrawWireframe(IRenderer* renderer/*, ID3D11DeviceContext* context*/) = 0;
 	virtual void UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLight, PointLight pointLights[MAX_POINT_LIGHTS]) = 0;
 	virtual void CreateTexture(PEImage& img) = 0;
-	virtual void LoadTexture(IRenderer* renderer, std::map<const char*, const char*> imagePaths) = 0;
+	virtual void LoadTexture(IRenderer* renderer, std::map<TextureType, const char*> imagePaths) = 0;
 	virtual ~IRenderSystem() {};
 };

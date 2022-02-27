@@ -22,6 +22,6 @@ public:
 	GLRenderer(std::string vertexShaderPathParam, std::string fragmentShaderPathParam, ShaderType type);
 	GLRenderer();
 	glm::vec4 vertexColor = { 1, 1, 1, 1 };
-	std::map<const char*, PEImage> textures;
+	std::map<TextureType, PEImage> textures;
 	OpenGLShaderProgram shaderProgram;
 };

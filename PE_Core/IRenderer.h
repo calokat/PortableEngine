@@ -12,6 +12,8 @@ enum ShaderType
 	Lit_Textured_Normal = ShaderProgramProperties::Fully_3D | ShaderProgramProperties::Colored | ShaderProgramProperties::Lit | ShaderProgramProperties::Textured | ShaderProgramProperties::Normal
 };
 
+enum TextureType {DiffuseTexture, NormalTexture, __COUNT__};
+
 class IRenderer
 {
 public:
