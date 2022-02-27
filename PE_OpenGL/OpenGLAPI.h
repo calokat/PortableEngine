@@ -3,7 +3,7 @@
 #include "GameWindow.h"
 #ifdef _WIN64
 #include "WinOpenGLContext.h"
-#elif defined(__EMSCRIPTEN__)
+#elif defined(__EMSCRIPTEN__) || defined(__linux__)
 #include "OpenGLESContext.h"
 #endif
 #include "IPlatform.h"

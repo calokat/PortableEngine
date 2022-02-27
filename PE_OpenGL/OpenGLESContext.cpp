@@ -1,7 +1,7 @@
-#ifdef __EMSCRIPTEN__
+#if defined(__EMSCRIPTEN__) || defined(__linux__)
 #include "OpenGLESContext.h"
 #include <iostream>
-#include <backends/imgui_impl_sdl.h>
+#include <imgui_impl_sdl.h>
 #include <imgui.h>
 
 
@@ -92,7 +92,7 @@ void* OpenGLESContext::GetContext(GameWindow* window)
 
 
 	g_GLContext = SDL_GL_CreateContext((SDL_Window*)platform->GetWindowHandle());
-
+	glewInit();
 	if (!g_GLContext)
 	{
 		fprintf(stderr, "Failed to initialize WebGL context!\n");

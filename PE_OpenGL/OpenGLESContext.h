@@ -1,14 +1,11 @@
-#ifdef __EMSCRIPTEN__
+#if defined(__EMSCRIPTEN__) || defined(__linux__)
 #pragma once
 //#include "esUtil.h"
 #include "GameWindow.h"
 #include "IOpenGLContext.h"
 #include "IPlatform.h"
-#include <emscripten.h>
-#include <emscripten/html5.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_opengles2.h>
-
+#include <SDL2/SDL.h>
+#include <GL/glew.h>
 
 class OpenGLESContext : public IOpenGLContext
 {

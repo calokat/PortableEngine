@@ -53,6 +53,8 @@ OpenGLAPI::OpenGLAPI(GameWindow* win, IPlatform* plat, Camera& cam) : window(win
 	glContext = new WinOpenGLContext(platform);
 #elif defined(__EMSCRIPTEN__)
 	glContext = new OpenGLESContext(platform);
+#elif defined(__linux__)
+	glContext = new OpenGLESContext(platform);
 #endif
 }
 
