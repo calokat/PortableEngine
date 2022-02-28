@@ -8,36 +8,36 @@ GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentSh
 	shaderProgram.pixel = Shader(fragmentShaderPathParam, GL_FRAGMENT_SHADER);
 	shaderProgram.vertex.Compile();
 	shaderProgram.pixel.Compile();
-	shaderProgram.attributes = { {"in_position", {} } };
+	shaderProgram.propertyFlags = type;
+
+	shaderProgram.attributes[(unsigned long)ShaderAttributes::Position].name = "in_position";
 	if (type & ShaderProgramProperties::Lit)
 	{
-		shaderProgram.attributes.emplace(std::pair<const char*, OpenGLShaderField>("in_normal", {}));
+		shaderProgram.attributes[(unsigned long)ShaderAttributes::Normal].name = "in_normal";
 	}
 	if (type & ShaderProgramProperties::Textured)
 	{
-		shaderProgram.attributes.emplace(std::pair<const char*, OpenGLShaderField>("aTexCoord", {}));
+		shaderProgram.attributes[(unsigned long)ShaderAttributes::TextureCoordinate].name = "aTexCoord";
+		shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::DiffuseTextureID].name = "ourTexture";
 	}
 	if (type & ShaderProgramProperties::Normal)
 	{
-		shaderProgram.attributes.emplace(std::pair<const char*, OpenGLShaderField>("in_tangent", {}));
+		shaderProgram.attributes[(unsigned long)ShaderAttributes::Tangent].name = "in_tangent";
+		shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::NormalTextureID].name = "in_normal";
 	}
-	shaderProgram.vertexUniforms = { {"projection", {} }, {"view", {} }, {"model", {} }, {"in_color", {} } };
+	shaderProgram.vertexUniforms[(unsigned long)VertexUniforms::Projection].name = "projection";
+	shaderProgram.vertexUniforms[(unsigned long)VertexUniforms::View].name = "view";
+	shaderProgram.vertexUniforms[(unsigned long)VertexUniforms::Model].name = "model";
+	shaderProgram.vertexUniforms[(unsigned long)VertexUniforms::Color].name = "in_color";
 	if (type & ShaderProgramProperties::Lit)
 	{
-		shaderProgram.fragmentUniforms = { 
-			{"dirLight.AmbientColor", {} }, {"dirLight.DiffuseColor", {} }, {"dirLight.Direction", {} },
-			{"pointLights[0].AmbientColor", {} }, {"pointLights[0].DiffuseColor", {} }, {"pointLights[0].Position", {} },
-			//{"pointLights[1].AmbientColor", {} }, {"pointLights[1].DiffuseColor", {} }, {"pointLights[1].Position", {} },
-			//{"pointLights[2].AmbientColor", {} }, {"pointLights[2].DiffuseColor", {} }, {"pointLights[2].Position", {} },
-			//{"pointLights[3].AmbientColor", {} }, {"pointLights[3].DiffuseColor", {} }, {"pointLights[3].Position", {} },
-			//{"pointLights[4].AmbientColor", {} }, {"pointLights[4].DiffuseColor", {} }, {"pointLights[4].Position", {} },
-			//{"pointLights[5].AmbientColor", {} }, {"pointLights[5].DiffuseColor", {} }, {"pointLights[5].Position", {} },
-			//{"pointLights[6].AmbientColor", {} }, {"pointLights[6].DiffuseColor", {} }, {"pointLights[6].Position", {} },
-			//{"pointLights[7].AmbientColor", {} }, {"pointLights[7].DiffuseColor", {} }, {"pointLights[7].Position", {} },
-			{"cameraPos", {} }, {"specularIntensity", {} }, {"ourTexture", {}}, {"normalTexture", {}}
-		};
+		shaderProgram.pointLightData[0][(unsigned long)PointLightUniforms::AmbientColor].name = POINT_LIGHT_NAME("0", "AmbientColor");
+		shaderProgram.pointLightData[0][(unsigned long)PointLightUniforms::DiffuseColor].name = POINT_LIGHT_NAME("0", "DiffuseColor");
+		shaderProgram.pointLightData[0][(unsigned long)PointLightUniforms::Position].name = POINT_LIGHT_NAME("0", "Position");
+		shaderProgram.dirLightLightData[(unsigned long)DirectionalLightUniforms::AmbientColor].name = "dirLight.AmbientColor";
+		shaderProgram.dirLightLightData[(unsigned long)DirectionalLightUniforms::DiffuseColor].name = "dirLight.DiffuseColor";
+		shaderProgram.dirLightLightData[(unsigned long)DirectionalLightUniforms::Direction].name = "dirLight.Direction";
 	}
-	shaderProgram.propertyFlags = type;
 }
 
 GLRenderer::GLRenderer()

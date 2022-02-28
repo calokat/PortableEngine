@@ -49,7 +49,14 @@ void ComponentGUI(GLRenderer& r)
 			char buf[128];
 			memcpy(buf, texIt->second.path.c_str(), texIt->second.path.length());
 			buf[texIt->second.path.length()] = '\0';
-			ImGui::Text("%s Path: ", texIt->first);
+			switch (texIt->first)
+			{
+				case TextureType::DiffuseTexture:
+					ImGui::Text("Diffuse - Path: ");
+				break;
+				case TextureType::NormalTexture:
+					ImGui::Text("Normal - Path: ");
+			}
 			ImGui::SameLine();
 			if (ImGui::InputText(buf, buf, 128))
 			{

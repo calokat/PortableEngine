@@ -11,8 +11,15 @@ union SignedOrUnsigned
 
 struct OpenGLShaderField
 {
-	SignedOrUnsigned value;
+	const char* name;
+	GLint value;
 };
+
+enum class ShaderAttributes:unsigned long {Position, Normal, TextureCoordinate, Tangent, __COUNT__};
+enum class VertexUniforms:unsigned long {Projection, View, Model, Color, __COUNT__};
+enum class FragmentUniforms:unsigned long {CameraPosition, SpecularIntensity, DiffuseTextureID, NormalTextureID, __COUNT__};
+enum class PointLightUniforms:unsigned long {AmbientColor, DiffuseColor, Position, __COUNT__};
+enum class DirectionalLightUniforms:unsigned long {AmbientColor, DiffuseColor, Direction, __COUNT__};
 
 class OpenGLShaderProgram
 {
@@ -23,8 +30,14 @@ public:
 	unsigned int programID;
 	Shader vertex;
 	Shader pixel;
-	std::map<const char*, OpenGLShaderField> attributes;
-	std::map<const char*, OpenGLShaderField> vertexUniforms;
-	std::map<const char*, OpenGLShaderField> fragmentUniforms;
+	OpenGLShaderField attributes[(unsigned long)ShaderAttributes::__COUNT__];
+	OpenGLShaderField vertexUniforms[(unsigned long)VertexUniforms::__COUNT__];
+	OpenGLShaderField fragmentUniforms[(unsigned long)FragmentUniforms::__COUNT__];
+	OpenGLShaderField pointLightData[8][(unsigned long)PointLightUniforms::__COUNT__];
+	OpenGLShaderField dirLightLightData[(unsigned long)DirectionalLightUniforms::__COUNT__];
 	int propertyFlags;
 };
+
+#define POINT_LIGHT_NAME(index, field) "pointLights[" index "]." field
+
+#define DIR_LIGHT_NAME(field) "dirLight." field
