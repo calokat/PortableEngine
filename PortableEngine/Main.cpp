@@ -56,13 +56,12 @@
 
 int main(int argc, char* argv[])
 {
-		printf("Yo yo yo");
-// #if defined(DEBUG) | defined(_DEBUG)
-// 	// Enable memory leak detection as a quick and dirty
-// 	// way of determining if we forgot to clean something up
-// 	//  - You may want to use something more advanced, like Visual Leak Detector
-// 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-// #endif
+#if defined(DEBUG) | defined(_DEBUG)
+	// Enable memory leak detection as a quick and dirty
+	// way of determining if we forgot to clean something up
+	//  - You may want to use something more advanced, like Visual Leak Detector
+	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+#endif
 	
 	Options options;
 	IPlatform* plat = nullptr;
