@@ -20,7 +20,7 @@ void LinuxInputSystem::GetKeyPressed()
 		if (event.type == SDL_EventType::SDL_KEYDOWN || event.type == SDL_EventType::SDL_KEYUP)
 		{
 			KeyboardCode keyCode;
-			switch (event.key.keysym.sym)
+			switch (event.key.keysym.scancode)
 			{
 			case SDL_SCANCODE_0:
 				keyCode = KeyboardCode::Num0;
@@ -130,30 +130,36 @@ void LinuxInputSystem::GetKeyPressed()
 			case SDL_SCANCODE_Z:
 				keyCode = KeyboardCode::Z;
 				break;
+			case SDL_SCANCODE_LALT:
+				keyCode = KeyboardCode::LAlt;
+				break;
+			case SDL_SCANCODE_RALT:
+				keyCode = KeyboardCode::RAlt;
+				break;
 			default:
-				keyCode = KeyboardCode::N;
+				break;
 			}
 			current.keys[keyCode] = event.type == SDL_KEYDOWN;
 			current.keys[KeyboardCode::LCtrl] = current.keys[KeyboardCode::RCtrl] = SDL_GetModState() & KMOD_CTRL;
 		}
 		else if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
-			if (event.button.button == 1)
+			if (event.button.button == SDL_BUTTON_LEFT)
 			{
 				current.mouseButtons[MouseButton::Left] = true;
 			}
-			else if (event.button.button == 3)
+			else if (event.button.button == SDL_BUTTON_RIGHT)
 			{
 				current.mouseButtons[MouseButton::Right] = true;
 			}
 		}
 		else if (event.type == SDL_MOUSEBUTTONUP)
 		{
-			if (event.button.button == 1)
+			if (event.button.button == SDL_BUTTON_LEFT)
 			{
 				current.mouseButtons[MouseButton::Left] = false;
 			}
-			else if (event.button.button == 3)
+			else if (event.button.button == SDL_BUTTON_RIGHT)
 			{
 				current.mouseButtons[MouseButton::Right] = false;
 			}
@@ -216,9 +222,7 @@ glm::vec2 LinuxInputSystem::GetDeltaCursorPosition()
 	// when called.
 	// glm::vec2 returnValue = deltaCursorPos;
 	// deltaCursorPos = glm::vec2(0, 0);
-	glm::vec2 returnValue = deltaCursorPos;
-	deltaCursorPos = glm::vec2(0, 0);
-	return returnValue;	
+	return current.cursorPos - previous.cursorPos;	
 }
 
 int LinuxInputSystem::ShouldQuit()
