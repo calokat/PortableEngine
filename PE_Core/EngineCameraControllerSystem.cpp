@@ -4,7 +4,7 @@
 void EngineCameraControllerSystem::ControlCamera(IInputSystem* inputSystem, Transform& camTransform)
 {
 	float cameraMoveSpeed = .05f;
-	if (inputSystem->IsMouseButtonPressed(MouseButton::Right))
+	if (inputSystem->IsMouseButtonPressed(MouseButton::Right) || inputSystem->IsKeyPressed(KeyboardCode::LAlt))
 	{
 		LookCamera(inputSystem, camTransform);
 		if (inputSystem->IsKeyPressed(KeyboardCode::W))
