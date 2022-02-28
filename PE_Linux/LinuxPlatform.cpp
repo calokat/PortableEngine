@@ -36,7 +36,7 @@ int LinuxPlatform::InitWindow()
 
 long LinuxPlatform::Run()
 {
-	return 0;
+	return inputSystem->ShouldQuit();
 }
 
 std::string LinuxPlatform::GetAssetPath(std::string relativePath)

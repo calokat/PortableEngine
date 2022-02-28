@@ -6,6 +6,7 @@
 #include  <X11/Xatom.h>
 #include  <X11/Xutil.h>
 #include <SDL2/SDL.h>
+#include "LinuxInputSystem.h"
 
 class LinuxPlatform :
 	public IPlatform
@@ -25,8 +26,9 @@ public:
 	IAssetManager* GetAssetManager();
 	void SetWindowResizeCallback(entt::delegate<void()> callback);
 private:
-	IInputSystem* inputSystem;
+	LinuxInputSystem* inputSystem;
 	IAssetManager* assetManager;
 	SDL_Window* g_Window = NULL;
 	entt::delegate<void()> windowResizeCallback;
+	int shouldQuit = 0;
 };

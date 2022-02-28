@@ -158,6 +158,12 @@ void LinuxInputSystem::GetKeyPressed()
 				current.mouseButtons[MouseButton::Right] = false;
 			}
 		}
+		// Some credit to https://github.com/ocornut/imgui/blob/master/examples/example_sdl_opengl3/main.cpp#L113
+		// TODO: check window ID before closing
+		else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE)
+		{
+			shouldQuit = 1;
+		}
 		glm::ivec2 mousePos = {};
 		SDL_GetMouseState(&mousePos.x, &mousePos.y);
 		current.cursorPos = mousePos;
@@ -213,4 +219,9 @@ glm::vec2 LinuxInputSystem::GetDeltaCursorPosition()
 	glm::vec2 returnValue = deltaCursorPos;
 	deltaCursorPos = glm::vec2(0, 0);
 	return returnValue;	
+}
+
+int LinuxInputSystem::ShouldQuit()
+{
+	return shouldQuit;
 }

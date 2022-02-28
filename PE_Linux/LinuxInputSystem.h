@@ -15,8 +15,10 @@ public:
 	bool IsMouseButtonPressed(MouseButton mb);
 	bool WasMouseButtonPressed(MouseButton mb);
 	bool WasMouseButtonClicked(MouseButton mb);
+	int ShouldQuit();
 private:
 	InputData current;
 	InputData previous;
 	glm::vec2 deltaCursorPos;
+	int shouldQuit = 0;
 };
