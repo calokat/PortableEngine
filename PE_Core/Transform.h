@@ -6,11 +6,11 @@
 class Transform
 {
 	public:
-		glm::mat4 worldMatrix;
-		glm::vec3 position;
-		glm::vec3 rotation;
-		glm::vec3 scale;
-		glm::quat orientation;
+		glm::mat4 worldMatrix = {};
+		glm::vec3 position = {};
+		glm::vec3 rotation = {};
+		glm::vec3 scale = {};
+		glm::quat orientation = {};
 		Transform();
 		//void SetPosition(glm::vec3 newPos);
 		//void SetRotation(glm::vec3 newRot);
