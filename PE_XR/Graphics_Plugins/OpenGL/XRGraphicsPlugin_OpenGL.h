@@ -2,11 +2,11 @@
 #include "../PE_XR/IXRGraphicsPlugin.h"
 #ifdef _WIN32
 #include <Windows.h>
+// I will have to include the directx headers (at least on Windows) so OpenXR will compile
+#include <d3d11.h>
 #endif
-#undef XR_USE_GRAPHICS_API_D3D11
 #include <openxr/openxr.h>
 #include <openxr/openxr_platform.h>
-#define XR_USE_GRAPHICS_API_D3D11 1
 #include "GameWindow.h"
 #include "IOpenGLContext.h"
 #include "OpenGLAPI.h"
