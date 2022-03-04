@@ -30,11 +30,11 @@ public:
 	unsigned int programID;
 	Shader vertex;
 	Shader pixel;
-	OpenGLShaderField attributes[(unsigned long)ShaderAttributes::__COUNT__];
-	OpenGLShaderField vertexUniforms[(unsigned long)VertexUniforms::__COUNT__];
-	OpenGLShaderField fragmentUniforms[(unsigned long)FragmentUniforms::__COUNT__];
-	OpenGLShaderField pointLightData[8][(unsigned long)PointLightUniforms::__COUNT__];
-	OpenGLShaderField dirLightLightData[(unsigned long)DirectionalLightUniforms::__COUNT__];
+	OpenGLShaderField attributes[(unsigned long)ShaderAttributes::__COUNT__] = {};
+	OpenGLShaderField vertexUniforms[(unsigned long)VertexUniforms::__COUNT__] = {};
+	OpenGLShaderField fragmentUniforms[(unsigned long)FragmentUniforms::__COUNT__] = {};
+	OpenGLShaderField pointLightData[8][(unsigned long)PointLightUniforms::__COUNT__] = {};
+	OpenGLShaderField dirLightLightData[(unsigned long)DirectionalLightUniforms::__COUNT__] = {};
 	int propertyFlags;
 };
 

@@ -29,10 +29,6 @@ Shader::Shader(std::string pathArg, GLint typeArg)
 	delete[] shaderSource;
 }
 
-Shader::~Shader()
-{
-}
-
 void Shader::Compile()
 {
 	glCompileShader(id);

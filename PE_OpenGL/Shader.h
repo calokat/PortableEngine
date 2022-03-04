@@ -12,7 +12,6 @@ private:
 public:
 	Shader();
 	Shader(std::string pathArg, GLint typeArg);
-	~Shader();
 	void Compile();
 	GLint GetId();
 	Shader& operator=(Shader&& other);

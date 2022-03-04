@@ -62,8 +62,6 @@ OpenGLAPI::~OpenGLAPI()
 {
 	ImGui_ImplOpenGL3_Shutdown();
 	delete glContext;
-	delete vertex;
-	delete pixel;
 }
 #ifndef __EMSCRIPTEN__
 #endif

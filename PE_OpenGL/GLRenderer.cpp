@@ -15,6 +15,7 @@ GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentSh
 	{
 		shaderProgram.attributes[(unsigned long)ShaderAttributes::Normal].name = "in_normal";
 	}
+	shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::CameraPosition].name = "cameraPos";
 	if (type & ShaderProgramProperties::Textured)
 	{
 		shaderProgram.attributes[(unsigned long)ShaderAttributes::TextureCoordinate].name = "aTexCoord";
@@ -37,6 +38,7 @@ GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentSh
 		shaderProgram.dirLightLightData[(unsigned long)DirectionalLightUniforms::AmbientColor].name = "dirLight.AmbientColor";
 		shaderProgram.dirLightLightData[(unsigned long)DirectionalLightUniforms::DiffuseColor].name = "dirLight.DiffuseColor";
 		shaderProgram.dirLightLightData[(unsigned long)DirectionalLightUniforms::Direction].name = "dirLight.Direction";
+		shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::SpecularIntensity].name = "specularIntensity";
 	}
 }
 
