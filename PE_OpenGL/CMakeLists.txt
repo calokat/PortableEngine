@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.16)
+include_directories("." "../PE_Core/")
+file(GLOB glSrc "*.cpp")
+add_library(PE_OpenGL ${glSrc})
+set_property(TARGET PE_OpenGL PROPERTY CXX_STANDARD 17)

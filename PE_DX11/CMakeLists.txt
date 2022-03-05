@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.16)
+include_directories("." "../PE_Core/")
+file(GLOB dx11Src "*.cpp")
+add_library(PE_DX11 ${dx11Src})
+set_property(TARGET PE_DX11 PROPERTY CXX_STANDARD 17)

@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.16)
+include_directories("." "../PE_Core/")
+file(GLOB win32Src "*.cpp")
+add_library(PE_Win32 ${win32Src})
+set_property(TARGET PE_Win32 PROPERTY CXX_STANDARD 17)
