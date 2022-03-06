@@ -139,29 +139,29 @@ void LinuxInputSystem::GetKeyPressed()
 			default:
 				break;
 			}
-			current.keys[keyCode] = event.type == SDL_KEYDOWN;
-			current.keys[KeyboardCode::LCtrl] = current.keys[KeyboardCode::RCtrl] = SDL_GetModState() & KMOD_CTRL;
+			current.keys[(int)keyCode] = event.type == SDL_KEYDOWN;
+			current.keys[(int)KeyboardCode::LCtrl] = current.keys[(int)KeyboardCode::RCtrl] = SDL_GetModState() & KMOD_CTRL;
 		}
 		else if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
-				current.mouseButtons[MouseButton::Left] = true;
+				current.mouseButtons[(int)MouseButton::Left] = true;
 			}
 			else if (event.button.button == SDL_BUTTON_RIGHT)
 			{
-				current.mouseButtons[MouseButton::Right] = true;
+				current.mouseButtons[(int)MouseButton::Right] = true;
 			}
 		}
 		else if (event.type == SDL_MOUSEBUTTONUP)
 		{
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
-				current.mouseButtons[MouseButton::Left] = false;
+				current.mouseButtons[(int)MouseButton::Left] = false;
 			}
 			else if (event.button.button == SDL_BUTTON_RIGHT)
 			{
-				current.mouseButtons[MouseButton::Right] = false;
+				current.mouseButtons[(int)MouseButton::Right] = false;
 			}
 		}
 		// Some credit to https://github.com/ocornut/imgui/blob/master/examples/example_sdl_opengl3/main.cpp#L113
@@ -182,27 +182,27 @@ void LinuxInputSystem::GetKeyPressed()
 }
 bool LinuxInputSystem::IsKeyPressed(KeyboardCode kc)
 {
-	return current.keys[kc];
+	return current.keys[(int)kc];
 }
 
 bool LinuxInputSystem::WasKeyPressed(KeyboardCode kc)
 {
-	return previous.keys[kc];
+	return previous.keys[(int)kc];
 }
 
 bool LinuxInputSystem::IsMouseButtonPressed(MouseButton mb)
 {
-	return current.mouseButtons[mb];
+	return current.mouseButtons[(int)mb];
 }
 
 bool LinuxInputSystem::WasMouseButtonPressed(MouseButton mb)
 {
-	return previous.mouseButtons[mb];
+	return previous.mouseButtons[(int)mb];
 }
 
 bool LinuxInputSystem::WasMouseButtonClicked(MouseButton mb)
 {
-	return previous.mouseButtons[MouseButton::Left] && !current.mouseButtons[MouseButton::Left];
+	return previous.mouseButtons[(int)MouseButton::Left] && !current.mouseButtons[(int)MouseButton::Left];
 }
 
 glm::vec2 LinuxInputSystem::GetCursorPosition()
