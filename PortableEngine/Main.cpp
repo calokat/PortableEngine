@@ -72,6 +72,11 @@ int main(int argc, char* argv[])
 	entt::registry registry;
 
 
+	// Add basic dependencies
+	registry.on_construct<Transform>().connect<&entt::registry::emplace_or_replace<Relationship>>();
+	registry.on_construct<PointLight>().connect<&entt::registry::emplace_or_replace<Transform>>();
+	registry.on_construct<DirectionalLight>().connect<&entt::registry::emplace_or_replace<Transform>>();
+
 	window = new GameWindow(0, 0, 800, 600);
 	auto entity = registry.create();
 	auto cameraEntity = registry.create();
@@ -193,7 +198,6 @@ int main(int argc, char* argv[])
 	entt::entity root = registry.create();
 	registry.emplace<Name>(root, "$");
 	registry.emplace<Transform>(root);
-	registry.emplace<Relationship>(root);
 	GizmoSystem::Select(root);
 	Tree<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/duo.fbx").c_str());
 	entt::entity duoRoot = MakeMesh(duoScene, registry, root);
