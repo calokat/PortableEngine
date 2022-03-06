@@ -16,7 +16,7 @@ public:
 	int numVertices;
 	int numIndices;
 	glm::vec4 vertexColor = { 1, 1, 1, 1 };
-	std::map<const char*, PEImage> textures;
+	std::map<TextureType, PEImage> textures;
 	DirectX11ShaderProgram shaderProgram;
 };
 

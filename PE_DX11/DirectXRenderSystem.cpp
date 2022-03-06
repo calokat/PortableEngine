@@ -45,8 +45,11 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 {
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
 	ID3DBlob* shaderBlob = nullptr;
+
+	std::wstring finalWideString = GetExePath_Wide() + L"\\" + typeToVertexPath[dxRenderer->shaderProgram.shaderType];
+
 	D3DReadFileToBlob(
-		typeToVertexPath[dxRenderer->shaderProgram.shaderType],
+		finalWideString.c_str(),
 		&shaderBlob);
 
 	device->CreateVertexShader(
@@ -110,8 +113,10 @@ void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
 
 	device->CreateBuffer(&matrixBufferDesc, 0, dxRenderer->shaderProgram.vertexConstBuffer.constantBuffer.GetAddressOf());
 
+	finalWideString = GetExePath_Wide() + L"\\" + typeToPixelPath[dxRenderer->shaderProgram.shaderType];
+
 	D3DReadFileToBlob(
-		typeToPixelPath[dxRenderer->shaderProgram.shaderType],
+		finalWideString.c_str(),
 		&shaderBlob);
 
 	device->CreatePixelShader(
@@ -200,12 +205,12 @@ void DirectXRenderSystem::Draw(IRenderer* renderer)
 	context->PSSetShader(dxRenderer->shaderProgram.pixelShader.Get(), 0, 0);
 	if (dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Textured)
 	{
-		DirectX11ImageGraphicsData* dxImageData = (DirectX11ImageGraphicsData*)dxRenderer->textures["diffuse"].imageGraphicsData.get();
+		DirectX11ImageGraphicsData* dxImageData = (DirectX11ImageGraphicsData*)dxRenderer->textures[TextureType::DiffuseTexture].imageGraphicsData.get();
 		context->PSSetShaderResources(0, 1, &dxImageData->srv);
 	}
 	if (dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Normal)
 	{
-		DirectX11ImageGraphicsData* dxImageData = (DirectX11ImageGraphicsData*)dxRenderer->textures["normal"].imageGraphicsData.get();
+		DirectX11ImageGraphicsData* dxImageData = (DirectX11ImageGraphicsData*)dxRenderer->textures[TextureType::NormalTexture].imageGraphicsData.get();
 		context->PSSetShaderResources(1, 1, &dxImageData->srv);
 	}
 	context->DrawIndexed(
@@ -278,14 +283,14 @@ void DirectXRenderSystem::CreateTexture(PEImage& img)
 	delete[] widePath;
 }
 
-void DirectXRenderSystem::LoadTexture(IRenderer* renderer, std::map<const char*, const char*> imagePaths)
+void DirectXRenderSystem::LoadTexture(IRenderer* renderer, std::map<TextureType, const char*> imagePaths)
 {
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
 	if ((dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Textured) == 0) return;
-	LoadTexture(dxRenderer->textures["diffuse"], imagePaths["diffuse"], 0);
+	LoadTexture(dxRenderer->textures[TextureType::DiffuseTexture], imagePaths[TextureType::DiffuseTexture], 0);
 	if (dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Normal)
 	{
-		LoadTexture(dxRenderer->textures["normal"], imagePaths["normal"], 1);
+		LoadTexture(dxRenderer->textures[TextureType::NormalTexture], imagePaths[TextureType::NormalTexture], 1);
 	}
 }
 
@@ -296,6 +301,46 @@ void DirectXRenderSystem::LoadTexture(PEImage& texture, const char* imagePath, i
 	CreateTexture(texture);
 	DirectX11ImageGraphicsData* dx11ImageGraphicsData = (DirectX11ImageGraphicsData*)texture.imageGraphicsData.get();
 	context->PSSetShaderResources(index, 1, &dx11ImageGraphicsData->srv);
+}
+
+std::string DirectXRenderSystem::GetExePath()
+{
+	// Assume the path is just the "current directory" for now
+	std::string path = ".\\";
+
+	// Get the real, full path to this executable
+	char currentDir[1024] = {};
+	GetModuleFileName(0, currentDir, 1024);
+
+	// Find the location of the last slash charaacter
+	char* lastSlash = strrchr(currentDir, '\\');
+	if (lastSlash)
+	{
+		// End the string at the last slash character, essentially
+		// chopping off the exe's file name.  Remember, c-strings
+		// are null-terminated, so putting a "zero" character in 
+		// there simply denotes the end of the string.
+		*lastSlash = 0;
+
+		// Set the remainder as the path
+		path = currentDir;
+	}
+
+	// Toss back whatever we've found
+	return path;
+}
+
+std::wstring DirectXRenderSystem::GetExePath_Wide()
+{
+	// Grab the path as a standard string
+	std::string path = GetExePath();
+
+	// Convert to a wide string
+	wchar_t widePath[1024] = {};
+	mbstowcs_s(0, widePath, path.c_str(), 1024);
+
+	// Create a wstring for it and return
+	return std::wstring(widePath);
 }
 
 #endif
