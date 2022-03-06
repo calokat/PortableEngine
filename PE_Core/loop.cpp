@@ -28,9 +28,7 @@ void DrawIteration(Camera& camera, entt::entity selected, entt::registry& regist
 	for (auto renderable : renderableView)
 	{
 		T& renderer = registry.get<T>(renderable);
-		Mesh& mesh = registry.get<Mesh>(renderable);
 		Transform& meshTransform = registry.get<Transform>(renderable);
-		//renderSystem->LoadMesh(&renderer, mesh);
 		renderSystem->BindRenderer(&renderer);
 		renderSystem->UpdateRenderer(&renderer, meshTransform, camera, dirLight, pointLights);
 		renderSystem->Draw(&renderer);
