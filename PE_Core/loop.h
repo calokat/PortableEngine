@@ -4,7 +4,7 @@
 #include "IRenderSystem.h"
 #include "IPlatform.h"
 #include "IGraphicsAPI.h"
-#include "../PE_XR/IXRAPI.h"
+#include "IXRAPI.h"
 #include "GameWindow.h"
 #include "misc_components.h"
 #include "Tree.h"

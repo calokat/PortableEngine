@@ -44,7 +44,7 @@
 #elif defined(__EMSCRIPTEN__)
 #include "../PE_XR/WebXRAPI.h"
 #endif
-#include "../PE_XR/MockXRAPI.h"
+#include "MockXRAPI.h"
 #include <thread>
 #include "raycast.h"
 #include "loop.h"
