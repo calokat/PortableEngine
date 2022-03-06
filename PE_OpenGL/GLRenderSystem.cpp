@@ -10,7 +10,7 @@ IRenderer& GLRenderSystem::CreateRenderer(entt::registry& reg, entt::entity& e, 
 	return rendererRef;
 }
 
-void GLRenderSystem::Load(IRenderer* renderer, Camera& camera)
+void GLRenderSystem::Load(IRenderer* renderer)
 {
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
 	glGenVertexArrays(1, &glRenderer->shaderProgram.vao.u);

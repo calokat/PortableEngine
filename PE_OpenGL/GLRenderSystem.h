@@ -14,7 +14,7 @@ class GLRenderSystem : public IRenderSystem
 {
 public:
 	IRenderer& CreateRenderer(entt::registry& reg, entt::entity& e, ShaderType type);
-	void Load(IRenderer* renderer, Camera& camera);
+	void Load(IRenderer* renderer);
 	void BindRenderer(IRenderer* renderer);
 	void LoadMesh(IRenderer* renderer, Mesh& mesh);
 	void Draw(IRenderer* renderer);

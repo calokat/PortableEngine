@@ -41,7 +41,7 @@ IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity
 	return rendererRef;
 }
 
-void DirectXRenderSystem::Load(IRenderer* renderer, Camera& camera)
+void DirectXRenderSystem::Load(IRenderer* renderer)
 {
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
 	ID3DBlob* shaderBlob = nullptr;
