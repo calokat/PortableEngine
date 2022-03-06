@@ -24,9 +24,7 @@ namespace LightsSystem
 		PointLight& pl = reg.emplace<PointLight>(res);
 		pl.DiffuseColor = glm::vec4(1, 1, 1, 1);
 		pl.AmbientColor = glm::vec4(.3, .2, .3, 1);
-		reg.emplace<Name>(res, "Light Test");
-		Transform& plTransform = reg.emplace<Transform>(res);
-		reg.emplace<Relationship>(res);
+		reg.emplace<Name>(res, "Point Light");
 		return res;
 	}
 	entt::entity CreateDirectionalLight(entt::registry& reg)
@@ -36,8 +34,6 @@ namespace LightsSystem
 		dl.AmbientColor = glm::vec4(0);
 		dl.DiffuseColor = glm::vec4(1);
 		reg.emplace<Name>(res, "Dir Light");
-		Transform& dlTransform = reg.emplace<Transform>(res);
-		reg.emplace<Relationship>(res);
 		return res;
 	}
 	void LoadPointLightPositions(entt::basic_view<entt::entity, entt::get_t<PointLight, Transform>, entt::exclude_t<>, void> pointLights)

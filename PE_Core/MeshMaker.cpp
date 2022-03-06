@@ -8,7 +8,8 @@
 entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> scene, entt::entity parent, bool attachAABBs)
 {
 	auto newMeshEntity = registry.create();
-	Relationship& childRel = registry.emplace<Relationship>(newMeshEntity);
+	Transform& newMeshTransform = registry.emplace<Transform>(newMeshEntity);
+	Relationship& childRel = registry.get<Relationship>(newMeshEntity);
 	Relationship& parentRel = registry.get<Relationship>(parent);
 	childRel.parent = parent;
 	parentRel.children.insert(std::pair<int, entt::entity>((int)newMeshEntity, newMeshEntity));
@@ -17,7 +18,7 @@ entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> s
 	if (scene.data.m.rawVertices.size() == 0)
 	{
 		TransformSystem::CalculateWorldMatrix(&scene.data.t);
-		registry.emplace<Transform>(newMeshEntity, scene.data.t);
+		registry.replace<Transform>(newMeshEntity, scene.data.t);
 		Name& nameComp = registry.emplace<Name>(newMeshEntity);
 		nameComp = { scene.data.m.path };
 	}
@@ -25,7 +26,7 @@ entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> s
 	{
 		Mesh& newMesh = registry.emplace<Mesh>(newMeshEntity, scene.data.m);
 		TransformSystem::CalculateWorldMatrix(&scene.data.t);
-		Transform& meshTransform = registry.emplace<Transform>(newMeshEntity, scene.data.t);
+		Transform& meshTransform = registry.replace<Transform>(newMeshEntity, scene.data.t);
 		Name& nameComp = registry.emplace<Name>(newMeshEntity);
 		nameComp = { newMesh.path };
 		if (attachAABBs)
@@ -45,9 +46,7 @@ void AttachRenderers(entt::registry& registry, IRenderSystem* renderSystem, std:
 {
 	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, rootEntity, shaderType);
 	Mesh& entityMesh = registry.get<Mesh>(rootEntity);
-	Camera dummyCam;
-	// TODO: Remove camera parameter from renderSystem->Load()
-	renderSystem->Load(&newMeshRenderer, dummyCam);
+	renderSystem->Load(&newMeshRenderer);
 	renderSystem->LoadMesh(&newMeshRenderer, entityMesh);
 	Relationship rel = registry.get<Relationship>(rootEntity);
 	if (shaderType & ShaderProgramProperties::Textured)
