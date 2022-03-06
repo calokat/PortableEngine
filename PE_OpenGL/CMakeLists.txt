@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 include_directories("." "../PE_Core/")
+if(UNIX)
+include_directories("~/git/vcpkg/installed/x64-linux/include")
+endif(UNIX)
 file(GLOB glSrc "*.cpp")
 add_library(PE_OpenGL ${glSrc})
 set_property(TARGET PE_OpenGL PROPERTY CXX_STANDARD 17)

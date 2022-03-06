@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 include_directories("." "../PE_OpenGL/")
+if(UNIX)
+include_directories("~/git/vcpkg/installed/x64-linux/include")
+endif(UNIX)
 if(WIN32)
 include_directories("../PE_DX11/")
 endif(WIN32)
