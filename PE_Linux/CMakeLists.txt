@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.16)
+include_directories("." "../PE_Core/")
+if(UNIX)
+include_directories("~/git/vcpkg/installed/x64-linux/include")
+endif(UNIX)
+file(GLOB linuxSrc "*.cpp")
+add_library(PE_Linux ${linuxSrc})
+set_property(TARGET PE_Linux PROPERTY CXX_STANDARD 17)
