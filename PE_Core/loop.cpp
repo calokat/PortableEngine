@@ -172,16 +172,11 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 
 void ComputeTransformHeirarchy(entt::entity parent, entt::registry& registry, Transform cumulativeTransform)
 {
-	Transform& entityTransform = registry.get<Transform>(parent);
+	Transform entityTransform = registry.get<Transform>(parent);
 	glm::mat4 translationMat = glm::translate(glm::mat4(1.0), entityTransform.position);
 	glm::mat4 rotationMat = glm::mat4(entityTransform.orientation);
 	glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), entityTransform.scale);
 	glm::mat4 localMatrix = translationMat * rotationMat * scaleMat;
 	entityTransform.worldMatrix = cumulativeTransform.worldMatrix * localMatrix;
-	cumulativeTransform.worldMatrix = entityTransform.worldMatrix;
-	Relationship parentRel = registry.get<Relationship>(parent);
-	for (auto child = parentRel.children.begin(); child != parentRel.children.end(); ++child)
-	{
-		ComputeTransformHeirarchy(child->second, registry, cumulativeTransform);
-	}
+	registry.replace<Transform>(parent, entityTransform);
 }

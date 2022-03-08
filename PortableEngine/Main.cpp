@@ -42,7 +42,7 @@
 #ifdef _WIN64
 #include "../PE_XR/XRAPI.h"
 #elif defined(__EMSCRIPTEN__)
-#include "../PE_XR/WebXRAPI.h"
+#include "WebXRAPI.h"
 #endif
 #include "MockXRAPI.h"
 #include <thread>
@@ -53,6 +53,16 @@
 #include "MeshMaker.h"
 #include "BillboardSystem.h"
 #include "LightsSystem.h"
+
+void UpdateChildren(entt::registry& registry, entt::entity e)
+{
+	Transform currentTransform = registry.get<Transform>(e);
+	Relationship& entityRel = registry.get<Relationship>(e);
+	for (auto child = entityRel.children.begin(); child != entityRel.children.end(); ++child)
+	{
+		ComputeTransformHeirarchy(child->second, registry, currentTransform);
+	}
+}
 
 int main(int argc, char* argv[])
 {
@@ -77,6 +87,7 @@ int main(int argc, char* argv[])
 	registry.on_construct<PointLight>().connect<&entt::registry::emplace_or_replace<Transform>>();
 	registry.on_construct<DirectionalLight>().connect<&entt::registry::emplace_or_replace<Transform>>();
 
+	registry.on_update<Transform>().connect<UpdateChildren>();
 	window = new GameWindow(0, 0, 800, 600);
 	auto entity = registry.create();
 	auto cameraEntity = registry.create();

@@ -9,21 +9,12 @@ void RaycastAgainstAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, entt::basic_view<
 		AABB aabb = aabbView.get<AABB>(ae);
 		Transform t = aabbView.get<Transform>(ae);
 
-		aabb.min = aabb.min * t.scale;
-		aabb.max = aabb.max * t.scale;
-
-		if (t.rotation != glm::vec3(0))
+		Mesh m = AABBSystem::GenerateMeshFromAABB(aabb);
+		for (int i = 0; i < 8; i++)
 		{
-			Mesh m = AABBSystem::GenerateMeshFromAABB(aabb);
-			for (auto it = m.rawVertices.begin(); it != m.rawVertices.end(); ++it)
-			{
-				it->Position = it->Position * t.orientation;
-			}
-			AABBSystem::UpdateAABB(aabb, m, t);
+			m.rawVertices[i].Position = t.worldMatrix * glm::vec4(m.rawVertices[i].Position, 1);
 		}
-
-		aabb.min = aabb.min + t.position;
-		aabb.max = aabb.max + t.position;
+		AABBSystem::UpdateAABB(aabb, m, t);
 
 		// Thank you https://gdbooks.gitbooks.io/3dcollisions/content/Chapter3/raycast_aabb.html
 		float t1 = (aabb.min.x - rayOrigin.x) / rayDir.x;
