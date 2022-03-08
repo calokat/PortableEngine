@@ -42,22 +42,6 @@ entt::entity MakeMesh_Recursive(entt::registry& registry, Tree<MeshCreateInfo> s
 	return newMeshEntity;
 }
 
-void AttachRenderers(entt::registry& registry, IRenderSystem* renderSystem, std::map<TextureType, const char*> texturePaths, entt::entity rootEntity, ShaderType shaderType)
-{
-	IRenderer& newMeshRenderer = renderSystem->CreateRenderer(registry, rootEntity, shaderType);
-	Mesh& entityMesh = registry.get<Mesh>(rootEntity);
-	renderSystem->Load(&newMeshRenderer);
-	renderSystem->LoadMesh(&newMeshRenderer, entityMesh);
-	Relationship rel = registry.get<Relationship>(rootEntity);
-	if (shaderType & ShaderProgramProperties::Textured)
-	{
-		renderSystem->LoadTexture(&newMeshRenderer, texturePaths);
-	}
-	for (auto childIt = rel.children.begin(); childIt != rel.children.end(); ++childIt)
-	{
-		AttachRenderers(registry, renderSystem, texturePaths, childIt->second, shaderType);
-	}
-}
 
 entt::entity MakeMesh(Tree<MeshCreateInfo> meshScene, entt::registry& registry, entt::entity meshRoot)
 {
