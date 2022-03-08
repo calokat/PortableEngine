@@ -17,6 +17,9 @@
 #endif
 #include "BillboardSystem.h"
 #include "LightsSystem.h"
+#include "MeshLoaderSystem.h"
+#include "MeshMaker.h"
+
 template<class T>
 void DrawIteration(Camera& camera, entt::entity selected, entt::registry& registry, IRenderSystem* renderSystem)
 {
@@ -25,10 +28,10 @@ void DrawIteration(Camera& camera, entt::entity selected, entt::registry& regist
 	PointLight pointLights[MAX_POINT_LIGHTS];
 
 	LightsSystem::ExtractLightsFromRegistry(registry, dirLight, pointLights);
-	for (auto renderable : renderableView)
+	for (auto rIt = renderableView.begin(); rIt != renderableView.end(); ++rIt)
 	{
-		T& renderer = registry.get<T>(renderable);
-		Transform& meshTransform = registry.get<Transform>(renderable);
+		T& renderer = registry.get<T>(*rIt);
+		Transform& meshTransform = registry.get<Transform>(*rIt);
 		renderSystem->BindRenderer(&renderer);
 		renderSystem->UpdateRenderer(&renderer, meshTransform, camera, dirLight, pointLights);
 		renderSystem->Draw(&renderer);
@@ -119,12 +122,21 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	EntityListWindow entityListWindow;
 	InspectorWindow inspectorWindow;
 	//AssetBrowserWindow assetWindow;
-	//WindowHeader windowHeader;
+	WindowHeader windowHeader;
 	Relationship& rootRel = registry.get<Relationship>(sceneRoot);
 	//windowHeader.Render(registry, plat->GetAssetManager(), renderSystem);
 	entityListWindow.Render(rootRel, entityView);
 	inspectorWindow.Render(registry);
-
+	const char* meshPath = windowHeader.Render();
+	if (meshPath)
+	{
+		Tree<MeshCreateInfo> meshTree = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath(meshPath).c_str());
+		entt::entity meshEntity = MakeMesh(meshTree, registry, sceneRoot);
+		Transform newMeshTransform = {};
+		newMeshTransform.position = camTransform.position + glm::inverse(glm::mat3(camera.view)) * glm::vec3(0, 0, 10);
+		newMeshTransform.position = camTransform.position + (-camTransform.orientation) * glm::vec3(0, 0, 10);
+		registry.replace<Transform>(meshEntity, newMeshTransform);
+	}
 	//assetWindow.Render(plat->GetAssetManager(), renderSystem);
 
 	graph->ClearScreen();
