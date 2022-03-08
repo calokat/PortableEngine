@@ -7,7 +7,7 @@
 #include  <X11/Xatom.h>
 #include  <X11/Xutil.h>
 #include <emscripten/html5.h>
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 class EmscriptenPlatform :
 	public IPlatform

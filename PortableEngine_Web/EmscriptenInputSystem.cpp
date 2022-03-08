@@ -1,9 +1,9 @@
 #ifdef __EMSCRIPTEN__
 #include "EmscriptenInputSystem.h"
 #include <iostream>
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #include <emscripten.h>
-#include <backends/imgui_impl_sdl.h>
+#include <imgui_impl_sdl.h>
 InputData EmscriptenInputSystem::current;
 InputData EmscriptenInputSystem::previous;
 glm::vec2 EmscriptenInputSystem::deltaCursorPos;
@@ -69,7 +69,7 @@ void EmscriptenInputSystem::GetKeyPressed()
 		if (event.type == SDL_EventType::SDL_KEYDOWN || event.type == SDL_EventType::SDL_KEYUP)
 		{
 			KeyboardCode keyCode;
-			switch (event.key.keysym.sym)
+			switch (event.key.keysym.scancode)
 			{
 			case SDL_SCANCODE_0:
 				keyCode = KeyboardCode::Num0;
@@ -182,29 +182,29 @@ void EmscriptenInputSystem::GetKeyPressed()
 			default:
 				keyCode = KeyboardCode::N;
 			}
-			current.keys[keyCode] = event.type == SDL_KEYDOWN;
-			current.keys[KeyboardCode::LCtrl] = current.keys[KeyboardCode::RCtrl] = SDL_GetModState() & KMOD_CTRL;
+			current.keys[(int)keyCode] = event.type == SDL_KEYDOWN;
+			current.keys[(int)KeyboardCode::LCtrl] = current.keys[(int)KeyboardCode::RCtrl] = SDL_GetModState() & KMOD_CTRL;
 		}
 		else if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
 			if (event.button.button == 1)
 			{
-				current.mouseButtons[MouseButton::Left] = true;
+				current.mouseButtons[(int)MouseButton::Left] = true;
 			}
 			else if (event.button.button == 3)
 			{
-				current.mouseButtons[MouseButton::Right] = true;
+				current.mouseButtons[(int)MouseButton::Right] = true;
 			}
 		}
 		else if (event.type == SDL_MOUSEBUTTONUP)
 		{
 			if (event.button.button == 1)
 			{
-				current.mouseButtons[MouseButton::Left] = false;
+				current.mouseButtons[(int)MouseButton::Left] = false;
 			}
 			else if (event.button.button == 3)
 			{
-				current.mouseButtons[MouseButton::Right] = false;
+				current.mouseButtons[(int)MouseButton::Right] = false;
 			}
 		}
 		glm::ivec2 mousePos = {};
@@ -219,27 +219,27 @@ void EmscriptenInputSystem::GetKeyPressed()
 }
 bool EmscriptenInputSystem::IsKeyPressed(KeyboardCode kc)
 {
-	return current.keys[kc];
+	return current.keys[(int)kc];
 }
 
 bool EmscriptenInputSystem::WasKeyPressed(KeyboardCode kc)
 {
-	return previous.keys[kc];
+	return previous.keys[(int)kc];
 }
 
 bool EmscriptenInputSystem::IsMouseButtonPressed(MouseButton mb)
 {
-	return current.mouseButtons[mb];
+	return current.mouseButtons[(int)mb];
 }
 
 bool EmscriptenInputSystem::WasMouseButtonPressed(MouseButton mb)
 {
-	return previous.mouseButtons[mb];
+	return previous.mouseButtons[(int)mb];
 }
 
 bool EmscriptenInputSystem::WasMouseButtonClicked(MouseButton mb)
 {
-	return previous.mouseButtons[MouseButton::Left] && !current.mouseButtons[MouseButton::Left];
+	return previous.mouseButtons[(int)MouseButton::Left] && !current.mouseButtons[(int)MouseButton::Left];
 }
 
 glm::vec2 EmscriptenInputSystem::GetCursorPosition()
@@ -291,99 +291,99 @@ EM_BOOL EmscriptenInputSystem::MouseUpCallback(int eventType, const EmscriptenMo
 }
 EM_BOOL EmscriptenInputSystem::KeyDownCallback(int eventType, const EmscriptenKeyboardEvent* kbEvent, void* userData)
 {
-	current.keys[KeyboardCode::A] = strcmp(kbEvent->key, "a") == 0;
-	current.keys[KeyboardCode::B] = strcmp(kbEvent->key, "b") == 0;
-	current.keys[KeyboardCode::C] = strcmp(kbEvent->key, "c") == 0;
-	current.keys[KeyboardCode::D] = strcmp(kbEvent->key, "d") == 0;
-	current.keys[KeyboardCode::E] = strcmp(kbEvent->key, "e") == 0;
-	current.keys[KeyboardCode::F] = strcmp(kbEvent->key, "f") == 0;
-	current.keys[KeyboardCode::G] = strcmp(kbEvent->key, "g") == 0;
-	current.keys[KeyboardCode::H] = strcmp(kbEvent->key, "h") == 0;
-	current.keys[KeyboardCode::I] = strcmp(kbEvent->key, "i") == 0;
-	current.keys[KeyboardCode::J] = strcmp(kbEvent->key, "j") == 0;
-	current.keys[KeyboardCode::K] = strcmp(kbEvent->key, "k") == 0;
-	current.keys[KeyboardCode::L] = strcmp(kbEvent->key, "l") == 0;
-	current.keys[KeyboardCode::M] = strcmp(kbEvent->key, "m") == 0;
-	current.keys[KeyboardCode::N] = strcmp(kbEvent->key, "n") == 0;
-	current.keys[KeyboardCode::O] = strcmp(kbEvent->key, "o") == 0;
-	current.keys[KeyboardCode::P] = strcmp(kbEvent->key, "p") == 0;
-	current.keys[KeyboardCode::Q] = strcmp(kbEvent->key, "q") == 0;
-	current.keys[KeyboardCode::R] = strcmp(kbEvent->key, "r") == 0;	
-	current.keys[KeyboardCode::S] = strcmp(kbEvent->key, "s") == 0;
-	current.keys[KeyboardCode::T] = strcmp(kbEvent->key, "t") == 0;
-	current.keys[KeyboardCode::U] = strcmp(kbEvent->key, "u") == 0;
-	current.keys[KeyboardCode::V] = strcmp(kbEvent->key, "v") == 0;
-	current.keys[KeyboardCode::W] = strcmp(kbEvent->key, "w") == 0;
-	current.keys[KeyboardCode::X] = strcmp(kbEvent->key, "x") == 0;
-	current.keys[KeyboardCode::Y] = strcmp(kbEvent->key, "y") == 0;	
-	current.keys[KeyboardCode::Z] = strcmp(kbEvent->key, "z") == 0;
-	current.keys[KeyboardCode::Num0] = strcmp(kbEvent->key, "0") == 0;
-	current.keys[KeyboardCode::Num1] = strcmp(kbEvent->key, "1") == 0;
-	current.keys[KeyboardCode::Num2] = strcmp(kbEvent->key, "2") == 0;
-	current.keys[KeyboardCode::Num3] = strcmp(kbEvent->key, "3") == 0;
-	current.keys[KeyboardCode::Num4] = strcmp(kbEvent->key, "4") == 0;
-	current.keys[KeyboardCode::Num5] = strcmp(kbEvent->key, "5") == 0;
-	current.keys[KeyboardCode::Num6] = strcmp(kbEvent->key, "6") == 0;
-	current.keys[KeyboardCode::Num7] = strcmp(kbEvent->key, "7") == 0;
-	current.keys[KeyboardCode::Num8] = strcmp(kbEvent->key, "8") == 0;
-	current.keys[KeyboardCode::Num9] = strcmp(kbEvent->key, "9") == 0;
-	current.keys[KeyboardCode::LCtrl] = strcmp(kbEvent->key, "Control") == 0;
-	current.keys[KeyboardCode::RCtrl] = strcmp(kbEvent->key, "Control") == 0;
-	current.keys[KeyboardCode::LShift] = strcmp(kbEvent->key, "Shift") == 0;
-	current.keys[KeyboardCode::RShift] = strcmp(kbEvent->key, "Shift") == 0;
-	current.keys[KeyboardCode::ForwardSlash] = strcmp(kbEvent->key, "/") == 0;
-	current.keys[KeyboardCode::BackSlash] = strcmp(kbEvent->key, "\\") == 0;
-	current.keys[KeyboardCode::Enter] = strcmp(kbEvent->key, "Enter") == 0;
-	current.keys[KeyboardCode::Esc] = strcmp(kbEvent->key, "Escape") == 0;
+	current.keys[(int)KeyboardCode::A] = strcmp(kbEvent->key, "a") == 0;
+	current.keys[(int)KeyboardCode::B] = strcmp(kbEvent->key, "b") == 0;
+	current.keys[(int)KeyboardCode::C] = strcmp(kbEvent->key, "c") == 0;
+	current.keys[(int)KeyboardCode::D] = strcmp(kbEvent->key, "d") == 0;
+	current.keys[(int)KeyboardCode::E] = strcmp(kbEvent->key, "e") == 0;
+	current.keys[(int)KeyboardCode::F] = strcmp(kbEvent->key, "f") == 0;
+	current.keys[(int)KeyboardCode::G] = strcmp(kbEvent->key, "g") == 0;
+	current.keys[(int)KeyboardCode::H] = strcmp(kbEvent->key, "h") == 0;
+	current.keys[(int)KeyboardCode::I] = strcmp(kbEvent->key, "i") == 0;
+	current.keys[(int)KeyboardCode::J] = strcmp(kbEvent->key, "j") == 0;
+	current.keys[(int)KeyboardCode::K] = strcmp(kbEvent->key, "k") == 0;
+	current.keys[(int)KeyboardCode::L] = strcmp(kbEvent->key, "l") == 0;
+	current.keys[(int)KeyboardCode::M] = strcmp(kbEvent->key, "m") == 0;
+	current.keys[(int)KeyboardCode::N] = strcmp(kbEvent->key, "n") == 0;
+	current.keys[(int)KeyboardCode::O] = strcmp(kbEvent->key, "o") == 0;
+	current.keys[(int)KeyboardCode::P] = strcmp(kbEvent->key, "p") == 0;
+	current.keys[(int)KeyboardCode::Q] = strcmp(kbEvent->key, "q") == 0;
+	current.keys[(int)KeyboardCode::R] = strcmp(kbEvent->key, "r") == 0;	
+	current.keys[(int)KeyboardCode::S] = strcmp(kbEvent->key, "s") == 0;
+	current.keys[(int)KeyboardCode::T] = strcmp(kbEvent->key, "t") == 0;
+	current.keys[(int)KeyboardCode::U] = strcmp(kbEvent->key, "u") == 0;
+	current.keys[(int)KeyboardCode::V] = strcmp(kbEvent->key, "v") == 0;
+	current.keys[(int)KeyboardCode::W] = strcmp(kbEvent->key, "w") == 0;
+	current.keys[(int)KeyboardCode::X] = strcmp(kbEvent->key, "x") == 0;
+	current.keys[(int)KeyboardCode::Y] = strcmp(kbEvent->key, "y") == 0;	
+	current.keys[(int)KeyboardCode::Z] = strcmp(kbEvent->key, "z") == 0;
+	current.keys[(int)KeyboardCode::Num0] = strcmp(kbEvent->key, "0") == 0;
+	current.keys[(int)KeyboardCode::Num1] = strcmp(kbEvent->key, "1") == 0;
+	current.keys[(int)KeyboardCode::Num2] = strcmp(kbEvent->key, "2") == 0;
+	current.keys[(int)KeyboardCode::Num3] = strcmp(kbEvent->key, "3") == 0;
+	current.keys[(int)KeyboardCode::Num4] = strcmp(kbEvent->key, "4") == 0;
+	current.keys[(int)KeyboardCode::Num5] = strcmp(kbEvent->key, "5") == 0;
+	current.keys[(int)KeyboardCode::Num6] = strcmp(kbEvent->key, "6") == 0;
+	current.keys[(int)KeyboardCode::Num7] = strcmp(kbEvent->key, "7") == 0;
+	current.keys[(int)KeyboardCode::Num8] = strcmp(kbEvent->key, "8") == 0;
+	current.keys[(int)KeyboardCode::Num9] = strcmp(kbEvent->key, "9") == 0;
+	current.keys[(int)KeyboardCode::LCtrl] = strcmp(kbEvent->key, "Control") == 0;
+	current.keys[(int)KeyboardCode::RCtrl] = strcmp(kbEvent->key, "Control") == 0;
+	current.keys[(int)KeyboardCode::LShift] = strcmp(kbEvent->key, "Shift") == 0;
+	current.keys[(int)KeyboardCode::RShift] = strcmp(kbEvent->key, "Shift") == 0;
+	current.keys[(int)KeyboardCode::ForwardSlash] = strcmp(kbEvent->key, "/") == 0;
+	current.keys[(int)KeyboardCode::BackSlash] = strcmp(kbEvent->key, "\\") == 0;
+	current.keys[(int)KeyboardCode::Enter] = strcmp(kbEvent->key, "Enter") == 0;
+	current.keys[(int)KeyboardCode::Esc] = strcmp(kbEvent->key, "Escape") == 0;
 	return false;
 }
 
 EM_BOOL EmscriptenInputSystem::KeyUpCallback(int eventType, const EmscriptenKeyboardEvent* kbEvent, void* userData)
 {
-	current.keys[KeyboardCode::A] = (current.keys[KeyboardCode::A] && strcmp(kbEvent->key, "a") != 0);
-	current.keys[KeyboardCode::B] = (current.keys[KeyboardCode::B] && strcmp(kbEvent->key, "b") != 0);
-	current.keys[KeyboardCode::C] = (current.keys[KeyboardCode::C] && strcmp(kbEvent->key, "c") != 0);
-	current.keys[KeyboardCode::D] = (current.keys[KeyboardCode::D] && strcmp(kbEvent->key, "d") != 0);
-	current.keys[KeyboardCode::E] = (current.keys[KeyboardCode::E] && strcmp(kbEvent->key, "e") != 0);
-	current.keys[KeyboardCode::F] = (current.keys[KeyboardCode::F] && strcmp(kbEvent->key, "f") != 0);
-	current.keys[KeyboardCode::G] = (current.keys[KeyboardCode::G] && strcmp(kbEvent->key, "g") != 0);
-	current.keys[KeyboardCode::H] = (current.keys[KeyboardCode::H] && strcmp(kbEvent->key, "h") != 0);
-	current.keys[KeyboardCode::I] = (current.keys[KeyboardCode::I] && strcmp(kbEvent->key, "i") != 0);
-	current.keys[KeyboardCode::J] = (current.keys[KeyboardCode::J] && strcmp(kbEvent->key, "j") != 0);
-	current.keys[KeyboardCode::K] = (current.keys[KeyboardCode::K] && strcmp(kbEvent->key, "k") != 0);
-	current.keys[KeyboardCode::L] = (current.keys[KeyboardCode::L] && strcmp(kbEvent->key, "l") != 0);
-	current.keys[KeyboardCode::M] = (current.keys[KeyboardCode::M] && strcmp(kbEvent->key, "m") != 0);
-	current.keys[KeyboardCode::N] = (current.keys[KeyboardCode::N] && strcmp(kbEvent->key, "n") != 0);
-	current.keys[KeyboardCode::O] = (current.keys[KeyboardCode::O] && strcmp(kbEvent->key, "o") != 0);
-	current.keys[KeyboardCode::P] = (current.keys[KeyboardCode::P] && strcmp(kbEvent->key, "p") != 0);
-	current.keys[KeyboardCode::Q] = (current.keys[KeyboardCode::Q] && strcmp(kbEvent->key, "q") != 0);
-	current.keys[KeyboardCode::R] = (current.keys[KeyboardCode::R] && strcmp(kbEvent->key, "r") != 0);	
-	current.keys[KeyboardCode::S] = (current.keys[KeyboardCode::S] && strcmp(kbEvent->key, "s") != 0);
-	current.keys[KeyboardCode::T] = (current.keys[KeyboardCode::T] && strcmp(kbEvent->key, "t") != 0);
-	current.keys[KeyboardCode::U] = (current.keys[KeyboardCode::U] && strcmp(kbEvent->key, "u") != 0);
-	current.keys[KeyboardCode::V] = (current.keys[KeyboardCode::V] && strcmp(kbEvent->key, "v") != 0);
-	current.keys[KeyboardCode::W] = (current.keys[KeyboardCode::W] && strcmp(kbEvent->key, "w") != 0);
-	current.keys[KeyboardCode::X] = (current.keys[KeyboardCode::X] && strcmp(kbEvent->key, "x") != 0);
-	current.keys[KeyboardCode::Y] = (current.keys[KeyboardCode::Y] && strcmp(kbEvent->key, "y") != 0);	
-	current.keys[KeyboardCode::Z] = (current.keys[KeyboardCode::Z] && strcmp(kbEvent->key, "z") != 0);
-	current.keys[KeyboardCode::Num0] = (current.keys[KeyboardCode::Num0] && strcmp(kbEvent->key, "0") != 0);
-	current.keys[KeyboardCode::Num1] = (current.keys[KeyboardCode::Num1] && strcmp(kbEvent->key, "1") != 0);
-	current.keys[KeyboardCode::Num2] = (current.keys[KeyboardCode::Num2] && strcmp(kbEvent->key, "2") != 0);
-	current.keys[KeyboardCode::Num3] = (current.keys[KeyboardCode::Num3] && strcmp(kbEvent->key, "3") != 0);
-	current.keys[KeyboardCode::Num4] = (current.keys[KeyboardCode::Num4] && strcmp(kbEvent->key, "4") != 0);
-	current.keys[KeyboardCode::Num5] = (current.keys[KeyboardCode::Num5] && strcmp(kbEvent->key, "5") != 0);
-	current.keys[KeyboardCode::Num6] = (current.keys[KeyboardCode::Num6] && strcmp(kbEvent->key, "6") != 0);
-	current.keys[KeyboardCode::Num7] = (current.keys[KeyboardCode::Num7] && strcmp(kbEvent->key, "7") != 0);
-	current.keys[KeyboardCode::Num8] = (current.keys[KeyboardCode::Num8] && strcmp(kbEvent->key, "8") != 0);
-	current.keys[KeyboardCode::Num9] = (current.keys[KeyboardCode::Num9] && strcmp(kbEvent->key, "9") != 0);
-	current.keys[KeyboardCode::LCtrl] = (current.keys[KeyboardCode::LCtrl] && strcmp(kbEvent->key, "Control") != 0);
-	current.keys[KeyboardCode::RCtrl] = (current.keys[KeyboardCode::RCtrl] && strcmp(kbEvent->key, "Control") != 0);
-	current.keys[KeyboardCode::LShift] = (current.keys[KeyboardCode::LShift] && strcmp(kbEvent->key, "Shift") != 0);
-	current.keys[KeyboardCode::RShift] = (current.keys[KeyboardCode::RShift] && strcmp(kbEvent->key, "Shift") != 0);
-	current.keys[KeyboardCode::ForwardSlash] = (current.keys[KeyboardCode::ForwardSlash] && strcmp(kbEvent->key, "/") != 0);
-	current.keys[KeyboardCode::BackSlash] = (current.keys[KeyboardCode::BackSlash] && strcmp(kbEvent->key, "\\") != 0);
-	current.keys[KeyboardCode::Enter] = (current.keys[KeyboardCode::Enter] && strcmp(kbEvent->key, "Enter") != 0);
-	current.keys[KeyboardCode::Esc] = (current.keys[KeyboardCode::Esc] && strcmp(kbEvent->key, "Escape") != 0);
+	current.keys[(int)KeyboardCode::A] = (current.keys[(int)KeyboardCode::A] && strcmp(kbEvent->key, "a") != 0);
+	current.keys[(int)KeyboardCode::B] = (current.keys[(int)KeyboardCode::B] && strcmp(kbEvent->key, "b") != 0);
+	current.keys[(int)KeyboardCode::C] = (current.keys[(int)KeyboardCode::C] && strcmp(kbEvent->key, "c") != 0);
+	current.keys[(int)KeyboardCode::D] = (current.keys[(int)KeyboardCode::D] && strcmp(kbEvent->key, "d") != 0);
+	current.keys[(int)KeyboardCode::E] = (current.keys[(int)KeyboardCode::E] && strcmp(kbEvent->key, "e") != 0);
+	current.keys[(int)KeyboardCode::F] = (current.keys[(int)KeyboardCode::F] && strcmp(kbEvent->key, "f") != 0);
+	current.keys[(int)KeyboardCode::G] = (current.keys[(int)KeyboardCode::G] && strcmp(kbEvent->key, "g") != 0);
+	current.keys[(int)KeyboardCode::H] = (current.keys[(int)KeyboardCode::H] && strcmp(kbEvent->key, "h") != 0);
+	current.keys[(int)KeyboardCode::I] = (current.keys[(int)KeyboardCode::I] && strcmp(kbEvent->key, "i") != 0);
+	current.keys[(int)KeyboardCode::J] = (current.keys[(int)KeyboardCode::J] && strcmp(kbEvent->key, "j") != 0);
+	current.keys[(int)KeyboardCode::K] = (current.keys[(int)KeyboardCode::K] && strcmp(kbEvent->key, "k") != 0);
+	current.keys[(int)KeyboardCode::L] = (current.keys[(int)KeyboardCode::L] && strcmp(kbEvent->key, "l") != 0);
+	current.keys[(int)KeyboardCode::M] = (current.keys[(int)KeyboardCode::M] && strcmp(kbEvent->key, "m") != 0);
+	current.keys[(int)KeyboardCode::N] = (current.keys[(int)KeyboardCode::N] && strcmp(kbEvent->key, "n") != 0);
+	current.keys[(int)KeyboardCode::O] = (current.keys[(int)KeyboardCode::O] && strcmp(kbEvent->key, "o") != 0);
+	current.keys[(int)KeyboardCode::P] = (current.keys[(int)KeyboardCode::P] && strcmp(kbEvent->key, "p") != 0);
+	current.keys[(int)KeyboardCode::Q] = (current.keys[(int)KeyboardCode::Q] && strcmp(kbEvent->key, "q") != 0);
+	current.keys[(int)KeyboardCode::R] = (current.keys[(int)KeyboardCode::R] && strcmp(kbEvent->key, "r") != 0);	
+	current.keys[(int)KeyboardCode::S] = (current.keys[(int)KeyboardCode::S] && strcmp(kbEvent->key, "s") != 0);
+	current.keys[(int)KeyboardCode::T] = (current.keys[(int)KeyboardCode::T] && strcmp(kbEvent->key, "t") != 0);
+	current.keys[(int)KeyboardCode::U] = (current.keys[(int)KeyboardCode::U] && strcmp(kbEvent->key, "u") != 0);
+	current.keys[(int)KeyboardCode::V] = (current.keys[(int)KeyboardCode::V] && strcmp(kbEvent->key, "v") != 0);
+	current.keys[(int)KeyboardCode::W] = (current.keys[(int)KeyboardCode::W] && strcmp(kbEvent->key, "w") != 0);
+	current.keys[(int)KeyboardCode::X] = (current.keys[(int)KeyboardCode::X] && strcmp(kbEvent->key, "x") != 0);
+	current.keys[(int)KeyboardCode::Y] = (current.keys[(int)KeyboardCode::Y] && strcmp(kbEvent->key, "y") != 0);	
+	current.keys[(int)KeyboardCode::Z] = (current.keys[(int)KeyboardCode::Z] && strcmp(kbEvent->key, "z") != 0);
+	current.keys[(int)KeyboardCode::Num0] = (current.keys[(int)KeyboardCode::Num0] && strcmp(kbEvent->key, "0") != 0);
+	current.keys[(int)KeyboardCode::Num1] = (current.keys[(int)KeyboardCode::Num1] && strcmp(kbEvent->key, "1") != 0);
+	current.keys[(int)KeyboardCode::Num2] = (current.keys[(int)KeyboardCode::Num2] && strcmp(kbEvent->key, "2") != 0);
+	current.keys[(int)KeyboardCode::Num3] = (current.keys[(int)KeyboardCode::Num3] && strcmp(kbEvent->key, "3") != 0);
+	current.keys[(int)KeyboardCode::Num4] = (current.keys[(int)KeyboardCode::Num4] && strcmp(kbEvent->key, "4") != 0);
+	current.keys[(int)KeyboardCode::Num5] = (current.keys[(int)KeyboardCode::Num5] && strcmp(kbEvent->key, "5") != 0);
+	current.keys[(int)KeyboardCode::Num6] = (current.keys[(int)KeyboardCode::Num6] && strcmp(kbEvent->key, "6") != 0);
+	current.keys[(int)KeyboardCode::Num7] = (current.keys[(int)KeyboardCode::Num7] && strcmp(kbEvent->key, "7") != 0);
+	current.keys[(int)KeyboardCode::Num8] = (current.keys[(int)KeyboardCode::Num8] && strcmp(kbEvent->key, "8") != 0);
+	current.keys[(int)KeyboardCode::Num9] = (current.keys[(int)KeyboardCode::Num9] && strcmp(kbEvent->key, "9") != 0);
+	current.keys[(int)KeyboardCode::LCtrl] = (current.keys[(int)KeyboardCode::LCtrl] && strcmp(kbEvent->key, "Control") != 0);
+	current.keys[(int)KeyboardCode::RCtrl] = (current.keys[(int)KeyboardCode::RCtrl] && strcmp(kbEvent->key, "Control") != 0);
+	current.keys[(int)KeyboardCode::LShift] = (current.keys[(int)KeyboardCode::LShift] && strcmp(kbEvent->key, "Shift") != 0);
+	current.keys[(int)KeyboardCode::RShift] = (current.keys[(int)KeyboardCode::RShift] && strcmp(kbEvent->key, "Shift") != 0);
+	current.keys[(int)KeyboardCode::ForwardSlash] = (current.keys[(int)KeyboardCode::ForwardSlash] && strcmp(kbEvent->key, "/") != 0);
+	current.keys[(int)KeyboardCode::BackSlash] = (current.keys[(int)KeyboardCode::BackSlash] && strcmp(kbEvent->key, "\\") != 0);
+	current.keys[(int)KeyboardCode::Enter] = (current.keys[(int)KeyboardCode::Enter] && strcmp(kbEvent->key, "Enter") != 0);
+	current.keys[(int)KeyboardCode::Esc] = (current.keys[(int)KeyboardCode::Esc] && strcmp(kbEvent->key, "Escape") != 0);
 	return false;
 }
 #endif

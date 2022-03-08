@@ -5,7 +5,7 @@
 //#include "imgui_impl_emscripten.h"
 #include "EmscriptenAssetManager.h"
 #include <backends/imgui_impl_sdl.h>
-#include <SDL/SDL_opengles2.h>
+#include <SDL2/SDL_opengles2.h>
 
 EmscriptenPlatform* EmscriptenPlatform::staticThis = 0;
 EmscriptenPlatform::EmscriptenPlatform(GameWindow* win) : window(win)
