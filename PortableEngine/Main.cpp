@@ -205,7 +205,7 @@ int main(int argc, char* argv[])
 		xr = new XRAPI(plat, graph, window, options);
 	}
 #endif
-
+	registry.on_construct<Mesh>().connect<&IRenderSystem::CreateDefaultRenderer>(renderSystem);
 	entt::entity root = registry.create();
 	registry.emplace<Name>(root, "$");
 	registry.emplace<Transform>(root);
@@ -215,10 +215,6 @@ int main(int argc, char* argv[])
 
 	Relationship& duoRootRel = registry.get<Relationship>(duoRoot);
 
-	for (auto it = duoRootRel.children.begin(); it != duoRootRel.children.end(); it++)
-	{
-		AttachRenderers(registry, renderSystem, { { TextureType::DiffuseTexture,  plat->GetAssetManager()->GetAssetPath("../../Assets/Images/rock.png").c_str() }, { TextureType::NormalTexture,  plat->GetAssetManager()->GetAssetPath("../../Assets/Images/Normal/rock_normals.png").c_str() } }, it->second, ShaderType::Lit_Textured_Normal);
-	}
 
 
 
