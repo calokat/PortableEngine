@@ -133,7 +133,6 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 		Tree<MeshCreateInfo> meshTree = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath(meshPath).c_str());
 		entt::entity meshEntity = MakeMesh(meshTree, registry, sceneRoot);
 		Transform newMeshTransform = {};
-		newMeshTransform.position = camTransform.position + glm::inverse(glm::mat3(camera.view)) * glm::vec3(0, 0, 10);
 		newMeshTransform.position = camTransform.position + (-camTransform.orientation) * glm::vec3(0, 0, 10);
 		registry.replace<Transform>(meshEntity, newMeshTransform);
 	}
