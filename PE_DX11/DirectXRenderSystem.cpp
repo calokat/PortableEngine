@@ -7,36 +7,47 @@
 
 #pragma warning(disable:4996)
 
-IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity& e, ShaderType type)
+IRenderer& DirectXRenderSystem::CreateDefaultRenderer(entt::registry& reg, entt::entity e)
+{
+	return CreateRenderer(reg, e, ShaderType::Unlit_Color);
+}
+
+IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity e, ShaderType type)
 {
 	DirectXRenderer& rendererRef = reg.emplace<DirectXRenderer>(e);
 	rendererRef.shaderProgram.shaderType = type;
 	switch (rendererRef.shaderProgram.shaderType)
 	{
-		case ShaderType::Unlit_Color:
-		case ShaderType::Unlit_Textured:
-		case ShaderType::Lit_Color:
-		case ShaderType::Lit_Textured:
-		case ShaderType::Lit_Textured_Normal:
-			rendererRef.shaderProgram.vertexConstBuffer.constantBufferMap = {
-				{"colorTint", { 16 } },
-				{"world", { 64 } },
-				{"view", { 64 } },
-				{"projection", { 64 } }
-			};
-			break;
+	case ShaderType::Unlit_Color:
+	case ShaderType::Unlit_Textured:
+	case ShaderType::Lit_Color:
+	case ShaderType::Lit_Textured:
+	case ShaderType::Lit_Textured_Normal:
+		rendererRef.shaderProgram.vertexConstBuffer.constantBufferMap = {
+			{"colorTint", { 16 } },
+			{"world", { 64 } },
+			{"view", { 64 } },
+			{"projection", { 64 } }
+		};
+		break;
 	}
 
 	switch (rendererRef.shaderProgram.shaderType)
 	{
-		case ShaderType::Lit_Color:
-			rendererRef.shaderProgram.pixelConstBuffer.constantBufferMap = {
-				{ "dirLight", { sizeof(DirectionalLight) } },
-				{ "pointLight", { sizeof(PointLight) } },
-				{ "cameraPos", { sizeof(glm::vec3) } },
-				{ "specularIntensity", { sizeof(float) } },
-			};
-			break;
+	case ShaderType::Lit_Color:
+		rendererRef.shaderProgram.pixelConstBuffer.constantBufferMap = {
+			{ "dirLight", { sizeof(DirectionalLight) } },
+			{ "pointLight", { sizeof(PointLight) } },
+			{ "cameraPos", { sizeof(glm::vec3) } },
+			{ "specularIntensity", { sizeof(float) } },
+		};
+		break;
+	}
+	Load(&rendererRef);
+	Mesh* possibleMesh = reg.try_get<Mesh>(e);
+	if (possibleMesh)
+	{
+		LoadMesh(&rendererRef, *possibleMesh);
 	}
 	return rendererRef;
 }

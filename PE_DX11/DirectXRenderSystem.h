@@ -11,7 +11,8 @@
 class DirectXRenderSystem : public IRenderSystem
 {
 public:
-	IRenderer& CreateRenderer(entt::registry& reg, entt::entity& e, ShaderType type);
+	IRenderer& CreateDefaultRenderer(entt::registry& reg, entt::entity e);
+	IRenderer& CreateRenderer(entt::registry& reg, entt::entity e, ShaderType type);
 	void Load(IRenderer* renderer);
 	void BindRenderer(IRenderer* renderer);
 	void LoadMesh(IRenderer* renderer, Mesh& mesh);

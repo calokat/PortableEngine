@@ -4,9 +4,20 @@
 #include "OpenGLImageGraphicsData.h"
 #include "ImageSystem.h"
 
-IRenderer& GLRenderSystem::CreateRenderer(entt::registry& reg, entt::entity& e, ShaderType type)
+IRenderer& GLRenderSystem::CreateDefaultRenderer(entt::registry& reg, entt::entity e)
+{
+	return CreateRenderer(reg, e, ShaderType::Unlit_Color);
+}
+
+IRenderer& GLRenderSystem::CreateRenderer(entt::registry& reg, entt::entity e, ShaderType type)
 {
 	IRenderer& rendererRef = reg.emplace<GLRenderer>(e, platform->GetAssetManager()->GetAssetPath(typeToVertexPath[type]), platform->GetAssetManager()->GetAssetPath(typeToPixelPath[type]), type);
+	Load(&rendererRef);
+	Mesh* possibleMesh = reg.try_get<Mesh>(e);
+	if (possibleMesh)
+	{
+		LoadMesh(&rendererRef, *possibleMesh);
+	}
 	return rendererRef;
 }
 
@@ -26,24 +37,29 @@ void GLRenderSystem::Load(IRenderer* renderer)
 	glUseProgram(glRenderer->shaderProgram.programID);
 	for (int i = 0; i < (unsigned long)ShaderAttributes::__COUNT__; ++i)
 	{
+		if (glRenderer->shaderProgram.attributes[i].name == nullptr) continue;
 		glRenderer->shaderProgram.attributes[i].value = glGetAttribLocation(glRenderer->shaderProgram.programID, glRenderer->shaderProgram.attributes[i].name);
 	}
 	for (int i = 0; i < (unsigned long)VertexUniforms::__COUNT__; ++i)
 	{
+		if (glRenderer->shaderProgram.vertexUniforms[i].name == nullptr) continue;
 		glRenderer->shaderProgram.vertexUniforms[i].value = glGetUniformLocation(glRenderer->shaderProgram.programID, glRenderer->shaderProgram.vertexUniforms[i].name);
 	}
 	for (int i = 0; i < (unsigned long)FragmentUniforms::__COUNT__; ++i)
 	{
+		if (glRenderer->shaderProgram.fragmentUniforms[i].name == nullptr) continue;
 		glRenderer->shaderProgram.fragmentUniforms[i].value = glGetUniformLocation(glRenderer->shaderProgram.programID, glRenderer->shaderProgram.fragmentUniforms[i].name);
 	}
 	for (int i = 0; i < (unsigned long)DirectionalLightUniforms::__COUNT__; ++i)
 	{
+		if (glRenderer->shaderProgram.dirLightLightData[i].name == nullptr) continue;
 		glRenderer->shaderProgram.dirLightLightData[i].value = glGetUniformLocation(glRenderer->shaderProgram.programID, glRenderer->shaderProgram.dirLightLightData[i].name);
 	}
 	for (int i = 0; i < 1; ++i)
 	{
 		for (int j = 0; j < (unsigned long)PointLightUniforms::__COUNT__; ++j)
 		{
+			if (glRenderer->shaderProgram.pointLightData[i][j].name == nullptr) continue;
 			glRenderer->shaderProgram.pointLightData[i][j].value = glGetUniformLocation(glRenderer->shaderProgram.programID, glRenderer->shaderProgram.pointLightData[i][j].name);
 		}
 	}

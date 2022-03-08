@@ -9,7 +9,9 @@
 class IRenderSystem
 {
 public:
-	virtual IRenderer& CreateRenderer(entt::registry& reg, entt::entity& e, ShaderType type) = 0;
+	// Used when default initializing a renderer when a mesh is added
+	virtual IRenderer& CreateDefaultRenderer(entt::registry& reg, entt::entity e) = 0;
+	virtual IRenderer& CreateRenderer(entt::registry& reg, entt::entity e, ShaderType type) = 0;
 	virtual void Load(IRenderer* renderer) = 0;
 	virtual void BindRenderer(IRenderer* renderer) = 0;
 	virtual void LoadMesh(IRenderer* renderer, Mesh& mesh/*, ID3D11Device* device*/) = 0;
