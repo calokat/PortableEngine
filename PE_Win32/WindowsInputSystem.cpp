@@ -62,6 +62,7 @@ void WindowsInputSystem::GetKeyPressed()
 	current.keys[(unsigned long long)KeyboardCode::Esc] = GetAsyncKeyState(VK_ESCAPE) & 0x8000;
 	current.keys[(unsigned long long)KeyboardCode::LAlt] = GetAsyncKeyState(VK_LMENU) & 0x8000;
 	current.keys[(unsigned long long)KeyboardCode::RAlt] = GetAsyncKeyState(VK_RMENU) & 0x8000;
+	current.keys[(unsigned long long)KeyboardCode::Delete] = GetAsyncKeyState(VK_DELETE) & 0x8000;
 	
 	current.mouseButtons[(unsigned long long)MouseButton::Left] = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
 	current.mouseButtons[(unsigned long long)MouseButton::Middle] = GetAsyncKeyState(VK_MBUTTON) & 0x8000;
