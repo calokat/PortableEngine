@@ -179,6 +179,11 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	ImGui::Render();
 	graph->DrawGui();
 	graph->_SwapBuffers();
+	if (selected != entt::null && plat->GetInputSystem()->IsKeyPressed(KeyboardCode::Delete))
+	{
+		GizmoSystem::DeselectAll();
+		registry.destroy(selected);
+	}
 }
 
 void ComputeTransformHeirarchy(entt::entity parent, entt::registry& registry, Transform cumulativeTransform)

@@ -64,6 +64,18 @@ void UpdateChildren(entt::registry& registry, entt::entity e)
 	}
 }
 
+void RemoveFromHeirarchy(entt::registry& registry, entt::entity e)
+{
+	Relationship toRemove = registry.get<Relationship>(e);
+	Relationship affectedParent = registry.get<Relationship>(toRemove.parent);
+	for (auto it = toRemove.children.begin(); it != toRemove.children.end(); ++it)
+	{
+		registry.destroy(it->second);
+	}
+	affectedParent.children.erase((int)e);
+	registry.replace<Relationship>(toRemove.parent, affectedParent);
+}
+
 int main(int argc, char* argv[])
 {
 #if defined(DEBUG) | defined(_DEBUG)
@@ -86,7 +98,7 @@ int main(int argc, char* argv[])
 	registry.on_construct<Transform>().connect<&entt::registry::emplace_or_replace<Relationship>>();
 	registry.on_construct<PointLight>().connect<&entt::registry::emplace_or_replace<Transform>>();
 	registry.on_construct<DirectionalLight>().connect<&entt::registry::emplace_or_replace<Transform>>();
-
+	registry.on_destroy<Relationship>().connect<RemoveFromHeirarchy>();
 	registry.on_update<Transform>().connect<UpdateChildren>();
 	window = new GameWindow(0, 0, 800, 600);
 	auto entity = registry.create();
