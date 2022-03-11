@@ -24,16 +24,15 @@ template<class T>
 void DrawIteration(Camera& camera, entt::entity selected, entt::registry& registry, IRenderSystem* renderSystem)
 {
 	auto renderableView = registry.view<T, Transform>();
-	DirectionalLight dirLight;
 	PointLight pointLights[MAX_POINT_LIGHTS];
-
-	LightsSystem::ExtractLightsFromRegistry(registry, dirLight, pointLights);
+	DirectionalLight dirLights[MAX_DIR_LIGHTS];
+	LightsSystem::ExtractLightsFromRegistry(registry, dirLights, pointLights);
 	for (auto rIt = renderableView.begin(); rIt != renderableView.end(); ++rIt)
 	{
 		T& renderer = registry.get<T>(*rIt);
 		Transform& meshTransform = registry.get<Transform>(*rIt);
 		renderSystem->BindRenderer(&renderer);
-		renderSystem->UpdateRenderer(&renderer, meshTransform, camera, dirLight, pointLights);
+		renderSystem->UpdateRenderer(&renderer, meshTransform, camera, dirLights, pointLights);
 		renderSystem->Draw(&renderer);
 	}
 }

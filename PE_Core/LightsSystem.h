@@ -7,7 +7,7 @@
 #include "IAssetManager.h"
 namespace LightsSystem
 {
-	void ExtractLightsFromRegistry(entt::registry& reg, DirectionalLight& dirLight, PointLight* pointLights);
+	void ExtractLightsFromRegistry(entt::registry& reg, DirectionalLight* dirLights, PointLight* pointLights);
 	entt::entity CreatePointLight(entt::registry& reg);
 	entt::entity CreateDirectionalLight(entt::registry& reg);
 	void LoadPointLightPositions(entt::basic_view<entt::entity, entt::get_t<PointLight, Transform>, entt::exclude_t<>, void> pointLights);

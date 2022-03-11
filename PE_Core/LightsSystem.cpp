@@ -6,13 +6,17 @@
 #include "AABBSystem.h"
 namespace LightsSystem
 {
-	void ExtractLightsFromRegistry(entt::registry& reg, DirectionalLight& dirLight, PointLight* pointLights)
+	void ExtractLightsFromRegistry(entt::registry& reg, DirectionalLight* dirLights, PointLight* pointLights)
 	{
 		const auto dirLightView = reg.view<DirectionalLight>();
-		dirLight = dirLightView.get<DirectionalLight>(dirLightView.front());
+		int i = 0;
+		for (auto it = dirLightView.begin(); it != dirLightView.end() && i < MAX_DIR_LIGHTS; ++it, ++i)
+		{
+			dirLights[i] = dirLightView.get<DirectionalLight>(*it);
+		}
 
 		auto pointLightView = reg.view<PointLight>();
-		int i = 0;
+		i = 0;
 		for (auto it = pointLightView.begin(); it != pointLightView.end() && i < MAX_POINT_LIGHTS; ++it, ++i)
 		{
 			pointLights[i] = pointLightView.get<PointLight>(*it);

@@ -235,7 +235,7 @@ void DirectXRenderSystem::DrawWireframe(IRenderer* renderer)
 {
 }
 
-void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLight, PointLight pointLights[MAX_POINT_LIGHTS])
+void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLights[MAX_DIR_LIGHTS], PointLight pointLights[MAX_POINT_LIGHTS])
 {
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
 
@@ -258,7 +258,7 @@ void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTran
 	if (dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Lit)
 	{
 		LightBufferData lightBufferData;
-		lightBufferData.dirLight = dirLight;
+		lightBufferData.dirLight = dirLights != nullptr ? *dirLights : DirectionalLight{};
 		glm::mat4 inverseView = glm::inverse(camera.view);
 		lightBufferData.cameraPos = inverseView[3];
 		lightBufferData.specularIntensity = 16;

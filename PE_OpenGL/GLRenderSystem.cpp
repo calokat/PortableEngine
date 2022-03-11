@@ -128,7 +128,7 @@ void GLRenderSystem::DrawWireframe(IRenderer* renderer)
 {
 }
 
-void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLight, PointLight pointLights[MAX_POINT_LIGHTS])
+void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLights[MAX_DIR_LIGHTS], PointLight pointLights[MAX_POINT_LIGHTS])
 {
 	GLenum err = glGetError();
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
@@ -146,6 +146,7 @@ void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform
 	err = glGetError();
 	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Lit)
 	{
+		DirectionalLight dirLight = dirLights != nullptr ? *dirLights : DirectionalLight{};
 		glUniform4f(glRenderer->shaderProgram.dirLightLightData[(unsigned long)DirectionalLightUniforms::AmbientColor].value, dirLight.AmbientColor.x, dirLight.AmbientColor.y, dirLight.AmbientColor.z, dirLight.AmbientColor.w);
 		err = glGetError();
 		glUniform4f(glRenderer->shaderProgram.dirLightLightData[(unsigned long)DirectionalLightUniforms::DiffuseColor].value, dirLight.DiffuseColor.x, dirLight.DiffuseColor.y, dirLight.DiffuseColor.z, dirLight.DiffuseColor.w);

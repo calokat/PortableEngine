@@ -3,7 +3,7 @@
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"
 #define MAX_POINT_LIGHTS 8
-
+#define MAX_DIR_LIGHTS 1
 
 struct DirectionalLight
 {

@@ -140,15 +140,15 @@ void XRGraphicsPlugin_DirectX11::RenderView(const XrCompositionLayerProjectionVi
         //renderSystem->LoadMesh(&renderer, mesh);
         renderSystem->BindRenderer(&renderer);
 
-        DirectionalLight dirLight;
+        DirectionalLight dirLights[MAX_DIR_LIGHTS];
         //dirLight.Direction = glm::vec4(0, 1, 0, 0);
         //dirLight.DiffuseColor = glm::vec4(1, 0, 1, 1);
 
         PointLight pointLights[MAX_POINT_LIGHTS];
 
-        LightsSystem::ExtractLightsFromRegistry(reg, dirLight, pointLights);
+        LightsSystem::ExtractLightsFromRegistry(reg, dirLights, pointLights);
 
-        renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam, dirLight, pointLights);
+        renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam, dirLights, pointLights);
         renderSystem->Draw(&renderer);
     }
 }
