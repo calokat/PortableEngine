@@ -9,7 +9,35 @@ Adding features and supporting multiple platforms are often in direct conflict w
 Other features I want to add are:
 - Support for OpenGL-Android
 - Support for DirectX 12 and Vulkan
-- Have textures, instead of solid colors
-- VR and AR support
+- (Done) Have textures, instead of solid colors
+- (Done) VR and AR support
 
-You can see an earlier version of the engine through a web build [here](https://people.rit.edu/cnk5777/EmscriptenDemo/)
+You can see an earlier version of the engine through a web build [here](https://calokat.github.io/PortableEngine)
+
+## Building
+
+PortableEngine uses CMake as a build system and vcpkg as a package manager.
+
+You will need at least the following packages from vcpkg:
+
+### All platforms
+- glew
+- glm
+- entt
+- assimp
+- imgui (with opengl3, SDL2, DirectX11 and Win32 features enabled)
+- stb
+
+### Windows 
+- openxr-loader
+- directxtk
+
+### Linux
+- SDL2
+- Additional packages may be needed from your OS' package manager (ex. apt)
+
+Once all packages are downloaded from vcpkg, please run
+
+```
+cmake -S . -B build/ -DCMAKE_TOOLCHAIN_FILE={path_to_vcpkg_root}/scripts/buildsystems/vcpkg.cmake
+```
