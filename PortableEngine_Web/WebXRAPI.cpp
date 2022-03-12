@@ -88,9 +88,9 @@ void WebXRAPI::RenderEye(entt::registry& reg, IRenderSystem* renderSystem, Camer
 	//entt::entity cameraEntity = reg.view<Camera, Transform>().front();
 	//Camera& viewCam = reg.get<Camera>(cameraEntity);
 	//graphics->ClearScreen();
-	DirectionalLight dirLight;
+	DirectionalLight dirLights[MAX_DIR_LIGHTS];
 	PointLight pointLights[MAX_POINT_LIGHTS];
-	LightsSystem::ExtractLightsFromRegistry(reg, dirLight, pointLights);
+	LightsSystem::ExtractLightsFromRegistry(reg, dirLights, pointLights);
 
 	for (auto renderable : renderableView)
 	{
@@ -100,7 +100,7 @@ void WebXRAPI::RenderEye(entt::registry& reg, IRenderSystem* renderSystem, Camer
 		//renderSystem->LoadMesh(&renderer, mesh);
 		renderSystem->BindRenderer(&renderer);
 
-		renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam, dirLight, pointLights);
+		renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam, dirLights, pointLights);
 		renderSystem->Draw(&renderer);
 	}
 
