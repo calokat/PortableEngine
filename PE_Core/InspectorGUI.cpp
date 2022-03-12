@@ -49,16 +49,17 @@ void ComponentGUI(GLRenderer& r)
 			char buf[128];
 			memcpy(buf, texIt->second.path.c_str(), texIt->second.path.length());
 			buf[texIt->second.path.length()] = '\0';
+			char* textureTypeString = "Engine error";
 			switch (texIt->first)
 			{
 				case TextureType::DiffuseTexture:
-					ImGui::Text("Diffuse - Path: ");
+					textureTypeString = "Diffuse";
 				break;
 				case TextureType::NormalTexture:
-					ImGui::Text("Normal - Path: ");
+					textureTypeString = "Normal";
+					break;
 			}
-			ImGui::SameLine();
-			if (ImGui::InputText(buf, buf, 128))
+			if (ImGui::InputText(textureTypeString, buf, 128))
 			{
 				texIt->second.path = buf;
 				texIt->second.pathChanged = true;
@@ -87,16 +88,17 @@ void ComponentGUI(DirectXRenderer& dxr)
 			char buf[128];
 			memcpy(buf, texIt->second.path.c_str(), texIt->second.path.length());
 			buf[texIt->second.path.length()] = '\0';
+			char* textureTypeString = "Engine error";
 			switch (texIt->first)
 			{
 			case TextureType::DiffuseTexture:
-				ImGui::Text("Diffuse - Path: ");
+				textureTypeString = "Diffuse";
 				break;
 			case TextureType::NormalTexture:
-				ImGui::Text("Normal - Path: ");
+				textureTypeString = "Normal";
+				break;
 			}
-			ImGui::SameLine();
-			if (ImGui::InputText(buf, buf, 128))
+			if (ImGui::InputText(textureTypeString, buf, 128))
 			{
 				texIt->second.path = buf;
 				texIt->second.pathChanged = true;
