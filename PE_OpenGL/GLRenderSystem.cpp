@@ -11,12 +11,25 @@ IRenderer& GLRenderSystem::CreateDefaultRenderer(entt::registry& reg, entt::enti
 
 IRenderer& GLRenderSystem::CreateRenderer(entt::registry& reg, entt::entity e, ShaderType type)
 {
-	IRenderer& rendererRef = reg.emplace<GLRenderer>(e, platform->GetAssetManager()->GetAssetPath(typeToVertexPath[type]), platform->GetAssetManager()->GetAssetPath(typeToPixelPath[type]), type);
+	IRenderer& rendererRef = reg.emplace_or_replace<GLRenderer>(e, platform->GetAssetManager()->GetAssetPath(typeToVertexPath[type]), platform->GetAssetManager()->GetAssetPath(typeToPixelPath[type]), type);
 	Load(&rendererRef);
 	Mesh* possibleMesh = reg.try_get<Mesh>(e);
 	if (possibleMesh)
 	{
 		LoadMesh(&rendererRef, *possibleMesh);
+	}
+	std::map<TextureType, const char*> emptyTextures;
+	if (type & ShaderProgramProperties::Textured)
+	{
+		emptyTextures.emplace(TextureType::DiffuseTexture, "");
+	}
+	if (type & ShaderProgramProperties::Normal)
+	{
+		emptyTextures.emplace(TextureType::NormalTexture, "");
+	}
+	if (!emptyTextures.empty())
+	{
+		LoadTexture(&rendererRef, emptyTextures);
 	}
 	return rendererRef;
 }
