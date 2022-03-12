@@ -242,6 +242,21 @@ int main(int argc, char* argv[])
 	dirLightRel.parent = root;
 	rootRel = registry.get<Relationship>(root);
 	rootRel.children.insert(std::pair((int)dirLightEntity, dirLightEntity));
+
+	if (options.xr == PE::XrPlatform::OpenXR)
+	{
+		Tree<MeshCreateInfo> xrHand = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/cube.obj").c_str());
+		entt::entity leftHand = MakeMesh(xrHand, registry, root);
+		Transform handTransform = {};
+		entt::entity rightHand = MakeMesh(xrHand, registry, root);
+		handTransform.scale = glm::vec3(.1f, .1f, .1f);
+		TransformSystem::CalculateWorldMatrix(&handTransform);
+		registry.replace<Transform>(leftHand, handTransform);
+		registry.replace<Transform>(rightHand, handTransform);
+
+		registry.emplace<XRDevice>(leftHand, XRDeviceType::LeftHand);
+		registry.emplace<XRDevice>(rightHand, XRDeviceType::RightHand);
+	}
 	while (plat->Run() == 0)
 	{
 		Loop(plat, graph, renderSystem, xr, window, registry, options, root);
