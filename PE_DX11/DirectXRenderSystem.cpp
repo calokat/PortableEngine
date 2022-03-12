@@ -14,7 +14,7 @@ IRenderer& DirectXRenderSystem::CreateDefaultRenderer(entt::registry& reg, entt:
 
 IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity e, ShaderType type)
 {
-	DirectXRenderer& rendererRef = reg.emplace<DirectXRenderer>(e);
+	DirectXRenderer& rendererRef = reg.emplace_or_replace<DirectXRenderer>(e);
 	rendererRef.shaderProgram.shaderType = type;
 	switch (rendererRef.shaderProgram.shaderType)
 	{
@@ -48,6 +48,19 @@ IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity
 	if (possibleMesh)
 	{
 		LoadMesh(&rendererRef, *possibleMesh);
+	}
+	std::map<TextureType, const char*> emptyTextures;
+	if (type & ShaderProgramProperties::Textured)
+	{
+		emptyTextures.emplace(TextureType::DiffuseTexture, "");
+	}
+	if (type & ShaderProgramProperties::Normal)
+	{
+		emptyTextures.emplace(TextureType::NormalTexture, "");
+	}
+	if (!emptyTextures.empty())
+	{
+		LoadTexture(&rendererRef, emptyTextures);
 	}
 	return rendererRef;
 }
@@ -270,6 +283,16 @@ void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTran
 		context->Unmap(dxRenderer->shaderProgram.pixelConstBuffer.constantBuffer.Get(), 0);
 		context->PSSetConstantBuffers(0, 1, dxRenderer->shaderProgram.pixelConstBuffer.constantBuffer.GetAddressOf());
 	}
+	int i = 0;
+	for (auto texIt = dxRenderer->textures.begin(); texIt != dxRenderer->textures.end(); ++texIt, i++)
+	{
+		if (texIt->second.pathChanged)
+		{
+			LoadTexture(texIt->second, texIt->second.path.c_str(), texIt->first);
+			texIt->second.pathChanged = false;
+		}
+	}
+
 
 	context->PSSetSamplers(0, 1, &dxRenderer->shaderProgram.samplerState);
 }
