@@ -12,7 +12,7 @@ out vec4 color;
 out vec3 worldPos;
 out vec2 TexCoord;
 out mat3 TBN;
-// out vec3 normal;
+out vec3 normal;
 out vec3 tangent;
 
 void main()
@@ -24,6 +24,7 @@ void main()
     tangent = in_tangent;
     TexCoord = aTexCoord;
     worldPos = (model * vec4(in_position, 1)).xyz;
+    normal = mat3(transpose(inverse(model))) * in_normal;
     vec3 biTangent = cross(in_tangent, in_normal);
     vec3 T = vec3(normalize(model * vec4(in_tangent, 0)));
     vec3 B = vec3(normalize(model * vec4(biTangent, 0)));

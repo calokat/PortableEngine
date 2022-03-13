@@ -16,7 +16,7 @@ in vec4 color;
 in mat3 TBN;
 in vec3 worldPos;
 in vec2 TexCoord;
-// in vec3 normal;
+in vec3 normal;
 in vec3 tangent;
 
 uniform DirectionalLight dirLight;
@@ -60,7 +60,7 @@ vec3 CalculateDirLight(DirectionalLight light, vec3 normal)
 void main()
 {
     vec3 normal = texture(normalTexture, TexCoord).xyz;
-    normal = normal * .5 + .5;
+    normal = normal * 2 - 1;
     normal = TBN * normal;
     vec3 finalColor = CalculateDirLight(dirLight, normal) + CalculatePointLight(pointLights[0], normal);
     finalColor = finalColor * texture(ourTexture, TexCoord).xyz * color.xyz;
