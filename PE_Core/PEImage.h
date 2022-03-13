@@ -2,9 +2,10 @@
 #include "IImageGraphicsData.h"
 #include <string>
 #include <memory>
+#include "PEString.h"
 struct PEImage
 {
-	std::string path;
+	PE::String path;
 	int width;
 	int height;
 	int numChannels;

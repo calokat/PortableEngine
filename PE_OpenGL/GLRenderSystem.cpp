@@ -177,7 +177,7 @@ void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform
 	{
 		if (texIt->second.pathChanged)
 		{
-			LoadTexture(texIt->second, texIt->second.path);
+			LoadTexture(texIt->second, texIt->second.path.GetData());
 			texIt->second.pathChanged = false;
 		}
 	}
@@ -228,7 +228,7 @@ void GLRenderSystem::BindTexture(GLRenderer& renderer)
 {
 }
 
-void GLRenderSystem::LoadTexture(PEImage& texture, std::string imagePath)
+void GLRenderSystem::LoadTexture(PEImage& texture, const char* imagePath)
 {
 	
 	texture = { imagePath };

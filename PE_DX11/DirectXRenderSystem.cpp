@@ -288,7 +288,7 @@ void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTran
 	{
 		if (texIt->second.pathChanged)
 		{
-			LoadTexture(texIt->second, texIt->second.path.c_str(), texIt->first);
+			LoadTexture(texIt->second, texIt->second.path.GetData(), texIt->first);
 			texIt->second.pathChanged = false;
 		}
 	}
@@ -306,11 +306,11 @@ void DirectXRenderSystem::CreateTexture(PEImage& img)
 	std::shared_ptr<DirectX11ImageGraphicsData> dx11ImageGraphicsData = std::make_shared<DirectX11ImageGraphicsData>();
 	img.imageGraphicsData = dx11ImageGraphicsData;
 
-	size_t requiredSize = mbstowcs(nullptr, img.path.c_str(), 0);
+	size_t requiredSize = mbstowcs(nullptr, img.path.GetData(), 0);
 
 	wchar_t* widePath = new wchar_t[requiredSize + 1];
 
-	mbstowcs(widePath, img.path.c_str(), requiredSize + 1);
+	mbstowcs(widePath, img.path.GetData(), requiredSize + 1);
 
 	HRESULT hr = DirectX::CreateWICTextureFromFile(device, widePath, nullptr, &dx11ImageGraphicsData->srv);
 	

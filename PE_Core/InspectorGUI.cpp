@@ -47,8 +47,9 @@ void ComponentGUI(GLRenderer& r)
 		for (auto texIt = r.textures.begin(); texIt != r.textures.end(); ++texIt)
 		{
 			char buf[128];
-			memcpy(buf, texIt->second.path.c_str(), texIt->second.path.length());
-			buf[texIt->second.path.length()] = '\0';
+			size_t pathLength = strlen(texIt->second.path.GetData());
+			memcpy(buf, texIt->second.path.GetData(), pathLength);
+			buf[pathLength] = '\0';
 			char* textureTypeString = "Engine error";
 			switch (texIt->first)
 			{
@@ -61,7 +62,7 @@ void ComponentGUI(GLRenderer& r)
 			}
 			if (ImGui::InputText(textureTypeString, buf, 128))
 			{
-				texIt->second.path = buf;
+				texIt->second.path = PE::String(buf);
 				texIt->second.pathChanged = true;
 			}
 			OpenGLImageGraphicsData* imageGraphicsData = (OpenGLImageGraphicsData*)texIt->second.imageGraphicsData.get();
@@ -86,8 +87,9 @@ void ComponentGUI(DirectXRenderer& dxr)
 		for (auto texIt = dxr.textures.begin(); texIt != dxr.textures.end(); ++texIt)
 		{
 			char buf[128];
-			memcpy(buf, texIt->second.path.c_str(), texIt->second.path.length());
-			buf[texIt->second.path.length()] = '\0';
+			size_t pathLength = strlen(texIt->second.path.GetData());
+			memcpy(buf, texIt->second.path.GetData(), pathLength);
+			buf[pathLength] = '\0';
 			char* textureTypeString = "Engine error";
 			switch (texIt->first)
 			{
@@ -100,7 +102,7 @@ void ComponentGUI(DirectXRenderer& dxr)
 			}
 			if (ImGui::InputText(textureTypeString, buf, 128))
 			{
-				texIt->second.path = buf;
+				texIt->second.path = PE::String(buf);
 				texIt->second.pathChanged = true;
 			}
 			DirectX11ImageGraphicsData* imageGraphicsData = (DirectX11ImageGraphicsData*)texIt->second.imageGraphicsData.get();

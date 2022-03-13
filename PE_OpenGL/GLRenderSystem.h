@@ -28,7 +28,7 @@ public:
 private:
 	IPlatform* platform;
 	void BindTexture(GLRenderer& renderer);
-	void LoadTexture(PEImage& texture, std::string imagePath);
+	void LoadTexture(PEImage& texture, const char* imagePath);
 #ifdef __EMSCRIPTEN__
 	std::map<ShaderType, const char*> typeToVertexPath = { {ShaderType::Unlit_Color, "../../Shaders/GLSL-ES/vertex-unlit-color.glsl"}, {ShaderType::Unlit_Textured, "../../Shaders/GLSL-ES/vertex.glsl"}, {ShaderType::Lit_Color, "../../Shaders/GLSL-ES/vertex-lit-color.glsl"}, {ShaderType::Lit_Textured, "../../Shaders/GLSL-ES/vertex-lit-textured.glsl"}, {ShaderType::Lit_Textured_Normal, "../../Shaders/GLSL-ES/vertex-lit-textured-normal.glsl"} };
 	std::map<ShaderType, const char*> typeToPixelPath = { {ShaderType::Unlit_Color, "../../Shaders/GLSL-ES/fragment-unlit-color.glsl" }, { ShaderType::Unlit_Textured, "../../Shaders/GLSL-ES/fragment.glsl" }, {ShaderType::Lit_Color, "../../Shaders/GLSL-ES/fragment-lit-color.glsl"}, {ShaderType::Lit_Textured, "../../Shaders/GLSL-ES/fragment-lit-textured.glsl"}, {ShaderType::Lit_Textured_Normal, "../../Shaders/GLSL-ES/fragment-lit-textured-normal.glsl"} };
