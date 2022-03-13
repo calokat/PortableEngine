@@ -53,6 +53,7 @@
 #include "MeshMaker.h"
 #include "BillboardSystem.h"
 #include "LightsSystem.h"
+#include "Pathfinder.h"
 
 void UpdateChildren(entt::registry& registry, entt::entity e)
 {
@@ -190,6 +191,11 @@ int main(int argc, char* argv[])
 		registry.on_construct<GLRenderer>().connect<&entt::registry::emplace_or_replace<Renderable>>();
 	}
 
+	PathfinderConfig config;
+	std::string runTimePathStr = plat->GetAssetManager()->GetAssetPath("");
+	config.pathToRuntime = runTimePathStr.c_str();
+
+	Pathfinder::Configure(config);
 
 	plat->InitWindow();
 	graph->Init();
