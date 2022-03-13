@@ -8,6 +8,7 @@ namespace LightsSystem
 {
 	void ExtractLightsFromRegistry(entt::registry& reg, DirectionalLight* dirLights, PointLight* pointLights)
 	{
+		*dirLights = {};
 		const auto dirLightView = reg.view<DirectionalLight>();
 		int i = 0;
 		for (auto it = dirLightView.begin(); it != dirLightView.end() && i < MAX_DIR_LIGHTS; ++it, ++i)
