@@ -1,6 +1,8 @@
 #include "InspectorGUI.h"
 #include <imgui.h>
 #include "TransformSystem.h"
+#include "ImageSelector.h"
+#include "Pathfinder.h"
 #include "OpenGLImageGraphicsData.h"
 #ifdef _WIN64
 #include "DirectX11ImageGraphicsData.h"
@@ -47,26 +49,35 @@ void ComponentGUI(GLRenderer& r)
 		for (auto texIt = r.textures.begin(); texIt != r.textures.end(); ++texIt)
 		{
 			char buf[128];
-			size_t pathLength = strlen(texIt->second.path.GetData());
-			memcpy(buf, texIt->second.path.GetData(), pathLength);
-			buf[pathLength] = '\0';
+			//size_t pathLength = strlen(texIt->second.path.GetData());
+			//memcpy(buf, texIt->second.path.GetData(), pathLength);
+			//buf[pathLength] = '\0';
 			char* textureTypeString = "Engine error";
 			switch (texIt->first)
 			{
 				case TextureType::DiffuseTexture:
-					textureTypeString = "Diffuse";
+					textureTypeString = "Select Diffuse type";
 				break;
 				case TextureType::NormalTexture:
-					textureTypeString = "Normal";
+					textureTypeString = "Select Normal type";
 					break;
 			}
-			if (ImGui::InputText(textureTypeString, buf, 128))
+			//if (ImGui::InputText(textureTypeString, buf, 128))
+			//{
+			//	texIt->second.path = PE::String(buf);
+			//	texIt->second.pathChanged = true;
+			//}
+
+			PE::String partialPath;
+			if (ImageSelector().Render(partialPath, textureTypeString))
 			{
-				texIt->second.path = PE::String(buf);
+				PE::String fullPath = partialPath;
+				texIt->second.path = std::move(fullPath);
 				texIt->second.pathChanged = true;
 			}
 			OpenGLImageGraphicsData* imageGraphicsData = (OpenGLImageGraphicsData*)texIt->second.imageGraphicsData.get();
 			ImGui::Image((ImTextureID)imageGraphicsData->texture, ImVec2(100, 100));
+			//PE::String partialPath = PE::String(ImageSelector().Render());
 		}
 	}
 }
