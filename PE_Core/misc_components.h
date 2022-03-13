@@ -32,3 +32,8 @@ struct Options
 	PE::GraphicsAPI graphicsAPI;
 	PE::XrPlatform xr = PE::XrPlatform::NoXR;
 };
+
+class Renderable
+{
+	bool filler;
+};
