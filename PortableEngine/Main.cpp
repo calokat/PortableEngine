@@ -181,14 +181,15 @@ int main(int argc, char* argv[])
 	if (options.graphicsAPI == PE::GraphicsAPI::DirectX11)
 	{
 		graph = new DirectXAPI(window, cam);
+		registry.on_construct<DirectXRenderer>().connect<&entt::registry::emplace_or_replace<Renderable>>();
 	}
-	else
+#endif
+	if (options.graphicsAPI == PE::GraphicsAPI::OpenGL)
 	{
 		graph = new OpenGLAPI(window, plat, cam);
+		registry.on_construct<GLRenderer>().connect<&entt::registry::emplace_or_replace<Renderable>>();
 	}
-#else
-	graph = new OpenGLAPI(window, plat, cam);
-#endif
+
 
 	plat->InitWindow();
 	graph->Init();
@@ -227,9 +228,6 @@ int main(int argc, char* argv[])
 
 	Relationship& duoRootRel = registry.get<Relationship>(duoRoot);
 
-
-
-
 	entt::entity pointLightEntity = LightsSystem::CreatePointLight(registry);
 	Relationship& pointLightRel = registry.get<Relationship>(pointLightEntity);
 	entt::entity dirLightEntity = LightsSystem::CreateDirectionalLight(registry);
@@ -240,7 +238,6 @@ int main(int argc, char* argv[])
 	rootRel.children.insert(std::pair((int)pointLightEntity, pointLightEntity));
 
 	dirLightRel.parent = root;
-	rootRel = registry.get<Relationship>(root);
 	rootRel.children.insert(std::pair((int)dirLightEntity, dirLightEntity));
 
 	if (options.xr == PE::XrPlatform::OpenXR)
@@ -255,7 +252,9 @@ int main(int argc, char* argv[])
 		registry.replace<Transform>(rightHand, handTransform);
 
 		registry.emplace<XRDevice>(leftHand, XRDeviceType::LeftHand);
+		registry.emplace_or_replace<Name>(leftHand, "Left Hand");
 		registry.emplace<XRDevice>(rightHand, XRDeviceType::RightHand);
+		registry.emplace_or_replace<Name>(rightHand, "Right Hand");
 	}
 	while (plat->Run() == 0)
 	{
