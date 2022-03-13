@@ -16,6 +16,6 @@ void main()
     // gl_Position = vec4(in_position, 1);
     gl_Position = projection * view * model * vec4(in_position, 1);
     color = in_color;
-    normal = in_normal;
+    normal = mat3(transpose(inverse(model))) * in_normal;
     worldPos = (model * vec4(in_position, 1)).xyz;
 }
