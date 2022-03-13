@@ -14,6 +14,7 @@ GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentSh
 	if (type & ShaderProgramProperties::Lit)
 	{
 		shaderProgram.attributes[(unsigned long)ShaderAttributes::Normal].name = "in_normal";
+		shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::NormalMatrix].name = "normalMatrix";
 	}
 	shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::CameraPosition].name = "cameraPos";
 	if (type & ShaderProgramProperties::Textured)

@@ -170,6 +170,8 @@ void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform
 		glm::mat4 inverseView = glm::inverse(camera.view);
 		glUniform3f(glRenderer->shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::CameraPosition].value, inverseView[3].x, inverseView[3].y, inverseView[3].z);
 		glUniform1f(glRenderer->shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::SpecularIntensity].value, 16);
+		glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(meshTransform.worldMatrix)));
+		glUniformMatrix3fv(glRenderer->shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::NormalMatrix].value, 3 * 3 * sizeof(GLfloat), false, glm::value_ptr(normalMatrix));
 	}
 	for (auto texIt = glRenderer->textures.begin(); texIt != glRenderer->textures.end(); ++texIt)
 	{
