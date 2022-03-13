@@ -182,6 +182,12 @@ void EmscriptenInputSystem::GetKeyPressed()
 			case SDL_SCANCODE_DELETE:
 				keyCode = KeyboardCode::Delete;
 				break;
+			case SDL_SCANCODE_LALT:
+				keyCode = KeyboardCode::LAlt;
+				break;
+			case SDL_SCANCODE_RALT:
+				keyCode = KeyboardCode::RAlt;
+				break;
 			default:
 				keyCode = KeyboardCode::N;
 			}

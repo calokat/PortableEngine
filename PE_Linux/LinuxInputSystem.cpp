@@ -130,6 +130,9 @@ void LinuxInputSystem::GetKeyPressed()
 			case SDL_SCANCODE_Z:
 				keyCode = KeyboardCode::Z;
 				break;
+			case SDL_SCANCODE_DELETE:
+				keyCode = KeyboardCode::Delete;
+				break;
 			case SDL_SCANCODE_LALT:
 				keyCode = KeyboardCode::LAlt;
 				break;
@@ -137,6 +140,7 @@ void LinuxInputSystem::GetKeyPressed()
 				keyCode = KeyboardCode::RAlt;
 				break;
 			default:
+				keyCode = KeyboardCode::N;
 				break;
 			}
 			current.keys[(int)keyCode] = event.type == SDL_KEYDOWN;
