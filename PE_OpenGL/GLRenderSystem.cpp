@@ -228,10 +228,10 @@ void GLRenderSystem::BindTexture(GLRenderer& renderer)
 {
 }
 
-void GLRenderSystem::LoadTexture(PEImage& texture, const char* imagePath)
+void GLRenderSystem::LoadTexture(PEImage& texture, PE::String imagePath)
 {
 	
-	texture = { imagePath };
+	texture.path =  PE::String(imagePath);
 	unsigned char* imageData = nullptr;
 	bool createImageSuccess = ImageSystem::CreateImage(texture, &imageData);
 	if (!createImageSuccess) return;
