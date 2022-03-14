@@ -9,7 +9,8 @@ struct PointLight
 {
 	float4 AmbientColor;
 	float4 DiffuseColor;
-	float4 Position;
+	float3 Position;
+	float Intensity;
 };
 struct VertexShaderInput
 {
@@ -83,6 +84,7 @@ float3 CalculatePointLight(PointLight light, VertexToPixel input)
 	input.normal = normalize(input.normal);
 	float3 normalizedNegatedLightDir = normalize(light.Position - input.worldPos);
 	float lightAmount = saturate(dot(normalizedNegatedLightDir, input.normal));
+	lightAmount = lightAmount * light.Intensity / distance(light.Position, input.worldPos);
 	float3 finalColor = lightAmount * float4(light.DiffuseColor.xyz, 1) * input.color + float4(light.AmbientColor.xyz, 1) + PhongPoint(light, input);
 	return finalColor;
 }
