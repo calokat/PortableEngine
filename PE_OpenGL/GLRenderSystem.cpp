@@ -166,7 +166,8 @@ void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform
 		glUniform4f(glRenderer->shaderProgram.dirLightLightData[(unsigned long)DirectionalLightUniforms::Direction].value, dirLight.Direction.x, dirLight.Direction.y, dirLight.Direction.z, dirLight.Direction.w);
 		glUniform4f(glRenderer->shaderProgram.pointLightData[0][(unsigned long)PointLightUniforms::AmbientColor].value, pointLights[0].AmbientColor.x, pointLights[0].AmbientColor.y, pointLights[0].AmbientColor.z, pointLights[0].AmbientColor.w);
 		glUniform4f(glRenderer->shaderProgram.pointLightData[0][(unsigned long)PointLightUniforms::DiffuseColor].value, pointLights[0].DiffuseColor.x, pointLights[0].DiffuseColor.y, pointLights[0].DiffuseColor.z, pointLights[0].DiffuseColor.w);
-		glUniform4f(glRenderer->shaderProgram.pointLightData[0][(unsigned long)PointLightUniforms::Position].value, pointLights[0].Position.x, pointLights[0].Position.y, pointLights[0].Position.z, pointLights[0].Position.w);
+		glUniform3f(glRenderer->shaderProgram.pointLightData[0][(unsigned long)PointLightUniforms::Position].value, pointLights[0].Position.x, pointLights[0].Position.y, pointLights[0].Position.z);
+		glUniform1f(glRenderer->shaderProgram.pointLightData[0][(unsigned long)PointLightUniforms::Intensity].value, pointLights[0].intensity);
 		glm::mat4 inverseView = glm::inverse(camera.view);
 		glUniform3f(glRenderer->shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::CameraPosition].value, inverseView[3].x, inverseView[3].y, inverseView[3].z);
 		glUniform1f(glRenderer->shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::SpecularIntensity].value, 16);

@@ -16,7 +16,8 @@ struct PointLight
 {
 	glm::vec4 AmbientColor;
 	glm::vec4 DiffuseColor;
-	glm::vec4 Position;
+	glm::vec3 Position;
+	float intensity;
 };
 
 struct LightBufferData {

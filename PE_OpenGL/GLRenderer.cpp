@@ -36,6 +36,7 @@ GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentSh
 		shaderProgram.pointLightData[0][(unsigned long)PointLightUniforms::AmbientColor].name = POINT_LIGHT_NAME("0", "AmbientColor");
 		shaderProgram.pointLightData[0][(unsigned long)PointLightUniforms::DiffuseColor].name = POINT_LIGHT_NAME("0", "DiffuseColor");
 		shaderProgram.pointLightData[0][(unsigned long)PointLightUniforms::Position].name = POINT_LIGHT_NAME("0", "Position");
+		shaderProgram.pointLightData[0][(unsigned long)PointLightUniforms::Intensity].name = POINT_LIGHT_NAME("0", "Intensity");
 		shaderProgram.dirLightLightData[(unsigned long)DirectionalLightUniforms::AmbientColor].name = "dirLight.AmbientColor";
 		shaderProgram.dirLightLightData[(unsigned long)DirectionalLightUniforms::DiffuseColor].name = "dirLight.DiffuseColor";
 		shaderProgram.dirLightLightData[(unsigned long)DirectionalLightUniforms::Direction].name = "dirLight.Direction";

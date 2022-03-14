@@ -18,7 +18,7 @@ struct OpenGLShaderField
 enum class ShaderAttributes:unsigned long {Position, Normal, TextureCoordinate, Tangent, __COUNT__};
 enum class VertexUniforms:unsigned long {Projection, View, Model, Color, __COUNT__};
 enum class FragmentUniforms:unsigned long {CameraPosition, SpecularIntensity, DiffuseTextureID, NormalTextureID, NormalMatrix, __COUNT__};
-enum class PointLightUniforms:unsigned long {AmbientColor, DiffuseColor, Position, __COUNT__};
+enum class PointLightUniforms:unsigned long {AmbientColor, DiffuseColor, Position, Intensity, __COUNT__};
 enum class DirectionalLightUniforms:unsigned long {AmbientColor, DiffuseColor, Direction, __COUNT__};
 
 class OpenGLShaderProgram
