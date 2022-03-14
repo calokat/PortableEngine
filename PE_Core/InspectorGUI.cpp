@@ -89,6 +89,12 @@ void ComponentGUI(Rotator& r)
 	//r.deltaRot.y = glm::radians(r.deltaRot.y);
 	//r.deltaRot.z = glm::radians(r.deltaRot.z);
 }
+void ComponentGUI(PointLight& pl)
+{
+	ImGui::ColorPicker4("Ambient Color", glm::value_ptr(pl.AmbientColor));
+	ImGui::ColorPicker4("Diffuse Color", glm::value_ptr(pl.DiffuseColor));
+	ImGui::DragFloat("Intensity", &pl.intensity, 1, 0);
+}
 #ifdef _WIN64
 void ComponentGUI(DirectXRenderer& dxr)
 {
