@@ -62,12 +62,6 @@ void ComponentGUI(GLRenderer& r)
 					textureTypeString = "Select Normal type";
 					break;
 			}
-			//if (ImGui::InputText(textureTypeString, buf, 128))
-			//{
-			//	texIt->second.path = PE::String(buf);
-			//	texIt->second.pathChanged = true;
-			//}
-
 			PE::String partialPath;
 			if (ImageSelector().Render(partialPath, textureTypeString))
 			{
@@ -117,9 +111,11 @@ void ComponentGUI(DirectXRenderer& dxr)
 				textureTypeString = "Normal";
 				break;
 			}
-			if (ImGui::InputText(textureTypeString, buf, 128))
+			PE::String partialPath;
+			if (ImageSelector().Render(partialPath, textureTypeString))
 			{
-				texIt->second.path = PE::String(buf);
+				PE::String fullPath = partialPath;
+				texIt->second.path = std::move(fullPath);
 				texIt->second.pathChanged = true;
 			}
 			DirectX11ImageGraphicsData* imageGraphicsData = (DirectX11ImageGraphicsData*)texIt->second.imageGraphicsData.get();
