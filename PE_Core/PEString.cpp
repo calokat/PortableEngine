@@ -1,6 +1,7 @@
 #include "PEString.h"
 #include <stdio.h>
-#include <string>
+#include <cstring>
+#include <utility>
 PE::String::String()
 {
 	data = nullptr;
