@@ -3,7 +3,8 @@
 struct PointLight {
     vec4 AmbientColor;
     vec4 DiffuseColor;
-    vec4 Position;
+    vec3 Position;
+    float Intensity;
 };
 
 struct DirectionalLight {
@@ -30,7 +31,7 @@ out vec4 out_color;
 
 float PhongPoint(PointLight light, vec3 normal)
 {
-    vec3 R = normalize(reflect(worldPos - light.Position.xyz, normal));
+    vec3 R = normalize(reflect(worldPos - light.Position, normal));
     vec3 V = normalize(cameraPos - worldPos);
     float RdotV = clamp(dot(R, V), 0, 1);
     float spec = pow(RdotV, 32);
@@ -41,8 +42,9 @@ float PhongPoint(PointLight light, vec3 normal)
 vec3 CalculatePointLight(PointLight light, vec3 normal)
 {
     vec3 normalizedNormal = normalize(normal);
-    vec3 normalizedNegatedLightDir = normalize(light.Position.xyz - worldPos);
+    vec3 normalizedNegatedLightDir = normalize(light.Position - worldPos);
     float lightAmount = clamp(dot(normalizedNegatedLightDir, normalizedNormal), 0, 1);
+    lightAmount = lightAmount * light.Intensity / distance(light.Position, worldPos);
     vec4 finalColor = lightAmount * vec4(light.DiffuseColor.xyz, 1) * color + vec4(light.AmbientColor.xyz, 1) + PhongPoint(light, normal);
     return finalColor.xyz;
 }
