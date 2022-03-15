@@ -4,7 +4,8 @@ precision mediump float;
 struct PointLight {
     vec4 AmbientColor;
     vec4 DiffuseColor;
-    vec4 Position;
+    vec3 Position;
+    float Intensity;
 };
 
 struct DirectionalLight {
@@ -39,6 +40,7 @@ vec3 CalculatePointLight(PointLight light)
     vec3 normalizedNormal = normalize(normal);
     vec3 normalizedNegatedLightDir = normalize(light.Position.xyz - worldPos);
     float lightAmount = clamp(dot(normalizedNegatedLightDir, normalizedNormal), 0.0, 1.0);
+    lightAmount = lightAmount * light.Intensity / distance(light.Position, worldPos);
     vec4 finalColor = lightAmount * vec4(light.DiffuseColor.xyz, 1) * color + vec4(light.AmbientColor.xyz, 1) + PhongPoint(light);
     return finalColor.xyz;
 }
