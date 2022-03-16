@@ -76,6 +76,11 @@ void GLRenderSystem::Load(IRenderer* renderer)
 			glRenderer->shaderProgram.pointLightData[i][j].value = glGetUniformLocation(glRenderer->shaderProgram.programID, glRenderer->shaderProgram.pointLightData[i][j].name);
 		}
 	}
+	for (int i = 0; i < (unsigned long)SpotLightUniforms::__COUNT__; ++i)
+	{
+		if (glRenderer->shaderProgram.spotLightData[i].name == nullptr) continue;
+		glRenderer->shaderProgram.spotLightData[i].value = glGetUniformLocation(glRenderer->shaderProgram.programID, glRenderer->shaderProgram.spotLightData[i].name);
+	}
 	glEnableVertexAttribArray(glRenderer->shaderProgram.attributes[(unsigned long)ShaderAttributes::Position].value);
 	SetupAttribute(glRenderer->shaderProgram.attributes[(unsigned long)ShaderAttributes::Position].value, 3, GL_FLOAT, Vertex, Position);
 	if (glRenderer->shaderProgram.propertyFlags & ShaderProgramProperties::Textured)
@@ -141,7 +146,7 @@ void GLRenderSystem::DrawWireframe(IRenderer* renderer)
 {
 }
 
-void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLights[MAX_DIR_LIGHTS], PointLight pointLights[MAX_POINT_LIGHTS])
+void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLights[MAX_DIR_LIGHTS], PointLight pointLights[MAX_POINT_LIGHTS], SpotLight spotLights[MAX_SPOT_LIGHTS])
 {
 	GLenum err = glGetError();
 	GLRenderer* glRenderer = (GLRenderer*)renderer;
@@ -172,7 +177,15 @@ void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform
 		glUniform3f(glRenderer->shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::CameraPosition].value, inverseView[3].x, inverseView[3].y, inverseView[3].z);
 		glUniform1f(glRenderer->shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::SpecularIntensity].value, 16);
 		glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(meshTransform.worldMatrix)));
-		glUniformMatrix3fv(glRenderer->shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::NormalMatrix].value, 3 * 3 * sizeof(GLfloat), false, glm::value_ptr(normalMatrix));
+
+		glUniform4f(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::AmbientColor].value, spotLights->AmbientColor.x, spotLights->AmbientColor.y, spotLights->AmbientColor.z, spotLights->AmbientColor.w);
+		glUniform4f(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::DiffuseColor].value, spotLights->DiffuseColor.x, spotLights->DiffuseColor.y, spotLights->DiffuseColor.z, spotLights->DiffuseColor.w);
+		glUniformMatrix4fv(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::InverseOrientation].value, 1, GL_FALSE, glm::value_ptr(spotLights->inverseOrientation));
+		glUniform3f(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Position].value, spotLights->Position.x, spotLights->Position.y, spotLights->Position.z);
+		glUniform1f(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Intensity].value, spotLights->Intensity);
+		glUniform1f(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Angle].value, spotLights->Angle);
+
+		glUniformMatrix3fv(glRenderer->shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::NormalMatrix].value, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 	}
 	for (auto texIt = glRenderer->textures.begin(); texIt != glRenderer->textures.end(); ++texIt)
 	{

@@ -13,12 +13,23 @@ struct DirectionalLight {
     vec4 Direction;
 };
 
+struct SpotLight {
+    vec4 AmbientColor;
+    vec4 DiffuseColor;
+    mat4 InverseOrientation;
+    vec3 Position;
+    float Intensity;
+    float Angle;
+    vec3 padding;
+};
+
 in vec4 color;
 in vec3 normal;
 in vec3 worldPos;
 
 uniform DirectionalLight dirLight;
 uniform PointLight pointLights[8];
+uniform SpotLight spotLight;
 uniform vec3 cameraPos;
 uniform float specularIntensity;
 
@@ -53,10 +64,23 @@ vec3 CalculateDirLight(DirectionalLight light)
 	return finalColor.xyz;
 }
 
+vec3 CalculateSpotLight(SpotLight light)
+{
+    vec3 normalizedNormal = normalize(normal);
+    // put the fragment world pos in relation to the light's transform
+    vec3 rotatedWorldPos = vec3(light.InverseOrientation * vec4((worldPos - light.Position).xyz, 1));
+    vec3 lightToFragment = -rotatedWorldPos;
+    vec3 rotatedNormal = vec3(light.InverseOrientation * vec4(normalizedNormal, 0));
+    // float angleAffinity = 1 - ((light.Angle / 2) / asin(abs(rotatedWorldPos.x) / length(worldPos - light.Position)));
+    // float angleAffinity = dot(vec3(0, -1, 0), normalize(lightToFragment)) * abs(sin(light.Angle));
+    float lightAmount = clamp(dot(vec3(0, 1, 0), rotatedNormal), 0, 1) * (light.Intensity * light.Angle / length(rotatedWorldPos));
+    vec4 finalColor = lightAmount * light.DiffuseColor * color + light.AmbientColor * color;
+    return finalColor.xyz;
+}
 
 void main()
 {
-    vec3 finalColor = CalculateDirLight(dirLight) + CalculatePointLight(pointLights[0]);
+    vec3 finalColor = CalculateDirLight(dirLight) + CalculatePointLight(pointLights[0]) + CalculateSpotLight(spotLight);
     finalColor = finalColor * color.xyz;
     out_color = vec4(finalColor, 1);
 }

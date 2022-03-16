@@ -34,6 +34,11 @@ void InspectorWindow::Render(entt::registry& registry)
 		{
 			ComponentGUI(*dl);
 		}
+		SpotLight* sl = registry.try_get<SpotLight>(selected);
+		if (sl)
+		{
+			ComponentGUI(*sl);
+		}
 #ifdef _WIN64
 		DirectXRenderer* r = registry.try_get<DirectXRenderer>(selected);
 		if (r)

@@ -99,6 +99,7 @@ int main(int argc, char* argv[])
 	registry.on_construct<Transform>().connect<&entt::registry::emplace_or_replace<Relationship>>();
 	registry.on_construct<PointLight>().connect<&entt::registry::emplace_or_replace<Transform>>();
 	registry.on_construct<DirectionalLight>().connect<&entt::registry::emplace_or_replace<Transform>>();
+	registry.on_construct<SpotLight>().connect<&entt::registry::emplace_or_replace<Transform>>();
 	registry.on_destroy<Relationship>().connect<RemoveFromHeirarchy>();
 	registry.on_update<Transform>().connect<UpdateChildren>();
 	window = new GameWindow(0, 0, 800, 600);
@@ -229,7 +230,7 @@ int main(int argc, char* argv[])
 	registry.emplace<Name>(root, "$");
 	registry.emplace<Transform>(root);
 	GizmoSystem::Select(root);
-	Tree<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/duo.fbx").c_str());
+	Tree<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/stage.fbx").c_str());
 	entt::entity duoRoot = MakeMesh(duoScene, registry, root);
 
 	Relationship& duoRootRel = registry.get<Relationship>(duoRoot);
@@ -245,6 +246,12 @@ int main(int argc, char* argv[])
 
 	dirLightRel.parent = root;
 	rootRel.children.insert(std::pair((int)dirLightEntity, dirLightEntity));
+
+	entt::entity spotLightEntity = LightsSystem::CreateSpotLight(registry);
+	Relationship& spotLightRel = registry.get<Relationship>(spotLightEntity);
+	//Relationship& rootRel = registry.get<Relationship>(root);
+	spotLightRel.parent = root;
+	rootRel.children.insert(std::pair((int)spotLightEntity, spotLightEntity));
 
 	if (options.xr == PE::XrPlatform::OpenXR)
 	{

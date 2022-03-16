@@ -94,6 +94,15 @@ void ComponentGUI(DirectionalLight& dl)
 	ImGui::ColorPicker4("Ambient Color", glm::value_ptr(dl.AmbientColor));
 	ImGui::ColorPicker4("Diffuse Color", glm::value_ptr(dl.DiffuseColor));
 }
+
+void ComponentGUI(SpotLight& sl)
+{
+	ImGui::ColorPicker4("Ambient Color", glm::value_ptr(sl.AmbientColor));
+	ImGui::ColorPicker4("Diffuse Color", glm::value_ptr(sl.DiffuseColor));
+	ImGui::DragFloat("Intensity", &sl.Intensity, .01f, 0);
+	ImGui::DragFloat("Angle", &sl.Angle, .01f, 0);
+}
+
 #ifdef _WIN64
 void ComponentGUI(DirectXRenderer& dxr)
 {

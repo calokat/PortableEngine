@@ -248,7 +248,7 @@ void DirectXRenderSystem::DrawWireframe(IRenderer* renderer)
 {
 }
 
-void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLights[MAX_DIR_LIGHTS], PointLight pointLights[MAX_POINT_LIGHTS])
+void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform, Camera camera, DirectionalLight dirLights[MAX_DIR_LIGHTS], PointLight pointLights[MAX_POINT_LIGHTS], SpotLight spotLights[MAX_SPOT_LIGHTS])
 {
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
 
@@ -276,6 +276,7 @@ void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTran
 		lightBufferData.cameraPos = inverseView[3];
 		lightBufferData.specularIntensity = 16;
 		lightBufferData.pointLight = pointLights[0];
+		lightBufferData.spotLight = spotLights[0];
 
 		data = {};
 		context->Map(dxRenderer->shaderProgram.pixelConstBuffer.constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);

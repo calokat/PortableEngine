@@ -26,13 +26,14 @@ void DrawIteration(Camera& camera, entt::entity selected, entt::registry& regist
 	auto renderableView = registry.view<T, Transform>();
 	PointLight pointLights[MAX_POINT_LIGHTS];
 	DirectionalLight dirLights[MAX_DIR_LIGHTS];
-	LightsSystem::ExtractLightsFromRegistry(registry, dirLights, pointLights);
+	SpotLight spotLights[MAX_SPOT_LIGHTS];
+	LightsSystem::ExtractLightsFromRegistry(registry, dirLights, pointLights, spotLights);
 	for (auto rIt = renderableView.begin(); rIt != renderableView.end(); ++rIt)
 	{
 		T& renderer = registry.get<T>(*rIt);
 		Transform& meshTransform = registry.get<Transform>(*rIt);
 		renderSystem->BindRenderer(&renderer);
-		renderSystem->UpdateRenderer(&renderer, meshTransform, camera, dirLights, pointLights);
+		renderSystem->UpdateRenderer(&renderer, meshTransform, camera, dirLights, pointLights, spotLights);
 		renderSystem->Draw(&renderer);
 	}
 }
@@ -80,6 +81,7 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	ComputeTransformHeirarchy(sceneRoot, registry, Transform());
 	LightsSystem::LoadPointLightPositions(registry.view<PointLight, Transform>());
 	LightsSystem::LoadDirLightDirections(registry.view<DirectionalLight, Transform>());
+	LightsSystem::LoadSpotLightTransform(registry.view<SpotLight, Transform>());
 	if (xr->IsSessionRunning())
 	{
 		xr->Frame(registry, renderSystem);

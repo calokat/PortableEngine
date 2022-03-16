@@ -146,9 +146,11 @@ void XRGraphicsPlugin_DirectX11::RenderView(const XrCompositionLayerProjectionVi
 
         PointLight pointLights[MAX_POINT_LIGHTS];
 
-        LightsSystem::ExtractLightsFromRegistry(reg, dirLights, pointLights);
+        SpotLight spotLights[MAX_SPOT_LIGHTS];
 
-        renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam, dirLights, pointLights);
+        LightsSystem::ExtractLightsFromRegistry(reg, dirLights, pointLights, spotLights);
+
+        renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam, dirLights, pointLights, spotLights);
         renderSystem->Draw(&renderer);
     }
 }

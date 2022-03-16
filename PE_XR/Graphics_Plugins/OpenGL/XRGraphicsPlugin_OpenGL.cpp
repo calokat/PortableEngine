@@ -126,7 +126,9 @@ void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView&
 
     DirectionalLight dirLights[MAX_DIR_LIGHTS];
     PointLight pointLights[MAX_POINT_LIGHTS];
-    LightsSystem::ExtractLightsFromRegistry(reg, dirLights, pointLights);
+    SpotLight spotLights[MAX_SPOT_LIGHTS];
+
+    LightsSystem::ExtractLightsFromRegistry(reg, dirLights, pointLights, spotLights);
     auto renderableView = reg.view<GLRenderer, Transform>();
     for (auto renderable : renderableView)
     {
@@ -135,7 +137,7 @@ void XRGraphicsPlugin_OpenGL::RenderView(const XrCompositionLayerProjectionView&
         Transform& meshTransform = reg.get<Transform>(renderable);
         //renderSystem->LoadMesh(&renderer, mesh);
         renderSystem->BindRenderer(&renderer);
-        renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam, dirLights, pointLights);
+        renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam, dirLights, pointLights, spotLights);
         renderSystem->Draw(&renderer);
     }
 

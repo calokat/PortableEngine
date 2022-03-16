@@ -12,6 +12,7 @@ void ComponentGUI(GLRenderer& r);
 void ComponentGUI(Rotator& r); 
 void ComponentGUI(PointLight& pl);
 void ComponentGUI(DirectionalLight& dl);
+void ComponentGUI(SpotLight& sl);
 #ifdef _WIN64
 void ComponentGUI(DirectXRenderer& dxr);
 #endif
