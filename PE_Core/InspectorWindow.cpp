@@ -29,6 +29,11 @@ void InspectorWindow::Render(entt::registry& registry)
 		{
 			ComponentGUI(*pl);
 		}
+		DirectionalLight* dl = registry.try_get<DirectionalLight>(selected);
+		if (dl)
+		{
+			ComponentGUI(*dl);
+		}
 #ifdef _WIN64
 		DirectXRenderer* r = registry.try_get<DirectXRenderer>(selected);
 		if (r)
