@@ -40,7 +40,7 @@ vec3 CalculatePointLight(PointLight light)
     vec3 normalizedNegatedLightDir = normalize(light.Position - worldPos);
     float lightAmount = clamp(dot(normalizedNegatedLightDir, normalizedNormal), 0, 1);
     lightAmount = lightAmount * light.Intensity / distance(light.Position, worldPos);
-    vec4 finalColor = lightAmount * vec4(light.DiffuseColor.xyz, 1) * color + vec4(light.AmbientColor.xyz, 1) + PhongPoint(light);
+    vec4 finalColor = lightAmount * vec4(light.DiffuseColor.xyz, 1) * color + vec4(light.AmbientColor.xyz, 1);
     return finalColor.xyz;
 }
 
