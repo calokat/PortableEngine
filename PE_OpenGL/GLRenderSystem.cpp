@@ -184,7 +184,7 @@ void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform
 		glUniform3f(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Position].value, spotLights->Position.x, spotLights->Position.y, spotLights->Position.z);
 		glUniform1f(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Intensity].value, spotLights->Intensity);
 		glUniform1f(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Angle].value, spotLights->Angle);
-
+		glUniform1f(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Range].value, spotLights->Range);
 		glUniformMatrix3fv(glRenderer->shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::NormalMatrix].value, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 	}
 	for (auto texIt = glRenderer->textures.begin(); texIt != glRenderer->textures.end(); ++texIt)

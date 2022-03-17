@@ -31,8 +31,9 @@ struct SpotLight
 	glm::vec3 Position;
 	float Intensity;
 	float Angle;
+	float Range;
 	// For DirectX alignment requirements
-	glm::vec3 padding;
+	glm::vec2 padding;
 };
 
 struct LightBufferData {

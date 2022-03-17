@@ -101,6 +101,7 @@ void ComponentGUI(SpotLight& sl)
 	ImGui::ColorPicker4("Diffuse Color", glm::value_ptr(sl.DiffuseColor));
 	ImGui::DragFloat("Intensity", &sl.Intensity, .01f, 0);
 	ImGui::DragFloat("Angle", &sl.Angle, .01f, 0);
+	ImGui::DragFloat("Range", &sl.Range, .01f, 0);
 }
 
 #ifdef _WIN64

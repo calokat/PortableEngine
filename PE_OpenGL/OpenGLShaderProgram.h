@@ -20,7 +20,7 @@ enum class VertexUniforms:unsigned long {Projection, View, Model, Color, __COUNT
 enum class FragmentUniforms:unsigned long {CameraPosition, SpecularIntensity, DiffuseTextureID, NormalTextureID, NormalMatrix, __COUNT__};
 enum class PointLightUniforms:unsigned long {AmbientColor, DiffuseColor, Position, Intensity, __COUNT__};
 enum class DirectionalLightUniforms :unsigned long { AmbientColor, DiffuseColor, Direction, __COUNT__ };
-enum class SpotLightUniforms:unsigned long {AmbientColor, DiffuseColor, InverseOrientation, Position, Angle, Intensity, __COUNT__};
+enum class SpotLightUniforms:unsigned long {AmbientColor, DiffuseColor, InverseOrientation, Position, Angle, Intensity, Range, __COUNT__};
 
 class OpenGLShaderProgram
 {

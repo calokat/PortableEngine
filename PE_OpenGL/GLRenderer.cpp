@@ -46,6 +46,7 @@ GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentSh
 		shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Position].name = "spotLight.Position";
 		shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Intensity].name = "spotLight.Intensity";
 		shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Angle].name = "spotLight.Angle";
+		shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Range].name = "spotLight.Range";
 		shaderProgram.fragmentUniforms[(unsigned long)FragmentUniforms::SpecularIntensity].name = "specularIntensity";
 	}
 }
