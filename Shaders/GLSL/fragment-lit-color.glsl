@@ -68,12 +68,10 @@ vec3 CalculateSpotLight(SpotLight light)
 {
     vec3 normalizedNormal = normalize(normal);
     // put the fragment world pos in relation to the light's transform
-    vec3 rotatedWorldPos = vec3(light.InverseOrientation * vec4((worldPos - light.Position).xyz, 1));
-    vec3 lightToFragment = -rotatedWorldPos;
     vec3 rotatedNormal = vec3(light.InverseOrientation * vec4(normalizedNormal, 0));
-    // float angleAffinity = 1 - ((light.Angle / 2) / asin(abs(rotatedWorldPos.x) / length(worldPos - light.Position)));
-    // float angleAffinity = dot(vec3(0, -1, 0), normalize(lightToFragment)) * abs(sin(light.Angle));
-    float lightAmount = clamp(dot(vec3(0, 1, 0), rotatedNormal), 0, 1) * (light.Intensity * light.Angle / length(rotatedWorldPos));
+    vec3 localFwd = light.InverseOrientation[2].xyz;
+    float angleAffinity = dot(localFwd, normalize(worldPos - light.Position));
+    float lightAmount = (light.Intensity / distance(worldPos, light.Position)) * angleAffinity;
     vec4 finalColor = lightAmount * light.DiffuseColor * color + light.AmbientColor * color;
     return finalColor.xyz;
 }
