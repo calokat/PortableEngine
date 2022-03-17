@@ -80,7 +80,8 @@ namespace LightsSystem
 		{
 			auto [spotLight, spotLightTransform] = spotLights.get(entity);
 			spotLight.Position = spotLightTransform.worldMatrix[3];
-			spotLight.inverseOrientation = glm::inverse(glm::mat4(spotLightTransform.orientation));
+			glm::quat worldOrientation(spotLightTransform.worldMatrix);
+			spotLight.inverseOrientation = (glm::mat4(worldOrientation));
 		}
 	}
 }
