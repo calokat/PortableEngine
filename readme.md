@@ -25,7 +25,7 @@ You will need at least the following packages from vcpkg:
 - glm
 - entt
 - assimp
-- imgui (with opengl3, SDL2, DirectX11 and Win32 features enabled)
+- imgui (with opengl3, SDL2, DirectX11, docking-experimental, and Win32 features enabled)
 - stb
 
 ### Windows 
