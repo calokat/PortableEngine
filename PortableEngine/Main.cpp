@@ -118,7 +118,8 @@ int main(int argc, char* argv[])
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
-
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	if (argc < 4)
 	{
@@ -247,11 +248,11 @@ int main(int argc, char* argv[])
 	dirLightRel.parent = root;
 	rootRel.children.insert(std::pair((int)dirLightEntity, dirLightEntity));
 
-	entt::entity spotLightEntity = LightsSystem::CreateSpotLight(registry);
-	Relationship& spotLightRel = registry.get<Relationship>(spotLightEntity);
-	//Relationship& rootRel = registry.get<Relationship>(root);
-	spotLightRel.parent = root;
-	rootRel.children.insert(std::pair((int)spotLightEntity, spotLightEntity));
+	//entt::entity spotLightEntity = LightsSystem::CreateSpotLight(registry);
+	//Relationship& spotLightRel = registry.get<Relationship>(spotLightEntity);
+	////Relationship& rootRel = registry.get<Relationship>(root);
+	//spotLightRel.parent = root;
+	//rootRel.children.insert(std::pair((int)spotLightEntity, spotLightEntity));
 
 	if (options.xr == PE::XrPlatform::OpenXR)
 	{
