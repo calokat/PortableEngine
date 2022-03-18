@@ -6,8 +6,6 @@
 void EntityListWindow::Render(Relationship& rootRel, entt::basic_view<entt::entity, entt::get_t<Name, Relationship, Transform>, entt::exclude_t<>, void> nameView)
 {
 	ImGui::Begin("Entity List");
-	ImGui::SetWindowPos({ 0, 20 });
-	ImGui::SetWindowSize({ 200, 780 });
 	// the root entity likely does not have a name, start with its children
 	for (auto it = rootRel.children.begin(); it != rootRel.children.end(); ++it)
 	{

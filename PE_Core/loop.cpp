@@ -44,7 +44,7 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	graph->NewGuiFrame();
 	plat->NewGuiFrame();
 	ImGui::NewFrame();
-
+	ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_PassthruCentralNode);
 	auto camEntityView = registry.view<Camera>();
 	auto [camera, camTransform] = registry.get<Camera, Transform>(camEntityView[0]);
 
@@ -110,6 +110,11 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	{
 		RendererMenu().Render(registry, selected, renderSystem);
 	}
+
+	ImGui::Begin("Instructions");
+	ImGui::TextWrapped("Instructions: Right Click (or Shift) + WASD to move around. Right Click or Shift while moving your mouse to look around. Click on objects to select them, deselect them by pressing Escape. You can change how objects are rendered by selecting them and using the Renderer menu that will appear in the top bar.");
+	ImGui::End();
+
 	ImGui::Render();
 	graph->DrawGui();
 	graph->_SwapBuffers();

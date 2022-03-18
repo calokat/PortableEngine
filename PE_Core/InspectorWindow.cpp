@@ -4,8 +4,6 @@
 void InspectorWindow::Render(entt::registry& registry)
 {
 	ImGui::Begin("Inspector");
-	ImGui::SetWindowPos({ 600, 20 });
-	ImGui::SetWindowSize({ 200, 780 });
 	entt::entity selected = GizmoSystem::GetSelectedEntity();
 	if (selected != entt::null)
 	{
