@@ -41,3 +41,16 @@ Once all packages are downloaded from vcpkg, please run
 ```
 cmake -S . -B build/ -DCMAKE_TOOLCHAIN_FILE={path_to_vcpkg_root}/scripts/buildsystems/vcpkg.cmake
 ```
+
+### Running
+
+The Portable Engine executable can be configured with command line options on startup.
+
+- -p: Specifies platform. Possible values are:
+- - Windows
+- - Linux
+- - Web
+- -g: Specifies graphics API. Possible values are:
+- - OpenGL
+- - DX11
+- -xr: Indicates whether to try to use the OpenXR runtime to create a VR scene (Windows only). If absent, the engine loads without XR.
