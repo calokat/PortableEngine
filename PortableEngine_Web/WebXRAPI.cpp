@@ -90,7 +90,8 @@ void WebXRAPI::RenderEye(entt::registry& reg, IRenderSystem* renderSystem, Camer
 	//graphics->ClearScreen();
 	DirectionalLight dirLights[MAX_DIR_LIGHTS];
 	PointLight pointLights[MAX_POINT_LIGHTS];
-	LightsSystem::ExtractLightsFromRegistry(reg, dirLights, pointLights);
+	SpotLight spotLights[MAX_SPOT_LIGHTS];
+	LightsSystem::ExtractLightsFromRegistry(reg, dirLights, pointLights, spotLights);
 
 	for (auto renderable : renderableView)
 	{
@@ -100,7 +101,7 @@ void WebXRAPI::RenderEye(entt::registry& reg, IRenderSystem* renderSystem, Camer
 		//renderSystem->LoadMesh(&renderer, mesh);
 		renderSystem->BindRenderer(&renderer);
 
-		renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam, dirLights, pointLights);
+		renderSystem->UpdateRenderer(&renderer, meshTransform, viewCam, dirLights, pointLights, spotLights);
 		renderSystem->Draw(&renderer);
 	}
 
