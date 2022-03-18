@@ -4,7 +4,7 @@
 void EngineCameraControllerSystem::ControlCamera(IInputSystem* inputSystem, Transform& camTransform)
 {
 	float cameraMoveSpeed = .05f;
-	if (inputSystem->IsMouseButtonPressed(MouseButton::Right) || inputSystem->IsKeyPressed(KeyboardCode::LAlt))
+	if (inputSystem->IsMouseButtonPressed(MouseButton::Right) || inputSystem->IsKeyPressed(KeyboardCode::LShift) || inputSystem->IsKeyPressed(KeyboardCode::RShift))
 	{
 		LookCamera(inputSystem, camTransform);
 		if (inputSystem->IsKeyPressed(KeyboardCode::W))
@@ -38,7 +38,7 @@ void EngineCameraControllerSystem::LookCamera(IInputSystem* inputSystem, Transfo
 {
 	//auto camView = registry.view<Camera>();
 	//auto [camera, camTransform] = registry.get<Camera, Transform>(camView[0]);
-	glm::vec2 delta = inputSystem->GetDeltaCursorPosition();
+	glm::vec2 delta = inputSystem->GetCursorPosition() - inputSystem->GetPreviousCursorPosition();
 	float camRotX = camTransform.rotation.x;
 	bool tooFarUp = camRotX > 3.f / 2;
 	bool tooFarDown = camRotX < -3.f / 2;
