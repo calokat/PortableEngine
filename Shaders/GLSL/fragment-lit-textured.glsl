@@ -13,6 +13,17 @@ struct DirectionalLight {
     vec4 Direction;
 };
 
+struct SpotLight {
+    vec4 AmbientColor;
+    vec4 DiffuseColor;
+    mat4 InverseOrientation;
+    vec3 Position;
+    float Intensity;
+    float Angle;
+    float Range;
+    vec2 padding;
+};
+
 in vec4 color;
 in vec3 normal;
 in vec3 worldPos;
@@ -20,6 +31,7 @@ in vec2 TexCoord;
 
 uniform DirectionalLight dirLight;
 uniform PointLight pointLights[8];
+uniform SpotLight spotLight;
 uniform vec3 cameraPos;
 uniform float specularIntensity;
 uniform sampler2D ourTexture;
@@ -55,10 +67,20 @@ vec3 CalculateDirLight(DirectionalLight light)
 	return finalColor.xyz;
 }
 
+vec3 CalculateSpotLight(SpotLight light)
+{
+    vec3 normalizedNormal = normalize(normal);
+    vec3 localFwd = light.InverseOrientation[2].xyz;
+    float angleAffinity = dot(localFwd, normalize(worldPos - light.Position)) * (light.Angle / 90);
+    float lightAmount = (light.Range / distance(worldPos, light.Position)) * angleAffinity;
+    lightAmount = lightAmount * max(0, (angleAffinity - .2) * light.Intensity);
+    vec4 finalColor = lightAmount * light.DiffuseColor * color + light.AmbientColor * color;
+    return finalColor.xyz;
+}
 
 void main()
 {
-    vec3 finalColor = CalculateDirLight(dirLight) + CalculatePointLight(pointLights[0]);
+    vec3 finalColor = CalculateDirLight(dirLight) + CalculatePointLight(pointLights[0]) + CalculateSpotLight(spotLight);
     finalColor = finalColor * texture(ourTexture, TexCoord).xyz * color.xyz;
     out_color = vec4(finalColor, 1);
 }

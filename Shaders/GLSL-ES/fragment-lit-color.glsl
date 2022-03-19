@@ -14,12 +14,24 @@ struct DirectionalLight {
     vec4 Direction;
 };
 
+struct SpotLight {
+    vec4 AmbientColor;
+    vec4 DiffuseColor;
+    mat4 InverseOrientation;
+    vec3 Position;
+    float Intensity;
+    float Angle;
+    float Range;
+    vec2 padding;
+};
+
 in vec4 color;
 in vec3 normal;
 in vec3 worldPos;
 
 uniform DirectionalLight dirLight;
 uniform PointLight pointLights[8];
+uniform SpotLight spotLight;
 uniform vec3 cameraPos;
 uniform float specularIntensity;
 
@@ -41,7 +53,7 @@ vec3 CalculatePointLight(PointLight light)
     vec3 normalizedNegatedLightDir = normalize(light.Position.xyz - worldPos);
     float lightAmount = clamp(dot(normalizedNegatedLightDir, normalizedNormal), 0.0, 1.0);
     lightAmount = lightAmount * light.Intensity / distance(light.Position, worldPos);
-    vec4 finalColor = lightAmount * vec4(light.DiffuseColor.xyz, 1) * color + vec4(light.AmbientColor.xyz, 1) + PhongPoint(light);
+    vec4 finalColor = lightAmount * vec4(light.DiffuseColor.xyz, 1) * color + vec4(light.AmbientColor.xyz, 1);
     return finalColor.xyz;
 }
 
@@ -54,10 +66,20 @@ vec3 CalculateDirLight(DirectionalLight light)
 	return finalColor.xyz;
 }
 
+vec3 CalculateSpotLight(SpotLight light)
+{
+    vec3 normalizedNormal = normalize(normal);
+    vec3 localFwd = light.InverseOrientation[2].xyz;
+    float angleAffinity = dot(localFwd, normalize(worldPos - light.Position)) * (light.Angle / 90.0);
+    float lightAmount = (light.Range / distance(worldPos, light.Position)) * angleAffinity;
+    lightAmount = lightAmount * max(0.0, (angleAffinity - .2) * light.Intensity);
+    vec4 finalColor = lightAmount * light.DiffuseColor * color + light.AmbientColor * color;
+    return finalColor.xyz;
+}
 
 void main()
 {
-    vec3 finalColor = CalculateDirLight(dirLight) + CalculatePointLight(pointLights[0]);
+    vec3 finalColor = CalculateDirLight(dirLight) + CalculatePointLight(pointLights[0]) CalculateSpotLight(spotLight);
     finalColor = finalColor * color.xyz;
     out_color = vec4(finalColor, 1);
 }
