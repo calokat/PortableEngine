@@ -24,9 +24,9 @@ template<class T>
 void DrawIteration(Camera& camera, entt::entity selected, entt::registry& registry, IRenderSystem* renderSystem)
 {
 	auto renderableView = registry.view<T, Transform>();
-	PointLight pointLights[MAX_POINT_LIGHTS];
-	DirectionalLight dirLights[MAX_DIR_LIGHTS];
-	SpotLight spotLights[MAX_SPOT_LIGHTS];
+	PointLight pointLights[MAX_POINT_LIGHTS] = {};
+	DirectionalLight dirLights[MAX_DIR_LIGHTS] = {};
+	SpotLight spotLights[MAX_SPOT_LIGHTS] = {};
 	LightsSystem::ExtractLightsFromRegistry(registry, dirLights, pointLights, spotLights);
 	for (auto rIt = renderableView.begin(); rIt != renderableView.end(); ++rIt)
 	{
