@@ -16,12 +16,12 @@ struct DirectionalLight {
 struct SpotLight {
     vec4 AmbientColor;
     vec4 DiffuseColor;
-    mat4 InverseOrientation;
-    vec3 Position;
+    vec3 LightFwd;
     float Intensity;
+    vec3 Position;
     float Angle;
     float Range;
-    vec2 padding;
+    vec3 padding;
 };
 
 in vec4 color;
@@ -70,7 +70,7 @@ vec3 CalculateDirLight(DirectionalLight light)
 vec3 CalculateSpotLight(SpotLight light)
 {
     vec3 normalizedNormal = normalize(normal);
-    vec3 localFwd = light.InverseOrientation[2].xyz;
+    vec3 localFwd = normalize(light.LightFwd);
     float angleAffinity = dot(localFwd, normalize(worldPos - light.Position)) * (light.Angle / 90);
     float lightAmount = (light.Range / distance(worldPos, light.Position)) * angleAffinity;
     lightAmount = lightAmount * max(0, (angleAffinity - .2) * light.Intensity);

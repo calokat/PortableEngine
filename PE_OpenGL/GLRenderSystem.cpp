@@ -180,7 +180,7 @@ void GLRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTransform
 
 		glUniform4f(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::AmbientColor].value, spotLights->AmbientColor.x, spotLights->AmbientColor.y, spotLights->AmbientColor.z, spotLights->AmbientColor.w);
 		glUniform4f(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::DiffuseColor].value, spotLights->DiffuseColor.x, spotLights->DiffuseColor.y, spotLights->DiffuseColor.z, spotLights->DiffuseColor.w);
-		glUniformMatrix4fv(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::InverseOrientation].value, 1, GL_FALSE, glm::value_ptr(spotLights->inverseOrientation));
+		glUniform3f(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::LightFwd].value, spotLights->LightFwd.x, spotLights->LightFwd.y, spotLights->LightFwd.z);
 		glUniform3f(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Position].value, spotLights->Position.x, spotLights->Position.y, spotLights->Position.z);
 		glUniform1f(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Intensity].value, spotLights->Intensity);
 		glUniform1f(glRenderer->shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Angle].value, spotLights->Angle);

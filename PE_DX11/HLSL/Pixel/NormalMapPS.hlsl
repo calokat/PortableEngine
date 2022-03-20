@@ -16,12 +16,12 @@ struct PointLight
 struct SpotLight {
     float4 AmbientColor;
     float4 DiffuseColor;
-    matrix InverseOrientation;
-    float3 Position;
+    float3 LightFwd;
     float Intensity;
+    float3 Position;
     float Angle;
     float Range;
-    float2 padding;
+    float3 padding;
 };
 
 struct VertexShaderInput
@@ -116,7 +116,7 @@ float3 CalculateDirLight(DirectionalLight light, VertexToPixelNormalMap input)
 float3 CalculateSpotLight(SpotLight light, VertexToPixelNormalMap input)
 {
     float3 normalizedNormal = normalize(input.normal);
-    float3 localFwd = light.InverseOrientation[2].xyz;
+    float3 localFwd = normalize(light.LightFwd);
     float angleAffinity = dot(localFwd, normalize(input.worldPos - light.Position)) * saturate(dot(input.normal, light.Position - input.worldPos)) * (light.Angle / 90);
     float lightAmount = (light.Range / distance(input.worldPos, light.Position)) * angleAffinity;
     lightAmount = lightAmount * max(0, (angleAffinity - .2) * light.Intensity);

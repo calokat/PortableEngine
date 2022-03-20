@@ -27,13 +27,13 @@ struct SpotLight
 {
 	glm::vec4 AmbientColor;
 	glm::vec4 DiffuseColor;
-	glm::mat4 inverseOrientation;
-	glm::vec3 Position;
+	glm::vec3 LightFwd;
 	float Intensity;
+	glm::vec3 Position;
 	float Angle;
 	float Range;
 	// For DirectX alignment requirements
-	glm::vec2 padding;
+	glm::vec3 padding;
 };
 
 struct LightBufferData {

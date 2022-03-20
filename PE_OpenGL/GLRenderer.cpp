@@ -42,7 +42,7 @@ GLRenderer::GLRenderer(std::string vertexShaderPathParam, std::string fragmentSh
 		shaderProgram.dirLightLightData[(unsigned long)DirectionalLightUniforms::Direction].name = "dirLight.Direction";
 		shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::AmbientColor].name = "spotLight.AmbientColor";
 		shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::DiffuseColor].name = "spotLight.DiffuseColor";
-		shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::InverseOrientation].name = "spotLight.InverseOrientation";
+		shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::LightFwd].name = "spotLight.LightFwd";
 		shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Position].name = "spotLight.Position";
 		shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Intensity].name = "spotLight.Intensity";
 		shaderProgram.spotLightData[(unsigned long)SpotLightUniforms::Angle].name = "spotLight.Angle";
