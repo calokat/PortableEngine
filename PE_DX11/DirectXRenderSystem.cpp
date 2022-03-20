@@ -23,24 +23,15 @@ IRenderer& DirectXRenderSystem::CreateRenderer(entt::registry& reg, entt::entity
 	case ShaderType::Lit_Color:
 	case ShaderType::Lit_Textured:
 	case ShaderType::Lit_Textured_Normal:
-		rendererRef.shaderProgram.vertexConstBuffer.constantBufferMap = {
-			{"colorTint", { 16 } },
-			{"world", { 64 } },
-			{"view", { 64 } },
-			{"projection", { 64 } }
-		};
+		rendererRef.shaderProgram.vertexConstBuffer.byteSize = sizeof(MatrixConstantBuffer);
 		break;
 	}
 
 	switch (rendererRef.shaderProgram.shaderType)
 	{
 	case ShaderType::Lit_Color:
-		rendererRef.shaderProgram.pixelConstBuffer.constantBufferMap = {
-			{ "dirLight", { sizeof(DirectionalLight) } },
-			{ "pointLight", { sizeof(PointLight) } },
-			{ "cameraPos", { sizeof(glm::vec3) } },
-			{ "specularIntensity", { sizeof(float) } },
-		};
+	case ShaderType::Lit_Textured:
+		rendererRef.shaderProgram.pixelConstBuffer.byteSize = sizeof(LightBufferData);
 		break;
 	}
 	Load(&rendererRef);
@@ -120,16 +111,16 @@ void DirectXRenderSystem::Load(IRenderer* renderer)
 
 
 	//unsigned int size = sizeof(MatrixConstantBuffer);
-	unsigned int size = 0;
-	for (auto it = dxRenderer->shaderProgram.vertexConstBuffer.constantBufferMap.begin(); it != dxRenderer->shaderProgram.vertexConstBuffer.constantBufferMap.end(); ++it)
-	{
-		size += it->second.byteSize;
-	}
-	size = (size + 15) / 16 * 16;
+	//unsigned int size = 0;
+	//for (auto it = dxRenderer->shaderProgram.vertexConstBuffer.constantBufferMap.begin(); it != dxRenderer->shaderProgram.vertexConstBuffer.constantBufferMap.end(); ++it)
+	//{
+	//	size += it->second.byteSize;
+	//}
+	//size = (size + 15) / 16 * 16;
 
 	D3D11_BUFFER_DESC matrixBufferDesc = {};
 	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	matrixBufferDesc.ByteWidth = size;
+	matrixBufferDesc.ByteWidth = dxRenderer->shaderProgram.vertexConstBuffer.byteSize;
 	matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	matrixBufferDesc.MiscFlags = 0;
@@ -159,12 +150,12 @@ void DirectXRenderSystem::Load(IRenderer* renderer)
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	HRESULT res = device->CreateSamplerState(&samplerDesc, &dxRenderer->shaderProgram.samplerState);
 
-	size = 0;
-	for (auto it = dxRenderer->shaderProgram.pixelConstBuffer.constantBufferMap.begin(); it != dxRenderer->shaderProgram.pixelConstBuffer.constantBufferMap.end(); ++it)
-	{
-		size += it->second.byteSize;
-	}
-	size = (size + 15) / 16 * 16;
+	//size = 0;
+	//for (auto it = dxRenderer->shaderProgram.pixelConstBuffer.constantBufferMap.begin(); it != dxRenderer->shaderProgram.pixelConstBuffer.constantBufferMap.end(); ++it)
+	//{
+	//	size += it->second.byteSize;
+	//}
+	//size = (size + 15) / 16 * 16;
 
 	D3D11_BUFFER_DESC lightBufferDesc = {};
 	lightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -271,7 +262,7 @@ void DirectXRenderSystem::UpdateRenderer(IRenderer* renderer, Transform meshTran
 	if (dxRenderer->shaderProgram.shaderType & ShaderProgramProperties::Lit)
 	{
 		LightBufferData lightBufferData;
-		lightBufferData.dirLight = dirLights != nullptr ? *dirLights : DirectionalLight{};
+		lightBufferData.dirLight = dirLights[0];
 		glm::mat4 inverseView = glm::inverse(camera.view);
 		lightBufferData.cameraPos = inverseView[3];
 		lightBufferData.specularIntensity = 16;

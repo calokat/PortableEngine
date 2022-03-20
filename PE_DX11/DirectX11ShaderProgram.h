@@ -15,8 +15,7 @@ struct ConstantBufferValue
 struct DirectXConstantBuffer
 {
 	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer;
-	const char* constantBufferFields[16];
-	std::map<const char*, ConstantBufferValue> constantBufferMap;
+	size_t byteSize;
 };
 
 struct DirectX11ShaderProgram
