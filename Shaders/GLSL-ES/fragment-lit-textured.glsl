@@ -74,7 +74,7 @@ vec3 CalculateSpotLight(SpotLight light)
     vec3 localFwd = light.InverseOrientation[2].xyz;
     float angleAffinity = dot(localFwd, normalize(worldPos - light.Position)) * (light.Angle / 90.0);
     float lightAmount = (light.Range / distance(worldPos, light.Position)) * angleAffinity;
-    lightAmount = lightAmount * max(0.0, (angleAffinity - .2.0) * light.Intensity);
+    lightAmount = lightAmount * max(0.0, (angleAffinity - .2) * light.Intensity);
     vec4 finalColor = lightAmount * light.DiffuseColor * color + light.AmbientColor * color;
     return finalColor.xyz;
 }

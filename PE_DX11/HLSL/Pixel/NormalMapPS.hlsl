@@ -12,6 +12,18 @@ struct PointLight
 	float3 Position;
 	float Intensity;
 };
+
+struct SpotLight {
+    float4 AmbientColor;
+    float4 DiffuseColor;
+    matrix InverseOrientation;
+    float3 Position;
+    float Intensity;
+    float Angle;
+    float Range;
+    float2 padding;
+};
+
 struct VertexShaderInput
 {
 	// Data type
@@ -62,6 +74,7 @@ cbuffer LightData: register(b0)
 {
 	DirectionalLight dirLight;
 	PointLight pointLight;
+	SpotLight spotLight;
 	float3 cameraPos;
 	float specularIntensity;
 };
@@ -100,6 +113,16 @@ float3 CalculateDirLight(DirectionalLight light, VertexToPixelNormalMap input)
 	return finalColor;
 }
 
+float3 CalculateSpotLight(SpotLight light, VertexToPixelNormalMap input)
+{
+    float3 normalizedNormal = normalize(input.normal);
+    float3 localFwd = light.InverseOrientation[2].xyz;
+    float angleAffinity = dot(localFwd, normalize(input.worldPos - light.Position)) * saturate(dot(input.normal, light.Position - input.worldPos)) * (light.Angle / 90);
+    float lightAmount = (light.Range / distance(input.worldPos, light.Position)) * angleAffinity;
+    lightAmount = lightAmount * max(0, (angleAffinity - .2) * light.Intensity);
+    float4 finalColor = lightAmount * light.DiffuseColor * input.color + light.AmbientColor * input.color;
+    return finalColor.xyz;
+}
 
 // --------------------------------------------------------
 // The entry point (main method) for our pixel shader
@@ -127,7 +150,7 @@ float4 main(VertexToPixelNormalMap input) : SV_TARGET
 	// Assumes that	input.normal is used later in the shader
 	input.normal = mul(unpackedNormal, TBN); // Note multiplication order
 	float3 surfaceColor = diffuseTexture.Sample(samplerOptions, input.UV).rgb;
-	float3 finalColor = surfaceColor * input.color * CalculateDirLight(dirLight, input) * CalculatePointLight(pointLight, input);
+	float3 finalColor = surfaceColor * input.color * (CalculateDirLight(dirLight, input) + CalculatePointLight(pointLight, input) + CalculateSpotLight(spotLight, input));
 	//return float4(input.normal, 1);
 return float4(finalColor, 1);
 	// Just return the input color

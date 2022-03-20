@@ -12,6 +12,18 @@ struct PointLight
 	float3 Position;
 	float Intensity;
 };
+
+struct SpotLight {
+    float4 AmbientColor;
+    float4 DiffuseColor;
+    matrix InverseOrientation;
+    float3 Position;
+    float Intensity;
+    float Angle;
+    float Range;
+    float2 padding;
+};
+
 struct VertexShaderInput
 {
 	// Data type
@@ -62,6 +74,7 @@ cbuffer LightData: register(b0)
 {
 	DirectionalLight dirLight;
 	PointLight pointLight;
+	SpotLight spotLight;
 	float3 cameraPos;
 	float specularIntensity;
 };
@@ -98,6 +111,16 @@ float3 CalculateDirLight(DirectionalLight light, VertexToPixel input)
 	return finalColor;
 }
 
+float3 CalculateSpotLight(SpotLight light, VertexToPixel input)
+{
+    float3 normalizedNormal = normalize(input.normal);
+    float3 localFwd = light.InverseOrientation[2].xyz;
+    float angleAffinity = dot(localFwd, normalize(input.worldPos - light.Position)) * (light.Angle / 90);
+    float lightAmount = (light.Range / distance(input.worldPos, light.Position)) * angleAffinity;
+    lightAmount = lightAmount * max(0, (angleAffinity - .2) * light.Intensity);
+    float4 finalColor = lightAmount * light.DiffuseColor * input.color + light.AmbientColor * input.color;
+    return finalColor.xyz;
+}
 
 // --------------------------------------------------------
 // The entry point (main method) for our pixel shader
@@ -114,7 +137,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 	//float3 normalizedNegatedLightDir = normalize(-light.Direction);
 	//float lightAmount = saturate(dot(normalizedNegatedLightDir, input.normal));
 	//float3 finalColor = lightAmount * light.DiffuseColor * input.color + light.AmbientColor * input.color;
-	float3 finalColor = CalculateDirLight(dirLight, input) + CalculatePointLight(pointLight, input);
+	float3 finalColor = CalculateDirLight(dirLight, input) + CalculatePointLight(pointLight, input) + CalculateSpotLight(spotLight, input);
 	//loop for (int i = 0; i < 8; i = i++)
 	//{
 	//	finalColor = finalColor + CalculatePointLight(pointLights[i], input);
