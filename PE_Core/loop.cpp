@@ -51,13 +51,6 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 	TransformSystem::CalculateWorldMatrix(&camTransform);
 	CameraSystem::CalculateViewMatrixLH(camera, camTransform);
 
-
-	// TODO: Put the picking code in its own system
-	if (plat->GetInputSystem()->WasMouseButtonClicked(MouseButton::Left))
-	{
-		MakeRayFromCamera(camera, registry.view<AABB, Transform>(), window, plat->GetInputSystem()->GetCursorPosition());
-	}
-
 	auto entityView = registry.view<Name, Relationship, Transform>();
 	EntityListWindow entityListWindow;
 	InspectorWindow inspectorWindow;
@@ -102,18 +95,25 @@ void Loop(IPlatform* plat, IGraphicsAPI* graph, IRenderSystem* renderSystem, IXR
 
 	EngineCameraControllerSystem::ControlCamera(plat->GetInputSystem(), camTransform);
 
-	if (plat->GetInputSystem()->IsKeyPressed(KeyboardCode::Esc))
-	{
-		GizmoSystem::DeselectAll();
-	}
+	//if (plat->GetInputSystem()->IsKeyPressed(KeyboardCode::Esc))
+	//{
+	//	GizmoSystem::DeselectAll();
+	//}
 	if (selected != entt::null && registry.any_of<Renderable>(selected))
 	{
 		RendererMenu().Render(registry, selected, renderSystem);
 	}
 
 	ImGui::Begin("Instructions");
-	ImGui::TextWrapped("Instructions: Right Click (or Shift) + WASD to move around. Right Click or Shift while moving your mouse to look around. Click on objects to select them, deselect them by pressing Escape. You can change how objects are rendered by selecting them and using the Renderer menu that will appear in the top bar.");
+	ImGui::TextWrapped("Instructions: Right Click (or Shift) + WASD to move around. Right Click or Shift while moving your mouse to look around. Click on objects to select them. You can change how objects are rendered by selecting them and using the Renderer menu that will appear in the top bar.");
 	ImGui::End();
+
+	// TODO: Put the picking code in its own system
+	if (!ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow) && !ImGui::IsAnyItemHovered() && plat->GetInputSystem()->WasMouseButtonClicked(MouseButton::Left))
+	{
+		GizmoSystem::DeselectAll();
+		MakeRayFromCamera(camera, registry.view<AABB, Transform>(), window, plat->GetInputSystem()->GetCursorPosition());
+	}
 
 	ImGui::Render();
 	graph->DrawGui();
