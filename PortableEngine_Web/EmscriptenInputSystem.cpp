@@ -257,7 +257,7 @@ bool EmscriptenInputSystem::WasMouseButtonPressed(MouseButton mb)
 
 bool EmscriptenInputSystem::WasMouseButtonClicked(MouseButton mb)
 {
-	return previous.mouseButtons[(int)MouseButton::Left] && !current.mouseButtons[(int)MouseButton::Left];
+	return current.mouseButtons[(int)MouseButton::Left] && !previous.mouseButtons[(int)MouseButton::Left];
 }
 
 glm::vec2 EmscriptenInputSystem::GetCursorPosition()
