@@ -79,7 +79,7 @@ vec3 CalculateSpotLight(SpotLight light)
 
 void main()
 {
-    vec3 finalColor = CalculateDirLight(dirLight) + CalculatePointLight(pointLights[0]) CalculateSpotLight(spotLight);
+    vec3 finalColor = CalculateDirLight(dirLight) + CalculatePointLight(pointLights[0]) + CalculateSpotLight(spotLight);
     finalColor = finalColor * color.xyz;
     out_color = vec4(finalColor, 1);
 }
