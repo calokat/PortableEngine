@@ -120,7 +120,9 @@ int main(int argc, char* argv[])
 	ImGui::StyleColorsDark();
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-
+#ifdef __EMSCRIPTEN__
+	io.IniFilename = "./misc/imgui.ini";
+#endif
 	if (argc < 4)
 	{
 		#ifdef _WIN64
@@ -230,8 +232,8 @@ int main(int argc, char* argv[])
 	entt::entity root = registry.create();
 	registry.emplace<Name>(root, "$");
 	registry.emplace<Transform>(root);
-	GizmoSystem::Select(root);
-	Tree<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/stage.fbx").c_str());
+	//GizmoSystem::Select(root);
+	Tree<MeshCreateInfo> duoScene = MeshLoaderSystem::CreateMeshHeirarchy(plat->GetAssetManager()->GetAssetPath("../../Assets/Models/duo.fbx").c_str());
 	entt::entity duoRoot = MakeMesh(duoScene, registry, root);
 
 	Relationship& duoRootRel = registry.get<Relationship>(duoRoot);
