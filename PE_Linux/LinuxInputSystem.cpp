@@ -139,6 +139,12 @@ void LinuxInputSystem::GetKeyPressed()
 			case SDL_SCANCODE_RALT:
 				keyCode = KeyboardCode::RAlt;
 				break;
+			case SDL_SCANCODE_LSHIFT:
+				keyCode = KeyboardCode::LShift;
+				break;
+			case SDL_SCANCODE_RSHIFT:
+				keyCode = KeyboardCode::RShift;
+				break;
 			default:
 				keyCode = KeyboardCode::N;
 				break;
