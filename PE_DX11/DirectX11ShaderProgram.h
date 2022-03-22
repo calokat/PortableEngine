@@ -5,13 +5,6 @@
 #include <map>
 #include "IRenderSystem.h"
 
-enum ConstantBufferValueType { Vec1f, Vec2f, Vec3f, Vec4f, Mat4f, Array };
-
-struct ConstantBufferValue
-{
-	size_t byteSize;
-};
-
 struct DirectXConstantBuffer
 {
 	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer;
