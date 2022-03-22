@@ -11,7 +11,7 @@ namespace PE
         String& operator=(String&& other) noexcept;
         String(const String& other);
         String& operator=(const String& other) noexcept;
-        const char* GetData();
+        const char* GetData() const;
         void SetData(const char* newData);
         static PE::String Concat(const PE::String& str1, const PE::String& str2);
         ~String();

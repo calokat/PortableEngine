@@ -12,6 +12,7 @@ PE::String::String(const char* newData)
 	size_t newLength = strlen(newData);
 	data = new char[newLength + 1];
 	strcpy(data, newData);
+	data[newLength] = 0;
 }
 
 PE::String::String(String&& other) noexcept
@@ -50,7 +51,7 @@ PE::String& PE::String::operator=(const String& other) noexcept
 	return *this;
 }
 
-const char* PE::String::GetData()
+const char* PE::String::GetData() const
 {
 	return data;
 }
