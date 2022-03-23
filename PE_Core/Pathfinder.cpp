@@ -17,6 +17,11 @@ PE::String Pathfinder::GetRuntimePath()
 	return PE::String(staticThis.config.pathToRuntime);
 }
 
+PE::WideString Pathfinder::GetRuntimePath_Wide()
+{
+	return PE::WideString(staticThis.config.pathToRuntime);
+}
+
 Pathfinder::Pathfinder()
 {
 
