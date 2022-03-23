@@ -4,6 +4,8 @@
 #include "ImageSystem.h"
 #include "lights.h"
 #include <DirectXTK/WICTextureLoader.h>
+#include "PEWideString.h"
+#include "Pathfinder.h"
 
 #pragma warning(disable:4996)
 
@@ -61,10 +63,12 @@ void DirectXRenderSystem::Load(IRenderer* renderer)
 	DirectXRenderer* dxRenderer = (DirectXRenderer*)renderer;
 	ID3DBlob* shaderBlob = nullptr;
 
-	std::wstring finalWideString = GetExePath_Wide() + L"\\" + typeToVertexPath[dxRenderer->shaderProgram.shaderType];
+	
 
+	//std::wstring finalWideString = GetExePath_Wide() + L"\\" + typeToVertexPath[dxRenderer->shaderProgram.shaderType];
+	PE::WideString finalWideString = PE::WideString::Concat(Pathfinder::GetRuntimePath_Wide(), typeToVertexPath[dxRenderer->shaderProgram.shaderType]);
 	D3DReadFileToBlob(
-		finalWideString.c_str(),
+		finalWideString.GetData(),
 		&shaderBlob);
 
 	device->CreateVertexShader(
@@ -128,10 +132,12 @@ void DirectXRenderSystem::Load(IRenderer* renderer)
 
 	device->CreateBuffer(&matrixBufferDesc, 0, dxRenderer->shaderProgram.vertexConstBuffer.constantBuffer.GetAddressOf());
 
-	finalWideString = GetExePath_Wide() + L"\\" + typeToPixelPath[dxRenderer->shaderProgram.shaderType];
+	finalWideString = PE::WideString::Concat(Pathfinder::GetRuntimePath_Wide(), typeToPixelPath[dxRenderer->shaderProgram.shaderType]);
+	//finalWideString = PE::WideString::Concat(finalWideString, typeToPixelPath[dxRenderer->shaderProgram.shaderType]);
+	//finalWideString = GetExePath_Wide() + L"\\" + typeToPixelPath[dxRenderer->shaderProgram.shaderType];
 
 	D3DReadFileToBlob(
-		finalWideString.c_str(),
+		finalWideString.GetData(),
 		&shaderBlob);
 
 	device->CreatePixelShader(
@@ -327,46 +333,6 @@ void DirectXRenderSystem::LoadTexture(PEImage& texture, const char* imagePath, i
 	CreateTexture(texture);
 	DirectX11ImageGraphicsData* dx11ImageGraphicsData = (DirectX11ImageGraphicsData*)texture.imageGraphicsData.get();
 	context->PSSetShaderResources(index, 1, &dx11ImageGraphicsData->srv);
-}
-
-std::string DirectXRenderSystem::GetExePath()
-{
-	// Assume the path is just the "current directory" for now
-	std::string path = ".\\";
-
-	// Get the real, full path to this executable
-	char currentDir[1024] = {};
-	GetModuleFileName(0, currentDir, 1024);
-
-	// Find the location of the last slash charaacter
-	char* lastSlash = strrchr(currentDir, '\\');
-	if (lastSlash)
-	{
-		// End the string at the last slash character, essentially
-		// chopping off the exe's file name.  Remember, c-strings
-		// are null-terminated, so putting a "zero" character in 
-		// there simply denotes the end of the string.
-		*lastSlash = 0;
-
-		// Set the remainder as the path
-		path = currentDir;
-	}
-
-	// Toss back whatever we've found
-	return path;
-}
-
-std::wstring DirectXRenderSystem::GetExePath_Wide()
-{
-	// Grab the path as a standard string
-	std::string path = GetExePath();
-
-	// Convert to a wide string
-	wchar_t widePath[1024] = {};
-	mbstowcs_s(0, widePath, path.c_str(), 1024);
-
-	// Create a wstring for it and return
-	return std::wstring(widePath);
 }
 
 #endif
