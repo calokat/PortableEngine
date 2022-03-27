@@ -256,6 +256,7 @@ bool XRAPI::IsSessionRunning()
 void XRAPI::UpdateDevices(XrTime predictedTime, entt::basic_view<entt::entity, entt::get_t<XRDevice, Transform>, entt::exclude_t<>, void> xrDevices, entt::basic_view<entt::entity, entt::get_t<Camera, Transform>, entt::exclude_t<>, void> cameraTransformView)
 {
 	auto [cam, camTransform] = cameraTransformView.get(cameraTransformView.front());
+	if (!viewCams.empty()) cam = viewCams[0];
 	for (auto devIt = xrDevices.begin(); devIt != xrDevices.end(); ++devIt)
 	{
 		auto [dev, t] = xrDevices.get(*devIt);
